@@ -233,7 +233,7 @@ final class ApiClient {
 		$json = json_decode($json);
 		if ($json) {
 			if (isset($params['fields']) || !$model) {
-				return $json;
+				return $json->item;
 			} else {
 				return new $model($json->item);			
 			}
