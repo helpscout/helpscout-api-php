@@ -1,6 +1,6 @@
 helpscout-api-php
 =================
-PHP Wrapper for the Help Scout API.
+PHP Wrapper for the Help Scout API. More information on our developer site: [http://developer.helpscout.net](http://developer.helpscout.net).
 
 Requirements
 ---------------------
