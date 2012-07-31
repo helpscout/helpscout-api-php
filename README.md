@@ -14,21 +14,22 @@ include 'HelpScout/ApiClient.php';
 
 use HelpScout\ApiClient;
 
-ApiClient::getInstance()->setKey('your-api-key-here');
+$hs = ApiClient::getInstance();
+$hs->setKey('your-api-key-here');
 
-$mailboxes = ApiClient::getInstance()->getMailboxes();
+$mailboxes = $hs->getMailboxes();
 if ($mailboxes) {
     // do something
 }
 
-$mailbox = ApiCllient::getInstance()->getMailbox(99);
+$mailbox = $hs->getMailbox(99);
 if ($mailbox) {
     $mailboxName = $mailbox->getName();
     $folders = $mailbox->getFolders();
     // do something
 }
 
-$conversation = ApiClient::getInstance()->getConversation(999);
+$conversation = $hs->getConversation(999);
 if ($conversation) {
     // do something
     $threads = $conversation->getThreads();
@@ -43,3 +44,10 @@ if ($conversation) {
     }
 }
 </code></pre>
+
+Field Selectors
+---------------------
+Field selectors can be given as a string or an array.
+
+When field selectors are used, a JSON object is returned with the specificed fields. If no fields are given, you will be given the proper object. For example, the following code will return a JSON object with fields for 'name' and 'email'.
+<pre><code>$mailbox = ApiClient::getInstance()->getMailbox(99, array('name','email'));</code></pre>
