@@ -4,9 +4,6 @@ namespace HelpScout\model;
 class Customer extends Object {
 	private $firstName;
 	private $lastName;
-	private $email;
-	private $role;
-	private $timezone;
 	private $photoUrl;
 	private $photoType;
 	private $gender;
@@ -47,48 +44,6 @@ class Customer extends Object {
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function isOwnerRole() {
-		return $this->role == 'owner';
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public function isAdminRole() {
-		return $this->role == 'admin';
-	}
-
-	/**
-	 * @return boolean
-	 */
-	public function isUserRole() {
-		return $this->role == 'user';
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getRole() {
-		return $this->role;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getTimezone() {
-		return $this->timezone;
-	}
-	
-	/**
 	 * @return boolean
 	 */	
 	public function hasPhoto() {
@@ -114,6 +69,7 @@ class Customer extends Object {
 	 */
 	public function getGender() {
 		return $this->gender;
+	private $email;
 	}
 
 	/**
