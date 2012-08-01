@@ -167,7 +167,32 @@ final class ApiClient {
 			sprintf('users/%d.json', $userId), $this->getParams(array('fields' => $fields)), 'getUser', '\HelpScout\model\User'
 		);
 	}
-		
+
+	/**
+	 * Returns a Collection of all the customers for the company.
+	 * @param int $page
+	 * @param string|array $fields
+	 * @return \HelpScout\Collection
+	 */
+	public function getCustomers($page=1, $fields=null) {		
+		return $this->getCollection(
+			'customers.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getCustomers', '\HelpScout\model\Customer'
+		);
+	}
+
+	/**
+	 * @param int $customerId
+	 * @param string|array $fields
+	 * @return \HelpScout\model\Customer
+	 */
+	public function getCustomer($customerId, $fields=null) {
+		if (!is_numeric($customerId) || $customerId < 1) {
+			throw new ApiException(sprintf('Invalid customerId in getCustomer method [%s]', $customerId));
+		}		
+		return $this->getItem(
+			sprintf('customers/%d.json', $customerId), $this->getParams(array('fields' => $fields)), 'getCustomer', '\HelpScout\model\Customer'
+		);
+	}	
 	
 	/**	 
 	 * @param int $mailboxId
