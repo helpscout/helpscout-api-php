@@ -1,26 +1,24 @@
 <?php
 namespace HelpScout\model\customer;
 
-class Address extends Object {
-
-	private $customerID;
+class Address extends \HelpScout\model\Object {
+	
+	private $lines = null;
 	private $city;
 	private $state;
 	private $postalCode;
 	private $country;
-	private $lines = null;
 	private $createdAt;
 	private $modifiedAt;
 	
 	public function __construct($data=null) {
 		parent::__construct($data);
 		if ($data) {
-			$this->customerId = $data->customerId;
+			$this->lines = $data->lines;
 			$this->city = $data->city;
 			$this->state = $data->state;
 			$this->postalCode = $data->postalCode;
 			$this->country = $data->country;
-			$this->lines = $data->lines;
 			$this->createdAt = $data->createdAt;
 			$this->modifiedAt = $data->modifiedAt;
 		}
@@ -49,19 +47,12 @@ class Address extends Object {
 	}
 
 	/**
-	 * @return the $id
+	 * @return the $lines
 	 */
-	public function getId() {
-		return $this->id;
+	public function getLines() {
+		return $this->lines;
 	}
-
-	/**
-	 * @return the $customerID
-	 */
-	public function getCustomerID() {
-		return $this->customerID;
-	}
-
+	
 	/**
 	 * @return the $city
 	 */
