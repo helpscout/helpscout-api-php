@@ -85,7 +85,7 @@ final class ApiClient {
 	}
 		
 	/**
-	 * 
+	 * Return a collection of conversations for the given mailbox
 	 * @param int $mailboxId
 	 * @param array $params
 	 * @param array $fields
@@ -104,6 +104,15 @@ final class ApiClient {
 		);
 	}
 	
+	/**
+	 * Return a collection of conversations for the given mailbox and customer
+	 * @param int $mailboxId
+	 * @param int $customerId
+	 * @param array $params
+	 * @param array $fields
+	 * @throws \HelpScout\ApiException
+	 * @return \HelpScout\Collection
+	 */
 	public function getConversationsForCustomerByMailbox($mailboxId, $customerId, array $params=array(), $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
 			throw new ApiException(sprintf('Invalid mailboxId in getConversationsForCustomerByMailbox method [%s]', $mailboxId));
