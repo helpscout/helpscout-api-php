@@ -56,3 +56,31 @@ When field selectors are used, a JSON object is returned with the specificed fie
     "email": "help@mymailbox.com"	
 }
 </code></pre>
+
+Built-in Functions
+--------------------
+
+### Mailboxes
+* getMailboxes($page=1, $fields=null)
+* getMailbox($mailboxId, $fields=null)
+
+### Folders
+* getFolders($mailboxId, $page=1, $fields=null)
+
+### Conversations
+* getConversationsForFolder($mailboxId, $folderId, array $params=array(), $fields=null)
+* getConversationsForMailbox($mailboxId, array $params=array(), $fields=null)
+* getConversationsForCustomerByMailbox($mailboxId, $customerId, array $params=array(), $fields=null)
+* getConversation($conversationId, $fields=null)
+
+### Attachments
+* getAttachmentData($attachmentId)
+
+### Customers
+* getCustomers($page=1, $fields=null)
+* getCustomer($customerId, $fields=null)
+
+### Users
+* getUsers($page=1, $fields=null)
+* getUsersForMailbox($mailboxId, $page=1, $fields=null)
+* getUser($userId, $fields=null)
