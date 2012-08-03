@@ -37,6 +37,12 @@ final class ApiClient {
 		return true;
 	}
 	
+	/**
+	 * Get an instance of the ApiClient
+	 * 
+	 * @return \HelpScout\ApiClient
+	 * @static
+	 */
 	public static function getInstance() {
 		if (self::$instance === false) {
 			self::$instance = new ApiClient();
@@ -44,10 +50,25 @@ final class ApiClient {
 		return self::$instance;
 	}
 	
+	/**
+	 * Set the API Key to use with this request
+	 * 
+	 * @param string $apiKey
+	 */
 	public function setKey($apiKey) {
 		$this->apiKey = $apiKey;
 	}
 	
+	/**
+	 * Get a list of conversation for the given folder
+	 * 
+	 * @param int $mailboxId
+	 * @param int $folderId
+	 * @param array $params
+	 * @param array|string $fields
+	 * @throws \HelpScout\ApiException
+	 * @return \HelpScout\Collection
+	 */
 	public function getConversationsForFolder($mailboxId, $folderId, array $params=array(), $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
 			throw new ApiException(sprintf('Invalid mailboxId in getConversationsForFolder method [%s]', $mailboxId));
@@ -63,6 +84,14 @@ final class ApiClient {
 		);
 	}
 		
+	/**
+	 * 
+	 * @param int $mailboxId
+	 * @param array $params
+	 * @param array $fields
+	 * @throws \HelpScout\ApiException
+	 * @return \HelpScout\Collection
+	 */
 	public function getConversationsForMailbox($mailboxId, array $params=array(), $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
 			throw new ApiException(sprintf('Invalid mailboxId in getConversationsForMailbox method [%s]', $mailboxId));
@@ -301,7 +330,7 @@ final class ApiClient {
 					throw new ApiException('Service Temporarily Unavailable', 503);
 					break;
 				default:
-					throw new ApiException("API for $type returned Status Code: " . $statusCode . " Expected Code: " . implode(',', $expected), $statusCode);
+					throw new ApiException(sprintf('Method %s returned status code %d but we expected code(s) %s', $type, $statusCode, implode(',', $expected)));
 					break;
 			}
 		}
@@ -382,6 +411,7 @@ final class ApiClient {
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => true,
 			CURLOPT_HEADER         => false,
+			CURLOPT_ENCODING       => 'gzip,deflate',
 			CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
 		);
 		if ($params) {
@@ -393,9 +423,9 @@ final class ApiClient {
 		}
 		curl_setopt_array($ch, $opts);
 
-		$response   = curl_exec($ch);
+		$response   = curl_exec($ch);		
 		$statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		
+				
 		curl_close($ch);
 		
 		return array($statusCode, $response);		
