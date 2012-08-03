@@ -7,9 +7,9 @@ class Conversation extends Object {
 	private $folderId    = 0;
 	private $draft       = false;	
 	private $number      = 0;
-	private $ownerId     = 0;
-	private $mailboxId   = 0;	
-	private $customerId  = 0;
+	private $owner       = false;
+	private $mailbox     = false;	
+	private $customer    = false;
 	private $threadCount = 0;
 	private $status      = false;	
 	private $subject     = false;
@@ -31,9 +31,19 @@ class Conversation extends Object {
 			$this->folderId    = $data->folderId;
 			$this->draft       = $data->isDraft;
 			$this->number      = $data->number;
-			$this->ownerId     = $data->ownerId;
-			$this->mailboxId   = $data->mailboxId;
-			$this->customerId  = $data->customerId;
+			
+			if (isset($data->owner)) {
+				$this->owner = new \HelpScout\model\ref\UserRef($data->owner);
+			}
+			
+			if (isset($data->address)) {
+				$this->mailbox = new \HelpScout\model\ref\MailboxRef($data->mailbox);
+			}
+			
+			if (isset($data->customer)) {
+				$this->customer = new \HelpScout\model\ref\CustomerRef($data->customer);
+			}
+			
 			$this->threadCount = $data->threadCount;
 			$this->status      = $data->status;
 			$this->subject     = $data->subject;
