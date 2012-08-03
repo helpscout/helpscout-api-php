@@ -1,7 +1,8 @@
 <?php
 namespace HelpScout\model;
 
-class Folder extends Object {	
+class Folder {	
+	private $id = false;
 	private $name;
 	private $type;
 	private $userId      = 0;
@@ -10,9 +11,9 @@ class Folder extends Object {
 	
 	private $modifiedAt;
 			
-	public function __construct($data=null) {
-		parent::__construct($data);
+	public function __construct($data=null) {		
 		if ($data) {			
+			$this->id          = $data->id;
 			$this->name        = $data->name;
 			$this->type        = $data->type;
 			$this->userId      = $data->userId;
@@ -20,6 +21,13 @@ class Folder extends Object {
 			$this->activeCount = $data->activeCount;						
 			$this->modifiedAt  = $data->modifiedAt;			
 		}	
+	}
+	
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
 	}
 	
 	/**

@@ -1,15 +1,15 @@
 <?php
 namespace HelpScout\model\customer;
 
-class CustomerEntry extends \HelpScout\model\Object {
-
+class CustomerEntry {
+	private $id = false;
 	private $value;
 	private $type = null;
 	private $location = null;
 	
-	public function __construct($data=null) {
-		parent::__construct($data);
+	public function __construct($data=null) {		
 		if ($data) {
+			$this->id    = $data->id;
 			$this->value = $data->value;
 			if (isset($data->type)) {
 				$this->type = $data->type;
@@ -20,6 +20,13 @@ class CustomerEntry extends \HelpScout\model\Object {
 		}
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
 	/**
 	 * @return string
 	 */

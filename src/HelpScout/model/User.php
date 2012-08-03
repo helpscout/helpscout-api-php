@@ -1,7 +1,8 @@
 <?php
 namespace HelpScout\model;
 
-class User extends Object {
+class User {
+	private $id = false;
 	private $firstName;
 	private $lastName;
 	private $email;
@@ -10,6 +11,13 @@ class User extends Object {
 	private $photoUrl;
 	private $createdAt;
 	private $modifiedAt;
+	
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
 	
 	/**
 	 * @return string
@@ -100,5 +108,10 @@ class User extends Object {
 	 */
 	public function getModifiedAt() {
 		return $this->modifiedAt;
+	}
+	
+	private function isEmpty($value) {
+		$v = trim($value);
+		return empty($v);
 	}
 }

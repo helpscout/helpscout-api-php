@@ -1,7 +1,8 @@
 <?php
 namespace HelpScout\model;
 
-class Attachment extends Object {	
+class Attachment {	
+	private $id = false;
 	private $mimeType;
 	private $fileName;
 	private $size   = 0;
@@ -11,9 +12,9 @@ class Attachment extends Object {
 	
 	private $data   = false;
 		
-	public function __construct($data=null) {
-		parent::__construct($data);
+	public function __construct($data=null) {		
 		if ($data) {			
+			$this->id       = $data->id;
 			$this->mimeType = $data->mimeType;
 			$this->fileName = $data->fileName;
 			$this->size     = $data->size;
@@ -23,6 +24,11 @@ class Attachment extends Object {
 		}	
 	}
 	
+	/**
+	 * Returns the raw data for this attachment.
+	 * 
+	 * @return string
+	 */
 	public function getData() {
 		if ($this->data === false) {
 			$this->data = \HelpScout\ApiClient::getInstance()->getAttachmentData($this->id);			
@@ -30,4 +36,52 @@ class Attachment extends Object {
 		return $this->data;
 	}
 	
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMimeType() {
+		return $this->mimeType;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFileName() {
+		return $this->fileName;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSize() {
+		return $this->size;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getWidth() {
+		return $this->width;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getHeight() {
+		return $this->height;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUrl() {
+		return $this->url;
+	}
 }

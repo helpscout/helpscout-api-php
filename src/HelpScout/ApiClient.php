@@ -146,7 +146,7 @@ final class ApiClient {
 		);
 		$data = false;
 		if ($json) {
-			$data = $json->item->data;
+			$data = $json->data;
 			if ($data) {
 				$data = base64_decode($data);
 			}

@@ -1,9 +1,10 @@
 <?php
 namespace HelpScout\model;
 
-class Conversation extends Object {	
+class Conversation {	
 	const OWNER_ANYONE = 1;
 	
+	private $id          = false;
 	private $folderId    = 0;
 	private $draft       = false;	
 	private $number      = 0;
@@ -25,9 +26,9 @@ class Conversation extends Object {
 	private $tags        = false;	
 	private $threads     = false;
 	
-	public function __construct($data=null) {
-		parent::__construct($data);
+	public function __construct($data=null) {		
 		if ($data) {
+			$this->id          = $data->id;
 			$this->folderId    = $data->folderId;
 			$this->draft       = $data->isDraft;
 			$this->number      = $data->number;
@@ -79,26 +80,45 @@ class Conversation extends Object {
 				}
 			}
 		}
-	}
+	}	
 	
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}	
+
+	/**	 
+	 * @return boolean
+	 */
 	public function hasTags() {
 		return $this->hasList($this->tags);		
 	}
 	
+	/**
+	 * @return boolean
+	 */	
 	public function hasCcList() {
 		return $this->hasList($this->ccList);
 	}
 	
+	/**
+	 * @return boolean
+	 */	
 	public function hasBccList() {
 		return $this->hasList($this->bccList);
 	}
 	
+	/**
+	 * @return boolean
+	 */	
 	private function hasList($list) {
 		return $list && count($list) > 0;
 	}
 		
 	/**
-	 * @return the $folderId
+	 * @return int
 	 */
 	public function getFolderId() {
 		return $this->folderId;
@@ -112,126 +132,126 @@ class Conversation extends Object {
 	}
 
 	/**
-	 * @return the $number
+	 * @return int
 	 */
 	public function getNumber() {
 		return $this->number;
 	}
 
 	/**
-	 * @return the $ownerId
+	 * @return int
 	 */
 	public function getOwnerId() {
 		return $this->ownerId;
 	}
 
 	/**
-	 * @return the $mailboxId
+	 * @return int
 	 */
 	public function getMailboxId() {
 		return $this->mailboxId;
 	}
 
 	/**
-	 * @return the $customerId
+	 * @return int
 	 */
 	public function getCustomerId() {
 		return $this->customerId;
 	}
 
 	/**
-	 * @return the $threadCount
+	 * @return int
 	 */
 	public function getThreadCount() {
 		return $this->threadCount;
 	}
 
 	/**
-	 * @return the $status
+	 * @return string
 	 */
 	public function getStatus() {
 		return $this->status;
 	}
 
 	/**
-	 * @return the $subject
+	 * @return string
 	 */
 	public function getSubject() {
 		return $this->subject;
 	}
 
 	/**
-	 * @return the $preview
+	 * @return string
 	 */
 	public function getPreview() {
 		return $this->preview;
 	}
 
 	/**
-	 * @return the $createdBy
+	 * @return int
 	 */
 	public function getCreatedBy() {
 		return $this->createdBy;
 	}
 
 	/**
-	 * @return the $createdAt
+	 * @return string
 	 */
 	public function getCreatedAt() {
 		return $this->createdAt;
 	}
 
 	/**
-	 * @return the $modifiedAt
+	 * @return string
 	 */
 	public function getModifiedAt() {
 		return $this->modifiedAt;
 	}
 
 	/**
-	 * @return the $closedAt
+	 * @return string
 	 */
 	public function getClosedAt() {
 		return $this->closedAt;
 	}
 
 	/**
-	 * @return the $closedBy
+	 * @return int
 	 */
 	public function getClosedBy() {
 		return $this->closedBy;
 	}
 
 	/**
-	 * @return the $source
+	 * @return array
 	 */
 	public function getSource() {
 		return $this->source;
 	}
 
 	/**
-	 * @return the $ccList
+	 * @return array
 	 */
 	public function getCcList() {
 		return $this->ccList;
 	}
 
 	/**
-	 * @return the $bccList
+	 * @return array
 	 */
 	public function getBccList() {
 		return $this->bccList;
 	}
 
 	/**
-	 * @return the $tags
+	 * @return array
 	 */
 	public function getTags() {
 		return $this->tags;
 	}
 
 	/**
-	 * @return the $threads
+	 * @return array
 	 */
 	public function getThreads($cache=true, $apiCall=true) {
 		if ($this->threads === false && $apiCall) {

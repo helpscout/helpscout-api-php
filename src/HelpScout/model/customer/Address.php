@@ -1,8 +1,8 @@
 <?php
 namespace HelpScout\model\customer;
 
-class Address extends \HelpScout\model\Object {
-	
+class Address {
+	private $id    = false;
 	private $lines = null;
 	private $city;
 	private $state;
@@ -11,43 +11,27 @@ class Address extends \HelpScout\model\Object {
 	private $createdAt;
 	private $modifiedAt;
 	
-	public function __construct($data=null) {
-		parent::__construct($data);
+	public function __construct($data=null) {		
 		if ($data) {
-			$this->lines = $data->lines;
-			$this->city = $data->city;
-			$this->state = $data->state;
+			$this->id         = $data->id;
+			$this->lines      = $data->lines;
+			$this->city       = $data->city;
+			$this->state      = $data->state;
 			$this->postalCode = $data->postalCode;
-			$this->country = $data->country;
-			$this->createdAt = $data->createdAt;
+			$this->country    = $data->country;
+			$this->createdAt  = $data->createdAt;
 			$this->modifiedAt = $data->modifiedAt;
 		}
 	}
-
-	public function getFullAddress() {
-		return implode(', ', $this->getLocationParts());
-	}
-
-	private function getLocationParts() {
-		if ($this->lines !== null) {
-			$parts = explode(PHP_EOL, $this->lines);
-		} else {
-			$parts = array();
-		}	
-		if (isset($this->city)) {
-			$parts[] = $this->city;
-		}
-		if (isset($this->state)) {
-			$parts[] = $this->state;
-		}
-		if (isset($this->country)) {
-			$parts[] = $this->country;
-		}
-		return $parts;
-	}
-
 	/**
-	 * @return the $lines
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
+	/**
+	 * @return array
 	 */
 	public function getLines() {
 		return $this->lines;

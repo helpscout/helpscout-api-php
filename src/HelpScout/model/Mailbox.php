@@ -1,7 +1,8 @@
 <?php
 namespace HelpScout\model;
 
-class Mailbox extends Object {	
+class Mailbox {
+	private $id = false;	
 	private $name;
 	private $slug;
 	private $email;
@@ -10,9 +11,9 @@ class Mailbox extends Object {
 	
 	private $folders = false;
 	
-	public function __construct($data=null) {
-		parent::__construct($data);
+	public function __construct($data=null) {		
 		if ($data) {			
+			$this->id         = $data->id;
 			$this->name       = $data->name;
 			$this->slug       = $data->slug;
 			$this->email      = $data->email;			
@@ -21,6 +22,13 @@ class Mailbox extends Object {
 		}	
 	}
 
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
 	/**
 	 * @return the $name
 	 */

@@ -1,11 +1,8 @@
 <?php
 namespace HelpScout\model;
 
-use HelpScout\model\customer\EmailEntry;
-
-use HelpScout\model\customer\CustomerEntry;
-
-class Customer extends Object {
+class Customer {
+	private $id = false;
 	private $firstName;
 	private $lastName;
 	private $photoUrl;
@@ -26,66 +23,65 @@ class Customer extends Object {
 	private $chats = false;
 	private $websites = false;
 
-	public function __construct($data=null) {
-		parent::__construct($data);
+	public function __construct($data=null) {		
 		if ($data) {
-			$this->firstName = $data->firstName;
-			$this->lastName = $data->lastName;
-			$this->photoUrl = $data->photoUrl;
-			$this->photoType = $data->photoType;
-			$this->gender = $data->gender;
-			$this->age = $data->age;
+			$this->id           = $data->id;
+			$this->firstName    = $data->firstName;
+			$this->lastName     = $data->lastName;
+			$this->photoUrl     = $data->photoUrl;
+			$this->photoType    = $data->photoType;
+			$this->gender       = $data->gender;
+			$this->age          = $data->age;
 			$this->organization = $data->organization;
-			$this->jobTitle = $data->jobTitle;
-			$this->location = $data->location;
-			$this->createdAt = $data->createdAt;
-			$this->modifiedAt = $data->modifiedAt;
+			$this->jobTitle     = $data->jobTitle;
+			$this->location     = $data->location;
+			$this->createdAt    = $data->createdAt;
+			$this->modifiedAt   = $data->modifiedAt;
 			
 			if (isset($data->background)) {
 				$this->background = $data->background;
 			}
-			
 			if (isset($data->address)) {
 				$this->address = new \HelpScout\model\customer\Address($data->address);
 			}
-	
 			if (isset($data->chats)) {
-				$this->chats = array();
-				foreach($data->chats as $chat) {
-					$this->chats[] = new \HelpScout\model\customer\ChatEntry($chat);
-				}
+				$this->chats = $this->toList($data->chats, '\HelpScout\model\customer\ChatEntry');				
 			}
-			
 			if (isset($data->emails)) {
-				$this->emails = array();
-				foreach($data->emails as $email) {
-					$this->emails[] = new \HelpScout\model\customer\EmailEntry($email);
-				}
+				$this->emails = $this->toList($data->emails, '\HelpScout\model\customer\EmailEntry');				
 			}
-			
 			if (isset($data->phones)) {
-				$this->phones = array();
-				foreach($data->phones as $phone) {
-					$this->phones[] = new \HelpScout\model\customer\PhoneEntry($phone);
-				}
+				$this->phones = $this->toList($data->phones, '\HelpScout\model\customer\PhoneEntry');				
 			}
-			
 			if (isset($data->socialProfiles)) {
-				$this->socialProfiles = array();
-				foreach($data->socialProfiles as $profile) {
-					$this->socialProfiles[] = new \HelpScout\model\customer\SocialProfileEntry($profile);
-				}
+				$this->socialProfiles = $this->toList($data->socialProfiles, '\HelpScout\model\customer\SocialProfileEntry');				
 			}
-			
 			if (isset($data->websites)) {
-				$this->websites = array();
-				foreach($data->websites as $website) {
-					$this->websites[] = new \HelpScout\model\customer\WebsiteEntry($website);
-				}
+				$this->websites = $this->toList($data->websites, '\HelpScout\model\customer\WebsiteEntry');				
 			}
 		}
 	}
 	
+	private function toList($jsonList, $type) {
+		if (!$jsonList) {
+			return null;
+		}		
+		$list = array();		
+		array_walk($jsonList,
+			function($obj) use (&$list, $type) {
+				$list[] = new $type($obj);				
+			}
+		);
+		return $list;		
+	}
+		
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+		
 	/**
 	 * @return string
 	 */
@@ -224,6 +220,11 @@ class Customer extends Object {
 	 */
 	public function getWebsites() {
 		return $this->websites;
+	}
+	
+	private function isEmpty($value) {
+		$v = trim($value);
+		return empty($v);
 	}
 }
 

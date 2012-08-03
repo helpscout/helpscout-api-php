@@ -1,11 +1,17 @@
 <?php 
 namespace HelpScout\model\ref;
-use HelpScout\model\Object;
 
-class MailboxRef extends Object {
-	
-	private $name = false;
+class MailboxRef {
+	private $id    = false;	
+	private $name  = false;
 	private $email = false;
+	
+	/**
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
 	
 	/**
 	 * @return the $name
@@ -20,4 +26,3 @@ class MailboxRef extends Object {
 		return $this->email;
 	}
 }
-?>
