@@ -410,7 +410,10 @@ final class ApiClient {
 		$opts = array(
 			CURLOPT_URL			   => self::API_URL . $url,
 			CURLOPT_CUSTOMREQUEST  => $method,					
-			CURLOPT_HTTPHEADER     => array('Accept: application/json', 'Content-Type: application/json'),
+			CURLOPT_HTTPHEADER     => array(
+				'Accept: application/json', 
+				'Content-Type: application/json'		
+			),
 			CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
 			CURLOPT_USERPWD		   => $this->apiKey . ':X',
 			CURLOPT_RETURNTRANSFER => true,
@@ -419,7 +422,7 @@ final class ApiClient {
 			CURLOPT_FAILONERROR    => true,	
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => true,
-			CURLOPT_HEADER         => false,
+			CURLOPT_HEADER         => false,	
 			CURLOPT_ENCODING       => 'gzip,deflate',
 			CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
 		);
@@ -432,7 +435,7 @@ final class ApiClient {
 		}
 		curl_setopt_array($ch, $opts);
 
-		$response   = curl_exec($ch);		
+		$response   = curl_exec($ch);				
 		$statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 				
 		curl_close($ch);
