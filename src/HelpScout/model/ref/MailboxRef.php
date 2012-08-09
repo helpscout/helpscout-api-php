@@ -2,9 +2,16 @@
 namespace HelpScout\model\ref;
 
 class MailboxRef {
-	private $id    = false;	
+	private $id    = false;
 	private $name  = false;
-	private $email = false;
+		
+	public function __construct($data=null) {
+		if ($data) {
+			$this->id   = $data->id;
+			$this->name = $data->name;			
+		}
+	}
+
 	
 	/**
 	 * @return int
@@ -18,11 +25,5 @@ class MailboxRef {
 	 */
 	public function getName() {
 		return $this->name;
-	}
-	/**
-	 * @return the $email
-	 */
-	public function getEmail() {
-		return $this->email;
 	}
 }

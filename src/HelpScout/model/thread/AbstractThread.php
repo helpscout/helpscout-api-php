@@ -20,7 +20,7 @@ interface ConversationThread {
 	public function getAssignedTo();
 	public function getStatus();
 	public function getCreatedBy();
-	public function getFromMailboxId();
+	public function getFromMailbox();
 }
 
 abstract class AbstractThread extends LineItem implements ConversationThread {
@@ -29,18 +29,22 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	private $toList;
 	private $ccList;
 	private $bccList;
+	private $customer;
 	
 	private $attachments;
 	
 	public function __construct($data=null) {
 		parent::__construct($data);
 		if ($data) {
-			$this->state       = $data->state;
-			$this->customerId  = $data->customerId;
 			$this->body        = $data->body;
 			$this->toList      = $data->to;			
 			$this->ccList      = $data->cc;			
-			$this->bccList     = $data->bcc;	
+			$this->bccList     = $data->bcc;
+			$this->state       = $data->state;
+			
+			if ($data->customer) {				
+				$this->customer = new \HelpScout\model\ref\CustomerRef($data->customer);
+			}	
 
 			if ($data->attachments) {
 				$this->attachments = array();

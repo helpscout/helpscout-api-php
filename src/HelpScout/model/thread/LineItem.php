@@ -14,7 +14,7 @@ class LineItem {
 	private $assignedTo;
 	private $status;
 	private $createdBy;
-	private $fromMailboxId;
+	private $fromMailbox;
 	
 	public function __construct($data=null) {		
 		if ($data) {
@@ -22,7 +22,20 @@ class LineItem {
 			$this->assignedTo    = $data->assignedTo;
 			$this->status        = $data->status;
 			$this->createdAt     = $data->createdAt;
-			$this->fromMailboxId = $data->fromMailboxId;			
+			
+			if ($data->fromMailbox) {
+				$this->fromMailbox = new \HelpScout\model\ref\MailboxRef($data->fromMailbox);
+			}
+			if ($data->assignedTo) {
+				$this->assignedTo = new \HelpScout\model\ref\UserRef($data->assignedTo);
+			}
+			if ($data->source) {
+				if ($data->source->via == 'customer') {
+					$this->createdBy = new \HelpScout\model\ref\CustomerRef($data->createdBy);
+				} else {
+					$this->createdBy = new \HelpScout\model\ref\UserRef($data->createdBy);
+				}
+			}
 		}
 	}
 	
@@ -54,7 +67,7 @@ class LineItem {
 	}
 	
 	/**
-	 * @return the $assignedTo
+	 * @return \HelpScout\model\ref\UserRef
 	 */
 	public function getAssignedTo() {
 		return $this->assignedTo;
@@ -75,9 +88,9 @@ class LineItem {
 	}
 
 	/**
-	 * @return the $fromMailboxId
+	 * @return \HelpScout\model\ref\MailboxRef
 	 */
-	public function getFromMailboxId() {
-		return $this->fromMailboxId;
+	public function getFromMailbox() {
+		return $this->fromMailbox;
 	}
 }

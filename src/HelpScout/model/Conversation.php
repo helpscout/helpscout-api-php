@@ -37,7 +37,7 @@ class Conversation {
 				$this->owner = new \HelpScout\model\ref\UserRef($data->owner);
 			}
 			
-			if (isset($data->address)) {
+			if (isset($data->mailbox)) {
 				$this->mailbox = new \HelpScout\model\ref\MailboxRef($data->mailbox);
 			}
 			
@@ -45,19 +45,29 @@ class Conversation {
 				$this->customer = new \HelpScout\model\ref\CustomerRef($data->customer);
 			}
 			
+			$this->source      = $data->source;
 			$this->threadCount = $data->threadCount;
 			$this->status      = $data->status;
 			$this->subject     = $data->subject;
 			$this->preview     = $data->preview;
-			$this->createdBy   = $data->createdBy;
+			
+			if ($this->source) {
+				if ($this->source->via == 'customer') {
+					$this->createdBy = new \HelpScout\model\ref\CustomerRef($data->createdBy);
+				} else {
+					$this->createdBy = new \HelpScout\model\ref\UserRef($data->createdBy);
+				}
+			}								
 			$this->createdAt   = $data->createdAt;
 			$this->modifiedAt  = $data->modifiedAt;
 			$this->closedAt    = $data->closedAt;
-			$this->closedBy    = $data->closedBy;
-			$this->source      = $data->source;
 			$this->ccList      = $data->cc;
 			$this->bccList     = $data->bcc;
 			$this->tags        = $data->tags;
+			
+			if ($data->closedBy) {
+				$this->closedBy = new \HelpScout\model\ref\UserRef($data->closedBy);
+			}
 			
 			if (isset($data->threads)) {
 				$this->threads = array();
@@ -81,6 +91,22 @@ class Conversation {
 			}
 		}
 	}	
+
+	public function isActive() {
+		return $this->status == self::STATUS_ACTIVE;
+	}
+	
+	public function isPending() {
+		return $this->status == self::STATUS_PENDING;
+	}
+	
+	public function isClosed() {
+		return $this->status == self::STATUS_CLOSED;
+	}
+	
+	public function isSpam() {
+		return $this->status == self::STATUS_SPAM;
+	}
 	
 	/**
 	 * @return int

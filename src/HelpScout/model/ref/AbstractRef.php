@@ -7,6 +7,15 @@ abstract class AbstractRef {
 	private $lastName  = false;
 	private $email     = false;
 	
+	public function __construct($data=null) {
+		if ($data) {
+			$this->id        = $data->id;
+			$this->firstName = $data->firstName;
+			$this->lastName  = $data->lastName;
+			$this->email     = $data->email;
+		}
+	}
+	
 	/**
 	 * @return int
 	 */
