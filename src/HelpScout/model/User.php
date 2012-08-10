@@ -12,6 +12,20 @@ class User {
 	private $createdAt;
 	private $modifiedAt;
 	
+	public function __construct($data=null) {
+		if ($data) {
+			$this->id         = $data->id;
+			$this->firstName  = $data->firstName;
+			$this->lastName   = $data->lastName;
+			$this->email      = $data->email;
+			$this->role       = $data->role;
+			$this->timezone   = $data->timezone;
+			$this->photoUrl   = $data->photoUrl;
+			$this->createdAt  = $data->createdAt;
+			$this->modifiedAt = $data->modifiedAt;
+		}
+	}
+	
 	/**
 	 * @return int
 	 */
