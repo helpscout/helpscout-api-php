@@ -42,6 +42,12 @@ if ($conversation) {
         }
     }
 }
+
+// to get page 2 of a list of conversations:
+$list = $hs->getConversationsForMailbox(99, array('page' => 2));
+
+// to get all the closed tickets:
+$closed = $hs->getConversationsForMailbox(99, array('page' => 1, 'status' => 'closed'));
 </code></pre>
 
 Field Selectors
