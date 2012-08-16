@@ -46,12 +46,17 @@ if ($conversation) {
 // to get page 2 of a list of conversations:
 $list = $hs->getConversationsForMailbox(99, array('page' => 2));
 
-// to get all the closed tickets:
+// to get all the closed conversations:
 $closed = $hs->getConversationsForMailbox(99, array('page' => 1, 'status' => 'closed'));
 
 // to get page 2 of a list of conversations, 
 // while only returning the "id" and "number" attributes on a conversation:
-$convos = $client->getConversationsForMailbox(99, array('page' => 2), array('id', 'number'));
+$convos = $hs->getConversationsForMailbox(99, array('page' => 2), array('id', 'number'));
+
+// to get page 2 of conversations from a specific folder:
+// 99=MailboxID
+// 22=FolderID
+$convos = $hs->getConversationsForFolder(99, 22, array('page' => 2));
 </code></pre>
 
 Field Selectors
