@@ -53,10 +53,8 @@ $closed = $hs->getConversationsForMailbox(99, array('page' => 1, 'status' => 'cl
 // while only returning the "id" and "number" attributes on a conversation:
 $convos = $hs->getConversationsForMailbox(99, array('page' => 2), array('id', 'number'));
 
-// to get page 2 of conversations from a specific folder:
-// 99=MailboxID
-// 22=FolderID
-$convos = $hs->getConversationsForFolder(99, 22, array('page' => 2));
+// to get page 2 conversations from a specific folder:
+$convos = $hs->getConversationsForFolder(99, 22, array('page' => 2)); // where 99=MailboxId and 22=FolderId
 </code></pre>
 
 Field Selectors
