@@ -48,6 +48,10 @@ $list = $hs->getConversationsForMailbox(99, array('page' => 2));
 
 // to get all the closed tickets:
 $closed = $hs->getConversationsForMailbox(99, array('page' => 1, 'status' => 'closed'));
+
+// to get page 2 of a list of conversations, 
+// while only returning the "id" and "number" attributes on a conversation:
+$convos = $client->getConversationsForMailbox(99, array('page' => 2), array('id', 'number'));
 </code></pre>
 
 Field Selectors
