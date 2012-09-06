@@ -1,13 +1,13 @@
 helpscout-api-php
 =================
-PHP Wrapper for the Help Scout API. More information on our developer site: [http://developer.helpscout.net](http://developer.helpscout.net).
+PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our developer site: [http://developer.helpscout.net](http://developer.helpscout.net).
 
 Requirements
 ---------------------
 * PHP 5.3.x
 * curl
 
-Example Usage
+Example Usage: API
 ---------------------
 <pre><code>include 'HelpScout/ApiClient.php';
 
@@ -70,7 +70,7 @@ When field selectors are used, a JSON object is returned with the specificed fie
 }
 </code></pre>
 
-Built-in Functions
+API Client Methods
 --------------------
 
 ### Mailboxes
@@ -97,3 +97,30 @@ Built-in Functions
 * getUsers($page=1, $fields=null)
 * getUsersForMailbox($mailboxId, $page=1, $fields=null)
 * getUser($userId, $fields=null)
+
+Example Usage: Webhooks
+------------------------
+<pre><code>include 'HelpScout/Webhook.php';
+
+$webhook = new \HelpScout\Webhook('secret-key-here');
+if ($webhook->isValid()) {
+  $eventType = $webhook->getEventType();
+  switch($eventType) {
+    case 'convo.created':
+        $conversation = $webhook->getConversation();
+        // do something
+        break;
+    case 'convo.deleted':
+        $obj = $webhook->getObject();
+        if ($obj) {
+          $convoId = $obj->id;
+          // do something
+        }
+        break;
+    case 'customer.created':
+        $customer = $webhook->getCustomer();
+        // do something
+        break;
+  } 
+}
+</code></pre>
