@@ -17,10 +17,18 @@ final class Webhook {
 		return $this->getEventType() === 'helpscout.test';
 	}
 
+	/**
+	 * Is the current event a type of conversation event
+	 * @return boolean
+	 */
 	public function isConversationEvent() {
 		return $this->isEventTypeOf('convo');
 	}
 
+	/**
+	 * Is the current event a type of customer event
+	 * @return boolean
+	 */
 	public function isCustomerEvent() {
 		return $this->isEventTypeOf('customer');
 	}
@@ -35,6 +43,10 @@ final class Webhook {
 		return false;
 	}
 
+	/**
+	 * Get the event type
+	 * @return string
+	 */
 	public function getEventType() {
 		return $this->getHeader('HTTP_X_HELPSCOUT_EVENT');
 	}
@@ -46,6 +58,10 @@ final class Webhook {
 		return false;
 	}
 
+	/**
+	 * Returns true if the current request is a valid webhook issued from Help Scout, false otherwise.
+	 * @return boolean
+	 */
 	public function isValid() {
 		$signature = $this->generateSignature();
 		if ($signature == $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE')) {
