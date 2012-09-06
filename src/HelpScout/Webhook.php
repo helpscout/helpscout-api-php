@@ -91,12 +91,12 @@ final class Webhook {
 
 
 	/**
-	 * @return \HelpScout\model\Conversation
+	 * @return \HelpScout\model\Customer
 	 */
 	public function getCustomer() {
 		$obj = $this->getObject();
 		if ($obj) {
-			return new \HelpScout\model\Conversation($obj);
+			return new \HelpScout\model\Customer($obj);
 		}
 		return false;
 	}
