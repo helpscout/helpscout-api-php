@@ -1,45 +1,27 @@
 <?php
 namespace HelpScout;
 
-final class ApiClient {	
+require 'ClassLoader.php';
+
+final class ApiClient {
 	const API_URL = 'https://api.helpscout.net/v1/';
-	
+
 	const NAMESPACE_SEPARATOR = '\\';
-	
-	private $apiKey  = false;	
-	private $baseDir = false;
-	
-	/** 
+
+	private $apiKey  = false;
+
+	/**
 	 * @var \HelpScout\ApiClient
 	 */
 	private static $instance = false;
 
 	private function __construct() {
-		spl_autoload_register(array($this,'autoload'));
-		$this->baseDir = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+		\HelpScout\ClassLoader::register();
 	}
-	
-	public function __destruct() {
-		spl_autoload_unregister(array($this, 'autoload'));
-	}
-	
-	public function autoload($className) {
-		if (strpos($className, 'HelpScout') === false) {
-			return false;
-		}
-		$className = str_replace(
-			array(
-				self::NAMESPACE_SEPARATOR . 'HelpScout' . self::NAMESPACE_SEPARATOR,
-				'HelpScout' . self::NAMESPACE_SEPARATOR
-			), '', $className
-		);
-		require ($this->baseDir . str_replace(self::NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $className) . '.php');
-		return true;
-	}
-	
+
 	/**
 	 * Get an instance of the ApiClient
-	 * 
+	 *
 	 * @return \HelpScout\ApiClient
 	 * @static
 	 */
@@ -49,19 +31,19 @@ final class ApiClient {
 		}
 		return self::$instance;
 	}
-	
+
 	/**
 	 * Set the API Key to use with this request
-	 * 
+	 *
 	 * @param string $apiKey
 	 */
 	public function setKey($apiKey) {
 		$this->apiKey = $apiKey;
 	}
-	
+
 	/**
 	 * Get a list of conversation for the given folder
-	 * 
+	 *
 	 * @param int $mailboxId
 	 * @param int $folderId
 	 * @param array $params
@@ -77,13 +59,13 @@ final class ApiClient {
 			throw new ApiException(sprintf('Invalid folderId in getConversationsForFolder method [%s]', $folderId));
 		}
 		return $this->getCollection(
-			sprintf('mailboxes/%d/folders/%d/conversations.json', $mailboxId, $folderId), 
+			sprintf('mailboxes/%d/folders/%d/conversations.json', $mailboxId, $folderId),
 			$this->getConvoParams($params, $fields),
-			'getConversationsForFolder', 
+			'getConversationsForFolder',
 			'\HelpScout\model\Conversation'
 		);
 	}
-		
+
 	/**
 	 * Return a collection of conversations for the given mailbox
 	 * @param int $mailboxId
@@ -97,13 +79,13 @@ final class ApiClient {
 			throw new ApiException(sprintf('Invalid mailboxId in getConversationsForMailbox method [%s]', $mailboxId));
 		}
 		return $this->getCollection(
-			sprintf('mailboxes/%d/conversations.json', $mailboxId), 
+			sprintf('mailboxes/%d/conversations.json', $mailboxId),
 			$this->getConvoParams($params, $fields),
-			'getConversationsForMailbox', 
+			'getConversationsForMailbox',
 			'\HelpScout\model\Conversation'
 		);
 	}
-	
+
 	/**
 	 * Return a collection of conversations for the given mailbox and customer
 	 * @param int $mailboxId
@@ -126,8 +108,8 @@ final class ApiClient {
 			'getConversationsForCustomerByMailbox',
 			'\HelpScout\model\Conversation'
 		);
-	}	
-	
+	}
+
 	/**
 	 * @param int $conversationId
 	 * @param string|array $fields
@@ -140,8 +122,8 @@ final class ApiClient {
 		return $this->getItem(
 			sprintf('conversations/%d.json', $conversationId), $this->getParams(array('fields' => $fields)), 'getConversation', '\HelpScout\model\Conversation'
 		);
-	}	
-	
+	}
+
 	/**
 	 * @param int $attachmentId
 	 * @return string
@@ -162,26 +144,26 @@ final class ApiClient {
 		}
 		return $data;
 	}
-		
-	private function getConvoParams(array $params, $fields) {		
+
+	private function getConvoParams(array $params, $fields) {
 		return $this->getParams(array_merge($params, array('fields' => $fields)), array('page','fields','status','modifiedSince'));
 	}
-	
+
 	/**
 	 * Returns a Collection of all the users for the company.
 	 * @param int $page
 	 * @param string|array $fields
 	 * @return \HelpScout\Collection
 	 */
-	public function getUsers($page=1, $fields=null) {		
+	public function getUsers($page=1, $fields=null) {
 		return $this->getCollection(
 			'users.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getUsers', '\HelpScout\model\User'
 		);
 	}
-	
+
 	/**
 	 * Returns a Collection of users that have access to the given mailbox.
-	 * 
+	 *
 	 * @param int $page
 	 * @param string|array $fields
 	 * @return \HelpScout\Collection
@@ -190,8 +172,8 @@ final class ApiClient {
 		return $this->getCollection(
 			sprintf('mailboxes/%d/users.json', $mailboxId), $this->getParams(array('fields' => $fields, 'page' => $page)), 'getUsersForMailbox', '\HelpScout\model\User'
 		);
-	}	
-	
+	}
+
 	/**
 	 * @param int $userId
 	 * @param string|array $fields
@@ -200,7 +182,7 @@ final class ApiClient {
 	public function getUser($userId, $fields=null) {
 		if (!is_numeric($userId) || $userId < 1) {
 			throw new ApiException(sprintf('Invalid userId in getUser method [%s]', $userId));
-		}		
+		}
 		return $this->getItem(
 			sprintf('users/%d.json', $userId), $this->getParams(array('fields' => $fields)), 'getUser', '\HelpScout\model\User'
 		);
@@ -212,7 +194,7 @@ final class ApiClient {
 	 * @param string|array $fields
 	 * @return \HelpScout\Collection
 	 */
-	public function getCustomers($page=1, $fields=null) {		
+	public function getCustomers($page=1, $fields=null) {
 		return $this->getCollection(
 			'customers.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getCustomers', '\HelpScout\model\Customer'
 		);
@@ -226,58 +208,58 @@ final class ApiClient {
 	public function getCustomer($customerId, $fields=null) {
 		if (!is_numeric($customerId) || $customerId < 1) {
 			throw new ApiException(sprintf('Invalid customerId in getCustomer method [%s]', $customerId));
-		}		
+		}
 		return $this->getItem(
 			sprintf('customers/%d.json', $customerId), $this->getParams(array('fields' => $fields)), 'getCustomer', '\HelpScout\model\Customer'
 		);
-	}	
-	
-	/**	 
+	}
+
+	/**
 	 * @param int $mailboxId
 	 * @param int $page
 	 * @param string|array $fields
 	 * @return \HelpScout\Collection
 	 */
-	public function getFolders($mailboxId, $page=1, $fields=null) {	
+	public function getFolders($mailboxId, $page=1, $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
 			throw new ApiException(sprintf('Invalid mailboxId in getFolders method [%s]', $mailboxId));
-		}			
+		}
 		return $this->getCollection(
 			sprintf('mailboxes/%d/folders.json', $mailboxId), $this->getParams(array('fields' => $fields, 'page' => $page)), 'getFolders', 'HelpScout\model\Folder'
-		);				
-	}	
-	
+		);
+	}
+
 	/**
 	 * @param int $mailboxId
 	 * @param string|array $fields
 	 * @return \HelpScout\model\Mailbox
 	 */
 	public function getMailbox($mailboxId, $fields=null) {
-		if (!is_numeric($mailboxId) || $mailboxId < 1) {			
+		if (!is_numeric($mailboxId) || $mailboxId < 1) {
 			throw new ApiException(sprintf('Invalid mailboxId in getMailbox method [%s]', $mailboxId));
-		}		
+		}
 		return $this->getItem(
 			sprintf('mailboxes/%d.json', $mailboxId), $this->getParams(array('fields' => $fields)), 'getMailbox', '\HelpScout\model\Mailbox'
-		);	
+		);
 	}
-	
+
 	/**
 	 * Get a list of Mailboxes for the given user
 	 * @param int $page
 	 * @param string|array $fields
 	 * @return \HelpScout\Collection
 	 */
-	public function getMailboxes($page=1, $fields=null) {	
+	public function getMailboxes($page=1, $fields=null) {
 		return $this->getCollection(
 			'mailboxes.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getMailboxes', '\HelpScout\model\Mailbox'
 		);
 	}
-	
+
 	private function getCollection($url, $params, $method, $model) {
 		list($statusCode, $json) = $this->callServer($url, 'GET', $params);
-		
+
 		$this->checkStatus($statusCode, $method);
-		
+
 		$json = json_decode($json);
 		if ($json) {
 			if (isset($params['fields'])) {
@@ -288,30 +270,30 @@ final class ApiClient {
 		}
 		return false;
 	}
-	
-	private function getItem($url, $params, $method, $model) {	
+
+	private function getItem($url, $params, $method, $model) {
 		list($statusCode, $json) = $this->callServer($url, 'GET', $params);
 		$this->checkStatus($statusCode, $method);
-		
+
 		$json = json_decode($json);
 		if ($json) {
 			if (isset($params['fields']) || !$model) {
 				return $json->item;
 			} else {
-				return new $model($json->item);			
+				return new $model($json->item);
 			}
 		}
 		return false;
 	}
-	
+
 	private function checkStatus($statusCode, $type, $expected = 200) {
 		if (!is_array($expected)) {
 			$expected = array($expected);
 		}
-	
+
 		if (!in_array($statusCode, $expected)) {
 			switch($statusCode) {
-				case 400:					
+				case 400:
 					throw new ApiException('The request was not formatted correctly', 400);
 					break;
 				case 401:
@@ -331,7 +313,7 @@ final class ApiClient {
 					break;
 				case 429:
 					throw new ApiException('Throttle limit reached. Too many requests', 429);
-					break;					
+					break;
 				case 500:
 					throw new ApiException('Application error or server error', 500);
 					break;
@@ -344,7 +326,7 @@ final class ApiClient {
 			}
 		}
 	}
-	
+
 	private function getParams($params=null, array $accepted=array('page','fields')) {
 		if (!$params) {
 			return null;
@@ -356,7 +338,7 @@ final class ApiClient {
 				continue;
 			}
 			switch($key) {
-				case 'fields':						
+				case 'fields':
 					$val = $this->validateFieldSelectors($val);
 					if (empty($val)) {
 						unset($params[$key]);
@@ -382,64 +364,64 @@ final class ApiClient {
 		if ($params) {
 			return $params;
 		}
-		return null;		
+		return null;
 	}
-	
+
 	private function validateFieldSelectors($fields) {
 		if (is_string($fields)) {
 			$fields = explode(',', $fields);
 		}
 		if (is_array($fields) && count($fields) > 0) {
 			array_walk($fields, create_function('&$val', '$val = trim($val);'));
-			
+
 			$fields = array_filter($fields);
 		}
-		
+
 		if ($fields) {
 			return implode(',', $fields);
 		}
-		return $fields;					
-	}	
-	
+		return $fields;
+	}
+
 	private function callServer($url, $method='GET', $params=null) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
-		
-		$ch = curl_init();					
+
+		$ch = curl_init();
 		$opts = array(
 			CURLOPT_URL			   => self::API_URL . $url,
-			CURLOPT_CUSTOMREQUEST  => $method,					
+			CURLOPT_CUSTOMREQUEST  => $method,
 			CURLOPT_HTTPHEADER     => array(
-				'Accept: application/json', 
-				'Content-Type: application/json'		
+				'Accept: application/json',
+				'Content-Type: application/json'
 			),
 			CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
 			CURLOPT_USERPWD		   => $this->apiKey . ':X',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,	
+			CURLOPT_FAILONERROR    => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => true,
-			CURLOPT_HEADER         => false,	
+			CURLOPT_HEADER         => false,
 			CURLOPT_ENCODING       => 'gzip,deflate',
 			CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
 		);
 		if ($params) {
-			if ($method=='GET') {		
+			if ($method=='GET') {
 				$opts[CURLOPT_URL] = self::API_URL . $url . '?' . http_build_query($params);
 			} else {
 				$opts[CURLOPT_POSTFIELDS] = $params;
-			}			
+			}
 		}
 		curl_setopt_array($ch, $opts);
 
-		$response   = curl_exec($ch);				
+		$response   = curl_exec($ch);
 		$statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				
+
 		curl_close($ch);
-		
-		return array($statusCode, $response);		
+
+		return array($statusCode, $response);
 	}
 }
