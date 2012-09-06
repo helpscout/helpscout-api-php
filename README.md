@@ -70,7 +70,7 @@ When field selectors are used, a JSON object is returned with the specificed fie
 }
 </code></pre>
 
-Built-in Functions
+API Client Methods
 --------------------
 
 ### Mailboxes
