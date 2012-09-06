@@ -18,7 +18,7 @@ final class Webhook {
 	}
 
 	public function isConversationEvent() {
-		return $this->isEventTypeOf('conversation');
+		return $this->isEventTypeOf('convo');
 	}
 
 	public function isCustomerEvent() {
