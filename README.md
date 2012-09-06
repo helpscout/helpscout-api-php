@@ -1,5 +1,5 @@
-Help Scout PHP Api Wrapper
-==========================
+Help Scout PHP Wrapper
+======================
 PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our developer site: [http://developer.helpscout.net](http://developer.helpscout.net).
 
 Requirements
