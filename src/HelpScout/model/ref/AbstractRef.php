@@ -6,6 +6,7 @@ abstract class AbstractRef {
 	private $firstName = false;
 	private $lastName  = false;
 	private $email     = false;
+    private $type      = false;
 	
 	public function __construct($data=null) {
 		if ($data) {
@@ -13,6 +14,7 @@ abstract class AbstractRef {
 			$this->firstName = $data->firstName;
 			$this->lastName  = $data->lastName;
 			$this->email     = $data->email;
+            $this->type      = $data->type;
 		}
 	}
 	
@@ -41,4 +43,11 @@ abstract class AbstractRef {
 	public function getEmail() {
 		return $this->email;
 	}
+
+    /**
+     * @return the $type
+     */
+    public function getType() {
+        return $this->type;
+    }
 }
