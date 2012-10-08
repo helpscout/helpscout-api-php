@@ -5,6 +5,7 @@ class Conversation {
 	const OWNER_ANYONE = 1;
 	
 	private $id          = false;
+    private $type        = false;
 	private $folderId    = 0;
 	private $draft       = false;	
 	private $number      = 0;
@@ -29,6 +30,7 @@ class Conversation {
 	public function __construct($data=null) {		
 		if ($data) {
 			$this->id          = $data->id;
+            $this->type        = $data->type;
 			$this->folderId    = $data->folderId;
 			$this->draft       = $data->isDraft;
 			$this->number      = $data->number;
@@ -52,7 +54,7 @@ class Conversation {
 			$this->preview     = $data->preview;
 			
 			if ($this->source) {
-				if ($this->source->via == 'customer') {
+				if ($this->type == 'customer') {
 					$this->createdBy = new \HelpScout\model\ref\CustomerRef($data->createdBy);
 				} else {
 					$this->createdBy = new \HelpScout\model\ref\UserRef($data->createdBy);
@@ -78,6 +80,7 @@ class Conversation {
 					'note'         => '\HelpScout\model\thread\Note',
 					'forwardparent'=> '\HelpScout\model\thread\ForwardParent',
 					'forwardchild' => '\HelpScout\model\thread\ForwardChild',
+                    'chat'         => '\HelpScout\model\thread\Chat'
 				);
 				foreach($data->threads as $thread) {
 					$item = false;
@@ -113,7 +116,14 @@ class Conversation {
 	 */
 	public function getId() {
 		return $this->id;
-	}	
+	}
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
+    }
 
 	/**	 
 	 * @return boolean
