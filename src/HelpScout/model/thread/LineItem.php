@@ -14,6 +14,7 @@ class LineItem {
 	private $assignedTo;
 	private $status;
 	private $createdBy;
+    private $createdByType;
 	private $fromMailbox;
 	
 	public function __construct($data=null) {		
@@ -22,20 +23,20 @@ class LineItem {
 			$this->assignedTo    = $data->assignedTo;
 			$this->status        = $data->status;
 			$this->createdAt     = $data->createdAt;
+            $this->createdByType = $data->createdByType;
 			
 			if ($data->fromMailbox) {
 				$this->fromMailbox = new \HelpScout\model\ref\MailboxRef($data->fromMailbox);
 			}
 			if ($data->assignedTo) {
-				$this->assignedTo = new \HelpScout\model\ref\UserRef($data->assignedTo);
+				$this->assignedTo = new \HelpScout\model\ref\UserRef($data->assignedTo, Conversation::TYPE_CUSTOMER);
 			}
-			if ($data->source) {
-				if ($data->source->via == 'customer') {
-					$this->createdBy = new \HelpScout\model\ref\CustomerRef($data->createdBy);
-				} else {
-					$this->createdBy = new \HelpScout\model\ref\UserRef($data->createdBy);
-				}
-			}
+
+            if ($data->createdByType == \HelpScout\model\ref\AbstractRef::TYPE_CUSTOMER) {
+                $this->createdBy = new \HelpScout\model\ref\CustomerRef($data->createdBy, \HelpScout\model\ref\AbstractRef::TYPE_CUSTOMER);
+            } else {
+                $this->createdBy = new \HelpScout\model\ref\UserRef($data->createdBy, \HelpScout\model\ref\AbstractRef::TYPE_USER);
+            }
 		}
 	}
 	
@@ -86,6 +87,14 @@ class LineItem {
 	public function getCreatedBy() {
 		return $this->createdBy;
 	}
+
+    /**
+     * @return the $createdByType
+     */
+    public function getCreatedByType()
+    {
+        return $this->createdByType;
+    }
 
 	/**
 	 * @return \HelpScout\model\ref\MailboxRef

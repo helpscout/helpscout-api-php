@@ -1,20 +1,24 @@
 <?php 
 namespace HelpScout\model\ref;
 
-abstract class AbstractRef {	
+abstract class AbstractRef {
+
+    const TYPE_USER = "user";
+    const TYPE_CUSTOMER = "customer";
+
 	private $id        = false;
 	private $firstName = false;
 	private $lastName  = false;
 	private $email     = false;
     private $type      = false;
 	
-	public function __construct($data=null) {
+	public function __construct($data=null, $type="user") {
 		if ($data) {
 			$this->id        = $data->id;
 			$this->firstName = $data->firstName;
 			$this->lastName  = $data->lastName;
 			$this->email     = $data->email;
-            $this->type      = $data->type;
+            $this->type      = $type;
 		}
 	}
 	

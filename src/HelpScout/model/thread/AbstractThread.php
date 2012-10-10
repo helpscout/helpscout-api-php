@@ -2,6 +2,7 @@
 namespace HelpScout\model\thread;
 
 interface ConversationThread {
+    public function getType();
 	public function isPublished();
 	public function isDraft();
 	public function isHeldForReview();
@@ -24,6 +25,7 @@ interface ConversationThread {
 }
 
 abstract class AbstractThread extends LineItem implements ConversationThread {
+    private $type;
 	private $state;
 	private $body;
 	private $toList;
@@ -41,9 +43,10 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 			$this->ccList      = $data->cc;			
 			$this->bccList     = $data->bcc;
 			$this->state       = $data->state;
+            $this->type        = $data->type;
 			
 			if ($data->customer) {				
-				$this->customer = new \HelpScout\model\ref\CustomerRef($data->customer);
+				$this->customer = new \HelpScout\model\ref\CustomerRef($data->customer, \HelpScout\model\ref\AbstractRef::TYPE_CUSTOMER);
 			}	
 
 			if ($data->attachments) {
@@ -70,7 +73,15 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	public function hasAttachments() {
 		return $this->attachments && count($this->attachments) > 0;
 	}
-	
+
+    /**
+     * @return the $type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
 	/**
 	 * @return the $state
 	 */
