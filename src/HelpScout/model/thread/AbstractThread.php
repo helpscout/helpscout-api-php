@@ -46,7 +46,7 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
             $this->type        = $data->type;
 			
 			if ($data->customer) {				
-				$this->customer = new \HelpScout\model\ref\CustomerRef($data->customer, \HelpScout\model\ref\AbstractRef::TYPE_CUSTOMER);
+				$this->customer = new \HelpScout\model\ref\PersonRef($data->customer);
 			}	
 
 			if ($data->attachments) {

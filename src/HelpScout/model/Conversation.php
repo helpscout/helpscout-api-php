@@ -17,7 +17,6 @@ class Conversation {
 	private $subject        = false;
 	private $preview        = false;
 	private $createdBy      = 0;
-    private $createdByType  = false;
 	private $createdAt      = false;
 	private $modifiedAt     = false;
 	private $closedAt       = false;
@@ -38,7 +37,7 @@ class Conversation {
             $this->createdByType    = $data->createdByType;
 			
 			if (isset($data->owner)) {
-				$this->owner = new \HelpScout\model\ref\UserRef($data->owner, \HelpScout\model\ref\AbstractRef::TYPE_USER);
+				$this->owner = new \HelpScout\model\ref\PersonRef($data->owner);
 			}
 			
 			if (isset($data->mailbox)) {
@@ -46,7 +45,7 @@ class Conversation {
 			}
 			
 			if (isset($data->customer)) {
-				$this->customer = new \HelpScout\model\ref\CustomerRef($data->customer, \HelpScout\model\ref\AbstractRef::TYPE_CUSTOMER);
+				$this->customer = new \HelpScout\model\ref\PersonRef($data->customer);
 			}
 			
 			$this->source      = $data->source;
@@ -54,12 +53,7 @@ class Conversation {
 			$this->status      = $data->status;
 			$this->subject     = $data->subject;
 			$this->preview     = $data->preview;
-
-            if ($this->createdByType == \HelpScout\model\ref\AbstractRef::TYPE_CUSTOMER) {
-                $this->createdBy = new \HelpScout\model\ref\CustomerRef($data->createdBy, \HelpScout\model\ref\AbstractRef::TYPE_CUSTOMER);
-            } else {
-                $this->createdBy = new \HelpScout\model\ref\UserRef($data->createdBy, \HelpScout\model\ref\AbstractRef::TYPE_USER);
-            }
+            $this->createdBy = new \HelpScout\model\ref\PersonRef($data->createdBy);
 
 			$this->createdAt   = $data->createdAt;
 			$this->modifiedAt  = $data->modifiedAt;
@@ -69,7 +63,7 @@ class Conversation {
 			$this->tags        = $data->tags;
 			
 			if ($data->closedBy) {
-				$this->closedBy = new \HelpScout\model\ref\UserRef($data->closedBy, \HelpScout\model\ref\AbstractRef::TYPE_USER);
+				$this->closedBy = new \HelpScout\model\ref\PersonRef($data->closedBy);
 			}
 			
 			if (isset($data->threads)) {
@@ -230,13 +224,6 @@ class Conversation {
 	public function getCreatedBy() {
 		return $this->createdBy;
 	}
-
-    /**
-     * @return int
-     */
-    public function getCreatedByType() {
-        return $this->createdByType;
-    }
 
 	/**
 	 * @return string
