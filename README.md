@@ -2,6 +2,10 @@ Help Scout PHP Wrapper
 ======================
 PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our developer site: [http://developer.helpscout.net](http://developer.helpscout.net).
 
+Version 1.1.0 Released
+---------------------
+Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/wiki/Changelog) for details.
+
 Requirements
 ---------------------
 * PHP 5.3.x
