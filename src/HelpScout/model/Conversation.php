@@ -3,37 +3,42 @@ namespace HelpScout\model;
 
 class Conversation {	
 	const OWNER_ANYONE = 1;
+
+    const CREATED_BY_TYPE_USER = 1;
+    const CREATED_BY_TYPE_CUSTOMER = 2;
 	
-	private $id          = false;
-    private $type        = false;
-	private $folderId    = 0;
-	private $draft       = false;	
-	private $number      = 0;
-	private $owner       = false;
-	private $mailbox     = false;	
-	private $customer    = false;
-	private $threadCount = 0;
-	private $status      = false;	
-	private $subject     = false;
-	private $preview     = false;
-	private $createdBy   = 0;
-	private $createdAt   = false;
-	private $modifiedAt  = false;	
-	private $closedAt    = false;
-	private $closedBy    = 0;	
-	private $source      = false;	
-	private $ccList      = false;
-	private $bccList     = false;
-	private $tags        = false;	
-	private $threads     = false;
+	private $id             = false;
+    private $type           = false;
+	private $folderId       = 0;
+	private $draft          = false;
+	private $number         = 0;
+	private $owner          = false;
+	private $mailbox        = false;
+	private $customer       = false;
+	private $threadCount    = 0;
+	private $status         = false;
+	private $subject        = false;
+	private $preview        = false;
+	private $createdBy      = 0;
+    private $createdByType  = 0;
+	private $createdAt      = false;
+	private $modifiedAt     = false;
+	private $closedAt       = false;
+	private $closedBy       = 0;
+	private $source         = false;
+	private $ccList         = false;
+	private $bccList        = false;
+	private $tags           = false;
+	private $threads        = false;
 	
 	public function __construct($data=null) {		
 		if ($data) {
-			$this->id          = $data->id;
-            $this->type        = $data->type;
-			$this->folderId    = $data->folderId;
-			$this->draft       = $data->isDraft;
-			$this->number      = $data->number;
+			$this->id               = $data->id;
+            $this->type             = $data->type;
+			$this->folderId         = $data->folderId;
+			$this->draft            = $data->isDraft;
+			$this->number           = $data->number;
+            $this->createdByType    = $data->createdByType;
 			
 			if (isset($data->owner)) {
 				$this->owner = new \HelpScout\model\ref\UserRef($data->owner);
@@ -53,8 +58,8 @@ class Conversation {
 			$this->subject     = $data->subject;
 			$this->preview     = $data->preview;
 			
-			if ($this->source) {
-				if ($this->type == 'customer') {
+			if ($this->createdByType > 0) {
+				if ($this->createdByType == Conversation::CREATED_BY_TYPE_CUSTOMER) {
 					$this->createdBy = new \HelpScout\model\ref\CustomerRef($data->createdBy);
 				} else {
 					$this->createdBy = new \HelpScout\model\ref\UserRef($data->createdBy);
@@ -229,6 +234,13 @@ class Conversation {
 	public function getCreatedBy() {
 		return $this->createdBy;
 	}
+
+    /**
+     * @return int
+     */
+    public function getCreatedByType() {
+        return $this->createdByType;
+    }
 
 	/**
 	 * @return string
