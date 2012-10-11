@@ -16,7 +16,7 @@ class Conversation {
 	private $status         = false;
 	private $subject        = false;
 	private $preview        = false;
-	private $createdBy      = 0;
+	private $createdBy      = false;
 	private $createdAt      = false;
 	private $modifiedAt     = false;
 	private $closedAt       = false;
