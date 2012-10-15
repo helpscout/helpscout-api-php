@@ -18,6 +18,10 @@ class PersonRef {
         }
     }
 
+    public function getObjectVars() {
+        return get_object_vars($this);
+    }
+
     public function getEmail() {
         return $this->email;
     }

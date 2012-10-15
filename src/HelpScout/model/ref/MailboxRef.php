@@ -12,7 +12,10 @@ class MailboxRef {
 		}
 	}
 
-	
+	public function getObjectVars() {
+        return get_object_vars($this);
+    }
+
 	/**
 	 * @return int
 	 */

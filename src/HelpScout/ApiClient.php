@@ -220,9 +220,25 @@ final class ApiClient {
 		);
 	}
 
+    /**
+     * @param model\Conversation $conversation
+     * @return bool|string
+     */
+    public function createConversation(\HelpScout\model\Conversation $conversation) {
+        $id = $this->doPost("conversations.json", $conversation->toJSON(), 201);
+        $conversation->setId($id);
+    }
+
+    /**
+     * @param model\Customer $customer
+     */
     public function createCustomer(\HelpScout\model\Customer $customer) {
         $id = $this->doPost("customers.json", $customer->toJSON(), 201);
         $customer->setId($id);
+    }
+
+    public function updateCustomer(\HelpScout\model\Customer $customer) {
+        $this->doPut("customers/" . $customer->getId() . ".json", $customer->toJSON(), 200);
     }
 
     /**
@@ -402,7 +418,6 @@ final class ApiClient {
         }
 
         $method = 'POST';
-
         $ch = curl_init();
         $opts = array(
             CURLOPT_URL            => self::API_URL . $url,
@@ -455,6 +470,46 @@ final class ApiClient {
 
         curl_close($ch);
         return $id;
+    }
+
+    private function doPut($url, $requestBody, $expectedCode) {
+        if ($this->apiKey === false || empty($this->apiKey)) {
+            throw new ApiException('Invalid API Key', 401);
+        }
+
+        $method = 'PUT';
+        $ch = curl_init();
+        $opts = array(
+            CURLOPT_URL            => self::API_URL . $url,
+            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_HTTPHEADER     => array(
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($requestBody)
+            ),
+            CURLOPT_POSTFIELDS     => $requestBody,
+            CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
+            CURLOPT_USERPWD		   => $this->apiKey . ':X',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_CONNECTTIMEOUT => 30,
+            CURLOPT_FAILONERROR    => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => true,
+            CURLOPT_HEADER         => true,
+            CURLOPT_ENCODING       => 'gzip,deflate',
+            CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
+        );
+
+        curl_setopt_array($ch, $opts);
+
+        $response = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        $statusCode = $info['http_code'];
+
+        $this->checkStatus($statusCode, $method, $expectedCode);
+
+        curl_close($ch);
     }
 
 	private function callServer($url, $method='GET', $params=null) {
