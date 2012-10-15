@@ -2,7 +2,7 @@
 namespace HelpScout\model\customer;
 
 class CustomerEntry {
-	private $id = false;
+	private $id;
 	private $value;
 	private $type = null;
 	private $location = null;
@@ -19,6 +19,26 @@ class CustomerEntry {
 			}
 		}
 	}
+
+    public function getObjectVars() {
+        return get_object_vars($this);
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function setLocation($location) {
+        $this->location = $location;
+    }
+
+    public function setType($type) {
+        $this->type = $type;
+    }
+
+    public function setValue($value) {
+        $this->value = $value;
+    }
 
 	/**
 	 * @return int

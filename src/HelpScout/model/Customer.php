@@ -2,7 +2,7 @@
 namespace HelpScout\model;
 
 class Customer {
-	private $id = false;
+	private $id;
 	private $firstName;
 	private $lastName;
 	private $photoUrl;
@@ -15,13 +15,13 @@ class Customer {
 	private $createdAt;
 	private $modifiedAt;
 
-	private $background = false;
-	private $address = false;
-	private $socialProfiles = false;
-	private $emails = false;
-	private $phones = false;
-	private $chats = false;
-	private $websites = false;
+	private $background;
+	private $address;
+	private $socialProfiles;
+	private $emails;
+	private $phones;
+	private $chats;
+	private $websites;
 
 	public function __construct($data=null) {		
 		if ($data) {
@@ -61,6 +61,26 @@ class Customer {
 			}
 		}
 	}
+
+    public function toJSON() {
+        $vars = get_object_vars($this);
+
+        // Emails
+        $emails = array();
+        foreach($this->getEmails() as $email) {
+            $emails[] = $email->getObjectVars();
+        }
+        $vars['emails'] = $emails;
+
+        // Social Profiles
+        $socials = array();
+        foreach($this->getSocialProfiles() as $social) {
+            $socials[] = $social->getObjectVars();
+        }
+        $vars['socialProfiles'] = $socials;
+
+        return json_encode($vars);
+    }
 	
 	private function toList($jsonList, $type) {
 		if (!$jsonList) {
@@ -74,7 +94,84 @@ class Customer {
 		);
 		return $list;		
 	}
-		
+
+    public function setAddress($address) {
+        $this->address = $address;
+    }
+
+    public function setAge($age) {
+        $this->age = $age;
+    }
+
+    public function setBackground($background) {
+        $this->background = $background;
+    }
+
+    public function setChats($chats) {
+        $this->chats = $chats;
+    }
+
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
+
+    public function setEmails($emails) {
+        $this->emails = $emails;
+    }
+
+    public function setFirstName($firstName) {
+        $this->firstName = $firstName;
+    }
+
+    public function setGender($gender) {
+        $this->gender = $gender;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function setJobTitle($jobTitle) {
+        $this->jobTitle = $jobTitle;
+    }
+
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
+    }
+
+    public function setLocation($location) {
+        $this->location = $location;
+    }
+
+    public function setModifiedAt($modifiedAt) {
+        $this->modifiedAt = $modifiedAt;
+    }
+
+    public function setOrganization($organization) {
+        $this->organization = $organization;
+    }
+
+    public function setPhones($phones) {
+        $this->phones = $phones;
+    }
+
+    public function setPhotoType($photoType) {
+        $this->photoType = $photoType;
+    }
+
+    public function setPhotoUrl($photoUrl) {
+        $this->photoUrl = $photoUrl;
+    }
+
+    public function setSocialProfiles($socialProfiles) {
+        $this->socialProfiles = $socialProfiles;
+    }
+
+    public function setWebsites($websites)
+    {
+        $this->websites = $websites;
+    }
+
 	/**
 	 * @return int
 	 */
