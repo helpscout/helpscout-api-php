@@ -79,6 +79,29 @@ class Customer {
         }
         $vars['socialProfiles'] = $socials;
 
+        // Websites
+        $websites = array();
+        foreach($this->getWebsites() as $website) {
+            $websites[] = $website->getObjectVars();
+        }
+        $vars['websites'] = $websites;
+
+        // Chats
+        $chats = array();
+        foreach($this->getChats() as $chat) {
+            $chats[] = $chat->getObjectVars();
+        }
+        $vars['chats'] = $chats;
+
+        // Phones
+        $phones = array();
+        foreach($this->getPhones() as $phone) {
+            $phones[] = $phone->getObjectVars();
+        }
+        $vars['phones'] = $phones;
+
+        $vars['address'] = $this->getAddress()->getObjectVars();
+
         return json_encode($vars);
     }
 	
