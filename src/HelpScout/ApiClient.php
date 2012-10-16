@@ -229,6 +229,10 @@ final class ApiClient {
         $conversation->setId($id);
     }
 
+    public function createThread($conversationId, \HelpScout\model\thread\ConversationThread $thread) {
+        $this->doPost("conversations/" . $conversationId . ".json", $thread->toJson(), 201);
+    }
+
     /**
      * @param model\Customer $customer
      */

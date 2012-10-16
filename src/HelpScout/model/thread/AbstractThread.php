@@ -24,6 +24,7 @@ interface ConversationThread {
 	public function getFromMailbox();
     public function getObjectVars();
 
+    public function setId($id);
     public function setType($type);
     public function setState($state);
     public function setBody($body);
@@ -35,15 +36,17 @@ interface ConversationThread {
     public function setStatus($status);
     public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy);
     public function setFromMailbox(\HelpScout\model\ref\MailboxRef $mailbox);
+
+    public function toJson();
 }
 
 abstract class AbstractThread extends LineItem implements ConversationThread {
     private $type;
 	private $state;
 	private $body;
-	private $toList;
-	private $ccList;
-	private $bccList;
+	private $to;
+	private $cc;
+	private $bcc;
 	private $customer;
 	
 	private $attachments;
@@ -52,8 +55,8 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 		parent::__construct($data);
 		if ($data) {
 			$this->body        = $data->body;
-			$this->toList      = $data->to;			
-			$this->ccList      = $data->cc;			
+			$this->toList      = $data->to;
+			$this->ccList      = $data->cc;
 			$this->bccList     = $data->bcc;
 			$this->state       = $data->state;
             $this->type        = $data->type;
@@ -72,7 +75,32 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	}
 
     public function getObjectVars() {
-        $vars = get_object_vars($this);
+        if ($this instanceof \HelpScout\model\thread\Customer) {
+            $this->type = "customer";
+        } else if ($this instanceof \HelpScout\model\thread\Message) {
+            $this->type = "message";
+        } else if ($this instanceof \HelpScout\model\thread\Note) {
+            $this->type = "note";
+        } else if ($this instanceof \HelpScout\model\thread\Chat) {
+            $this->type = "chat";
+        } else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
+            $this->type = "forwardchild";
+        } else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
+            $this->type = "forwardparent";
+        } else {
+            $this->type = "lineitem";
+        }
+
+        $vars = array();
+        $vars['id'] = $this->getId();
+        $vars['type'] = $this->getType();
+        $vars['status'] = $this->getStatus();
+        $vars['state'] = $this->getState();
+        $vars['body'] = $this->getBody();
+        $vars['to'] = $this->getToList();
+        $vars['cc'] = $this->getCcList();
+        $vars['bcc'] = $this->getBccList();
+
         if ($this->getAssignedTo() != null) {
             $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
         }
@@ -88,7 +116,21 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
         if ($this->getCustomer() != null) {
             $vars['customer'] = $this->getCustomer()->getObjectVars();
         }
+
+        // Attachments
+        if ($this->getAttachments() != null) {
+            $attachments = array();
+            foreach($this->getAttachments() as $attachment) {
+                $attachments[] = $attachment->getObjectVars();
+            }
+            $vars['attachments'] = $attachments;
+        }
         return $vars;
+    }
+
+    public function toJson() {
+        $vars = $this->getObjectVars();
+        return json_encode($vars);
     }
 
     /**
@@ -198,21 +240,21 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	}
 
 	/**
-	 * @return the $toList
+	 * @return the $to list
 	 */
 	public function getToList() {
 		return $this->toList;
 	}
 
 	/**
-	 * @return the $ccList
+	 * @return the $cc list
 	 */
 	public function getCcList() {
 		return $this->ccList;
 	}
 
 	/**
-	 * @return the $bccList
+	 * @return the $bcc list
 	 */
 	public function getBccList() {
 		return $this->bccList;

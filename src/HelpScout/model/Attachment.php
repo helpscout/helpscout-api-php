@@ -23,6 +23,10 @@ class Attachment {
 			$this->url      = $data->url;						
 		}	
 	}
+
+    public function getObjectVars() {
+        return get_object_vars($this);
+    }
 	
 	/**
 	 * Returns the raw data for this attachment.

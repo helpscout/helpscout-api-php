@@ -79,7 +79,6 @@ class Conversation
                     'chat' => '\HelpScout\model\thread\Chat'
                 );
                 foreach ($data->threads as $thread) {
-                    $item = false;
                     $type = $thread->type;
                     if (isset($types[$type])) {
                         $this->threads[] = new $types[$type]($thread);
@@ -91,13 +90,33 @@ class Conversation
         }
     }
 
-    public function toJSON() {
-        $vars = get_object_vars($this);
+    public function getObjectVars() {
+        $vars = array();
+        $vars['id'] = $this->getId();
+        $vars['type'] = $this->getType();
+        $vars['folderId'] = $this->getFolderId();
+        $vars['draft'] = $this->isDraft();
+        $vars['number'] = $this->getNumber();
+        $vars['threadCount'] = $this->getThreadCount();
+        $vars['status'] = $this->getStatus();
+        $vars['subject'] = $this->getSubject();
+        $vars['preview'] = $this->getPreview();
+        $vars['createdAt'] = $this->getCreatedAt();
+        $vars['modifiedAt'] = $this->getModifiedAt();
+        $vars['closedAt'] = $this->getClosedAt();
+        $vars['source'] = $this->getSource();
+        $vars['cc'] = $this->getCcList();
+        $vars['bcc'] = $this->getBccList();
+        $vars['tags'] = $this->getTags();
 
         if ($this->getOwner() != null) {
             $vars['owner'] = $this->getOwner()->getObjectVars();
         }
-        $vars['customer'] = $this->getCustomer()->getObjectVars();
+
+        if ($this->getCustomer() != null) {
+            $vars['customer'] = $this->getCustomer()->getObjectVars();
+        }
+
         $vars['mailbox'] = $this->getMailbox()->getObjectVars();
         $vars['createdBy'] = $this->getCreatedBy()->getObjectVars();
         if ($this->getClosedBy() != null) {
@@ -109,6 +128,11 @@ class Conversation
             $threads[] = $thread->getObjectVars();
         }
         $vars['threads'] = $threads;
+        return $vars;
+    }
+
+    public function toJSON() {
+        $vars = $this->getObjectVars();
         return json_encode($vars);
     }
 
