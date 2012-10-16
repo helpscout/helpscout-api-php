@@ -220,6 +220,11 @@ final class ApiClient {
 		);
 	}
 
+    public function searchCustomers($firstName=null, $lastName=null, $email=null, $page=1, $fields=null) {
+        $params = array('fields' => $fields, 'page' => $page, 'firstName' => $firstName, 'lastName' => $lastName, 'email' => $email);
+        return $this->getCollection("customers.json", $this->getParams($params), 'searchCustomers', '\HelpScout\model\Customer');
+    }
+
     /**
      * @param model\Conversation $conversation
      * @return bool|string
@@ -371,7 +376,7 @@ final class ApiClient {
 		}
 	}
 
-	private function getParams($params=null, array $accepted=array('page','fields')) {
+	private function getParams($params=null, array $accepted=array('page','fields','firstName','lastName','email')) {
 		if (!$params) {
 			return null;
 		}
@@ -396,6 +401,15 @@ final class ApiClient {
 						unset($params[$key]);
 					}
 					break;
+                case 'firstName':
+                    $params[$key] = $val;
+                    break;
+                case 'lastName':
+                    $params[$key] = $val;
+                    break;
+                case 'email':
+                    $params[$key] = $val;
+                    break;
 				case 'status':
 					if (!in_array($val, array('all','active','pending'))) {
 						unset($params[$key]);
