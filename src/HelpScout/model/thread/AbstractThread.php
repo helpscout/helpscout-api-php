@@ -22,6 +22,19 @@ interface ConversationThread {
 	public function getStatus();
 	public function getCreatedBy();
 	public function getFromMailbox();
+    public function getObjectVars();
+
+    public function setType($type);
+    public function setState($state);
+    public function setBody($body);
+    public function setToList($toList);
+    public function setCcList($ccList);
+    public function setBccList($bccList);
+    public function setAttachments($attachments);
+    public function setAssignedTo(\HelpScout\model\ref\PersonRef $assignedTo);
+    public function setStatus($status);
+    public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy);
+    public function setFromMailbox(\HelpScout\model\ref\MailboxRef $mailbox);
 }
 
 abstract class AbstractThread extends LineItem implements ConversationThread {
@@ -57,20 +70,108 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 			}			
 		}
 	}
-	
-	public function isPublished() {
+
+    public function getObjectVars() {
+        $vars = get_object_vars($this);
+        if ($this->getAssignedTo() != null) {
+            $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
+        }
+
+        if ($this->getCreatedBy() != null) {
+            $vars['createdBy'] = $this->getCreatedBy()->getObjectVars();
+        }
+
+        if ($this->getFromMailbox() != null) {
+            $vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
+        }
+
+        if ($this->getCustomer() != null) {
+            $vars['customer'] = $this->getCustomer()->getObjectVars();
+        }
+        return $vars;
+    }
+
+    /**
+     * @param $attachments
+     */
+    public function setAttachments($attachments) {
+        $this->attachments = $attachments;
+    }
+
+    /**
+     * @param $bccList
+     */
+    public function setBccList($bccList) {
+        $this->bccList = $bccList;
+    }
+
+    /**
+     * @param $body
+     */
+    public function setBody($body) {
+        $this->body = $body;
+    }
+
+    /**
+     * @param $ccList
+     */
+    public function setCcList($ccList) {
+        $this->ccList = $ccList;
+    }
+
+    /**
+     * @param $customer
+     */
+    public function setCustomer($customer) {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @param $state
+     */
+    public function setState($state) {
+        $this->state = $state;
+    }
+
+    /**
+     * @param $toList
+     */
+    public function setToList($toList) {
+        $this->toList = $toList;
+    }
+
+    /**
+     * @param $type
+     */
+    public function setType($type) {
+        $this->type = $type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublished() {
 		return $this->state == 'published';
 	}
-	
-	public function isDraft() {
+
+    /**
+     * @return bool
+     */
+    public function isDraft() {
 		return $this->state == 'draft';		
 	}
-	
-	public function isHeldForReview() {
+
+    /**
+     * @return bool
+     */
+    public function isHeldForReview() {
 		return $this->state == 'underreview';
 	}
-	
-	public function hasAttachments() {
+
+    /**
+     * @return bool
+     */
+    public function hasAttachments() {
 		return $this->attachments && count($this->attachments) > 0;
 	}
 
@@ -123,4 +224,11 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	public function getAttachments() {
 		return $this->attachments;
 	}
+
+    /**
+     * @return \HelpScout\model\ref\PersonRef
+     */
+    public function getCustomer() {
+        return $this->customer;
+    }
 }

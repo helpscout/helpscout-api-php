@@ -10,7 +10,7 @@ class LineItem {
 	const STATUS_CLOSED  = 'closed';
 	const STATUS_SPAM    = 'spam';
 	
-	private $id = false;
+	private $id = null;
 	private $assignedTo;
 	private $status;
 	private $createdBy;
@@ -19,10 +19,10 @@ class LineItem {
 	public function __construct($data=null) {		
 		if ($data) {
 			$this->id            = $data->id;
-			$this->assignedTo    = $data->assignedTo;
+			$this->assignedTo    = new \HelpScout\model\ref\PersonRef($data->assignedTo);
 			$this->status        = $data->status;
 			$this->createdAt     = $data->createdAt;
-            $this->createdBy = new \HelpScout\model\ref\PersonRef($data->createdBy);
+            $this->createdBy     = new \HelpScout\model\ref\PersonRef($data->createdBy);
 
 			if ($data->fromMailbox) {
 				$this->fromMailbox = new \HelpScout\model\ref\MailboxRef($data->fromMailbox);
@@ -32,6 +32,48 @@ class LineItem {
 			}
 		}
 	}
+
+    /**
+     * @param \HelpScout\model\ref\PersonRef $assignedTo
+     */
+    public function setAssignedTo(\HelpScout\model\ref\PersonRef $assignedTo) {
+        $this->assignedTo = $assignedTo;
+    }
+
+    /**
+     * @param $createdAt
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @param \HelpScout\model\ref\PersonRef $createdBy
+     */
+    public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy) {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @param \HelpScout\model\ref\MailboxRef $fromMailbox
+     */
+    public function setFromMailbox(\HelpScout\model\ref\MailboxRef $fromMailbox) {
+        $this->fromMailbox = $fromMailbox;
+    }
+
+    /**
+     * @param $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
+     * @param $status
+     */
+    public function setStatus($status) {
+        $this->status = $status;
+    }
 	
 	/**
 	 * @return int
@@ -39,24 +81,39 @@ class LineItem {
 	public function getId() {
 		return $this->id;
 	}
-	
-	public function isAssigned() {
+
+    /**
+     * @return bool
+     */
+    public function isAssigned() {
 		return is_numeric($this->assignedTo) && $this->assignedTo > Conversation::OWNER_ANYONE;
 	}
-	
-	public function isActive() {
+
+    /**
+     * @return bool
+     */
+    public function isActive() {
 		return $this->status == self::STATUS_ACTIVE;
 	}
-	
-	public function isPending() {
+
+    /**
+     * @return bool
+     */
+    public function isPending() {
 		return $this->status == self::STATUS_PENDING;
 	}
-	
-	public function isClosed() {
+
+    /**
+     * @return bool
+     */
+    public function isClosed() {
 		return $this->status == self::STATUS_CLOSED;
 	}
-	
-	public function isSpam() {
+
+    /**
+     * @return bool
+     */
+    public function isSpam() {
 		return $this->status == self::STATUS_SPAM;
 	}
 	
@@ -67,10 +124,10 @@ class LineItem {
 		return $this->assignedTo;
 	}
 
-	/**
-	 * @return the $status
-	 */
-	public function getStatus() {
+    /**
+     * @return mixed
+     */
+    public function getStatus() {
 		return $this->status;
 	}
 
