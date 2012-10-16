@@ -75,31 +75,9 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	}
 
     public function getObjectVars() {
-        if ($this instanceof \HelpScout\model\thread\Customer) {
-            $this->type = "customer";
-        } else if ($this instanceof \HelpScout\model\thread\Message) {
-            $this->type = "message";
-        } else if ($this instanceof \HelpScout\model\thread\Note) {
-            $this->type = "note";
-        } else if ($this instanceof \HelpScout\model\thread\Chat) {
-            $this->type = "chat";
-        } else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
-            $this->type = "forwardchild";
-        } else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
-            $this->type = "forwardparent";
-        } else {
-            $this->type = "lineitem";
-        }
-
         $vars = array();
         $vars['id'] = $this->getId();
-        $vars['type'] = $this->getType();
         $vars['status'] = $this->getStatus();
-        $vars['state'] = $this->getState();
-        $vars['body'] = $this->getBody();
-        $vars['to'] = $this->getToList();
-        $vars['cc'] = $this->getCcList();
-        $vars['bcc'] = $this->getBccList();
 
         if ($this->getAssignedTo() != null) {
             $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
@@ -112,6 +90,31 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
         if ($this->getFromMailbox() != null) {
             $vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
         }
+
+        if ($this->getType() == null) {
+            if ($this instanceof \HelpScout\model\thread\Customer) {
+                $this->type = "customer";
+            } else if ($this instanceof \HelpScout\model\thread\Message) {
+                $this->type = "message";
+            } else if ($this instanceof \HelpScout\model\thread\Note) {
+                $this->type = "note";
+            } else if ($this instanceof \HelpScout\model\thread\Chat) {
+                $this->type = "chat";
+            } else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
+                $this->type = "forwardchild";
+            } else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
+                $this->type = "forwardparent";
+            } else {
+                $this->type = "lineitem";
+            }
+        }
+
+        $vars['type'] = $this->getType();
+        $vars['state'] = $this->getState();
+        $vars['body'] = $this->getBody();
+        $vars['to'] = $this->getToList();
+        $vars['cc'] = $this->getCcList();
+        $vars['bcc'] = $this->getBccList();
 
         if ($this->getCustomer() != null) {
             $vars['customer'] = $this->getCustomer()->getObjectVars();

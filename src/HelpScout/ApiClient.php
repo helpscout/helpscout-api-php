@@ -229,8 +229,19 @@ final class ApiClient {
         $conversation->setId($id);
     }
 
+    /**
+     * @param $conversationId
+     * @param model\thread\ConversationThread $thread
+     */
     public function createThread($conversationId, \HelpScout\model\thread\ConversationThread $thread) {
         $this->doPost("conversations/" . $conversationId . ".json", $thread->toJson(), 201);
+    }
+
+    /**
+     * @param model\Conversation $conversation
+     */
+    public function updateConversation(\HelpScout\model\Conversation $conversation) {
+        $this->doPut("conversations/" . $conversation->getId() . ".json", $conversation->toJSON(), 200);
     }
 
     /**

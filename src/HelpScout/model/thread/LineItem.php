@@ -11,6 +11,7 @@ class LineItem {
 	const STATUS_SPAM    = 'spam';
 	
 	private $id = null;
+    private $type;
 	private $assignedTo;
 	private $status;
 	private $createdBy;
@@ -19,6 +20,7 @@ class LineItem {
 	public function __construct($data=null) {		
 		if ($data) {
 			$this->id            = $data->id;
+            $this->type          = $data->type;
 			$this->assignedTo    = new \HelpScout\model\ref\PersonRef($data->assignedTo);
 			$this->status        = $data->status;
 			$this->createdAt     = $data->createdAt;
@@ -32,6 +34,25 @@ class LineItem {
 			}
 		}
 	}
+
+    public function getObjectVars() {
+        $vars = array();
+        $vars['id'] = $this->getId();
+        $vars['type'] = $this->getType();
+        $vars['status'] = $this->getStatus();
+
+        if ($this->getAssignedTo() != null) {
+            $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
+        }
+
+        if ($this->getCreatedBy() != null) {
+            $vars['createdBy'] = $this->getCreatedBy()->getObjectVars();
+        }
+
+        if ($this->getFromMailbox() != null) {
+            $vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
+        }
+    }
 
     /**
      * @param \HelpScout\model\ref\PersonRef $assignedTo
@@ -81,6 +102,13 @@ class LineItem {
 	public function getId() {
 		return $this->id;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getType() {
+        return $this->type;
+    }
 
     /**
      * @return bool
