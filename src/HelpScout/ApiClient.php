@@ -242,6 +242,10 @@ final class ApiClient {
         $this->doPost("conversations/" . $conversationId . ".json", $thread->toJson(), 201);
     }
 
+    public function createAttachment(\HelpScout\model\Attachment $attachment) {
+        $this->doPost("attachments.json", $attachment->toJson(), 201);
+    }
+
     /**
      * @param model\Conversation $conversation
      */
