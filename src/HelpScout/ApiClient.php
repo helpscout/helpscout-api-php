@@ -253,6 +253,10 @@ final class ApiClient {
         $this->doPut("conversations/" . $conversation->getId() . ".json", $conversation->toJSON(), 200);
     }
 
+    public function deleteConversation($id) {
+        $this->doDelete("conversations/" . $id . ".json", 200);
+    }
+
     /**
      * @param model\Customer $customer
      */
@@ -542,6 +546,39 @@ final class ApiClient {
 
         $this->checkStatus($statusCode, $method, $expectedCode);
 
+        curl_close($ch);
+    }
+
+    private function doDelete($url, $expectedCode) {
+        if ($this->apiKey === false || empty($this->apiKey)) {
+            throw new ApiException('Invalid API Key', 401);
+        }
+
+        $method = 'DELETE';
+        $ch = curl_init();
+        $opts = array(
+            CURLOPT_URL            => self::API_URL . $url,
+            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
+            CURLOPT_USERPWD		   => $this->apiKey . ':X',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 30,
+            CURLOPT_CONNECTTIMEOUT => 30,
+            CURLOPT_FAILONERROR    => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => true,
+            CURLOPT_HEADER         => true,
+            CURLOPT_ENCODING       => 'gzip,deflate',
+            CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
+        );
+
+        curl_setopt_array($ch, $opts);
+
+        $response = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        $statusCode = $info['http_code'];
+
+        $this->checkStatus($statusCode, $method, $expectedCode);
         curl_close($ch);
     }
 
