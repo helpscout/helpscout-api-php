@@ -5,8 +5,7 @@ require 'ClassLoader.php';
 
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
-	//const API_URL = 'https://api.helpscout.net/v1/';
-	const API_URL = 'https://dev-api.helpscout.net/v1/';
+	const API_URL = 'https://api.helpscout.net/v1/';
 	const NAMESPACE_SEPARATOR = '\\';
 
 	private $userAgent = false;
@@ -359,6 +358,18 @@ final class ApiClient {
 	public function getMailboxProxy($mailboxId) {
 		$ref = new \HelpScout\model\ref\MailboxRef();
 		$ref->setId($mailboxId);
+		return $ref;
+	}
+
+	/**
+	 * Returns a MailboxRef object initialized with the given id.
+	 *
+	 * @param int $userId
+	 * @return \HelpScout\model\ref\UserRef
+	 */
+	public function getUserRefProxy($userId) {
+		$ref = new \HelpScout\model\ref\UserRef();
+		$ref->setId($userId);
 		return $ref;
 	}
 
