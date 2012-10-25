@@ -59,6 +59,32 @@ $convos = $hs->getConversationsForMailbox(99, array('page' => 2), array('id', 'n
 
 // to get page 2 conversations from a specific folder:
 $convos = $hs->getConversationsForFolder(99, 22, array('page' => 2)); // where 99=MailboxId and 22=FolderId
+
+$at = new \HelpScout\model\Attachment();
+$at->load('/path/to/some/image.jpg');
+
+$hs->createAttachment($at);
+
+$note = new \HelpScout\model\thread\Note();
+$note->setBody('Hey this is a note');
+$note->addAttachment($at);
+
+// if you already know the ID of the Help Scout user, you can simply get a ref
+$userRef = $hs->getUserRefProxy(4);
+
+$note->setCreatedBy($userRef);
+
+$convo = new \HelpScout\model\Conversation();
+$convo->setMailbox($hs->getMailboxProxy(2431));
+$convo->setCreatedBy($userRef);
+$convo->setSubject('Note test');
+
+// every conversation must be tied to a customer
+$convo->setCustomer($customerRef);
+
+$convo->addLineItem($note);
+
+$hs->createConversation($convo);
 </code></pre>
 
 Field Selectors
