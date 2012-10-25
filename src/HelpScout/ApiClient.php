@@ -295,6 +295,10 @@ final class ApiClient {
         }
     }
 
+    public function deleteAttachment($id) {
+        $this->doDelete('attachments/' . $id . '.json', 200);
+    }
+
     /**
      * @param model\Conversation $conversation
      */
