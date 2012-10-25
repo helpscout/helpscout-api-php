@@ -4,12 +4,13 @@ namespace HelpScout;
 require 'ClassLoader.php';
 
 final class ApiClient {
-	// const API_URL = 'https://api.helpscout.net/v1/';
-	const API_URL = 'http://localhost:9001/v1/';
-
+	const USER_AGENT = 'Help Scout API/Php Client v1';
+	//const API_URL = 'https://api.helpscout.net/v1/';
+	const API_URL = 'https://dev-api.helpscout.net/v1/';
 	const NAMESPACE_SEPARATOR = '\\';
 
-	private $apiKey  = false;
+	private $userAgent = false;
+	private $apiKey    = false;
 
 	/**
 	 * @var \HelpScout\ApiClient
@@ -40,6 +41,20 @@ final class ApiClient {
 	 */
 	public function setKey($apiKey) {
 		$this->apiKey = $apiKey;
+	}
+
+	public function setUserAgent($userAgent) {
+		$userAgent = trim($userAgent);
+		if (!empty($userAgent)) {
+			$this->userAgent = $userAgent;
+		}
+	}
+
+	private function getUserAgent() {
+		if ($this->userAgent) {
+			return $this->userAgent;
+		}
+		return self::USER_AGENT;
 	}
 
 	/**
@@ -220,6 +235,35 @@ final class ApiClient {
 		);
 	}
 
+	/**
+	 * @param string $email
+	 * @param int $page
+	 * @param array $fields
+	 * @return \HelpScout\Collection
+	 */
+	public function searchCustomersByEmail($email, $page=1, $fields=null) {
+		$params = array('fields' => $fields, 'page' => $page, 'email' => $email);
+		return $this->getCollection('customers.json', $this->getParams($params), 'searchCustomers', '\HelpScout\model\Customer');
+	}
+
+	/**
+	 * @param string $firstName
+	 * @param string $lastName
+	 * @param int $page
+	 * @param array $fields
+	 * @return \HelpScout\Collection
+	 */
+    public function searchCustomersByName($firstName, $lastName, $page=1, $fields=null) {
+        $params = array('fields' => $fields, 'page' => $page, 'firstName' => $firstName, 'lastName' => $lastName);
+        return $this->getCollection('customers.json', $this->getParams($params), 'searchCustomers', '\HelpScout\model\Customer');
+    }
+
+    /**
+     * @param string $email
+     * @param int $page
+     * @param array $fields
+     * @return \HelpScout\Collection
+     */
     public function searchCustomers($firstName=null, $lastName=null, $email=null, $page=1, $fields=null) {
         $params = array('fields' => $fields, 'page' => $page, 'firstName' => $firstName, 'lastName' => $lastName, 'email' => $email);
         return $this->getCollection("customers.json", $this->getParams($params), 'searchCustomers', '\HelpScout\model\Customer');
@@ -230,7 +274,7 @@ final class ApiClient {
      * @return bool|string
      */
     public function createConversation(\HelpScout\model\Conversation $conversation) {
-        $id = $this->doPost("conversations.json", $conversation->toJSON(), 201);
+        list($id, ) = $this->doPost('conversations.json', $conversation->toJSON(), 201);
         $conversation->setId($id);
     }
 
@@ -239,34 +283,40 @@ final class ApiClient {
      * @param model\thread\ConversationThread $thread
      */
     public function createThread($conversationId, \HelpScout\model\thread\ConversationThread $thread) {
-        $this->doPost("conversations/" . $conversationId . ".json", $thread->toJson(), 201);
+        list($id, ) = $this->doPost('conversations/' . $conversationId . '.json', $thread->toJson(), 201);
+        $thread->setId($id);
     }
 
     public function createAttachment(\HelpScout\model\Attachment $attachment) {
-        $this->doPost("attachments.json", $attachment->toJson(), 201);
+        list($id, $body) = $this->doPost('attachments.json', $attachment->toJson(), 201);
+
+        if ($body) {
+        	$body = json_decode($body);
+        	$attachment->setHash($body->item->hash);
+        }
     }
 
     /**
      * @param model\Conversation $conversation
      */
     public function updateConversation(\HelpScout\model\Conversation $conversation) {
-        $this->doPut("conversations/" . $conversation->getId() . ".json", $conversation->toJSON(), 200);
+        $this->doPut('conversations/' . $conversation->getId() . '.json', $conversation->toJSON(), 200);
     }
 
     public function deleteConversation($id) {
-        $this->doDelete("conversations/" . $id . ".json", 200);
+        $this->doDelete('conversations/' . $id . '.json', 200);
     }
 
     /**
      * @param model\Customer $customer
      */
     public function createCustomer(\HelpScout\model\Customer $customer) {
-        $id = $this->doPost("customers.json", $customer->toJSON(), 201);
+        list($id, ) = $this->doPost('customers.json', $customer->toJSON(), 201);
         $customer->setId($id);
     }
 
     public function updateCustomer(\HelpScout\model\Customer $customer) {
-        $this->doPut("customers/" . $customer->getId() . ".json", $customer->toJSON(), 200);
+        $this->doPut('customers/' . $customer->getId() . '.json', $customer->toJSON(), 200);
     }
 
     /**
@@ -298,6 +348,18 @@ final class ApiClient {
 		return $this->getItem(
 			sprintf('mailboxes/%d.json', $mailboxId), $this->getParams(array('fields' => $fields)), 'getMailbox', '\HelpScout\model\Mailbox'
 		);
+	}
+
+	/**
+	 * Returns a MailboxRef object initialized with the given id.
+	 *
+	 * @param int $mailboxId
+	 * @return \HelpScout\model\ref\MailboxRef
+	 */
+	public function getMailboxProxy($mailboxId) {
+		$ref = new \HelpScout\model\ref\MailboxRef();
+		$ref->setId($mailboxId);
+		return $ref;
 	}
 
 	/**
@@ -454,11 +516,10 @@ final class ApiClient {
             throw new ApiException('Invalid API Key', 401);
         }
 
-        $method = 'POST';
         $ch = curl_init();
-        $opts = array(
+        curl_setopt_array($ch, array(
             CURLOPT_URL            => self::API_URL . $url,
-            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_CUSTOMREQUEST  => 'POST',
             CURLOPT_HTTPHEADER     => array(
                 'Accept: application/json',
                 'Content-Type: application/json',
@@ -475,38 +536,38 @@ final class ApiClient {
             CURLOPT_SSL_VERIFYHOST => true,
             CURLOPT_HEADER         => true,
             CURLOPT_ENCODING       => 'gzip,deflate',
-            CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
-        );
-
-        curl_setopt_array($ch, $opts);
+            CURLOPT_USERAGENT      => $this->getUserAgent()
+        ));
 
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
-        $statusCode = $info['http_code'];
-
-        $this->checkStatus($statusCode, $method, $expectedCode);
-
-        $location = false;
-        $headerText = substr($response, 0, $info['header_size']);
-        $headerLines = explode("\r\n", $headerText);
-        foreach($headerLines as $line) {
-            $parts = explode(': ',$line);
-            $headerName = strtolower($parts[0]);
-            switch($headerName) {
-                case 'location':
-                    $location = chop($parts[1]);
-                    break;
-            }
-        }
-
-        $id = false;
-        if ($location) {
-            $start = strrpos($location, '/') + 1;
-            $id = substr($location, $start, -5);
-        }
 
         curl_close($ch);
-        return $id;
+
+        $this->checkStatus($info['http_code'], 'POST', $expectedCode);
+
+        return array($this->getIdFromLocation($response, $info['header_size']), substr($response, $info['header_size']));
+    }
+
+    private function getIdFromLocation($response, $headerSize) {
+    	$location = false;
+    	$headerText = substr($response, 0, $headerSize);
+    	$headerLines = explode("\r\n", $headerText);
+
+    	foreach($headerLines as $line) {
+    		$parts = explode(': ',$line);
+    		if (strtolower($parts[0]) == 'location') {
+    			$location = chop($parts[1]);
+    			break;
+    		}
+    	}
+
+    	$id = false;
+    	if ($location) {
+    		$start = strrpos($location, '/') + 1;
+    		$id = substr($location, $start, -5);
+    	}
+		return $id;
     }
 
     private function doPut($url, $requestBody, $expectedCode) {
@@ -514,11 +575,11 @@ final class ApiClient {
             throw new ApiException('Invalid API Key', 401);
         }
 
-        $method = 'PUT';
         $ch = curl_init();
-        $opts = array(
+
+        curl_setopt_array($ch, array(
             CURLOPT_URL            => self::API_URL . $url,
-            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_CUSTOMREQUEST  => 'PUT',
             CURLOPT_HTTPHEADER     => array(
                 'Accept: application/json',
                 'Content-Type: application/json',
@@ -535,18 +596,15 @@ final class ApiClient {
             CURLOPT_SSL_VERIFYHOST => true,
             CURLOPT_HEADER         => true,
             CURLOPT_ENCODING       => 'gzip,deflate',
-            CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
-        );
-
-        curl_setopt_array($ch, $opts);
+            CURLOPT_USERAGENT      => $this->getUserAgent()
+        ));
 
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
-        $statusCode = $info['http_code'];
-
-        $this->checkStatus($statusCode, $method, $expectedCode);
 
         curl_close($ch);
+
+        $this->checkStatus($info['http_code'], 'PUT', $expectedCode);
     }
 
     private function doDelete($url, $expectedCode) {
@@ -554,11 +612,11 @@ final class ApiClient {
             throw new ApiException('Invalid API Key', 401);
         }
 
-        $method = 'DELETE';
         $ch = curl_init();
-        $opts = array(
+
+        curl_setopt_array($ch, array(
             CURLOPT_URL            => self::API_URL . $url,
-            CURLOPT_CUSTOMREQUEST  => $method,
+            CURLOPT_CUSTOMREQUEST  => 'DELETE',
             CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
             CURLOPT_USERPWD		   => $this->apiKey . ':X',
             CURLOPT_RETURNTRANSFER => true,
@@ -569,17 +627,15 @@ final class ApiClient {
             CURLOPT_SSL_VERIFYHOST => true,
             CURLOPT_HEADER         => true,
             CURLOPT_ENCODING       => 'gzip,deflate',
-            CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
-        );
-
-        curl_setopt_array($ch, $opts);
+            CURLOPT_USERAGENT      => $this->getUserAgent()
+        ));
 
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
-        $statusCode = $info['http_code'];
 
-        $this->checkStatus($statusCode, $method, $expectedCode);
         curl_close($ch);
+
+        $this->checkStatus($info['http_code'], 'DELETE', $expectedCode);
     }
 
 	private function callServer($url, $method='GET', $params=null) {
@@ -605,7 +661,7 @@ final class ApiClient {
 			CURLOPT_SSL_VERIFYHOST => true,
 			CURLOPT_HEADER         => false,
 			CURLOPT_ENCODING       => 'gzip,deflate',
-			CURLOPT_USERAGENT      => 'Help Scout API/Php Client v1'
+			CURLOPT_USERAGENT      => $this->getUserAgent()
 		);
 		if ($params) {
 			if ($method=='GET') {

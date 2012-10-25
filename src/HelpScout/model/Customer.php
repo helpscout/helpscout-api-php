@@ -23,7 +23,7 @@ class Customer {
 	private $chats;
 	private $websites;
 
-	public function __construct($data=null) {		
+	public function __construct($data=null) {
 		if ($data) {
 			$this->id           = $data->id;
 			$this->firstName    = $data->firstName;
@@ -37,7 +37,7 @@ class Customer {
 			$this->location     = $data->location;
 			$this->createdAt    = $data->createdAt;
 			$this->modifiedAt   = $data->modifiedAt;
-			
+
 			if (isset($data->background)) {
 				$this->background = $data->background;
 			}
@@ -45,19 +45,19 @@ class Customer {
 				$this->address = new \HelpScout\model\customer\Address($data->address);
 			}
 			if (isset($data->chats)) {
-				$this->chats = $this->toList($data->chats, '\HelpScout\model\customer\ChatEntry');				
+				$this->chats = $this->toList($data->chats, '\HelpScout\model\customer\ChatEntry');
 			}
 			if (isset($data->emails)) {
-				$this->emails = $this->toList($data->emails, '\HelpScout\model\customer\EmailEntry');				
+				$this->emails = $this->toList($data->emails, '\HelpScout\model\customer\EmailEntry');
 			}
 			if (isset($data->phones)) {
-				$this->phones = $this->toList($data->phones, '\HelpScout\model\customer\PhoneEntry');				
+				$this->phones = $this->toList($data->phones, '\HelpScout\model\customer\PhoneEntry');
 			}
 			if (isset($data->socialProfiles)) {
-				$this->socialProfiles = $this->toList($data->socialProfiles, '\HelpScout\model\customer\SocialProfileEntry');				
+				$this->socialProfiles = $this->toList($data->socialProfiles, '\HelpScout\model\customer\SocialProfileEntry');
 			}
 			if (isset($data->websites)) {
-				$this->websites = $this->toList($data->websites, '\HelpScout\model\customer\WebsiteEntry');				
+				$this->websites = $this->toList($data->websites, '\HelpScout\model\customer\WebsiteEntry');
 			}
 		}
 	}
@@ -104,18 +104,18 @@ class Customer {
 
         return json_encode($vars);
     }
-	
+
 	private function toList($jsonList, $type) {
 		if (!$jsonList) {
 			return null;
-		}		
-		$list = array();		
+		}
+		$list = array();
 		array_walk($jsonList,
 			function($obj) use (&$list, $type) {
-				$list[] = new $type($obj);				
+				$list[] = new $type($obj);
 			}
 		);
-		return $list;		
+		return $list;
 	}
 
     public function setAddress($address) {
@@ -134,12 +134,26 @@ class Customer {
         $this->chats = $chats;
     }
 
+    public function addChat(\HelpScout\model\customer\ChatEntry $chat) {
+    	if (!$this->chats) {
+    		$this->chats = array();
+    	}
+    	$this->chats[] = $chat;
+    }
+
     public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
     }
 
     public function setEmails($emails) {
         $this->emails = $emails;
+    }
+
+    public function addEmail(\HelpScout\model\customer\EmailEntry $email) {
+    	if (!$this->emails) {
+    		$this->emails = array();
+    	}
+    	$this->emails[] = $email;
     }
 
     public function setFirstName($firstName) {
@@ -178,6 +192,13 @@ class Customer {
         $this->phones = $phones;
     }
 
+    public function addPhone(\HelpScout\model\customer\PhoneEntry $phone) {
+    	if (!$this->phones) {
+    		$this->phones = array();
+    	}
+    	$this->phones[] = $phone;
+    }
+
     public function setPhotoType($photoType) {
         $this->photoType = $photoType;
     }
@@ -186,13 +207,26 @@ class Customer {
         $this->photoUrl = $photoUrl;
     }
 
+    public function addSocialProfile(\HelpScout\model\customer\SocialProfileEntry $profile) {
+    	if (!$this->socialProfiles) {
+    		$this->socialProfiles = array();
+    	}
+    	$this->socialProfiles[] = $profile;
+    }
+
     public function setSocialProfiles($socialProfiles) {
         $this->socialProfiles = $socialProfiles;
     }
 
-    public function setWebsites($websites)
-    {
+    public function setWebsites($websites) {
         $this->websites = $websites;
+    }
+
+    public function addWebsite(\HelpScout\model\customer\WebsiteEntry $website) {
+    	if (!$this->websites) {
+    		$this->websites = array();
+    	}
+    	$this->websites[] = $website;
     }
 
 	/**
@@ -201,7 +235,7 @@ class Customer {
 	public function getId() {
 		return $this->id;
 	}
-		
+
 	/**
 	 * @return string
 	 */
@@ -215,17 +249,17 @@ class Customer {
 	public function getLastName() {
 		return $this->lastName;
 	}
-	
+
 	/**
 	 * @return string
-	 */	
+	 */
 	public function getFullName() {
 		return trim(sprintf('%s %s', $this->firstName, $this->lastName));
 	}
 
 	/**
 	 * @return boolean
-	 */	
+	 */
 	public function hasPhoto() {
 		return !$this->isEmpty($this->photoUrl);
 	}
@@ -292,59 +326,70 @@ class Customer {
 	public function getModifiedAt() {
 		return $this->modifiedAt;
 	}
-	
+
 	/**
 	 * @return the $background
 	 */
 	public function getBackground() {
 		return $this->background;
 	}
-	
+
 	/**
 	 * @return the $address
 	 */
 	public function getAddress() {
 		return $this->address;
 	}
-	
+
 	/**
 	 * @return the $socialProfiles
 	 */
 	public function getSocialProfiles() {
 		return $this->socialProfiles;
 	}
-	
+
 	/**
 	 * @return the $emails
 	 */
 	public function getEmails() {
 		return $this->emails;
 	}
-	
+
 	/**
 	 * @return the $phones
 	 */
 	public function getPhones() {
 		return $this->phones;
 	}
-	
+
 	/**
 	 * @return the $chats
 	 */
 	public function getChats() {
 		return $this->chats;
 	}
-	
+
 	/**
 	 * @return the $websites
 	 */
 	public function getWebsites() {
 		return $this->websites;
 	}
-	
+
 	private function isEmpty($value) {
 		$v = trim($value);
 		return empty($v);
 	}
-}
 
+	/**
+	 * @return \HelpScout\model\ref\CustomerRef
+	 */
+	public function toRef() {
+		$ref = new \HelpScout\model\ref\CustomerRef();
+		$ref->setId       ($this->id);
+		$ref->setFirstName($this->firstName);
+		$ref->setLastName ($this->lastName);
+
+		return $ref;
+	}
+}

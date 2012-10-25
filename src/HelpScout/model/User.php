@@ -11,7 +11,7 @@ class User {
 	private $photoUrl;
 	private $createdAt;
 	private $modifiedAt;
-	
+
 	public function __construct($data=null) {
 		if ($data) {
 			$this->id         = $data->id;
@@ -25,14 +25,14 @@ class User {
 			$this->modifiedAt = $data->modifiedAt;
 		}
 	}
-	
+
 	/**
 	 * @return int
 	 */
 	public function getId() {
 		return $this->id;
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -46,10 +46,10 @@ class User {
 	public function getLastName() {
 		return $this->lastName;
 	}
-	
+
 	/**
 	 * @return string
-	 */	
+	 */
 	public function getFullName() {
 		return trim(sprintf('%s %s', $this->firstName, $this->lastName));
 	}
@@ -67,7 +67,7 @@ class User {
 	public function isOwnerRole() {
 		return $this->role == 'owner';
 	}
-	
+
 	/**
 	 * @return boolean
 	 */
@@ -81,7 +81,7 @@ class User {
 	public function isUserRole() {
 		return $this->role == 'user';
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -95,10 +95,10 @@ class User {
 	public function getTimezone() {
 		return $this->timezone;
 	}
-	
+
 	/**
 	 * @return boolean
-	 */	
+	 */
 	public function hasPhoto() {
 		return !$this->isEmpty($this->photoUrl);
 	}
@@ -123,9 +123,21 @@ class User {
 	public function getModifiedAt() {
 		return $this->modifiedAt;
 	}
-	
+
 	private function isEmpty($value) {
 		$v = trim($value);
 		return empty($v);
+	}
+
+	/**
+	 * @return \HelpScout\model\ref\UserRef
+	 */
+	public function toRef() {
+		$ref = new \HelpScout\model\ref\UserRef();
+		$ref->setId       ($this->id);
+		$ref->setFirstName($this->firstName);
+		$ref->setLastName ($this->lastName);
+
+		return $ref;
 	}
 }

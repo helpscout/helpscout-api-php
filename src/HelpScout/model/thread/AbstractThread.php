@@ -44,13 +44,13 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
     private $type;
 	private $state;
 	private $body;
-	private $to;
-	private $cc;
-	private $bcc;
+	private $toList;
+	private $ccList;
+	private $bccList;
 	private $customer;
-	
+
 	private $attachments;
-	
+
 	public function __construct($data=null) {
 		parent::__construct($data);
 		if ($data) {
@@ -60,17 +60,17 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 			$this->bccList     = $data->bcc;
 			$this->state       = $data->state;
             $this->type        = $data->type;
-			
-			if ($data->customer) {				
+
+			if ($data->customer) {
 				$this->customer = new \HelpScout\model\ref\PersonRef($data->customer);
-			}	
+			}
 
 			if ($data->attachments) {
 				$this->attachments = array();
 				foreach($data->attachments as $at) {
 					$this->attachments[] = new \HelpScout\model\Attachment($at);
-				}				
-			}			
+				}
+			}
 		}
 	}
 
@@ -79,13 +79,19 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
         $vars['id'] = $this->getId();
         $vars['status'] = $this->getStatus();
 
-        if ($this->getAssignedTo() != null) {
-            $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
+        if ($this->isAssigned()) {
+        	$assignedTo = $this->getAssignedTo();
+        	if (!$assignedTo) {
+        		throw new \HelpScout\ApiException('No assignedTo (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
+        	}
+        	$vars['assignedTo'] = $assignedTo;
         }
 
-        if ($this->getCreatedBy() != null) {
-            $vars['createdBy'] = $this->getCreatedBy()->getObjectVars();
+        $createdBy = $this->getCreatedBy();
+        if (!$createdBy) {
+        	throw new \HelpScout\ApiException('No createdBy (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
         }
+        $vars['createdBy'] = $createdBy->getObjectVars();
 
         if ($this->getFromMailbox() != null) {
             $vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
@@ -93,19 +99,19 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 
         if ($this->getType() == null) {
             if ($this instanceof \HelpScout\model\thread\Customer) {
-                $this->type = "customer";
+                $this->type = 'customer';
             } else if ($this instanceof \HelpScout\model\thread\Message) {
-                $this->type = "message";
+                $this->type = 'message';
             } else if ($this instanceof \HelpScout\model\thread\Note) {
-                $this->type = "note";
+                $this->type = 'note';
             } else if ($this instanceof \HelpScout\model\thread\Chat) {
-                $this->type = "chat";
+                $this->type = 'chat';
             } else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
-                $this->type = "forwardchild";
+                $this->type = 'forwardchild';
             } else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
-                $this->type = "forwardparent";
+                $this->type = 'forwardparent';
             } else {
-                $this->type = "lineitem";
+                $this->type = 'lineitem';
             }
         }
 
@@ -141,6 +147,13 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
      */
     public function setAttachments($attachments) {
         $this->attachments = $attachments;
+    }
+
+    public function addAttachment(\HelpScout\model\Attachment $attachment) {
+    	if (!$this->attachments) {
+    		$this->attachments = array();
+    	}
+    	$this->attachments[] = $attachment;
     }
 
     /**
@@ -203,7 +216,7 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
      * @return bool
      */
     public function isDraft() {
-		return $this->state == 'draft';		
+		return $this->state == 'draft';
 	}
 
     /**

@@ -39,6 +39,10 @@ class PersonRef {
     }
 
     public function setType($type) {
+    	$type = strtolower(trim($type));
+    	if (!in_array($type, array('customer','user'))) {
+    		throw new \Exception('Invalid type set on PersonRef [' . $type . ']. Must be one of type customer or user.');
+    	}
         $this->type = $type;
     }
 

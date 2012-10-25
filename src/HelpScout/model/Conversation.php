@@ -1,8 +1,12 @@
 <?php
 namespace HelpScout\model;
 
-class Conversation
-{
+class Conversation {
+	const STATUS_ACTIVE  = 'active';
+	const STATUS_PENDING = 'pending';
+	const STATUS_CLOSED  = 'closed';
+	const STATUS_SPAM    = 'spam';
+
     const OWNER_ANYONE = 1;
 
     private $id = null;
@@ -35,7 +39,6 @@ class Conversation
             $this->folderId = $data->folderId;
             $this->draft = $data->isDraft;
             $this->number = $data->number;
-            $this->createdByType = $data->createdByType;
 
             if (isset($data->owner)) {
                 $this->owner = new \HelpScout\model\ref\PersonRef($data->owner);
@@ -96,11 +99,8 @@ class Conversation
         $vars['type'] = $this->getType();
         $vars['folderId'] = $this->getFolderId();
         $vars['draft'] = $this->isDraft();
-        $vars['number'] = $this->getNumber();
-        $vars['threadCount'] = $this->getThreadCount();
         $vars['status'] = $this->getStatus();
         $vars['subject'] = $this->getSubject();
-        $vars['preview'] = $this->getPreview();
         $vars['createdAt'] = $this->getCreatedAt();
         $vars['modifiedAt'] = $this->getModifiedAt();
         $vars['closedAt'] = $this->getClosedAt();
@@ -117,10 +117,25 @@ class Conversation
             $vars['customer'] = $this->getCustomer()->getObjectVars();
         }
 
-        $vars['mailbox'] = $this->getMailbox()->getObjectVars();
-        $vars['createdBy'] = $this->getCreatedBy()->getObjectVars();
-        if ($this->getClosedBy() != null) {
-            $vars['closeBy'] = $this->getClosedBy()->getObjectVars();
+        $mailbox = $this->getMailbox();
+        if (!$mailbox) {
+        	throw new \HelpScout\ApiException('No mailbox (\HelpScout\model\ref\MailboxRef) object set in Conversation.getObjectVars() method.');
+        }
+        $vars['mailbox'] = $mailbox->getObjectVars();
+        unset($mailbox);
+
+        $createdBy = $this->getCreatedBy();
+        if (!$createdBy) {
+        	throw new \HelpScout\ApiException('No createdBy (\HelpScout\model\ref\PersonRef) object set in Conversation.getObjectVars() method.');
+        }
+        $vars['createdBy'] = $createdBy->getObjectVars();
+
+        if ($this->isClosed()) {
+        	$closedBy = $this->getClosedBy();
+        	if (!$closedBy) {
+        		throw new \HelpScout\ApiException('No closedBy (\HelpScout\model\ref\PersonRef) object set in Conversation.getObjectVars() method.');
+        	}
+        	$vars['closeBy'] = $closedBy->getObjectVars();
         }
 
         $threads = array();
@@ -478,6 +493,13 @@ class Conversation
      */
     public function getTags() {
         return $this->tags;
+    }
+
+    public function addLineItem(\HelpScout\model\thread\LineItem $thread) {
+    	if (!$this->threads) {
+    		$this->threads = array();
+    	}
+    	$this->threads[] = $thread;
     }
 
     /**

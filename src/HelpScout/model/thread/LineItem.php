@@ -9,19 +9,31 @@ class LineItem {
 	const STATUS_PENDING = 'pending';
 	const STATUS_CLOSED  = 'closed';
 	const STATUS_SPAM    = 'spam';
-	
+
 	private $id = null;
     private $type;
+
+    private $status;
+
+    /**
+     * @var \HelpScout\model\ref\PersonRef
+     */
 	private $assignedTo;
-	private $status;
+
+	/**
+	 * @var \HelpScout\model\ref\PersonRef
+	 */
 	private $createdBy;
+
+	/**
+	 * @var \HelpScout\model\ref\MailboxRef
+	 */
 	private $fromMailbox;
-	
-	public function __construct($data=null) {		
+
+	public function __construct($data=null) {
 		if ($data) {
 			$this->id            = $data->id;
             $this->type          = $data->type;
-			$this->assignedTo    = new \HelpScout\model\ref\PersonRef($data->assignedTo);
 			$this->status        = $data->status;
 			$this->createdAt     = $data->createdAt;
             $this->createdBy     = new \HelpScout\model\ref\PersonRef($data->createdBy);
@@ -95,7 +107,7 @@ class LineItem {
     public function setStatus($status) {
         $this->status = $status;
     }
-	
+
 	/**
 	 * @return int
 	 */
@@ -114,7 +126,7 @@ class LineItem {
      * @return bool
      */
     public function isAssigned() {
-		return is_numeric($this->assignedTo) && $this->assignedTo > Conversation::OWNER_ANYONE;
+		return is_object($this->assignedTo) && $this->assignedTo->getId() > Conversation::OWNER_ANYONE;
 	}
 
     /**
@@ -144,7 +156,7 @@ class LineItem {
     public function isSpam() {
 		return $this->status == self::STATUS_SPAM;
 	}
-	
+
 	/**
 	 * @return \HelpScout\model\ref\PersonRef
 	 */
