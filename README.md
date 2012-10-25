@@ -60,6 +60,8 @@ $convos = $hs->getConversationsForMailbox(99, array('page' => 2), array('id', 'n
 // to get page 2 conversations from a specific folder:
 $convos = $hs->getConversationsForFolder(99, 22, array('page' => 2)); // where 99=MailboxId and 22=FolderId
 
+
+// to create a new conversation with a note and an attachment
 $at = new \HelpScout\model\Attachment();
 $at->load('/path/to/some/image.jpg');
 
