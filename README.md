@@ -125,6 +125,7 @@ API Client Methods
 ### Attachments
 * getAttachmentData($attachmentId)
 * createAttachment($attachment)
+* deleteAttachment($id)
 
 ### Customers
 * getCustomers($page=1, $fields=null, $firstName=null, $lastName=null, $email=null)
