@@ -18,6 +18,34 @@ class PersonRef {
         }
     }
 
+    public function getObjectVars() {
+        return get_object_vars($this);
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    public function setFirstName($firstName) {
+        $this->firstName = $firstName;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
+    }
+
+    public function setType($type) {
+    	$type = strtolower(trim($type));
+    	if (!in_array($type, array('customer','user'))) {
+    		throw new \Exception('Invalid type set on PersonRef [' . $type . ']. Must be one of type customer or user.');
+    	}
+        $this->type = $type;
+    }
+
     public function getEmail() {
         return $this->email;
     }

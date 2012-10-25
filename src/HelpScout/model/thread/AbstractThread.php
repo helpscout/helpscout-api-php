@@ -22,6 +22,22 @@ interface ConversationThread {
 	public function getStatus();
 	public function getCreatedBy();
 	public function getFromMailbox();
+    public function getObjectVars();
+
+    public function setId($id);
+    public function setType($type);
+    public function setState($state);
+    public function setBody($body);
+    public function setToList($toList);
+    public function setCcList($ccList);
+    public function setBccList($bccList);
+    public function setAttachments($attachments);
+    public function setAssignedTo(\HelpScout\model\ref\PersonRef $assignedTo);
+    public function setStatus($status);
+    public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy);
+    public function setFromMailbox(\HelpScout\model\ref\MailboxRef $mailbox);
+
+    public function toJson();
 }
 
 abstract class AbstractThread extends LineItem implements ConversationThread {
@@ -32,45 +48,188 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	private $ccList;
 	private $bccList;
 	private $customer;
-	
+
 	private $attachments;
-	
+
 	public function __construct($data=null) {
 		parent::__construct($data);
 		if ($data) {
 			$this->body        = $data->body;
-			$this->toList      = $data->to;			
-			$this->ccList      = $data->cc;			
+			$this->toList      = $data->to;
+			$this->ccList      = $data->cc;
 			$this->bccList     = $data->bcc;
 			$this->state       = $data->state;
             $this->type        = $data->type;
-			
-			if ($data->customer) {				
+
+			if ($data->customer) {
 				$this->customer = new \HelpScout\model\ref\PersonRef($data->customer);
-			}	
+			}
 
 			if ($data->attachments) {
 				$this->attachments = array();
 				foreach($data->attachments as $at) {
 					$this->attachments[] = new \HelpScout\model\Attachment($at);
-				}				
-			}			
+				}
+			}
 		}
 	}
-	
-	public function isPublished() {
+
+    public function getObjectVars() {
+        $vars = array();
+        $vars['id'] = $this->getId();
+        $vars['status'] = $this->getStatus();
+
+        if ($this->isAssigned()) {
+        	$assignedTo = $this->getAssignedTo();
+        	if (!$assignedTo) {
+        		throw new \HelpScout\ApiException('No assignedTo (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
+        	}
+        	$vars['assignedTo'] = $assignedTo;
+        }
+
+        $createdBy = $this->getCreatedBy();
+        if (!$createdBy) {
+        	throw new \HelpScout\ApiException('No createdBy (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
+        }
+        $vars['createdBy'] = $createdBy->getObjectVars();
+
+        if ($this->getFromMailbox() != null) {
+            $vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
+        }
+
+        if ($this->getType() == null) {
+            if ($this instanceof \HelpScout\model\thread\Customer) {
+                $this->type = 'customer';
+            } else if ($this instanceof \HelpScout\model\thread\Message) {
+                $this->type = 'message';
+            } else if ($this instanceof \HelpScout\model\thread\Note) {
+                $this->type = 'note';
+            } else if ($this instanceof \HelpScout\model\thread\Chat) {
+                $this->type = 'chat';
+            } else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
+                $this->type = 'forwardchild';
+            } else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
+                $this->type = 'forwardparent';
+            } else {
+                $this->type = 'lineitem';
+            }
+        }
+
+        $vars['type'] = $this->getType();
+        $vars['state'] = $this->getState();
+        $vars['body'] = $this->getBody();
+        $vars['to'] = $this->getToList();
+        $vars['cc'] = $this->getCcList();
+        $vars['bcc'] = $this->getBccList();
+
+        if ($this->getCustomer() != null) {
+            $vars['customer'] = $this->getCustomer()->getObjectVars();
+        }
+
+        // Attachments
+        if ($this->getAttachments() != null) {
+            $attachments = array();
+            foreach($this->getAttachments() as $attachment) {
+                $attachments[] = $attachment->getObjectVars();
+            }
+            $vars['attachments'] = $attachments;
+        }
+        return $vars;
+    }
+
+    public function toJson() {
+        $vars = $this->getObjectVars();
+        return json_encode($vars);
+    }
+
+    /**
+     * @param $attachments
+     */
+    public function setAttachments($attachments) {
+        $this->attachments = $attachments;
+    }
+
+    public function addAttachment(\HelpScout\model\Attachment $attachment) {
+    	if (!$this->attachments) {
+    		$this->attachments = array();
+    	}
+    	$this->attachments[] = $attachment;
+    }
+
+    /**
+     * @param $bccList
+     */
+    public function setBccList($bccList) {
+        $this->bccList = $bccList;
+    }
+
+    /**
+     * @param $body
+     */
+    public function setBody($body) {
+        $this->body = $body;
+    }
+
+    /**
+     * @param $ccList
+     */
+    public function setCcList($ccList) {
+        $this->ccList = $ccList;
+    }
+
+    /**
+     * @param $customer
+     */
+    public function setCustomer($customer) {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @param $state
+     */
+    public function setState($state) {
+        $this->state = $state;
+    }
+
+    /**
+     * @param $toList
+     */
+    public function setToList($toList) {
+        $this->toList = $toList;
+    }
+
+    /**
+     * @param $type
+     */
+    public function setType($type) {
+        $this->type = $type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublished() {
 		return $this->state == 'published';
 	}
-	
-	public function isDraft() {
-		return $this->state == 'draft';		
+
+    /**
+     * @return bool
+     */
+    public function isDraft() {
+		return $this->state == 'draft';
 	}
-	
-	public function isHeldForReview() {
+
+    /**
+     * @return bool
+     */
+    public function isHeldForReview() {
 		return $this->state == 'underreview';
 	}
-	
-	public function hasAttachments() {
+
+    /**
+     * @return bool
+     */
+    public function hasAttachments() {
 		return $this->attachments && count($this->attachments) > 0;
 	}
 
@@ -97,21 +256,21 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	}
 
 	/**
-	 * @return the $toList
+	 * @return the $to list
 	 */
 	public function getToList() {
 		return $this->toList;
 	}
 
 	/**
-	 * @return the $ccList
+	 * @return the $cc list
 	 */
 	public function getCcList() {
 		return $this->ccList;
 	}
 
 	/**
-	 * @return the $bccList
+	 * @return the $bcc list
 	 */
 	public function getBccList() {
 		return $this->bccList;
@@ -123,4 +282,11 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	public function getAttachments() {
 		return $this->attachments;
 	}
+
+    /**
+     * @return \HelpScout\model\ref\PersonRef
+     */
+    public function getCustomer() {
+        return $this->customer;
+    }
 }

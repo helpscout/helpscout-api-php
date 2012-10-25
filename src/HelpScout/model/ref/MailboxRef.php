@@ -2,8 +2,8 @@
 namespace HelpScout\model\ref;
 
 class MailboxRef {
-	private $id    = false;
-	private $name  = false;
+	private $id    = null;
+	private $name  = null;
 		
 	public function __construct($data=null) {
 		if ($data) {
@@ -12,7 +12,27 @@ class MailboxRef {
 		}
 	}
 
-	
+    /**
+     * @return array
+     */
+    public function getObjectVars() {
+        return get_object_vars($this);
+    }
+
+    /**
+     * @param $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
+     * @param $name
+     */
+    public function setName($name) {
+        $this->name = $name;
+    }
+
 	/**
 	 * @return int
 	 */

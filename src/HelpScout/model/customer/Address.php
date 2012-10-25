@@ -2,7 +2,7 @@
 namespace HelpScout\model\customer;
 
 class Address {
-	private $id    = false;
+	private $id    = null;
 	private $lines = null;
 	private $city;
 	private $state;
@@ -23,6 +23,51 @@ class Address {
 			$this->modifiedAt = $data->modifiedAt;
 		}
 	}
+
+    public function getObjectVars() {
+        return get_object_vars($this);
+    }
+
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
+
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    public function setLines($lines)
+    {
+        $this->lines = $lines;
+    }
+
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modifiedAt = $modifiedAt;
+    }
+
+    public function setPostalCode($postalCode)
+    {
+        $this->postalCode = $postalCode;
+    }
+
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
 	/**
 	 * @return int
 	 */

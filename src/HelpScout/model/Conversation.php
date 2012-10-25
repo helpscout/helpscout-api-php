@@ -1,117 +1,330 @@
 <?php
 namespace HelpScout\model;
 
-class Conversation {	
-	const OWNER_ANYONE = 1;
+class Conversation {
+	const STATUS_ACTIVE  = 'active';
+	const STATUS_PENDING = 'pending';
+	const STATUS_CLOSED  = 'closed';
+	const STATUS_SPAM    = 'spam';
 
-	private $id             = false;
-    private $type           = false;
-	private $folderId       = 0;
-	private $draft          = false;
-	private $number         = 0;
-	private $owner          = false;
-	private $mailbox        = false;
-	private $customer       = false;
-	private $threadCount    = 0;
-	private $status         = false;
-	private $subject        = false;
-	private $preview        = false;
-	private $createdBy      = false;
-	private $createdAt      = false;
-	private $modifiedAt     = false;
-	private $closedAt       = false;
-	private $closedBy       = 0;
-	private $source         = false;
-	private $ccList         = false;
-	private $bccList        = false;
-	private $tags           = false;
-	private $threads        = false;
-	
-	public function __construct($data=null) {		
-		if ($data) {
-			$this->id               = $data->id;
-            $this->type             = $data->type;
-			$this->folderId         = $data->folderId;
-			$this->draft            = $data->isDraft;
-			$this->number           = $data->number;
-            $this->createdByType    = $data->createdByType;
-			
-			if (isset($data->owner)) {
-				$this->owner = new \HelpScout\model\ref\PersonRef($data->owner);
-			}
-			
-			if (isset($data->mailbox)) {
-				$this->mailbox = new \HelpScout\model\ref\MailboxRef($data->mailbox);
-			}
-			
-			if (isset($data->customer)) {
-				$this->customer = new \HelpScout\model\ref\PersonRef($data->customer);
-			}
-			
-			$this->source      = $data->source;
-			$this->threadCount = $data->threadCount;
-			$this->status      = $data->status;
-			$this->subject     = $data->subject;
-			$this->preview     = $data->preview;
+    const OWNER_ANYONE = 1;
+
+    private $id = null;
+    private $type = null;
+    private $folderId = 0;
+    private $draft = null;
+    private $number = 0;
+    private $owner = null;
+    private $mailbox = null;
+    private $customer = null;
+    private $threadCount = 0;
+    private $status = null;
+    private $subject = null;
+    private $preview = null;
+    private $createdBy = null;
+    private $createdAt = null;
+    private $modifiedAt = null;
+    private $closedAt = null;
+    private $closedBy = null;
+    private $source = null;
+    private $ccList = null;
+    private $bccList = null;
+    private $tags = null;
+    private $threads = null;
+
+    public function __construct($data = null) {
+        if ($data) {
+            $this->id = $data->id;
+            $this->type = $data->type;
+            $this->folderId = $data->folderId;
+            $this->draft = $data->isDraft;
+            $this->number = $data->number;
+
+            if (isset($data->owner)) {
+                $this->owner = new \HelpScout\model\ref\PersonRef($data->owner);
+            }
+
+            if (isset($data->mailbox)) {
+                $this->mailbox = new \HelpScout\model\ref\MailboxRef($data->mailbox);
+            }
+
+            if (isset($data->customer)) {
+                $this->customer = new \HelpScout\model\ref\PersonRef($data->customer);
+            }
+
+            $this->source = $data->source;
+            $this->threadCount = $data->threadCount;
+            $this->status = $data->status;
+            $this->subject = $data->subject;
+            $this->preview = $data->preview;
             $this->createdBy = new \HelpScout\model\ref\PersonRef($data->createdBy);
 
-			$this->createdAt   = $data->createdAt;
-			$this->modifiedAt  = $data->modifiedAt;
-			$this->closedAt    = $data->closedAt;
-			$this->ccList      = $data->cc;
-			$this->bccList     = $data->bcc;
-			$this->tags        = $data->tags;
-			
-			if ($data->closedBy) {
-				$this->closedBy = new \HelpScout\model\ref\PersonRef($data->closedBy);
-			}
-			
-			if (isset($data->threads)) {
-				$this->threads = array();
-				$types = array(
-					'lineitem'     => '\HelpScout\model\thread\LineItem',
-					'customer'     => '\HelpScout\model\thread\Customer',
-					'message'      => '\HelpScout\model\thread\Message',					
-					'note'         => '\HelpScout\model\thread\Note',
-					'forwardparent'=> '\HelpScout\model\thread\ForwardParent',
-					'forwardchild' => '\HelpScout\model\thread\ForwardChild',
-                    'chat'         => '\HelpScout\model\thread\Chat'
-				);
-				foreach($data->threads as $thread) {
-					$item = false;
-					$type = $thread->type;
-					if (isset($types[$type])) {						
-						$this->threads[] = new $types[$type]($thread);
-					} else {
-						throw new \HelpScout\ApiException('Unknown thread type [' . $type . ']');
-					}					
-				}
-			}
-		}
-	}	
+            $this->createdAt = $data->createdAt;
+            $this->modifiedAt = $data->modifiedAt;
+            $this->closedAt = $data->closedAt;
+            $this->ccList = $data->cc;
+            $this->bccList = $data->bcc;
+            $this->tags = $data->tags;
 
-	public function isActive() {
-		return $this->status == self::STATUS_ACTIVE;
-	}
-	
-	public function isPending() {
-		return $this->status == self::STATUS_PENDING;
-	}
-	
-	public function isClosed() {
-		return $this->status == self::STATUS_CLOSED;
-	}
-	
-	public function isSpam() {
-		return $this->status == self::STATUS_SPAM;
-	}
-	
-	/**
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
-	}
+            if ($data->closedBy) {
+                $this->closedBy = new \HelpScout\model\ref\PersonRef($data->closedBy);
+            }
+
+            if (isset($data->threads)) {
+                $this->threads = array();
+                $types = array(
+                    'lineitem' => '\HelpScout\model\thread\LineItem',
+                    'customer' => '\HelpScout\model\thread\Customer',
+                    'message' => '\HelpScout\model\thread\Message',
+                    'note' => '\HelpScout\model\thread\Note',
+                    'forwardparent' => '\HelpScout\model\thread\ForwardParent',
+                    'forwardchild' => '\HelpScout\model\thread\ForwardChild',
+                    'chat' => '\HelpScout\model\thread\Chat'
+                );
+                foreach ($data->threads as $thread) {
+                    $type = $thread->type;
+                    if (isset($types[$type])) {
+                        $this->threads[] = new $types[$type]($thread);
+                    } else {
+                        throw new \HelpScout\ApiException('Unknown thread type [' . $type . ']');
+                    }
+                }
+            }
+        }
+    }
+
+    public function getObjectVars() {
+        $vars = array();
+        $vars['id'] = $this->getId();
+        $vars['type'] = $this->getType();
+        $vars['folderId'] = $this->getFolderId();
+        $vars['draft'] = $this->isDraft();
+        $vars['status'] = $this->getStatus();
+        $vars['subject'] = $this->getSubject();
+        $vars['createdAt'] = $this->getCreatedAt();
+        $vars['modifiedAt'] = $this->getModifiedAt();
+        $vars['closedAt'] = $this->getClosedAt();
+        $vars['source'] = $this->getSource();
+        $vars['cc'] = $this->getCcList();
+        $vars['bcc'] = $this->getBccList();
+        $vars['tags'] = $this->getTags();
+
+        if ($this->getOwner() != null) {
+            $vars['owner'] = $this->getOwner()->getObjectVars();
+        }
+
+        if ($this->getCustomer() != null) {
+            $vars['customer'] = $this->getCustomer()->getObjectVars();
+        }
+
+        $mailbox = $this->getMailbox();
+        if (!$mailbox) {
+        	throw new \HelpScout\ApiException('No mailbox (\HelpScout\model\ref\MailboxRef) object set in Conversation.getObjectVars() method.');
+        }
+        $vars['mailbox'] = $mailbox->getObjectVars();
+        unset($mailbox);
+
+        $createdBy = $this->getCreatedBy();
+        if (!$createdBy) {
+        	throw new \HelpScout\ApiException('No createdBy (\HelpScout\model\ref\PersonRef) object set in Conversation.getObjectVars() method.');
+        }
+        $vars['createdBy'] = $createdBy->getObjectVars();
+
+        if ($this->isClosed()) {
+        	$closedBy = $this->getClosedBy();
+        	if (!$closedBy) {
+        		throw new \HelpScout\ApiException('No closedBy (\HelpScout\model\ref\PersonRef) object set in Conversation.getObjectVars() method.');
+        	}
+        	$vars['closeBy'] = $closedBy->getObjectVars();
+        }
+
+        $threads = array();
+        foreach($this->getThreads() as $thread) {
+            $threads[] = $thread->getObjectVars();
+        }
+        $vars['threads'] = $threads;
+        return $vars;
+    }
+
+    public function toJSON() {
+        $vars = $this->getObjectVars();
+        return json_encode($vars);
+    }
+
+    public function isActive() {
+        return $this->status == self::STATUS_ACTIVE;
+    }
+
+    public function isPending() {
+        return $this->status == self::STATUS_PENDING;
+    }
+
+    public function isClosed() {
+        return $this->status == self::STATUS_CLOSED;
+    }
+
+    public function isSpam() {
+        return $this->status == self::STATUS_SPAM;
+    }
+
+    public function setBccList($bccList) {
+        $this->bccList = $bccList;
+    }
+
+    public function setCcList($ccList) {
+        $this->ccList = $ccList;
+    }
+
+    public function setClosedAt($closedAt) {
+        $this->closedAt = $closedAt;
+    }
+
+    /**
+     * @param $closedBy
+     */
+    public function setClosedBy(\HelpScout\model\ref\PersonRef $closedBy) {
+        $this->closedBy = $closedBy;
+    }
+
+    /**
+     * @param $createdAt
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @param ref\PersonRef $createdBy
+     */
+    public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy) {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @param $createdByType
+     */
+    public function setCreatedByType($createdByType) {
+        $this->createdByType = $createdByType;
+    }
+
+    /**
+     * @param ref\PersonRef $customer
+     */
+    public function setCustomer(\HelpScout\model\ref\PersonRef $customer) {
+        $this->customer = $customer;
+    }
+
+    /**
+     * @param $draft
+     */
+    public function setDraft($draft) {
+        $this->draft = $draft;
+    }
+
+    /**
+     * @param $folderId
+     */
+    public function setFolderId($folderId) {
+        $this->folderId = $folderId;
+    }
+
+    /**
+     * @param $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
+     * @param ref\MailboxRef $mailbox
+     */
+    public function setMailbox(\HelpScout\model\ref\MailboxRef $mailbox) {
+        $this->mailbox = $mailbox;
+    }
+
+    /**
+     * @param $modifiedAt
+     */
+    public function setModifiedAt($modifiedAt) {
+        $this->modifiedAt = $modifiedAt;
+    }
+
+    /**
+     * @param $number
+     */
+    public function setNumber($number) {
+        $this->number = $number;
+    }
+
+    /**
+     * @param ref\PersonRef $owner
+     */
+    public function setOwner(\HelpScout\model\ref\PersonRef $owner) {
+        $this->owner = $owner;
+    }
+
+    /**
+     * @param $preview
+     */
+    public function setPreview($preview) {
+        $this->preview = $preview;
+    }
+
+    /**
+     * @param $source
+     */
+    public function setSource($source) {
+        $this->source = $source;
+    }
+
+    /**
+     * @param $status
+     */
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+
+    /**
+     * @param $subject
+     */
+    public function setSubject($subject) {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @param $tags
+     */
+    public function setTags($tags) {
+        $this->tags = $tags;
+    }
+
+    /**
+     * @param $threadCount
+     */
+    public function setThreadCount($threadCount) {
+        $this->threadCount = $threadCount;
+    }
+
+    /**
+     * @param $threads
+     */
+    public function setThreads($threads) {
+        $this->threads = $threads;
+    }
+
+    /**
+     * @param $type
+     */
+    public function setType($type) {
+        $this->type = $type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
 
     /**
      * @return string
@@ -120,181 +333,191 @@ class Conversation {
         return $this->type;
     }
 
-	/**	 
-	 * @return boolean
-	 */
-	public function hasTags() {
-		return $this->hasList($this->tags);		
-	}
-	
-	/**
-	 * @return boolean
-	 */	
-	public function hasCcList() {
-		return $this->hasList($this->ccList);
-	}
-	
-	/**
-	 * @return boolean
-	 */	
-	public function hasBccList() {
-		return $this->hasList($this->bccList);
-	}
-	
-	/**
-	 * @return boolean
-	 */	
-	private function hasList($list) {
-		return $list && count($list) > 0;
-	}
-		
-	/**
-	 * @return int
-	 */
-	public function getFolderId() {
-		return $this->folderId;
-	}
+    /**
+     * @return boolean
+     */
+    public function hasTags() {
+        return $this->hasList($this->tags);
+    }
 
-	/**
-	 * @return boolean
-	 */
-	public function isDraft() {
-		return $this->draft;
-	}
+    /**
+     * @return boolean
+     */
+    public function hasCcList() {
+        return $this->hasList($this->ccList);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getNumber() {
-		return $this->number;
-	}
+    /**
+     * @return boolean
+     */
+    public function hasBccList() {
+        return $this->hasList($this->bccList);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getOwnerId() {
-		return $this->ownerId;
-	}
+    /**
+     * @param $list
+     * @return bool
+     */
+    private function hasList($list) {
+        return $list && count($list) > 0;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getMailboxId() {
-		return $this->mailboxId;
-	}
+    /**
+     * @return int
+     */
+    public function getFolderId() {
+        return $this->folderId;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getCustomerId() {
-		return $this->customerId;
-	}
+    /**
+     * @return boolean
+     */
+    public function isDraft() {
+        return $this->draft;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getThreadCount() {
-		return $this->threadCount;
-	}
+    /**
+     * @return int
+     */
+    public function getNumber() {
+        return $this->number;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getStatus() {
-		return $this->status;
-	}
+    /**
+     * @return ref\PersonRef|null
+     */
+    public function getOwner() {
+        return $this->owner;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getSubject() {
-		return $this->subject;
-	}
+    /**
+     * @return ref\MailboxRef|null
+     */
+    public function getMailbox() {
+        return $this->mailbox;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getPreview() {
-		return $this->preview;
-	}
+    /**
+     * @return ref\PersonRef|null
+     */
+    public function getCustomer() {
+        return $this->customer;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getCreatedBy() {
-		return $this->createdBy;
-	}
+    /**
+     * @return int
+     */
+    public function getThreadCount() {
+        return $this->threadCount;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getCreatedAt() {
-		return $this->createdAt;
-	}
+    /**
+     * @return string
+     */
+    public function getStatus() {
+        return $this->status;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getModifiedAt() {
-		return $this->modifiedAt;
-	}
+    /**
+     * @return string
+     */
+    public function getSubject() {
+        return $this->subject;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getClosedAt() {
-		return $this->closedAt;
-	}
+    /**
+     * @return string
+     */
+    public function getPreview() {
+        return $this->preview;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getClosedBy() {
-		return $this->closedBy;
-	}
+    /**
+     * @return ref\PersonRef|null
+     */
+    public function getCreatedBy() {
+        return $this->createdBy;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getSource() {
-		return $this->source;
-	}
+    /**
+     * @return string
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getCcList() {
-		return $this->ccList;
-	}
+    /**
+     * @return string
+     */
+    public function getModifiedAt() {
+        return $this->modifiedAt;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getBccList() {
-		return $this->bccList;
-	}
+    /**
+     * @return string
+     */
+    public function getClosedAt() {
+        return $this->closedAt;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getTags() {
-		return $this->tags;
-	}
+    /**
+     * @return ref\PersonRef|null
+     */
+    public function getClosedBy() {
+        return $this->closedBy;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getThreads($cache=true, $apiCall=true) {
-		if ($this->threads === false && $apiCall) {
-			$convo = \HelpScout\ApiClient::getInstance()->getConversation($this->id);
-			if ($convo) {
-				if ($cache) {
-					$this->threads = $convo->getThreads(false, false);
-				} else {
-					return $convo->getThreads(false, false);
-				}
-			}
-		}
-		return $this->threads;
-	}
+    /**
+     * @return array
+     */
+    public function getSource() {
+        return $this->source;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCcList() {
+        return $this->ccList;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBccList() {
+        return $this->bccList;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags() {
+        return $this->tags;
+    }
+
+    public function addLineItem(\HelpScout\model\thread\LineItem $thread) {
+    	if (!$this->threads) {
+    		$this->threads = array();
+    	}
+    	$this->threads[] = $thread;
+    }
+
+    /**
+     * @param bool $cache
+     * @param bool $apiCall
+     * @return array|null
+     */
+    public function getThreads($cache = true, $apiCall = true) {
+        if ($this->threads === false && $apiCall) {
+            $convo = \HelpScout\ApiClient::getInstance()->getConversation($this->id);
+            if ($convo) {
+                if ($cache) {
+                    $this->threads = $convo->getThreads(false, false);
+                } else {
+                    return $convo->getThreads(false, false);
+                }
+            }
+        }
+        return $this->threads;
+    }
 }
