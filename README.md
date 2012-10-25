@@ -117,13 +117,20 @@ API Client Methods
 * getConversationsForMailbox($mailboxId, array $params=array(), $fields=null)
 * getConversationsForCustomerByMailbox($mailboxId, $customerId, array $params=array(), $fields=null)
 * getConversation($conversationId, $fields=null)
+* createConversation($conversation)
+* createThread($conversationId, $thread)
+* updateConversation($conversation)
+* deleteConversation($id)
 
 ### Attachments
 * getAttachmentData($attachmentId)
+* createAttachment($attachment)
 
 ### Customers
-* getCustomers($page=1, $fields=null)
+* getCustomers($page=1, $fields=null, $firstName=null, $lastName=null, $email=null)
 * getCustomer($customerId, $fields=null)
+* createCustomer($customer)
+* updateCustomer($customer)
 
 ### Users
 * getUsers($page=1, $fields=null)
