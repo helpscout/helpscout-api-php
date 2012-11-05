@@ -219,6 +219,12 @@ final class ApiClient {
 		);
 	}
 
+    public function getCustomersForMailbox($mailboxId, $page=1, $fields=null) {
+        return $this->getCollection(
+            sprintf('mailboxes/%d/customers.json', $mailboxId), $this->getParams(array('fields' => $fields, 'page' => $page)), 'getCustomersForMailbox', '\HelpScout\model\Customer'
+        );
+    }
+
     /**
      * @param int $customerId
      * @param string|array $fields
