@@ -106,6 +106,8 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
                 $this->type = 'note';
             } else if ($this instanceof \HelpScout\model\thread\Chat) {
                 $this->type = 'chat';
+            } else if ($this instanceof \HelpScout\model\thread\Phone) {
+                $this->type = 'phone';
             } else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
                 $this->type = 'forwardchild';
             } else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
