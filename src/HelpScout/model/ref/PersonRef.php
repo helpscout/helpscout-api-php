@@ -6,6 +6,7 @@ class PersonRef {
     private $firstName;
     private $lastName;
     private $email;
+    private $phone;
     private $type;
 
     public function __construct($data=null) {
@@ -14,6 +15,7 @@ class PersonRef {
             $this->firstName  = $data->firstName;
             $this->lastName   = $data->lastName;
             $this->email      = $data->email;
+            $this->phone      = $data->phone;
             $this->type       = $data->type;
         }
     }
@@ -64,5 +66,13 @@ class PersonRef {
 
     public function getType() {
         return $this->type;
+    }
+
+    public function setPhone($phone) {
+        $this->phone = $phone;
+    }
+
+    public function getPhone() {
+        return $this->phone;
     }
 }
