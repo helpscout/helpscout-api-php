@@ -79,7 +79,8 @@ class Conversation {
                     'note' => '\HelpScout\model\thread\Note',
                     'forwardparent' => '\HelpScout\model\thread\ForwardParent',
                     'forwardchild' => '\HelpScout\model\thread\ForwardChild',
-                    'chat' => '\HelpScout\model\thread\Chat'
+                    'chat' => '\HelpScout\model\thread\Chat',
+                    'phone' => '\HelpScout\model\thread\Phone'
                 );
                 foreach ($data->threads as $thread) {
                     $type = $thread->type;
