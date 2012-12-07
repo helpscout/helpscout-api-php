@@ -1,3 +1,7 @@
+## 1.2.3 (December 7, 2012)
+
+* Added 'phone' conversation and thread type.
+
 ## 1.2.2 (November 5, 2012)
 
 * Added a method to retrieve a list of customers for a mailbox.
