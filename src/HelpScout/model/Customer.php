@@ -17,11 +17,11 @@ class Customer {
 
 	private $background;
 	private $address;
-	private $socialProfiles;
-	private $emails;
-	private $phones;
-	private $chats;
-	private $websites;
+	private $socialProfiles = array();
+	private $emails         = array();
+	private $phones         = array();
+	private $chats          = array();
+	private $websites       = array();
 
 	public function __construct($data=null) {
 		if ($data) {
@@ -100,7 +100,10 @@ class Customer {
         }
         $vars['phones'] = $phones;
 
-        $vars['address'] = $this->getAddress()->getObjectVars();
+        // Address
+        if ($this->getAddress()) {
+            $vars['address'] = $this->getAddress()->getObjectVars();
+        }
 
         return json_encode($vars);
     }
