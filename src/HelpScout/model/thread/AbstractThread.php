@@ -127,16 +127,21 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
         if ($this->getCustomer() != null) {
             $vars['customer'] = $this->getCustomer()->getObjectVars();
         }
+        $this->addAttachmentsToVars($vars);
 
-        // Attachments
-        if ($this->getAttachments() != null) {
-            $attachments = array();
-            foreach($this->getAttachments() as $attachment) {
-                $attachments[] = $attachment->getObjectVars();
-            }
-            $vars['attachments'] = $attachments;
-        }
         return $vars;
+    }
+
+    private function addAttachmentsToVars(array &$vars) {
+    	// Attachments
+    	$list = $this->getAttachments();
+    	if ($list) {
+    		$attachments = array();
+    		foreach($list as $attachment) {
+    			$attachments[] = $attachment->getObjectVars();
+    		}
+    		$vars['attachments'] = $attachments;
+    	}
     }
 
     public function toJson() {

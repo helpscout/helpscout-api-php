@@ -138,13 +138,21 @@ class Conversation {
         	}
         	$vars['closeBy'] = $closedBy->getObjectVars();
         }
+        $this->addThreadsToVars($vars);
 
-        $threads = array();
-        foreach($this->getThreads() as $thread) {
-            $threads[] = $thread->getObjectVars();
-        }
-        $vars['threads'] = $threads;
         return $vars;
+    }
+
+    private function addThreadsToVars(array &$vars) {
+    	$threads = array();
+
+    	$list = $this->getThreads();
+    	if ($list) {
+	    	foreach($list as $thread) {
+	    		$threads[] = $thread->getObjectVars();
+	    	}
+    	}
+    	$vars['threads'] = $threads;
     }
 
     public function toJSON() {
