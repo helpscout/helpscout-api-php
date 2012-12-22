@@ -128,7 +128,10 @@ API Client Methods
 * deleteAttachment($id)
 
 ### Customers
-* getCustomers($page=1, $fields=null, $firstName=null, $lastName=null, $email=null)
+* getCustomers($page=1, $fields=null)
+* searchCustomers($firstName=null, $lastName=null, $email=null, $page=1, $fields=null)
+* searchCustomersByEmail($email, $page=1, $fields=null)
+* searchCustomersByName($firstName, $lastName, $page=1, $fields=null)
 * getCustomer($customerId, $fields=null)
 * createCustomer($customer)
 * updateCustomer($customer)
