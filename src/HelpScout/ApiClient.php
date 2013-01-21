@@ -5,7 +5,8 @@ require 'ClassLoader.php';
 
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
-	const API_URL = 'https://api.helpscout.net/v1/';
+	const API_URL = 'http://localhost:9001/v1/';
+	// const API_URL = 'https://api.helpscout.net/v1/';
 	const NAMESPACE_SEPARATOR = '\\';
 
 	private $userAgent = false;
@@ -278,8 +279,13 @@ final class ApiClient {
      * @param model\Conversation $conversation
      * @return bool|string
      */
-    public function createConversation(\HelpScout\model\Conversation $conversation) {
-        list($id, ) = $this->doPost('conversations.json', $conversation->toJSON(), 201);
+    public function createConversation(\HelpScout\model\Conversation $conversation, $imported=false) {
+        $url = 'conversations.json';
+        if ($imported) {
+            $url = $url . '?imported=true';
+        }
+        $json = $conversation->toJSON();
+        list($id, ) = $this->doPost($url, $json, 201);
         $conversation->setId($id);
     }
 
@@ -287,8 +293,12 @@ final class ApiClient {
      * @param $conversationId
      * @param model\thread\ConversationThread $thread
      */
-    public function createThread($conversationId, \HelpScout\model\thread\ConversationThread $thread) {
-        list($id, ) = $this->doPost('conversations/' . $conversationId . '.json', $thread->toJson(), 201);
+    public function createThread($conversationId, \HelpScout\model\thread\ConversationThread $thread, $imported=false) {
+        $url = 'conversations/' . $conversationId . '.json';
+        if ($imported) {
+            $url = $url . '?imported=true';
+        }
+        list($id, ) = $this->doPost($url, $thread->toJson(), 201);
         $thread->setId($id);
     }
 
