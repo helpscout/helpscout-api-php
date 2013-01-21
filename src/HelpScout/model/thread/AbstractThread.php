@@ -84,7 +84,7 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
         	if (!$assignedTo) {
         		throw new \HelpScout\ApiException('No assignedTo (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
         	}
-        	$vars['assignedTo'] = $assignedTo;
+        	$vars['assignedTo'] = $assignedTo->getObjectVars();
         }
 
         $createdBy = $this->getCreatedBy();
