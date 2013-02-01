@@ -10,6 +10,8 @@ final class ApiClient {
 
 	private $userAgent = false;
 	private $apiKey    = false;
+	private $isDebug   = false;
+	private $debugDir  = false;
 
 	/**
 	 * @var \HelpScout\ApiClient
@@ -31,6 +33,19 @@ final class ApiClient {
 			self::$instance = new ApiClient();
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * Put ApiClient in debug mode or note. If in debug mode, you can optionally supply a directory in which to write debug messages.
+	 * If no directory is set, debug messages are echo'ed out.
+	 * @param boolean $bool
+	 * @param string $dir
+	 */
+	public function setDebug($bool, $dir=false) {
+		$this->isDebug = $bool;
+		if ($dir && is_dir($dir)) {
+			$this->debugDir = $dir;
+		}
 	}
 
 	/**
@@ -546,6 +561,9 @@ final class ApiClient {
             throw new ApiException('Invalid API Key', 401);
         }
 
+        if ($this->isDebug) {
+        	$this->debug($requestBody);
+        }
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL            => self::API_URL . $url,
@@ -604,6 +622,9 @@ final class ApiClient {
         if ($this->apiKey === false || empty($this->apiKey)) {
             throw new ApiException('Invalid API Key', 401);
         }
+        if ($this->isDebug) {
+        	$this->debug($requestBody);
+        }
 
         $ch = curl_init();
 
@@ -642,6 +663,9 @@ final class ApiClient {
             throw new ApiException('Invalid API Key', 401);
         }
 
+        if ($this->isDebug) {
+        	$this->debug($url);
+        }
         $ch = curl_init();
 
         curl_setopt_array($ch, array(
@@ -708,5 +732,15 @@ final class ApiClient {
 		curl_close($ch);
 
 		return array($statusCode, $response);
+	}
+
+	private function debug($mesg) {
+		$text = strftime('%b %d %H:%M:%S') . ': ' . $mesg . PHP_EOL;
+
+		if ($this->debugDir) {
+			file_put_contents($this->debugDir . DIRECTORY_SEPARATOR . 'apiclient.log', $text, FILE_APPEND);
+		} else {
+			echo $text;
+		}
 	}
 }
