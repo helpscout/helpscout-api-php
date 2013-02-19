@@ -408,6 +408,21 @@ final class ApiClient {
 	}
 
 	/**
+	 * Returns a CustomerRef object initialized with the given HelpScout
+	 * Customer ID and email (optional)
+	 *
+	 * @param int $customerId
+	 * @param int $customerEmail
+	 * @return \HelpScout\model\ref\CustomerRef
+	 */
+	public function getCustomerRefProxy($customerId, $customerEmail = false) {
+		$ref = new \HelpScout\model\ref\CustomerRef();
+		$ref->setId($customerId);
+		if ( $customerEmail ) $ref->setEmail($customerEmail);
+		return $ref;
+	}
+
+	/**
 	 * Get a list of Mailboxes for the given user
 	 * @param int $page
 	 * @param string|array $fields
