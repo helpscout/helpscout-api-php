@@ -1,3 +1,7 @@
+## 1.2.5 (February 28, 2013)
+
+* Updated with support for new line item properties (actionType and actionSourceId). See [developer docs](http://developer.helpscout.net/) for more information.
+
 ## 1.2.4 (January 21, 2013)
 
 * Conversations and threads can now be marked as 'imported' at creation time.
