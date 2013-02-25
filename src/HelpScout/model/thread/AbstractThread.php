@@ -20,6 +20,8 @@ interface ConversationThread {
 	public function isSpam();
 	public function getAssignedTo();
 	public function getStatus();
+    public function getActionType();
+    public function getActionSourceId();
 	public function getCreatedBy();
 	public function getFromMailbox();
     public function getObjectVars();
