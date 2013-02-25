@@ -12,8 +12,9 @@ class LineItem {
 
 	private $id = null;
     private $type;
-
     private $status;
+    private $actionType;
+    private $actionSourceId;
 
     /**
      * @var \HelpScout\model\ref\PersonRef
@@ -32,11 +33,13 @@ class LineItem {
 
 	public function __construct($data=null) {
 		if ($data) {
-			$this->id            = $data->id;
-            $this->type          = $data->type;
-			$this->status        = $data->status;
-			$this->createdAt     = $data->createdAt;
-            $this->createdBy     = new \HelpScout\model\ref\PersonRef($data->createdBy);
+			$this->id               = $data->id;
+            $this->type             = $data->type;
+			$this->status           = $data->status;
+            $this->actionType       = $data->actionType;
+            $this->actionSourceId   = $data->actionSourceId;
+			$this->createdAt        = $data->createdAt;
+            $this->createdBy        = new \HelpScout\model\ref\PersonRef($data->createdBy);
 
 			if ($data->fromMailbox) {
 				$this->fromMailbox = new \HelpScout\model\ref\MailboxRef($data->fromMailbox);
@@ -52,6 +55,8 @@ class LineItem {
         $vars['id'] = $this->getId();
         $vars['type'] = $this->getType();
         $vars['status'] = $this->getStatus();
+        $vars['actionType'] = $this->getActionType();
+        $vars['actionSourceId'] = $this->getActionSourceId();
 
         if ($this->getAssignedTo() != null) {
             $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
@@ -184,4 +189,12 @@ class LineItem {
 	public function getFromMailbox() {
 		return $this->fromMailbox;
 	}
+
+    public function getActionSourceId() {
+        return $this->actionSourceId;
+    }
+
+    public function getActionType() {
+        return $this->actionType;
+    }
 }
