@@ -1,4 +1,4 @@
-## 1.2.5 (February 28, 2013)
+## 1.2.5 (March 1, 2013)
 
 * Updated with support for new line item properties (actionType and actionSourceId). See [developer docs](http://developer.helpscout.net/) for more information.
 
