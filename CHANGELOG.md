@@ -1,3 +1,7 @@
+## 1.2.6 (March 28, 2013)
+
+* Fixed an issue where a conversation created without a customer id was causing an exception.
+
 ## 1.2.5 (March 1, 2013)
 
 * Updated with support for new line item properties (actionType and actionSourceId). See [developer docs](http://developer.helpscout.net/) for more information.
