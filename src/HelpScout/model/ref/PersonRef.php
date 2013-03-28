@@ -2,7 +2,7 @@
 namespace HelpScout\model\ref;
 
 class PersonRef {
-    private $id = false;
+    private $id;
     private $firstName;
     private $lastName;
     private $email;
