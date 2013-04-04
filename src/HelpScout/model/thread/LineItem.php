@@ -15,6 +15,7 @@ class LineItem {
     private $status;
     private $actionType;
     private $actionSourceId;
+    private $createdAt;
 
     /**
      * @var \HelpScout\model\ref\PersonRef
@@ -57,6 +58,7 @@ class LineItem {
         $vars['status'] = $this->getStatus();
         $vars['actionType'] = $this->getActionType();
         $vars['actionSourceId'] = $this->getActionSourceId();
+        $vars['createdAt'] = $this->getCreatedAt();
 
         if ($this->getAssignedTo() != null) {
             $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
@@ -196,5 +198,9 @@ class LineItem {
 
     public function getActionType() {
         return $this->actionType;
+    }
+
+    public function getCreatedAt() {
+        return $this->createdAt;
     }
 }
