@@ -21,7 +21,11 @@ class PersonRef {
     }
 
     public function getObjectVars() {
-        return get_object_vars($this);
+        $vars = get_object_vars($this);
+        if (isset($vars['id']) && $vars['id'] == false){
+            unset($vars['id']);
+        }
+        return $vars;
     }
 
     public function setEmail($email) {
