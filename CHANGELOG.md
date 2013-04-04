@@ -1,3 +1,9 @@
+## 1.2.7 (April 4, 2013)
+
+* Updated examples.
+* When creating a conversation or thread, the createdAt property is correctly set now.
+* Fixed a typo that was causing 'closedBy' to not be set properly on a conversation.
+
 ## 1.2.6 (March 28, 2013)
 
 * Fixed an issue where a conversation created without a customer id was causing an exception.
