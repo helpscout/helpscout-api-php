@@ -2,6 +2,9 @@
 
 use HelpScout\ApiClient;
 
+$client = ApiClient::getInstance();
+$client->setKey('example-key');
+
 // The mailbox associated with the conversation
 $mailbox = new \HelpScout\model\ref\MailboxRef();
 $mailbox->setId(123);
@@ -48,6 +51,4 @@ $thread->setAttachments(array($attachment));
 
 $conversation->setThreads(array($thread));
 
-$client = ApiClient::getInstance();
-$client->setKey('example-key');
 $client->createConversation($conversation);
