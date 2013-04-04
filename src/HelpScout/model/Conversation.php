@@ -133,10 +133,11 @@ class Conversation {
 
         if ($this->isClosed()) {
         	$closedBy = $this->getClosedBy();
-        	if (!$closedBy) {
-        		throw new \HelpScout\ApiException('No closedBy (\HelpScout\model\ref\PersonRef) object set in Conversation.getObjectVars() method.');
-        	}
-        	$vars['closeBy'] = $closedBy->getObjectVars();
+            if ($closedBy) {
+                $vars['closedBy'] = $closedBy->getObjectVars();
+            } else {
+                $vars['closedBy'] = null;
+            }
         }
         $this->addThreadsToVars($vars);
 
@@ -144,6 +145,7 @@ class Conversation {
     }
 
     private function addThreadsToVars(array &$vars) {
+        /* @var $thread \HelpScout\model\thread\AbstractThread */
     	$threads = array();
 
     	$list = $this->getThreads();
