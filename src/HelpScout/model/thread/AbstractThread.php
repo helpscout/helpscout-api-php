@@ -80,6 +80,7 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
         $vars = array();
         $vars['id'] = $this->getId();
         $vars['status'] = $this->getStatus();
+        $vars['createdAt'] = $this->getCreatedAt();
 
         if ($this->isAssigned()) {
         	$assignedTo = $this->getAssignedTo();
