@@ -2,6 +2,9 @@
 
 use HelpScout\ApiClient;
 
+$client = ApiClient::getInstance();
+$client->setKey('example-key');
+
 $customer = new \HelpScout\model\Customer();
 $customer->setFirstName("John");
 $customer->setLastName("Appleseed");
@@ -74,8 +77,6 @@ $website2->setValue("http://www.appleseed.com");
 
 $customer->setWebsites(array($website1, $website2));
 
-$client = ApiClient::getInstance();
-$client->setKey('example-key');
 $client->createCustomer($customer);
 
 
