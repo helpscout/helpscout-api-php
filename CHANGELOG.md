@@ -1,3 +1,7 @@
+## 1.2.8 (May 14, 2013)
+
+* Added support for workflows (get a list of workflows or run a manual workflow).
+
 ## 1.2.7 (April 4, 2013)
 
 * Updated examples.
