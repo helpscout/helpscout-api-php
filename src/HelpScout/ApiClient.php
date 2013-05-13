@@ -19,7 +19,7 @@ final class ApiClient {
 	private static $instance = false;
 
 	private function __construct() {
-		\HelpScout\ClassLoader::register();
+		ClassLoader::register();
 	}
 
 	/**
@@ -35,12 +35,13 @@ final class ApiClient {
 		return self::$instance;
 	}
 
-	/**
-	 * Put ApiClient in debug mode or note. If in debug mode, you can optionally supply a directory in which to write debug messages.
-	 * If no directory is set, debug messages are echo'ed out.
-	 * @param boolean $bool
-	 * @param string $dir
-	 */
+    /**
+     * Put ApiClient in debug mode or note. If in debug mode, you can optionally supply a directory in which to write debug messages.
+     * If no directory is set, debug messages are echo'ed out.
+     *
+     * @param boolean $bool
+     * @param bool|string $dir
+     */
 	public function setDebug($bool, $dir=false) {
 		$this->isDebug = $bool;
 		if ($dir && is_dir($dir)) {
@@ -79,7 +80,7 @@ final class ApiClient {
 	 * @param array $params
 	 * @param array|string $fields
 	 * @throws \HelpScout\ApiException
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
 	public function getConversationsForFolder($mailboxId, $folderId, array $params=array(), $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
@@ -102,7 +103,7 @@ final class ApiClient {
 	 * @param array $params
 	 * @param array $fields
 	 * @throws \HelpScout\ApiException
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
 	public function getConversationsForMailbox($mailboxId, array $params=array(), $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
@@ -123,7 +124,7 @@ final class ApiClient {
 	 * @param array $params
 	 * @param array $fields
 	 * @throws \HelpScout\ApiException
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
 	public function getConversationsForCustomerByMailbox($mailboxId, $customerId, array $params=array(), $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
@@ -144,7 +145,7 @@ final class ApiClient {
      * @param int $conversationId
      * @param string|array $fields
      * @throws ApiException
-     * @return \HelpScout\model\Conversation
+     * @return model\Conversation
      */
 	public function getConversation($conversationId, $fields=null) {
 		if (!is_numeric($conversationId) || $conversationId < 1) {
@@ -185,7 +186,7 @@ final class ApiClient {
 	 * Returns a Collection of all the users for the company.
 	 * @param int $page
 	 * @param string|array $fields
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
 	public function getUsers($page=1, $fields=null) {
 		return $this->getCollection(
@@ -199,7 +200,7 @@ final class ApiClient {
      * @param $mailboxId
      * @param int $page
      * @param string|array $fields
-     * @return \HelpScout\Collection
+     * @return Collection
      */
 	public function getUsersForMailbox($mailboxId, $page=1, $fields=null) {
 		return $this->getCollection(
@@ -226,7 +227,7 @@ final class ApiClient {
 	 * Returns a Collection of all the customers for the company.
 	 * @param int $page
 	 * @param string|array $fields
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
 	public function getCustomers($page=1, $fields=null) {
 		return $this->getCollection(
@@ -244,7 +245,7 @@ final class ApiClient {
      * @param int $customerId
      * @param string|array $fields
      * @throws ApiException
-     * @return \HelpScout\model\Customer
+     * @return model\Customer
      */
 	public function getCustomer($customerId, $fields=null) {
 		if (!is_numeric($customerId) || $customerId < 1) {
@@ -259,7 +260,7 @@ final class ApiClient {
 	 * @param string $email
 	 * @param int $page
 	 * @param array $fields
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
 	public function searchCustomersByEmail($email, $page=1, $fields=null) {
 		$params = array('fields' => $fields, 'page' => $page, 'email' => $email);
@@ -271,7 +272,7 @@ final class ApiClient {
 	 * @param string $lastName
 	 * @param int $page
 	 * @param array $fields
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
     public function searchCustomersByName($firstName, $lastName, $page=1, $fields=null) {
         $params = array('fields' => $fields, 'page' => $page, 'firstName' => $firstName, 'lastName' => $lastName);
@@ -279,10 +280,12 @@ final class ApiClient {
     }
 
     /**
+     * @param string $firstName
+     * @param string $lastName
      * @param string $email
      * @param int $page
      * @param array $fields
-     * @return \HelpScout\Collection
+     * @return Collection
      */
     public function searchCustomers($firstName=null, $lastName=null, $email=null, $page=1, $fields=null) {
         $params = array('fields' => $fields, 'page' => $page, 'firstName' => $firstName, 'lastName' => $lastName, 'email' => $email);
@@ -291,9 +294,9 @@ final class ApiClient {
 
     /**
      * @param model\Conversation $conversation
-     * @return bool|string
+     * @param bool $imported
      */
-    public function createConversation(\HelpScout\model\Conversation $conversation, $imported=false) {
+    public function createConversation(model\Conversation $conversation, $imported=false) {
         $url = 'conversations.json';
         if ($imported) {
             $url = $url . '?imported=true';
@@ -306,8 +309,9 @@ final class ApiClient {
     /**
      * @param $conversationId
      * @param model\thread\ConversationThread $thread
+     * @param bool $imported
      */
-    public function createThread($conversationId, \HelpScout\model\thread\ConversationThread $thread, $imported=false) {
+    public function createThread($conversationId, model\thread\ConversationThread $thread, $imported=false) {
         $url = 'conversations/' . $conversationId . '.json';
         if ($imported) {
             $url = $url . '?imported=true';
@@ -332,7 +336,7 @@ final class ApiClient {
     /**
      * @param model\Conversation $conversation
      */
-    public function updateConversation(\HelpScout\model\Conversation $conversation) {
+    public function updateConversation(model\Conversation $conversation) {
         $this->doPut('conversations/' . $conversation->getId() . '.json', $conversation->toJSON(), 200);
     }
 
@@ -343,12 +347,12 @@ final class ApiClient {
     /**
      * @param model\Customer $customer
      */
-    public function createCustomer(\HelpScout\model\Customer $customer) {
+    public function createCustomer(model\Customer $customer) {
         list($id, ) = $this->doPost('customers.json', $customer->toJSON(), 201);
         $customer->setId($id);
     }
 
-    public function updateCustomer(\HelpScout\model\Customer $customer) {
+    public function updateCustomer(model\Customer $customer) {
         $this->doPut('customers/' . $customer->getId() . '.json', $customer->toJSON(), 200);
     }
 
@@ -357,7 +361,7 @@ final class ApiClient {
      * @param int $page
      * @param string|array $fields
      * @throws ApiException
-     * @return \HelpScout\Collection
+     * @return Collection
      */
 	public function getFolders($mailboxId, $page=1, $fields=null) {
 		if (!is_numeric($mailboxId) || $mailboxId < 1) {
@@ -387,10 +391,10 @@ final class ApiClient {
 	 * Returns a MailboxRef object initialized with the given id.
 	 *
 	 * @param int $mailboxId
-	 * @return \HelpScout\model\ref\MailboxRef
+	 * @return model\ref\MailboxRef
 	 */
 	public function getMailboxProxy($mailboxId) {
-		$ref = new \HelpScout\model\ref\MailboxRef();
+		$ref = new model\ref\MailboxRef();
 		$ref->setId($mailboxId);
 		return $ref;
 	}
@@ -399,24 +403,24 @@ final class ApiClient {
 	 * Returns a MailboxRef object initialized with the given id.
 	 *
 	 * @param int $userId
-	 * @return \HelpScout\model\ref\UserRef
+	 * @return model\ref\UserRef
 	 */
 	public function getUserRefProxy($userId) {
-		$ref = new \HelpScout\model\ref\UserRef();
+		$ref = new model\ref\UserRef();
 		$ref->setId($userId);
 		return $ref;
 	}
 
-	/**
-	 * Returns a CustomerRef object initialized with the given HelpScout
-	 * Customer ID and email (optional)
-	 *
-	 * @param int $customerId
-	 * @param int $customerEmail
-	 * @return \HelpScout\model\ref\CustomerRef
-	 */
+    /**
+     * Returns a CustomerRef object initialized with the given HelpScout
+     * Customer ID and email (optional)
+     *
+     * @param int $customerId
+     * @param bool|int $customerEmail
+     * @return model\ref\CustomerRef
+     */
 	public function getCustomerRefProxy($customerId, $customerEmail = false) {
-		$ref = new \HelpScout\model\ref\CustomerRef();
+		$ref = new model\ref\CustomerRef();
 		$ref->setId($customerId);
 		if ( $customerEmail ) $ref->setEmail($customerEmail);
 		return $ref;
@@ -426,13 +430,29 @@ final class ApiClient {
 	 * Get a list of Mailboxes for the given user
 	 * @param int $page
 	 * @param string|array $fields
-	 * @return \HelpScout\Collection
+	 * @return Collection
 	 */
 	public function getMailboxes($page=1, $fields=null) {
 		return $this->getCollection(
 			'mailboxes.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getMailboxes', '\HelpScout\model\Mailbox'
 		);
 	}
+
+    public function getWorkflows($mailboxId, $page=1, $fields=null) {
+        return $this->getCollection(
+            sprintf('mailboxes/%d/workflows.json', $mailboxId), $this->getParams(array('fields' => $fields, 'page' => $page)), 'getWorkflows', '\HelpScout\model\Workflow'
+        );
+    }
+
+    public function runWorkflow($workflowId, $conversationId) {
+        return $this->doPost(sprintf('workflows/%s/conversations/%s.json', $workflowId, $conversationId), false, 200);
+    }
+
+    public function runWorkflowOnConversations($workflowId, array $conversationIds) {
+        $conversationIds = array('conversationIds' => $conversationIds);
+        $requestBody = json_encode($conversationIds);
+        return $this->doPost(sprintf('workflows/%s/conversations.json', $workflowId), $requestBody, 200);
+    }
 
 	private function getCollection($url, $params, $method, $model) {
 		list($statusCode, $json) = $this->callServer($url, 'GET', $params);
@@ -444,7 +464,7 @@ final class ApiClient {
 			if (isset($params['fields'])) {
 				return $json;
 			} else {
-				return new \HelpScout\Collection($json, $model);
+				return new Collection($json, $model);
 			}
 		}
 		return false;
@@ -571,7 +591,7 @@ final class ApiClient {
 		return $fields;
 	}
 
-    private function doPost($url, $requestBody, $expectedCode) {
+    private function doPost($url, $requestBody=false, $expectedCode) {
         if ($this->apiKey === false || empty($this->apiKey)) {
             throw new ApiException('Invalid API Key', 401);
         }
@@ -579,15 +599,19 @@ final class ApiClient {
         if ($this->isDebug) {
         	$this->debug($requestBody);
         }
+
+        $httpHeaders = array();
+        if ($requestBody !== false) {
+            $httpHeaders[] = 'Accept: application/json';
+            $httpHeaders[] = 'Content-Type: application/json';
+            $httpHeaders[] = 'Content-Length: ' . strlen($requestBody);
+        }
+
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL            => self::API_URL . $url,
             CURLOPT_CUSTOMREQUEST  => 'POST',
-            CURLOPT_HTTPHEADER     => array(
-                'Accept: application/json',
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($requestBody)
-            ),
+            CURLOPT_HTTPHEADER     => $httpHeaders,
             CURLOPT_POSTFIELDS     => $requestBody,
             CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
             CURLOPT_USERPWD		   => $this->apiKey . ':X',
@@ -665,6 +689,7 @@ final class ApiClient {
             CURLOPT_USERAGENT      => $this->getUserAgent()
         ));
 
+        /** @noinspection PhpUnusedLocalVariableInspection */
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
 
@@ -699,6 +724,7 @@ final class ApiClient {
             CURLOPT_USERAGENT      => $this->getUserAgent()
         ));
 
+        /** @noinspection PhpUnusedLocalVariableInspection */
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
 
