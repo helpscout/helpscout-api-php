@@ -1,5 +1,5 @@
 <?php
-class DynamicAppExample {
+class DynamicApp {
 	const SECRET_KEY = 'SECRET-KEY-HERE';
 
 	private $input = false;
@@ -62,5 +62,5 @@ class DynamicAppExample {
 	}
 }
 
-$app = new DynamicAppExample();
+$app = new DynamicApp();
 echo $app->getResponse();
