@@ -1,7 +1,7 @@
 <?php
 namespace HelpScout;
 
-require 'ClassLoader.php';
+require_once 'ClassLoader.php';
 
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
