@@ -1,5 +1,5 @@
 {
-    "name": "helpscout/apiclient",
+    "name": "helpscout/api",
     "type": "library",
     "description": "API client for the Help Scout API",
     "keywords": ["api", "api-client"],
