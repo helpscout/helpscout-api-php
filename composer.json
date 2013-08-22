@@ -1,0 +1,14 @@
+{
+    "name": "helpscout/apiclient",
+    "type": "library",
+    "description": "API client for the Help Scout API",
+    "keywords": ["api", "api-client"],
+    "homepage": "http://www.helpscout.net",
+    "require": {
+        "php": ">=5.3.2",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-0": { "HelpScout\\": "src/" }
+    }
+}
