@@ -2,8 +2,9 @@
     "name": "helpscout/api",
     "type": "library",
     "description": "API client for the Help Scout API",
-    "keywords": ["api", "api-client"],
+    "keywords": ["api", "api-client", "helpscout"],
     "homepage": "http://www.helpscout.net",
+    "license": "MIT",
     "require": {
         "php": ">=5.3.2",
         "ext-curl": "*"
