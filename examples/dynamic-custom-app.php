@@ -32,7 +32,10 @@ class DynamicApp {
 	 */
 	private function isSignatureValid() {
 		$signature = $this->generateSignature();
-		return $signature == $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE');
+		if ($signature) {
+			return $signature === $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE');
+		}
+		return false;
 	}
 
 	private function getHelpScoutData() {
@@ -44,7 +47,7 @@ class DynamicApp {
 		$ret = array('html' => '');
 
 		if (!$this->isSignatureValid()) {
-			return json_encode($ret);
+			return;
 		}
 		$data = $this->getHelpScoutData();
 
