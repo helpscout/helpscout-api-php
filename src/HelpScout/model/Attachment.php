@@ -9,20 +9,20 @@ class Attachment {
 	private $width  = 0;
 	private $height = 0;
 	private $url;
-    private $hash;
+	private $hash;
 
 	private $data;
 
 	public function __construct($data=null) {
 		if ($data) {
-        	$this->id       = isset($data->id)       ? $data->id       : null;
-            $this->mimeType = isset($data->mimeType) ? $data->mimeType : null;
-            $this->fileName = isset($data->fileName) ? $data->fileName : null;
-            $this->size     = isset($data->size)     ? $data->size     : 0;
-            $this->width    = isset($data->width)    ? $data->width    : 0;
-            $this->height   = isset($data->height)   ? $data->height   : 0;
-            $this->url      = isset($data->url)      ? $data->url      : null;
-            $this->hash     = isset($data->hash)     ? $data->hash     : null;
+			$this->id       = isset($data->id)       ? $data->id       : null;
+			$this->mimeType = isset($data->mimeType) ? $data->mimeType : null;
+			$this->fileName = isset($data->fileName) ? $data->fileName : null;
+			$this->size     = isset($data->size)     ? $data->size     : 0;
+			$this->width    = isset($data->width)    ? $data->width    : 0;
+			$this->height   = isset($data->height)   ? $data->height   : 0;
+			$this->url      = isset($data->url)      ? $data->url      : null;
+			$this->hash     = isset($data->hash)     ? $data->hash     : null;
 		}
 	}
 
@@ -51,23 +51,23 @@ class Attachment {
 			}
 		}
 	}
-    public function getObjectVars() {
-        return get_object_vars($this);
-    }
+	public function getObjectVars() {
+		return get_object_vars($this);
+	}
 
-    public function toJson() {
-    	$vars = get_object_vars($this);
-    	$vars['data'] = base64_encode($this->data);
+	public function toJson() {
+		$vars = get_object_vars($this);
+		$vars['data'] = base64_encode($this->data);
 
-  		return json_encode($vars);
-    }
+		return json_encode($vars);
+	}
 
-    /**
-     * @param $data
-     */
-    public function setData($data) {
-        $this->data = $data;
-    }
+	/**
+	 * @param $data
+	 */
+	public function setData($data) {
+		$this->data = $data;
+	}
 
 	/**
 	 * Returns the raw data for this attachment.
@@ -81,26 +81,26 @@ class Attachment {
 		return $this->data;
 	}
 
-    /**
-     * @param $fileName
-     */
-    public function setFileName($fileName) {
-        $this->fileName = $fileName;
-    }
+	/**
+	 * @param $fileName
+	 */
+	public function setFileName($fileName) {
+		$this->fileName = $fileName;
+	}
 
-    /**
-     * @param $mimeType
-     */
-    public function setMimeType($mimeType) {
-        $this->mimeType = $mimeType;
-    }
+	/**
+	 * @param $mimeType
+	 */
+	public function setMimeType($mimeType) {
+		$this->mimeType = $mimeType;
+	}
 
-    /**
-     * @param $hash
-     */
-    public function setHash($hash) {
-        $this->hash = $hash;
-    }
+	/**
+	 * @param $hash
+	 */
+	public function setHash($hash) {
+		$this->hash = $hash;
+	}
 
 	/**
 	 * @return int
