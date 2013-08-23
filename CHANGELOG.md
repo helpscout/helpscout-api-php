@@ -1,3 +1,9 @@
+## 1.2.9 (August 22, 2013)
+
+* Fixed use of invalid cURL option
+* Update dynamic-custom-app.php example to prevent unauthorized requests from having data sent
+* Added composer support
+
 ## 1.2.8 (May 14, 2013)
 
 * Added support for workflows (get a list of workflows or run a manual workflow). See [developer docs](http://developer.helpscout.net/workflows/list/) for more information.
