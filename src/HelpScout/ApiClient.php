@@ -620,7 +620,7 @@ final class ApiClient {
             CURLOPT_CONNECTTIMEOUT => 30,
             CURLOPT_FAILONERROR    => true,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_HEADER         => true,
             CURLOPT_ENCODING       => 'gzip,deflate',
             CURLOPT_USERAGENT      => $this->getUserAgent()
@@ -683,7 +683,7 @@ final class ApiClient {
             CURLOPT_CONNECTTIMEOUT => 30,
             CURLOPT_FAILONERROR    => true,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_HEADER         => true,
             CURLOPT_ENCODING       => 'gzip,deflate',
             CURLOPT_USERAGENT      => $this->getUserAgent()
@@ -718,7 +718,7 @@ final class ApiClient {
             CURLOPT_CONNECTTIMEOUT => 30,
             CURLOPT_FAILONERROR    => true,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_HEADER         => true,
             CURLOPT_ENCODING       => 'gzip,deflate',
             CURLOPT_USERAGENT      => $this->getUserAgent()
