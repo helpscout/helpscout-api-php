@@ -30,7 +30,7 @@ final class ClassLoader {
 						'HelpScout' . self::NAMESPACE_SEPARATOR
 				), '', $className
 		);
-		require ($this->baseDir . str_replace(self::NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $className) . '.php');
+		require_once ($this->baseDir . str_replace(self::NAMESPACE_SEPARATOR, DIRECTORY_SEPARATOR, $className) . '.php');
 		return true;
 	}
 
