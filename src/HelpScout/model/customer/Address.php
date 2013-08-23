@@ -2,25 +2,25 @@
 namespace HelpScout\model\customer;
 
 class Address {
-	private $id    = null;
-	private $lines = null;
+	private $id;
+	private $lines;
 	private $city;
 	private $state;
 	private $postalCode;
 	private $country;
 	private $createdAt;
 	private $modifiedAt;
-	
-	public function __construct($data=null) {		
+
+	public function __construct($data=null) {
 		if ($data) {
-			$this->id         = $data->id;
-			$this->lines      = $data->lines;
-			$this->city       = $data->city;
-			$this->state      = $data->state;
-			$this->postalCode = $data->postalCode;
-			$this->country    = $data->country;
-			$this->createdAt  = $data->createdAt;
-			$this->modifiedAt = $data->modifiedAt;
+			$this->id        = isset($data->id)         ? $data->id         : null;
+			$this->lines     = isset($data->lines)      ? $data->lines      : null;
+			$this->city      = isset($data->city)       ? $data->city       : null;
+			$this->state     = isset($data->state)      ? $data->state      : null;
+			$this->postalCode= isset($data->postalCode) ? $data->postalCode : null;
+			$this->country   = isset($data->country)    ? $data->country    : null;
+			$this->createdAt = isset($data->createdAt)  ? $data->createdAt  : null;
+			$this->modifiedAt= isset($data->modifiedAt) ? $data->modifiedAt : null;
 		}
 	}
 
@@ -74,14 +74,14 @@ class Address {
 	public function getId() {
 		return $this->id;
 	}
-	
+
 	/**
 	 * @return array
 	 */
 	public function getLines() {
 		return $this->lines;
 	}
-	
+
 	/**
 	 * @return the $city
 	 */

@@ -2,24 +2,24 @@
 namespace HelpScout\model;
 
 class Mailbox {
-	private $id = false;	
+	private $id = false;
 	private $name;
 	private $slug;
 	private $email;
 	private $createdAt;
 	private $modifiedAt;
-	
+
 	private $folders = false;
-	
-	public function __construct($data=null) {		
-		if ($data) {			
-			$this->id         = $data->id;
-			$this->name       = $data->name;
-			$this->slug       = $data->slug;
-			$this->email      = $data->email;			
-			$this->createdAt  = $data->createdAt;
-			$this->modifiedAt = $data->modifiedAt;	
-		}	
+
+	public function __construct($data=null) {
+		if ($data) {
+			$this->id         = isset($data->id)         ? $data->id         : null;
+			$this->name       = isset($data->name)       ? $data->name       : null;
+			$this->slug       = isset($data->slug)       ? $data->slug       : null;
+			$this->email      = isset($data->email)      ? $data->email      : null;
+			$this->createdAt  = isset($data->createdAt)  ? $data->createdAt  : null;
+			$this->modifiedAt = isset($data->modifiedAt) ? $data->modifiedAt : null;
+		}
 	}
 
 	/**
@@ -28,7 +28,7 @@ class Mailbox {
 	public function getId() {
 		return $this->id;
 	}
-	
+
 	/**
 	 * @return the $name
 	 */
@@ -67,7 +67,7 @@ class Mailbox {
 	/**
 	 * @return the $folders
 	 */
-	public function getFolders($cache=true) {		
+	public function getFolders($cache=true) {
 		if ($this->folders === false) {
 			$folders = \HelpScout\ApiClient::getInstance()->getFolders($this->id);
 			if ($folders) {
@@ -76,67 +76,67 @@ class Mailbox {
 				} else {
 					return $folders->getItems();
 				}
-			}			
+			}
 		}
 		return $this->folders;
 	}
-	
+
 	public function setFolders(array $folders) {
 		$this->folders = $folders;
 	}
 
-	/** 
+	/**
 	 * @return \HelpScout\model\Folder
 	 */
 	public function getUnassignedFolder() {
 		return $this->getFolderByType('unassigned');
 	}
-	
+
 	/**
 	 * @return \HelpScout\model\Folder
 	 */
 	public function getAssignedFolder() {
 		return $this->getFolderByType('assigned');
-	}	
-	
+	}
+
 	/**
 	 * @return \HelpScout\model\Folder
 	 */
 	public function getMyTicketsFolder() {
 		return $this->getFolderByType('mytickets');
-	}	
-	
+	}
+
 	/**
 	 * @return \HelpScout\model\Folder
 	 */
 	public function getDraftsFolder() {
 		return $this->getFolderByType('drafts');
 	}
-	
+
 	/**
 	 * @return \HelpScout\model\Folder
 	 */
 	public function getClosedFolder() {
 		return $this->getFolderByType('closed');
-	}	
-	
+	}
+
 	/**
 	 * @return \HelpScout\model\Folder
 	 */
 	public function getSpamFolder() {
 		return $this->getFolderByType('spam');
-	}	
-	
+	}
+
 	/**
 	 * @return \HelpScout\model\Folder
-	 */	
+	 */
 	private function getFolderByType($type) {
 		$folders = $this->getFolders();
 		if (!$folders) {
-			return false;	
+			return false;
 		}
 		$theFolder = false;
-		
+
 		foreach($folders as $folder) {
 			if ($folder->getType() == $type) {
 				$theFolder = $folder;
@@ -145,7 +145,7 @@ class Mailbox {
 		}
 		return $theFolder;
 	}
-	
+
 	/**
 	 * @param boolean $name
 	 */
@@ -179,5 +179,16 @@ class Mailbox {
 	 */
 	public function setModifiedAt($modifiedAt) {
 		$this->modifiedAt = $modifiedAt;
+	}
+
+	/**
+	 * @return \HelpScout\model\ref\MailboxRef
+	 */
+	public function toRef() {
+		$ref = new \HelpScout\model\ref\MailboxRef();
+		$ref->setId($this->getId());
+		$ref->setName($this->getName());
+
+		return $ref;
 	}
 }

@@ -34,13 +34,13 @@ class LineItem {
 
 	public function __construct($data=null) {
 		if ($data) {
-			$this->id               = $data->id;
-            $this->type             = $data->type;
-			$this->status           = $data->status;
-            $this->actionType       = $data->actionType;
-            $this->actionSourceId   = $data->actionSourceId;
-			$this->createdAt        = $data->createdAt;
-            $this->createdBy        = new \HelpScout\model\ref\PersonRef($data->createdBy);
+			$this->id             = isset($data->id)             ? $data->id             : null;
+			$this->type           = isset($data->type)           ? $data->type           : null;
+			$this->status         = isset($data->status)         ? $data->status         : null;
+			$this->actionType     = isset($data->actionType)     ? $data->actionType     : null;
+			$this->actionSourceId = isset($data->actionSourceId) ? $data->actionSourceId : null;
+			$this->createdAt      = isset($data->createdAt)      ? $data->createdAt      : null;
+            $this->createdBy      = new \HelpScout\model\ref\PersonRef($data->createdBy);
 
 			if ($data->fromMailbox) {
 				$this->fromMailbox = new \HelpScout\model\ref\MailboxRef($data->fromMailbox);

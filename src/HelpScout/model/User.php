@@ -14,15 +14,15 @@ class User {
 
 	public function __construct($data=null) {
 		if ($data) {
-			$this->id         = $data->id;
-			$this->firstName  = $data->firstName;
-			$this->lastName   = $data->lastName;
-			$this->email      = $data->email;
-			$this->role       = $data->role;
-			$this->timezone   = $data->timezone;
-			$this->photoUrl   = $data->photoUrl;
-			$this->createdAt  = $data->createdAt;
-			$this->modifiedAt = $data->modifiedAt;
+			$this->id         = isset($data->id        ) ? $data->id         : null;
+			$this->firstName  = isset($data->firstName ) ? $data->firstName  : null;
+			$this->lastName   = isset($data->lastName  ) ? $data->lastName   : null;
+			$this->email      = isset($data->email     ) ? $data->email      : null;
+			$this->role       = isset($data->role      ) ? $data->role       : null;
+			$this->timezone   = isset($data->timezone  ) ? $data->timezone   : null;
+			$this->photoUrl   = isset($data->photoUrl  ) ? $data->photoUrl   : null;
+			$this->createdAt  = isset($data->createdAt ) ? $data->createdAt  : null;
+			$this->modifiedAt = isset($data->modifiedAt) ? $data->modifiedAt : null;
 		}
 	}
 

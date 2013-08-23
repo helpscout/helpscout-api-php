@@ -1,7 +1,7 @@
 <?php
 namespace HelpScout;
 
-require 'ClassLoader.php';
+require_once 'ClassLoader.php';
 
 final class Webhook {
 	private $input     = false;

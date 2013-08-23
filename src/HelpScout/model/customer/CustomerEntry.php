@@ -4,19 +4,15 @@ namespace HelpScout\model\customer;
 class CustomerEntry {
 	private $id;
 	private $value;
-	private $type = null;
-	private $location = null;
-	
-	public function __construct($data=null) {		
+	private $type;
+	private $location;
+
+	public function __construct($data=null) {
 		if ($data) {
-			$this->id    = $data->id;
-			$this->value = $data->value;
-			if (isset($data->type)) {
-				$this->type = $data->type;
-			}
-			if (isset($data->location)) {
-				$this->location = $data->location;
-			}
+			$this->id       = isset($data->id)       ? $data->id       : null;
+			$this->value    = isset($data->value)    ? $data->value    : null;
+			$this->type     = isset($data->type)     ? $data->type     : null;
+			$this->location = isset($data->location) ? $data->location : null;
 		}
 	}
 
@@ -46,7 +42,7 @@ class CustomerEntry {
 	public function getId() {
 		return $this->id;
 	}
-	
+
 	/**
 	 * @return string
 	 */

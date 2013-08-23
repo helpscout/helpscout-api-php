@@ -25,22 +25,20 @@ class Customer {
 
 	public function __construct($data=null) {
 		if ($data) {
-			$this->id           = $data->id;
-			$this->firstName    = $data->firstName;
-			$this->lastName     = $data->lastName;
-			$this->photoUrl     = $data->photoUrl;
-			$this->photoType    = $data->photoType;
-			$this->gender       = $data->gender;
-			$this->age          = $data->age;
-			$this->organization = $data->organization;
-			$this->jobTitle     = $data->jobTitle;
-			$this->location     = $data->location;
-			$this->createdAt    = $data->createdAt;
-			$this->modifiedAt   = $data->modifiedAt;
+			$this->id           = isset($data->id)           ? $data->id           : null;
+			$this->firstName    = isset($data->firstName)    ? $data->firstName    : null;
+			$this->lastName     = isset($data->lastName)     ? $data->lastName     : null;
+			$this->photoUrl     = isset($data->photoUrl)     ? $data->photoUrl     : null;
+			$this->photoType    = isset($data->photoType)    ? $data->photoType    : null;
+			$this->gender       = isset($data->gender)       ? $data->gender       : null;
+			$this->age          = isset($data->age)          ? $data->age          : null;
+			$this->organization = isset($data->organization) ? $data->organization : null;
+			$this->jobTitle     = isset($data->jobTitle)     ? $data->jobTitle     : null;
+			$this->location     = isset($data->location)     ? $data->location     : null;
+			$this->createdAt    = isset($data->createdAt)    ? $data->createdAt    : null;
+			$this->modifiedAt   = isset($data->modifiedAt)   ? $data->modifiedAt   : null;
+			$this->background   = isset($data->background)   ? $data->background   : null;
 
-			if (isset($data->background)) {
-				$this->background = $data->background;
-			}
 			if (isset($data->address)) {
 				$this->address = new \HelpScout\model\customer\Address($data->address);
 			}
