@@ -2,7 +2,7 @@
 
 * Use correct value for all instances of `CURLOPT_SSL_VERIFYHOST` (thanks jeffbyrnes)
 * Improved attribute handling in model constructors
-* Updated to use require_once instead of require (where applicable)
+* Updated to use `require_once` instead of `require` (where applicable)
 
 ## 1.2.9 (August 22, 2013)
 
