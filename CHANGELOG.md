@@ -1,3 +1,9 @@
+## 1.3.0 (August 23, 2013)
+
+* Use correct value for all instances of `CURLOPT_SSL_VERIFYHOST` (thanks jeffbyrnes)
+* Improved attribute handling in model constructors
+* Updated to use require_once instead of require (where applicable)
+
 ## 1.2.9 (August 22, 2013)
 
 * Fixed use of invalid cURL option
