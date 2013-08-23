@@ -1,14 +1,14 @@
-<?php 
+<?php
 namespace HelpScout\model\ref;
 
 class MailboxRef {
-	private $id    = null;
-	private $name  = null;
-		
+	private $id;
+	private $name;
+
 	public function __construct($data=null) {
 		if ($data) {
-			$this->id   = $data->id;
-			$this->name = $data->name;			
+			$this->id   = isset($data->id)   ? $data->id   : null;
+			$this->name = isset($data->name) ? $data->name : null;
 		}
 	}
 
@@ -39,7 +39,7 @@ class MailboxRef {
 	public function getId() {
 		return $this->id;
 	}
-	
+
 	/**
 	 * @return the $name
 	 */

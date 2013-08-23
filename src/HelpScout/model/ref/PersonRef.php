@@ -11,12 +11,12 @@ class PersonRef {
 
     public function __construct($data=null) {
         if ($data) {
-            $this->id         = $data->id;
-            $this->firstName  = $data->firstName;
-            $this->lastName   = $data->lastName;
-            $this->email      = $data->email;
-            $this->phone      = $data->phone;
-            $this->type       = $data->type;
+        	$this->id         = isset($data->id)        ? $data->id        : null;
+        	$this->firstName  = isset($data->firstName) ? $data->firstName : null;
+        	$this->lastName   = isset($data->lastName)  ? $data->lastName  : null;
+        	$this->email      = isset($data->email)     ? $data->email     : null;
+        	$this->phone      = isset($data->phone)     ? $data->phone     : null;
+        	$this->type       = isset($data->type)      ? $data->type      : null;
         }
     }
 

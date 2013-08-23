@@ -14,14 +14,14 @@ class Workflow {
 
     public function __construct($data=null) {
         if ($data) {
-            $this->id          = $data->id;
-            $this->mailboxId   = $data->mailboxId;
-            $this->type        = $data->type;
-            $this->status      = $data->status;
-            $this->order       = $data->order;
-            $this->name        = $data->name;
-            $this->createdAt   = $data->createdAt;
-            $this->modifiedAt  = $data->modifiedAt;
+        	$this->id        = isset($data->id)         ? $data->id        : null;
+        	$this->mailboxId = isset($data->mailboxId)  ? $data->mailboxId : null;
+        	$this->type      = isset($data->type)       ? $data->type      : null;
+        	$this->status    = isset($data->status)     ? $data->status    : null;
+        	$this->order     = isset($data->order)      ? $data->order     : null;
+        	$this->name      = isset($data->name)       ? $data->name      : null;
+        	$this->createdAt = isset($data->createdAt)  ? $data->createdAt : null;
+        	$this->modifiedAt= isset($data->modifiedAt) ? $data->modifiedAt: null;
         }
     }
 

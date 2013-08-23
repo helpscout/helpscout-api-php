@@ -56,12 +56,12 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	public function __construct($data=null) {
 		parent::__construct($data);
 		if ($data) {
-			$this->body        = $data->body;
-			$this->toList      = $data->to;
-			$this->ccList      = $data->cc;
-			$this->bccList     = $data->bcc;
-			$this->state       = $data->state;
-            $this->type        = $data->type;
+			$this->body    = isset($data->body)    ? $data->body    : null;
+			$this->toList  = isset($data->toList)  ? $data->toList  : null;
+			$this->ccList  = isset($data->ccList)  ? $data->ccList  : null;
+			$this->bccList = isset($data->bccList) ? $data->bccList : null;
+			$this->state   = isset($data->state)   ? $data->state   : null;
+			$this->type    = isset($data->type)    ? $data->type    : null;
 
 			if ($data->customer) {
 				$this->customer = new \HelpScout\model\ref\PersonRef($data->customer);

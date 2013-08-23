@@ -15,14 +15,14 @@ class Attachment {
 
 	public function __construct($data=null) {
 		if ($data) {
-			$this->id       = $data->id;
-			$this->mimeType = $data->mimeType;
-			$this->fileName = $data->fileName;
-			$this->size     = $data->size;
-			$this->width    = $data->width;
-			$this->height   = $data->height;
-			$this->url      = $data->url;
-            $this->hash     = $data->hash;
+        	$this->id       = isset($data->id)       ? $data->id       : null;
+            $this->mimeType = isset($data->mimeType) ? $data->mimeType : null;
+            $this->fileName = isset($data->fileName) ? $data->fileName : null;
+            $this->size     = isset($data->size)     ? $data->size     : 0;
+            $this->width    = isset($data->width)    ? $data->width    : 0;
+            $this->height   = isset($data->height)   ? $data->height   : 0;
+            $this->url      = isset($data->url)      ? $data->url      : null;
+            $this->hash     = isset($data->hash)     ? $data->hash     : null;
 		}
 	}
 
