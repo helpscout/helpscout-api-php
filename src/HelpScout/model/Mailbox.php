@@ -182,6 +182,8 @@ class Mailbox {
 	}
 
 	/**
+	 * Get MailboxRef for the current Mailbox object
+	 *
 	 * @return \HelpScout\model\ref\MailboxRef
 	 */
 	public function toRef() {
