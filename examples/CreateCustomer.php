@@ -78,5 +78,3 @@ $website2->setValue("http://www.appleseed.com");
 $customer->setWebsites(array($website1, $website2));
 
 $client->createCustomer($customer);
-
-

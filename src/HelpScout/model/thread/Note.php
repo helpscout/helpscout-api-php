@@ -2,7 +2,6 @@
 namespace HelpScout\model\thread;
 
 class Note extends AbstractThread {
-
 	/**
 	 * @param \HelpScout\model\ref\PersonRef $createdBy
 	 */

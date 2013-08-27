@@ -2,7 +2,7 @@
 namespace HelpScout\model\thread;
 
 interface ConversationThread {
-    public function getType();
+	public function getType();
 	public function isPublished();
 	public function isDraft();
 	public function isHeldForReview();
@@ -20,30 +20,30 @@ interface ConversationThread {
 	public function isSpam();
 	public function getAssignedTo();
 	public function getStatus();
-    public function getActionType();
-    public function getActionSourceId();
+	public function getActionType();
+	public function getActionSourceId();
 	public function getCreatedBy();
 	public function getFromMailbox();
-    public function getObjectVars();
+	public function getObjectVars();
 
-    public function setId($id);
-    public function setType($type);
-    public function setState($state);
-    public function setBody($body);
-    public function setToList($toList);
-    public function setCcList($ccList);
-    public function setBccList($bccList);
-    public function setAttachments($attachments);
-    public function setAssignedTo(\HelpScout\model\ref\PersonRef $assignedTo);
-    public function setStatus($status);
-    public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy);
-    public function setFromMailbox(\HelpScout\model\ref\MailboxRef $mailbox);
+	public function setId($id);
+	public function setType($type);
+	public function setState($state);
+	public function setBody($body);
+	public function setToList($toList);
+	public function setCcList($ccList);
+	public function setBccList($bccList);
+	public function setAttachments($attachments);
+	public function setAssignedTo(\HelpScout\model\ref\PersonRef $assignedTo);
+	public function setStatus($status);
+	public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy);
+	public function setFromMailbox(\HelpScout\model\ref\MailboxRef $mailbox);
 
-    public function toJson();
+	public function toJson();
 }
 
 abstract class AbstractThread extends LineItem implements ConversationThread {
-    private $type;
+	private $type;
 	private $state;
 	private $body;
 	private $toList;
@@ -76,180 +76,180 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 		}
 	}
 
-    public function getObjectVars() {
-        $vars = array();
-        $vars['id'] = $this->getId();
-        $vars['status'] = $this->getStatus();
-        $vars['createdAt'] = $this->getCreatedAt();
+	public function getObjectVars() {
+		$vars = array();
+		$vars['id'] = $this->getId();
+		$vars['status'] = $this->getStatus();
+		$vars['createdAt'] = $this->getCreatedAt();
 
-        if ($this->isAssigned()) {
-        	$assignedTo = $this->getAssignedTo();
-        	if (!$assignedTo) {
-        		throw new \HelpScout\ApiException('No assignedTo (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
-        	}
-        	$vars['assignedTo'] = $assignedTo->getObjectVars();
-        }
+		if ($this->isAssigned()) {
+			$assignedTo = $this->getAssignedTo();
+			if (!$assignedTo) {
+				throw new \HelpScout\ApiException('No assignedTo (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
+			}
+			$vars['assignedTo'] = $assignedTo->getObjectVars();
+		}
 
-        $createdBy = $this->getCreatedBy();
-        if (!$createdBy) {
-        	throw new \HelpScout\ApiException('No createdBy (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
-        }
-        $vars['createdBy'] = $createdBy->getObjectVars();
+		$createdBy = $this->getCreatedBy();
+		if (!$createdBy) {
+			throw new \HelpScout\ApiException('No createdBy (\HelpScout\model\ref\PersonRef) object set in AbstractThread.getObjectVars() method.');
+		}
+		$vars['createdBy'] = $createdBy->getObjectVars();
 
-        if ($this->getFromMailbox() != null) {
-            $vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
-        }
+		if ($this->getFromMailbox() != null) {
+			$vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
+		}
 
-        if ($this->getType() == null) {
-            if ($this instanceof \HelpScout\model\thread\Customer) {
-                $this->type = 'customer';
-            } else if ($this instanceof \HelpScout\model\thread\Message) {
-                $this->type = 'message';
-            } else if ($this instanceof \HelpScout\model\thread\Note) {
-                $this->type = 'note';
-            } else if ($this instanceof \HelpScout\model\thread\Chat) {
-                $this->type = 'chat';
-            } else if ($this instanceof \HelpScout\model\thread\Phone) {
-                $this->type = 'phone';
-            } else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
-                $this->type = 'forwardchild';
-            } else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
-                $this->type = 'forwardparent';
-            } else {
-                $this->type = 'lineitem';
-            }
-        }
+		if ($this->getType() == null) {
+			if ($this instanceof \HelpScout\model\thread\Customer) {
+				$this->type = 'customer';
+			} else if ($this instanceof \HelpScout\model\thread\Message) {
+				$this->type = 'message';
+			} else if ($this instanceof \HelpScout\model\thread\Note) {
+				$this->type = 'note';
+			} else if ($this instanceof \HelpScout\model\thread\Chat) {
+				$this->type = 'chat';
+			} else if ($this instanceof \HelpScout\model\thread\Phone) {
+				$this->type = 'phone';
+			} else if ($this instanceof \HelpScout\model\thread\ForwardChild) {
+				$this->type = 'forwardchild';
+			} else if ($this instanceof \HelpScout\model\thread\ForwardParent) {
+				$this->type = 'forwardparent';
+			} else {
+				$this->type = 'lineitem';
+			}
+		}
 
-        $vars['type'] = $this->getType();
-        $vars['state'] = $this->getState();
-        $vars['body'] = $this->getBody();
-        $vars['to'] = $this->getToList();
-        $vars['cc'] = $this->getCcList();
-        $vars['bcc'] = $this->getBccList();
+		$vars['type'] = $this->getType();
+		$vars['state'] = $this->getState();
+		$vars['body'] = $this->getBody();
+		$vars['to'] = $this->getToList();
+		$vars['cc'] = $this->getCcList();
+		$vars['bcc'] = $this->getBccList();
 
-        if ($this->getCustomer() != null) {
-            $vars['customer'] = $this->getCustomer()->getObjectVars();
-        }
-        $this->addAttachmentsToVars($vars);
+		if ($this->getCustomer() != null) {
+			$vars['customer'] = $this->getCustomer()->getObjectVars();
+		}
+		$this->addAttachmentsToVars($vars);
 
-        return $vars;
-    }
+		return $vars;
+	}
 
-    private function addAttachmentsToVars(array &$vars) {
-    	// Attachments
-    	$list = $this->getAttachments();
-    	if ($list) {
-    		$attachments = array();
-    		foreach($list as $attachment) {
-    			$attachments[] = $attachment->getObjectVars();
-    		}
-    		$vars['attachments'] = $attachments;
-    	}
-    }
+	private function addAttachmentsToVars(array &$vars) {
+		// Attachments
+		$list = $this->getAttachments();
+		if ($list) {
+			$attachments = array();
+			foreach($list as $attachment) {
+				$attachments[] = $attachment->getObjectVars();
+			}
+			$vars['attachments'] = $attachments;
+		}
+	}
 
-    public function toJson() {
-        $vars = $this->getObjectVars();
-        return json_encode($vars);
-    }
+	public function toJson() {
+		$vars = $this->getObjectVars();
+		return json_encode($vars);
+	}
 
-    /**
-     * @param $attachments
-     */
-    public function setAttachments($attachments) {
-        $this->attachments = $attachments;
-    }
+	/**
+	 * @param $attachments
+	 */
+	public function setAttachments($attachments) {
+		$this->attachments = $attachments;
+	}
 
-    public function addAttachment(\HelpScout\model\Attachment $attachment) {
-    	if (!$this->attachments) {
-    		$this->attachments = array();
-    	}
-    	$this->attachments[] = $attachment;
-    }
+	public function addAttachment(\HelpScout\model\Attachment $attachment) {
+		if (!$this->attachments) {
+			$this->attachments = array();
+		}
+		$this->attachments[] = $attachment;
+	}
 
-    /**
-     * @param $bccList
-     */
-    public function setBccList($bccList) {
-        $this->bccList = $bccList;
-    }
+	/**
+	 * @param $bccList
+	 */
+	public function setBccList($bccList) {
+		$this->bccList = $bccList;
+	}
 
-    /**
-     * @param $body
-     */
-    public function setBody($body) {
-        $this->body = $body;
-    }
+	/**
+	 * @param $body
+	 */
+	public function setBody($body) {
+		$this->body = $body;
+	}
 
-    /**
-     * @param $ccList
-     */
-    public function setCcList($ccList) {
-        $this->ccList = $ccList;
-    }
+	/**
+	 * @param $ccList
+	 */
+	public function setCcList($ccList) {
+		$this->ccList = $ccList;
+	}
 
-    /**
-     * @param $customer
-     */
-    public function setCustomer($customer) {
-        $this->customer = $customer;
-    }
+	/**
+	 * @param $customer
+	 */
+	public function setCustomer($customer) {
+		$this->customer = $customer;
+	}
 
-    /**
-     * @param $state
-     */
-    public function setState($state) {
-        $this->state = $state;
-    }
+	/**
+	 * @param $state
+	 */
+	public function setState($state) {
+		$this->state = $state;
+	}
 
-    /**
-     * @param $toList
-     */
-    public function setToList($toList) {
-        $this->toList = $toList;
-    }
+	/**
+	 * @param $toList
+	 */
+	public function setToList($toList) {
+		$this->toList = $toList;
+	}
 
-    /**
-     * @param $type
-     */
-    public function setType($type) {
-        $this->type = $type;
-    }
+	/**
+	 * @param $type
+	 */
+	public function setType($type) {
+		$this->type = $type;
+	}
 
-    /**
-     * @return bool
-     */
-    public function isPublished() {
+	/**
+	 * @return bool
+	 */
+	public function isPublished() {
 		return $this->state == 'published';
 	}
 
-    /**
-     * @return bool
-     */
-    public function isDraft() {
+	/**
+	 * @return bool
+	 */
+	public function isDraft() {
 		return $this->state == 'draft';
 	}
 
-    /**
-     * @return bool
-     */
-    public function isHeldForReview() {
+	/**
+	 * @return bool
+	 */
+	public function isHeldForReview() {
 		return $this->state == 'underreview';
 	}
 
-    /**
-     * @return bool
-     */
-    public function hasAttachments() {
+	/**
+	 * @return bool
+	 */
+	public function hasAttachments() {
 		return $this->attachments && count($this->attachments) > 0;
 	}
 
-    /**
-     * @return the $type
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
+	/**
+	 * @return the $type
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
 
 	/**
 	 * @return the $state
@@ -293,10 +293,10 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 		return $this->attachments;
 	}
 
-    /**
-     * @return \HelpScout\model\ref\PersonRef
-     */
-    public function getCustomer() {
-        return $this->customer;
-    }
+	/**
+	 * @return \HelpScout\model\ref\PersonRef
+	 */
+	public function getCustomer() {
+		return $this->customer;
+	}
 }
