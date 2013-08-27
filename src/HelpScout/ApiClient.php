@@ -163,6 +163,33 @@ final class ApiClient {
 	}
 
 	/**
+	 * @param integer $conversationId
+	 * @param integer $threadId
+	 * @throws \HelpScout\ApiException
+	 * @return string
+	 */
+	public function getThreadSource($conversationId, $threadId) {
+		$json = false;
+		try {
+			$json = $this->getItem(
+				sprintf('conversations/%d/thread-source/%d.json', $conversationId, $threadId), null, 'getThreadSource', false
+			);
+		} catch(ApiException $e) {
+			if ($e->getCode() !== 404) {
+				throw $e;
+			}
+		}
+		$data = false;
+		if ($json) {
+			$data = $json->data;
+			if ($data) {
+				$data = base64_decode($data);
+			}
+		}
+		return $data;
+	}
+
+	/**
 	 * @param  integer $attachmentId
 	 * @throws \HelpScout\ApiException
 	 * @return string
