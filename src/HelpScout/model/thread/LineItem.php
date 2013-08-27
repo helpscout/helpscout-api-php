@@ -11,15 +11,15 @@ class LineItem {
 	const STATUS_SPAM    = 'spam';
 
 	private $id = null;
-    private $type;
-    private $status;
-    private $actionType;
-    private $actionSourceId;
-    private $createdAt;
+	private $type;
+	private $status;
+	private $actionType;
+	private $actionSourceId;
+	private $createdAt;
 
-    /**
-     * @var \HelpScout\model\ref\PersonRef
-     */
+	/**
+	 * @var \HelpScout\model\ref\PersonRef
+	 */
 	private $assignedTo;
 
 	/**
@@ -40,7 +40,7 @@ class LineItem {
 			$this->actionType     = isset($data->actionType)     ? $data->actionType     : null;
 			$this->actionSourceId = isset($data->actionSourceId) ? $data->actionSourceId : null;
 			$this->createdAt      = isset($data->createdAt)      ? $data->createdAt      : null;
-            $this->createdBy      = new \HelpScout\model\ref\PersonRef($data->createdBy);
+			$this->createdBy      = new \HelpScout\model\ref\PersonRef($data->createdBy);
 
 			if ($data->fromMailbox) {
 				$this->fromMailbox = new \HelpScout\model\ref\MailboxRef($data->fromMailbox);
@@ -51,69 +51,69 @@ class LineItem {
 		}
 	}
 
-    public function getObjectVars() {
-        $vars = array();
-        $vars['id'] = $this->getId();
-        $vars['type'] = $this->getType();
-        $vars['status'] = $this->getStatus();
-        $vars['actionType'] = $this->getActionType();
-        $vars['actionSourceId'] = $this->getActionSourceId();
-        $vars['createdAt'] = $this->getCreatedAt();
+	public function getObjectVars() {
+		$vars                   = array();
+		$vars['id']             = $this->getId();
+		$vars['type']           = $this->getType();
+		$vars['status']         = $this->getStatus();
+		$vars['actionType']     = $this->getActionType();
+		$vars['actionSourceId'] = $this->getActionSourceId();
+		$vars['createdAt']      = $this->getCreatedAt();
 
-        if ($this->getAssignedTo() != null) {
-            $vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
-        }
+		if ($this->getAssignedTo() != null) {
+			$vars['assignedTo'] = $this->getAssignedTo()->getObjectVars();
+		}
 
-        if ($this->getCreatedBy() != null) {
-            $vars['createdBy'] = $this->getCreatedBy()->getObjectVars();
-        }
+		if ($this->getCreatedBy() != null) {
+			$vars['createdBy'] = $this->getCreatedBy()->getObjectVars();
+		}
 
-        if ($this->getFromMailbox() != null) {
-            $vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
-        }
-    }
+		if ($this->getFromMailbox() != null) {
+			$vars['fromMailbox'] = $this->getFromMailbox()->getObjectVars();
+		}
+	}
 
-    /**
-     * @param \HelpScout\model\ref\PersonRef $assignedTo
-     */
-    public function setAssignedTo(\HelpScout\model\ref\PersonRef $assignedTo) {
-        $this->assignedTo = $assignedTo;
-    }
+	/**
+	 * @param \HelpScout\model\ref\PersonRef $assignedTo
+	 */
+	public function setAssignedTo(\HelpScout\model\ref\PersonRef $assignedTo) {
+		$this->assignedTo = $assignedTo;
+	}
 
-    /**
-     * @param $createdAt
-     */
-    public function setCreatedAt($createdAt) {
-        $this->createdAt = $createdAt;
-    }
+	/**
+	 * @param $createdAt
+	 */
+	public function setCreatedAt($createdAt) {
+		$this->createdAt = $createdAt;
+	}
 
-    /**
-     * @param \HelpScout\model\ref\PersonRef $createdBy
-     */
-    public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy) {
-        $this->createdBy = $createdBy;
-    }
+	/**
+	 * @param \HelpScout\model\ref\PersonRef $createdBy
+	 */
+	public function setCreatedBy(\HelpScout\model\ref\PersonRef $createdBy) {
+		$this->createdBy = $createdBy;
+	}
 
-    /**
-     * @param \HelpScout\model\ref\MailboxRef $fromMailbox
-     */
-    public function setFromMailbox(\HelpScout\model\ref\MailboxRef $fromMailbox) {
-        $this->fromMailbox = $fromMailbox;
-    }
+	/**
+	 * @param \HelpScout\model\ref\MailboxRef $fromMailbox
+	 */
+	public function setFromMailbox(\HelpScout\model\ref\MailboxRef $fromMailbox) {
+		$this->fromMailbox = $fromMailbox;
+	}
 
-    /**
-     * @param $id
-     */
-    public function setId($id) {
-        $this->id = $id;
-    }
+	/**
+	 * @param $id
+	 */
+	public function setId($id) {
+		$this->id = $id;
+	}
 
-    /**
-     * @param $status
-     */
-    public function setStatus($status) {
-        $this->status = $status;
-    }
+	/**
+	 * @param $status
+	 */
+	public function setStatus($status) {
+		$this->status = $status;
+	}
 
 	/**
 	 * @return int
@@ -122,45 +122,45 @@ class LineItem {
 		return $this->id;
 	}
 
-    /**
-     * @return mixed
-     */
-    public function getType() {
-        return $this->type;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getType() {
+		return $this->type;
+	}
 
-    /**
-     * @return bool
-     */
-    public function isAssigned() {
+	/**
+	 * @return bool
+	 */
+	public function isAssigned() {
 		return is_object($this->assignedTo) && $this->assignedTo->getId() > Conversation::OWNER_ANYONE;
 	}
 
-    /**
-     * @return bool
-     */
-    public function isActive() {
+	/**
+	 * @return bool
+	 */
+	public function isActive() {
 		return $this->status == self::STATUS_ACTIVE;
 	}
 
-    /**
-     * @return bool
-     */
-    public function isPending() {
+	/**
+	 * @return bool
+	 */
+	public function isPending() {
 		return $this->status == self::STATUS_PENDING;
 	}
 
-    /**
-     * @return bool
-     */
-    public function isClosed() {
+	/**
+	 * @return bool
+	 */
+	public function isClosed() {
 		return $this->status == self::STATUS_CLOSED;
 	}
 
-    /**
-     * @return bool
-     */
-    public function isSpam() {
+	/**
+	 * @return bool
+	 */
+	public function isSpam() {
 		return $this->status == self::STATUS_SPAM;
 	}
 
@@ -171,10 +171,10 @@ class LineItem {
 		return $this->assignedTo;
 	}
 
-    /**
-     * @return mixed
-     */
-    public function getStatus() {
+	/**
+	 * @return mixed
+	 */
+	public function getStatus() {
 		return $this->status;
 	}
 
@@ -192,15 +192,15 @@ class LineItem {
 		return $this->fromMailbox;
 	}
 
-    public function getActionSourceId() {
-        return $this->actionSourceId;
-    }
+	public function getActionSourceId() {
+		return $this->actionSourceId;
+	}
 
-    public function getActionType() {
-        return $this->actionType;
-    }
+	public function getActionType() {
+		return $this->actionType;
+	}
 
-    public function getCreatedAt() {
-        return $this->createdAt;
-    }
+	public function getCreatedAt() {
+		return $this->createdAt;
+	}
 }

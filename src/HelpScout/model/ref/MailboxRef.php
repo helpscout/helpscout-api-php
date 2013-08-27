@@ -12,26 +12,26 @@ class MailboxRef {
 		}
 	}
 
-    /**
-     * @return array
-     */
-    public function getObjectVars() {
-        return get_object_vars($this);
-    }
+	/**
+	 * @return array
+	 */
+	public function getObjectVars() {
+		return get_object_vars($this);
+	}
 
-    /**
-     * @param $id
-     */
-    public function setId($id) {
-        $this->id = $id;
-    }
+	/**
+	 * @param $id
+	 */
+	public function setId($id) {
+		$this->id = $id;
+	}
 
-    /**
-     * @param $name
-     */
-    public function setName($name) {
-        $this->name = $name;
-    }
+	/**
+	 * @param $name
+	 */
+	public function setName($name) {
+		$this->name = $name;
+	}
 
 	/**
 	 * @return int
