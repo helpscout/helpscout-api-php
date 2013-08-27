@@ -1,3 +1,10 @@
+## 1.3.1 (August 27, 2013)
+
+* Added support for the thread-source endpoint (to retrieve original email source). See [developer docs](http://developer.helpscout.net/conversations/thread/source/) for more information.
+* Consistent usage of tabs for indentation (jeffbyrnes)
+* Clean up documentation, add DocBlocks for every method of `ApiClient` (jeffbyrnes)
+* Clarify `model\Mailbox::toRef()` DocBlock (jeffbyrnes)
+
 ## 1.3.0 (August 23, 2013)
 
 * Use correct value for all instances of `CURLOPT_SSL_VERIFYHOST` (thanks jeffbyrnes)
