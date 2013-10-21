@@ -382,6 +382,15 @@ final class ApiClient {
 		$this->doDelete('attachments/' . $id . '.json', 200);
 	}
 
+    /**
+     * Deletes a note thread.
+     *
+     * @param $threadId
+     */
+    public function deleteNote($threadId) {
+        $this->doDelete('notes/' . $threadId . '.json', 200);
+    }
+
 	/**
 	 * Update a conversation
 	 *

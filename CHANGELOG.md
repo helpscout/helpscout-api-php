@@ -1,3 +1,7 @@
+## 1.3.2 (October 21, 2013)
+
+* Added endpoint to delete a note.
+
 ## 1.3.1 (August 27, 2013)
 
 * Added support for the thread-source endpoint (to retrieve original email source). See [developer docs](http://developer.helpscout.net/conversations/thread/source/) for more information.
