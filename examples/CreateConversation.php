@@ -50,5 +50,6 @@ $attachment->setHash("j894hg93gh9egh934gh34g8hjhvbdjvhbweg3");
 $thread->setAttachments(array($attachment));
 
 $conversation->setThreads(array($thread));
+$conversation->setCreatedBy($createdBy);
 
 $client->createConversation($conversation);
