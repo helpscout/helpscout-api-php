@@ -1,3 +1,7 @@
+## 1.3.3 (February 4, 2014)
+
+* Added function to get the User associated with the API key used to make the request.
+
 ## 1.3.2 (October 21, 2013)
 
 * Added endpoint to delete a note.

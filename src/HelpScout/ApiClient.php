@@ -257,6 +257,16 @@ final class ApiClient {
 		);
 	}
 
+    /**
+     * Gets the User associated with the API key used to make the request.
+     *
+     * @param null $fields
+     * @return bool
+     */
+    public function getUserMe($fields=null) {
+        return $this->getItem('users/me.json', $this->getParams(array('fields' => $fields)), 'getUser', '\HelpScout\model\User');
+    }
+
 	/**
 	 * Returns a Collection of all the customers for the company.
 	 * @param  integer      $page
