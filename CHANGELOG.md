@@ -1,75 +1,75 @@
-## 1.3.4 (March 4, 2014)
+#### 1.3.4 (March 4, 2014)
 
 * Added support for conversation and customer search endpoints. See [developer docs](http://developer.helpscout.net/) for more information.
 
-## 1.3.3 (February 4, 2014)
+#### 1.3.3 (February 4, 2014)
 
 * Added function to get the User associated with the API key used to make the request.
 
-## 1.3.2 (October 21, 2013)
+#### 1.3.2 (October 21, 2013)
 
 * Added endpoint to delete a note.
 
-## 1.3.1 (August 27, 2013)
+#### 1.3.1 (August 27, 2013)
 
 * Added support for the `getThreadSource` endpoint (to retrieve original email source). See [developer docs](http://developer.helpscout.net/conversations/thread/source/) for more information.
 * Consistent usage of tabs for indentation (jeffbyrnes)
 * Clean up documentation, add DocBlocks for every method of `ApiClient` (jeffbyrnes)
 * Clarify `model\Mailbox::toRef()` DocBlock (jeffbyrnes)
 
-## 1.3.0 (August 23, 2013)
+#### 1.3.0 (August 23, 2013)
 
 * Use correct value for all instances of `CURLOPT_SSL_VERIFYHOST` (thanks jeffbyrnes)
 * Improved attribute handling in model constructors
 * Updated to use `require_once` instead of `require` (where applicable)
 
-## 1.2.9 (August 22, 2013)
+#### 1.2.9 (August 22, 2013)
 
 * Fixed use of invalid cURL option
 * Update dynamic-custom-app.php example to prevent unauthorized requests from having data sent
 * Added composer support
 
-## 1.2.8 (May 14, 2013)
+#### 1.2.8 (May 14, 2013)
 
 * Added support for workflows (get a list of workflows or run a manual workflow). See [developer docs](http://developer.helpscout.net/workflows/list/) for more information.
 
-## 1.2.7 (April 4, 2013)
+#### 1.2.7 (April 4, 2013)
 
 * Updated examples.
 * When creating a conversation or thread, the createdAt property is correctly set now.
 * Fixed a typo that was causing 'closedBy' to not be set properly on a conversation.
 
-## 1.2.6 (March 28, 2013)
+#### 1.2.6 (March 28, 2013)
 
 * Fixed an issue where a conversation created without a customer id was causing an exception.
 
-## 1.2.5 (March 1, 2013)
+#### 1.2.5 (March 1, 2013)
 
 * Updated with support for new line item properties (actionType and actionSourceId). See [developer docs](http://developer.helpscout.net/) for more information.
 
-## 1.2.4 (January 21, 2013)
+#### 1.2.4 (January 21, 2013)
 
 * Conversations and threads can now be marked as 'imported' at creation time.
 
-## 1.2.3 (December 7, 2012)
+#### 1.2.3 (December 7, 2012)
 
 * Added 'phone' conversation and thread type.
 
-## 1.2.2 (November 5, 2012)
+#### 1.2.2 (November 5, 2012)
 
 * Added a method to retrieve a list of customers for a mailbox.
 
-## 1.2.1 (October 31, 2012)
+#### 1.2.1 (October 31, 2012)
 
 * Added examples for write endpoints (create/update conversation, create/update customer).
 
-## 1.2.0 (October 25, 2012)
+#### 1.2.0 (October 25, 2012)
 
 * Conversation write endpoints added. Conversations can now be created, updated, and deleted. Threads can be created, and attachments can be created and associated with a thread.
 * Customer write endpoints added. Customers can now be created and updated.
 * Customers can now be searched for by name and/or email.
 
-## 1.1.0 (October 16, 2012)
+#### 1.1.0 (October 16, 2012)
 
 * Conversation now has a type property that specifies if the type of conversation is an 'email' or 'chat'.
 * UserRef and CustomerRef have been removed and replaced by a PersonRef. The PersonRef class has a 'type' property that specifies if the person is a 'user' or a 'customer'.
