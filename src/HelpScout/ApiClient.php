@@ -342,10 +342,35 @@ final class ApiClient {
 		return $this->getCollection("customers.json", $this->getParams($params), 'searchCustomers', '\HelpScout\model\Customer');
 	}
 
-	/**
-	 * @param  \HelpScout\model\Conversation $conversation
-	 * @return boolean|string
-	 */
+    /**
+     * @param string $query
+     * @param null $sortField
+     * @param null $sortOrder
+     * @param int $page
+     * @return \HelpScout\Collection
+     */
+    public function customerSearch($query='*', $sortField=null, $sortOrder=null, $page=1) {
+        $params = array('query' => $query, 'sortField' => $sortField, 'sortOrder' => $sortOrder, 'page' => $page);
+        return $this->getCollection("search/customers.json", $this->getParams($params), 'customerSearch', '\HelpScout\model\SearchCustomer');
+    }
+
+    /**
+     * @param string $query
+     * @param null $sortField
+     * @param null $sortOrder
+     * @param int $page
+     * @return \HelpScout\Collection
+     */
+    public function conversationSearch($query='*', $sortField=null, $sortOrder=null, $page=1) {
+        $params = array('query' => $query, 'sortField' => $sortField, 'sortOrder' => $sortOrder, 'page' => $page);
+        return $this->getCollection("search/customers.json", $this->getParams($params), 'conversationSearch', '\HelpScout\model\SearchConversation');
+    }
+
+    /**
+     * @param  \HelpScout\model\Conversation $conversation
+     * @param bool $imported
+     * @return boolean|string
+     */
 	public function createConversation(model\Conversation $conversation, $imported=false) {
 		$url = 'conversations.json';
 		if ($imported) {
@@ -654,7 +679,7 @@ final class ApiClient {
 	 * @param  array  $accepted
 	 * @return null|array
 	 */
-	private function getParams($params=null, array $accepted=array('page','fields','firstName','lastName','email')) {
+	private function getParams($params=null, array $accepted=array('page','fields','firstName','lastName','email','query','sortField','sortOrder')) {
 		if (!$params) {
 			return null;
 		}
@@ -688,6 +713,15 @@ final class ApiClient {
 				case 'email':
 					$params[$key] = $val;
 					break;
+                case 'query':
+                    $params[$key] = $val;
+                    break;
+                case 'sortField':
+                    $params[$key] = $val;
+                    break;
+                case 'sortOrder':
+                    $params[$key] = $val;
+                    break;
 				case 'status':
 					if (!in_array($val, array('all','active','pending'))) {
 						unset($params[$key]);
