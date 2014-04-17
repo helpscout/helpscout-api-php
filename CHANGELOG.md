@@ -1,3 +1,7 @@
+#### 1.3.5 (April 17, 2014)
+
+* Bug fix to address issue in Webhook.php whereby both internal and external signatures evaluate to false, thus returning an invalid "true" allowing the request to proceed.
+
 #### 1.3.4 (March 4, 2014)
 
 * Added support for conversation and customer search endpoints. See [developer docs](http://developer.helpscout.net/) for more information.
