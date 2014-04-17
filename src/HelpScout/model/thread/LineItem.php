@@ -33,6 +33,8 @@ class LineItem {
 	private $fromMailbox;
 
 	public function __construct($data=null) {
+		$this->type = 'lineitem';
+
 		if ($data) {
 			$this->id             = isset($data->id)             ? $data->id             : null;
 			$this->type           = isset($data->type)           ? $data->type           : null;

@@ -2,6 +2,12 @@
 namespace HelpScout\model\thread;
 
 class Customer extends AbstractThread {
+
+	public function __construct($data=null) {
+		parent::__construct($data);
+		$this->setType('customer');
+	}
+
 	/**
 	 * @param \HelpScout\model\ref\PersonRef $createdBy
 	 */

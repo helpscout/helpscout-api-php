@@ -2,6 +2,11 @@
 namespace HelpScout\model\thread;
 
 class Note extends AbstractThread {
+	public function __construct($data=null) {
+		parent::__construct($data);
+		$this->setType('note');
+	}
+
 	/**
 	 * @param \HelpScout\model\ref\PersonRef $createdBy
 	 */
