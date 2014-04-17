@@ -371,7 +371,7 @@ final class ApiClient {
      * @param bool $imported
      * @return boolean|string
      */
-	public function createConversation(model\Conversation $conversation, $imported=false) {
+	public function createConversation(model\Conversation &$conversation, $imported=false) {
 		$url = 'conversations.json';
 		if ($imported) {
 			$url = $url . '?imported=true';
@@ -387,7 +387,7 @@ final class ApiClient {
 	 * @param  boolean                                    $imported
 	 * @return void
 	 */
-	public function createThread($conversationId, model\thread\ConversationThread $thread, $imported=false) {
+	public function createThread($conversationId, model\thread\ConversationThread &$thread, $imported=false) {
 		$url = 'conversations/' . $conversationId . '.json';
 		if ($imported) {
 			$url = $url . '?imported=true';
@@ -400,7 +400,7 @@ final class ApiClient {
 	 * @param  \HelpScout\model\Attachment $attachment
 	 * @return void
 	 */
-	public function createAttachment(\HelpScout\model\Attachment $attachment) {
+	public function createAttachment(\HelpScout\model\Attachment &$attachment) {
 		list($id, $body) = $this->doPost('attachments.json', $attachment->toJson(), 201);
 
 		if ($body) {
@@ -454,7 +454,7 @@ final class ApiClient {
 	 * @param  \HelpScout\model\Customer $customer
 	 * @return void
 	 */
-	public function createCustomer(model\Customer $customer) {
+	public function createCustomer(model\Customer &$customer) {
 		list($id, ) = $this->doPost('customers.json', $customer->toJSON(), 201);
 		$customer->setId($id);
 	}
