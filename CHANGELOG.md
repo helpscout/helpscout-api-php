@@ -1,3 +1,8 @@
+#### 1.3.6 (April 17, 2014)
+
+* Default threads to their internal types to eliminate the user from having to do so.
+* Default threads to active status
+
 #### 1.3.5 (April 17, 2014)
 
 * Bug fix to address issue in Webhook.php whereby both internal and external signatures evaluate to false, thus returning an invalid "true" allowing the request to proceed.
