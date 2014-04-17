@@ -64,8 +64,8 @@ final class Webhook {
 	 */
 	public function isValid() {
 		$signature = $this->generateSignature();
-		if ($signature == $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE')) {
-			return true;
+		if ($signature) {
+			return $signature == $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE');
 		}
 		return false;
 	}
