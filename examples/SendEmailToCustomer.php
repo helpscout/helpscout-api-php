@@ -4,7 +4,7 @@ include_once 'ApiClient.php';
 use HelpScout\ApiClient;
 
 $client = ApiClient::getInstance();
-$client->setKey('69a079d6b7dad769164dbb2605068b71e3548ba6');
+$client->setKey('example-key');
 
 // In this example, I want to start a new conversation that will get
 // emailed to the customer
@@ -13,7 +13,7 @@ $client->setKey('69a079d6b7dad769164dbb2605068b71e3548ba6');
 // All I have is an email address. This may or may not be an existing customer.
 // Either way, Help Scout will create the customer if the customer does not yet exist.
 //$customerRef = $client->getCustomerRefProxy(null, 'customer@example.com');
-$customerRef = $client->getCustomerRefProxy(null, 'denny.swindle@gmail.com');
+$customerRef = $client->getCustomerRefProxy(null, 'customer@example.com');
 
 
 // 2. Decide which mailbox this conversation will be created in
@@ -40,7 +40,7 @@ $thread->setBody('Hey there - sorry to hear you\'ve had trouble using our produc
 // $userRef = $client->getUserMe()->toRef();
 
 // 6.2 You could use a specific user
-$userRef = $client->getUserRefProxy(4);
+$userRef = $client->getUserRefProxy(1234);
 
 $thread->setCreatedBy($userRef);
 
