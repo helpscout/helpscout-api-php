@@ -261,7 +261,7 @@ final class ApiClient {
      * Gets the User associated with the API key used to make the request.
      *
      * @param null $fields
-     * @return bool
+     * @return \HelpScout\model\User
      */
     public function getUserMe($fields=null) {
         return $this->getItem('users/me.json', $this->getParams(array('fields' => $fields)), 'getUser', '\HelpScout\model\User');
