@@ -22,6 +22,7 @@ class Conversation {
 	private $subject     = null;
 	private $preview     = null;
 	private $createdBy   = null;
+	private $createdByType = null;
 	private $createdAt   = null;
 	private $modifiedAt  = null;
 	private $closedAt    = null;
@@ -33,6 +34,9 @@ class Conversation {
 	private $threads     = null;
 
 	public function __construct($data = null) {
+		$this->status = self::STATUS_ACTIVE;
+		$this->type   = 'email';
+
 		if ($data) {
 			$this->id       = isset($data->id)       ? $data->id       : null;
 			$this->type     = isset($data->type)     ? $data->type     : null;
