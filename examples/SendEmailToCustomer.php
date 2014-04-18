@@ -12,7 +12,6 @@ $client->setKey('example-key');
 // 1. First need to decide who I'm sending it to.
 // All I have is an email address. This may or may not be an existing customer.
 // Either way, Help Scout will create the customer if the customer does not yet exist.
-//$customerRef = $client->getCustomerRefProxy(null, 'customer@example.com');
 $customerRef = $client->getCustomerRefProxy(null, 'customer@example.com');
 
 
@@ -56,9 +55,9 @@ $conversation->setCreatedBy($userRef);
 
 $client->createConversation($conversation);
 
+echo $conversation->getId();
+
 // The conversation was created in Help Scout - and Help Scout will proceed to prepare
 // an email, attaching your mailbox signature, etc and send it off to the customer
 // as if you'd sent it via the web interface.
-
-echo $conversation->getId();
 
