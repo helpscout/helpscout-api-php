@@ -1,3 +1,7 @@
+#### 1.3.7 (April 18, 2014)
+* Default Conversation object to active status, 'email' type
+* Fixed phpdoc on getUserMe method
+
 #### 1.3.6 (April 17, 2014)
 
 * Default threads to their internal types to eliminate the user from having to do so.
