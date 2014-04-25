@@ -396,6 +396,16 @@ final class ApiClient {
 		$thread->setId($id);
 	}
 
+    /**
+     * @param $conversationId
+     * @param $threadId
+     * @param $text
+     */
+    public function updateThreadText($conversationId, $threadId, $text) {
+        $json = '{ "body": ' . json_encode($text) . ' }';
+        $this->doPut('conversations/' . $conversationId . '/threads/' . $threadId . '.json', $json, 200);
+    }
+
 	/**
 	 * @param  \HelpScout\model\Attachment $attachment
 	 * @return void

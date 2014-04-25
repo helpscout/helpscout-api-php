@@ -1,3 +1,6 @@
+#### 1.3.8 (April 25, 2014)
+* Added support for updating the body text of a thread
+
 #### 1.3.7 (April 18, 2014)
 * Default Conversation object to active status, 'email' type
 * Fixed phpdoc on getUserMe method
