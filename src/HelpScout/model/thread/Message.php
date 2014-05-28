@@ -18,4 +18,8 @@ class Message extends AbstractThread {
 		}
 		parent::setCreatedBy($createdBy);
 	}
+
+	public function getOpenedAt() {
+		return $this->openedAt;
+	}
 }
