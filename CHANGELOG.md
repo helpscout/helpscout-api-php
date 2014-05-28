@@ -1,3 +1,6 @@
+#### 1.3.9 (May 28, 2014)
+* Exposed "openedAt" attribute on Message thread object (which indicates when a customer viewed the message)
+
 #### 1.3.8 (April 25, 2014)
 * Added support for updating the body text of a thread
 

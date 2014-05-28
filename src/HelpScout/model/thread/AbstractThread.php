@@ -51,6 +51,9 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	private $bccList;
 	private $customer;
 
+	// only available on Message threads. Indicates when the customer viewed the message.
+	protected $openedAt = null;
+
 	private $attachments;
 
 	public function __construct($data=null) {
@@ -62,6 +65,7 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 			$this->bccList = isset($data->bccList) ? $data->bccList : null;
 			$this->state   = isset($data->state)   ? $data->state   : null;
 			$this->type    = isset($data->type)    ? $data->type    : null;
+			$this->openedAt= isset($data->openedAt)? $data->openedAt: null;
 
 			if ($data->customer) {
 				$this->customer = new \HelpScout\model\ref\PersonRef($data->customer);
