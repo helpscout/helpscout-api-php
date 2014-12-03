@@ -368,13 +368,25 @@ final class ApiClient {
 
     /**
      * @param  \HelpScout\model\Conversation $conversation
-     * @param bool $imported
+     * @param boolean $imported
+     * @param boolean $autoReply Enables auto replies to be sent when a conversation is created via the API
+     * @param boolean $reload Return the created conversation in the response
      * @return boolean|string
      */
-	public function createConversation(model\Conversation $conversation, $imported=false) {
+	public function createConversation(model\Conversation $conversation, $imported=false, $autoReply=false, $reload=false) {
 		$url = 'conversations.json';
+		$params = array();
 		if ($imported) {
-			$url = $url . '?imported=true';
+			$params['imported'] = 'true';
+		}
+		if ($autoReply) {
+			$params['autoReply'] = 'true';
+		}
+		if ($reload) {
+			$params['reload'] = 'true';
+		}
+		if ($params) {
+			$url .= '?' . http_build_query($params);
 		}
 		$json = $conversation->toJSON();
 		list($id, ) = $this->doPost($url, $json, 201);
