@@ -212,7 +212,7 @@ final class ApiClient {
 	}
 
 	private function getConvoParams(array $params, $fields) {
-		return $this->getParams(array_merge($params, array('fields' => $fields)), array('page','fields','status','modifiedSince'));
+		return $this->getParams(array_merge($params, array('fields' => $fields)), array('page','fields','status','modifiedSince','tag'));
 	}
 
 	/**
