@@ -637,51 +637,92 @@ final class ApiClient {
 	}
 
 	/**
-	 * @param  integer $statusCode The HTTP status code returned
-	 * @param  string  $type       The type of request (e.g., GET, POST, etc.)
-	 * @param  integer $expected   The expected HTTP status code
+	 * @param  integer             $statusCode   The HTTP status code returned
+	 * @param  string              $type         The type of request (e.g., GET, POST, etc.)
+	 * @param  integer             $expected     The expected HTTP status code
+	 * @param  string|array|object $responseBody The returned body
 	 * @return void
 	 * @throws \HelpScout\ApiException If the expected $statusCode isn't returned
 	 */
-	private function checkStatus($statusCode, $type, $expected = 200) {
-		if (!is_array($expected)) {
-			$expected = array($expected);
-		}
+	private function checkStatus($statusCode, $type, $expected = 200, $responseBody = array()) {
+		$expected = (array) $expected;
 
-		if (!in_array($statusCode, $expected)) {
-			switch($statusCode) {
-				case 400:
-					throw new ApiException('The request was not formatted correctly', 400);
-					break;
-				case 401:
-					throw new ApiException('Invalid API key', 401);
-					break;
-				case 402:
-					throw new ApiException('API key suspended', 402);
-					break;
-				case 403:
-					throw new ApiException('Access denied', 403);
-					break;
-				case 404:
-					throw new ApiException(sprintf('Resource not found [%s]', $type), 404);
-					break;
-				case 405:
-					throw new ApiException('Invalid method type', 405);
-					break;
-				case 429:
-					throw new ApiException('Throttle limit reached. Too many requests', 429);
-					break;
-				case 500:
-					throw new ApiException('Application error or server error', 500);
-					break;
-				case 503:
-					throw new ApiException('Service Temporarily Unavailable', 503);
-					break;
-				default:
-					throw new ApiException(sprintf('Method %s returned status code %d but we expected code(s) %s', $type, $statusCode, implode(',', $expected)));
-					break;
+		if (! in_array($statusCode, $expected)) {
+			$exception = new ApiException(
+				$this->getErrorMessage($statusCode, $type, $expected, $responseBody),
+				$responseBody['code']
+			);
+
+			if (array_key_exists('validationErrors', $responseBody)) {
+				$exception->setErrors($responseBody['validationErrors']);
 			}
+
+			throw $exception;
 		}
+	}
+
+	/**
+	 * @param integer $statusCode   The HTTP status code returned
+	 * @param string  $type         The type of request (e.g., GET, POST, etc.)
+	 * @param array   $expected     The expected HTTP status code
+	 * @param array   $responseBody The returned body
+	 *
+	 * @return string
+	 */
+	private function getErrorMessage($statusCode, $type, array $expected, array $responseBody) {
+		$errorKey = array(
+			400 => 'The request was not formatted correctly',
+			401 => 'Invalid API key',
+			402 => 'API key suspended',
+			403 => 'Access denied',
+			404 => sprintf('Resource not found [%s]', $type),
+			405 => 'Invalid method type',
+			429 => 'Throttle limit reached. Too many requests',
+			500 => 'Application error or server error',
+			503 => 'Service Temporarily Unavailable'
+		);
+
+		if (array_key_exists('error', $responseBody)) {
+			return $responseBody['error'];
+		} elseif (array_key_exists($statusCode, $errorKey)) {
+			return $errorKey[$statusCode];
+		} else {
+			sprintf(
+				'Method %s returned status code %d but we expected code(s) %s', 
+				$type, 
+				$statusCode, 
+				implode(',', $expected)
+			);
+		}
+	}
+
+	/**
+	 * @param curl   $ch       The cURL object
+	 * @param string $response The raw response to be parsed
+	 *
+	 * @return array
+	 */
+	private function parseResponse($ch, $response)
+	{
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$header = substr($response, 0, $header_size);
+		$body = substr($response, $header_size);
+
+		$response = array(
+			'body' => json_decode($body, true)
+		);
+
+		foreach (explode("\r\n", $header) as $i => $line) {
+	        if ($i === 0) {
+	            $headers['http_code'] = $line;
+	        } else {
+	            list ($key, $value) = explode(': ', $line);
+	            $headers[$key] = $value;
+	        }
+	    }
+	    $response['headers'] = $headers;
+
+	    return $response;
 	}
 
 	/**
@@ -801,7 +842,6 @@ final class ApiClient {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_HEADER         => true,
@@ -809,12 +849,12 @@ final class ApiClient {
 			CURLOPT_USERAGENT      => $this->getUserAgent()
 		));
 
-		$response = curl_exec($ch);
+		$response = $this->parseResponse($ch, curl_exec($ch));
 		$info = curl_getinfo($ch);
 
 		curl_close($ch);
 
-		$this->checkStatus($info['http_code'], 'POST', $expectedCode);
+		$this->checkStatus($info['http_code'], 'POST', $expectedCode, $response['body']);
 
 		return array($this->getIdFromLocation($response, $info['header_size']), substr($response, $info['header_size']));
 	}
@@ -875,7 +915,6 @@ final class ApiClient {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_HEADER         => true,
@@ -884,12 +923,12 @@ final class ApiClient {
 		));
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$response = curl_exec($ch);
+		$response = $this->parseResponse($ch, curl_exec($ch));
 		$info = curl_getinfo($ch);
-
+		
 		curl_close($ch);
-
-		$this->checkStatus($info['http_code'], 'PUT', $expectedCode);
+		
+		$this->checkStatus($info['http_code'], 'PUT', $expectedCode, $response['body']);
 	}
 
 	/**
@@ -915,7 +954,6 @@ final class ApiClient {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_HEADER         => true,
@@ -924,12 +962,12 @@ final class ApiClient {
 		));
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$response = curl_exec($ch);
+		$response = $this->parseResponse($ch, curl_exec($ch));
 		$info = curl_getinfo($ch);
 
 		curl_close($ch);
 
-		$this->checkStatus($info['http_code'], 'DELETE', $expectedCode);
+		$this->checkStatus($info['http_code'], 'DELETE', $expectedCode, $response['body']);
 	}
 
 	/**
