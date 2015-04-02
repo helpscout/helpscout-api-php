@@ -657,6 +657,16 @@ final class ApiClient {
 				$exception->setErrors($responseBody['validationErrors']);
 			}
 
+			$this->debug(
+				$exception->getMessage(),
+				'ERROR',
+				array(
+					'method' => $type,
+					'code' => $exception->getCode(),
+					'errors' => $exception->getErrors()
+				)
+			);
+
 			throw $exception;
 		}
 	}
@@ -820,9 +830,9 @@ final class ApiClient {
 			throw new ApiException('Invalid API Key', 401);
 		}
 
-		if ($this->isDebug) {
-			$this->debug($requestBody);
-		}
+		$this->debug('request = ' . $requestBody, null, array(
+			'method' => 'POST'
+		));
 
 		$httpHeaders = array();
 		if ($requestBody !== false) {
@@ -853,6 +863,10 @@ final class ApiClient {
 		$info = curl_getinfo($ch);
 
 		curl_close($ch);
+
+		$this->debug('response = ' . json_encode($response['body']), null, array(
+			'method' => 'POST'
+		));
 
 		$this->checkStatus($info['http_code'], 'POST', $expectedCode, $response['body']);
 
@@ -895,9 +909,10 @@ final class ApiClient {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
-		if ($this->isDebug) {
-			$this->debug($requestBody);
-		}
+		
+		$this->debug('request = ' . $requestBody, null, array(
+			'method' => 'PUT'
+		));
 
 		$ch = curl_init();
 
@@ -927,6 +942,10 @@ final class ApiClient {
 		$info = curl_getinfo($ch);
 		
 		curl_close($ch);
+
+		$this->debug('response = ' . json_encode($response['body']), null, array(
+			'method' => 'PUT'
+		));
 		
 		$this->checkStatus($info['http_code'], 'PUT', $expectedCode, $response['body']);
 	}
@@ -941,9 +960,10 @@ final class ApiClient {
 			throw new ApiException('Invalid API Key', 401);
 		}
 
-		if ($this->isDebug) {
-			$this->debug($url);
-		}
+		$this->debug('request = ' . $url, null, array(
+			'method' => 'DELETE'
+		));
+		
 		$ch = curl_init();
 
 		curl_setopt_array($ch, array(
@@ -978,7 +998,16 @@ final class ApiClient {
 	 */
 	private function callServer($url, $method='GET', $params=null) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
-			throw new ApiException('Invalid API Key', 401);
+			$exception = new ApiException('Invalid API Key', 401);
+			$this->debug(
+				$exception->getMessage(),
+				'ERROR',
+				array(
+					'method' => $method,
+					'code' => $exception->getCode(),
+					'errors' => $exception->getErrors()
+				)
+			);
 		}
 
 		$ch = curl_init();
@@ -1022,8 +1051,12 @@ final class ApiClient {
 	 * @param  string $mesg
 	 * @return void
 	 */
-	private function debug($mesg) {
-		$text = strftime('%b %d %H:%M:%S') . ': ' . $mesg . PHP_EOL;
+	private function debug($mesg, $level = 'DEBUG', array $context = array()) {
+		if ($this->isDebug == false) return;
+
+		$level = strtoupper($level ?: 'DEBUG');
+
+		$text = strftime('[%b %d %H:%M:%S]') . ' ' . $level . ': ' . $mesg . '; context: ' . json_encode($context) . PHP_EOL;
 
 		if ($this->debugDir) {
 			file_put_contents($this->debugDir . DIRECTORY_SEPARATOR . 'apiclient.log', $text, FILE_APPEND);
