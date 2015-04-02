@@ -167,3 +167,22 @@ if ($webhook->isValid()) {
   } 
 }
 </code></pre>
+
+Debugging
+------------------------
+
+Enable debugging by calling the `setDebug(true)` method. 
+
+The `setDebug` method accepts two parameters: The first is a `boolean` to turn debugging on or off (`true` = on, `false` = off). The second (optional) parameter is a directory in which to save a debug output file. If no directory is passed, the output will echo instead of writing to a log file.
+
+### Example output
+
+```
+[Apr 02 20:54:28] DEBUG: request = {"id":49424262,"firstName":"John","lastName":"Doe","photoUrl":null,"photoType":null,"gender":"unknown","age":null,"organization":null,"jobTitle":null,"location":"Dallas, TX","createdAt":"2015-04-01T18:08:10Z","modifiedAt":"2015-04-02T15:09:37Z","background":null,"address":{"id":5678,"lines":["123 Main Street"],"city":"Dallas","state":"","postalCode":74206,"country":"US","createdAt":null,"modifiedAt":null},"socialProfiles":[],"emails":[],"phones":[],"chats":[],"websites":[]}; context: {"method":"PUT"}
+[Apr 02 20:54:28] DEBUG: response = {"code":400,"error":"Input could not be validated","validationErrors":[{"property":"address:state","value":null,"message":"Value is required"}]}; context: {"method":"PUT"}
+[Apr 02 20:54:28] ERROR: Input could not be validated; context: {"method":"PUT","code":400,"errors":[{"property":"address:state","value":null,"message":"Value is required"}]}
+
+```
+Debug lines consist of four parts: Timestamp `[Apr 02 20:54:28]`, Level `DEBUG`, Message, and Context.
+
+The example above debugging output represents 3 lines of debug text, all occurring within the same API call, a `PUT` method to update a Customer. The first is the request JSON, the second is the response JSON, and the third is an API error and its response from the server.
