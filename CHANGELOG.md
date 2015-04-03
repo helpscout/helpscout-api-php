@@ -1,3 +1,8 @@
+#### 1.4.0 (April 2, 2015)
+* Fixed issue that didn't allow "tag" as a valid search parameter - [#13](https://github.com/helpscout/helpscout-api-php/issues/13)
+* Rewrote API error messaging to return more descriptive messages from the server
+* Added more robust debugging capabilities - see [README](https://github.com/helpscout/helpscout-api-php/#debugging)
+
 #### 1.3.11 (December 3, 2014)
 * Fixed issue that would prevent from json from being constructed properly when adding an attachment to an existing thread
 * Adding support for missing autoReply and reload params in createConversation. Thanks [@bradt](https://github.com/bradt)
