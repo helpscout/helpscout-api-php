@@ -24,7 +24,7 @@ class Conversation {
 	private $createdBy   = null;
 	private $createdByType = null;
 	private $createdAt   = null;
-	private $modifiedAt  = null;
+	private $userModifiedAt  = null;
 	private $closedAt    = null;
 	private $closedBy    = null;
 	private $source      = null;
@@ -64,7 +64,7 @@ class Conversation {
 			$this->createdBy   = new \HelpScout\model\ref\PersonRef($data->createdBy);
 
 			$this->createdAt   = isset($data->createdAt) ? $data->createdAt : null;
-			$this->modifiedAt  = isset($data->modifiedAt) ? $data->modifiedAt : null;
+			$this->userModifiedAt  = isset($data->userModifiedAt) ? $data->userModifiedAt : null;
 			$this->closedAt    = isset($data->closedAt) ? $data->closedAt : null;
 			$this->ccList      = isset($data->cc) ? $data->cc : null;
 			$this->bccList     = isset($data->bcc) ? $data->bcc : null;
@@ -107,7 +107,7 @@ class Conversation {
 		$vars['status'] = $this->getStatus();
 		$vars['subject'] = $this->getSubject();
 		$vars['createdAt'] = $this->getCreatedAt();
-		$vars['modifiedAt'] = $this->getModifiedAt();
+		$vars['userModifiedAt'] = $this->getUserModifiedAt();
 		$vars['closedAt'] = $this->getClosedAt();
 		$vars['source'] = $this->getSource();
 		$vars['cc'] = $this->getCcList();
@@ -258,10 +258,17 @@ class Conversation {
 	}
 
 	/**
-	 * @param $modifiedAt
+	 * @param $userModifiedAt
 	 */
-	public function setModifiedAt($modifiedAt) {
-		$this->modifiedAt = $modifiedAt;
+	public function setUserModifiedAt($userModifiedAt) {
+		$this->userModifiedAt = $userModifiedAt;
+	}
+
+	/**
+	 * @param $userModifiedAt
+	 */
+	public function setModifiedAt($userModifiedAt) {
+		$this->userModifiedAt = $userModifiedAt;
 	}
 
 	/**
@@ -464,8 +471,15 @@ class Conversation {
 	/**
 	 * @return string
 	 */
+	public function getUserModifiedAt() {
+		return $this->userModifiedAt;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getModifiedAt() {
-		return $this->modifiedAt;
+		return $this->userModifiedAt;
 	}
 
 	/**
