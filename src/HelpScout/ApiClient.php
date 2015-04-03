@@ -696,14 +696,14 @@ final class ApiClient {
 			return $responseBody['error'];
 		} elseif (array_key_exists($statusCode, $errorKey)) {
 			return $errorKey[$statusCode];
-		} else {
-			sprintf(
-				'Method %s returned status code %d but we expected code(s) %s', 
-				$type, 
-				$statusCode, 
-				implode(',', $expected)
-			);
 		}
+		
+		return sprintf(
+			'Method %s returned status code %d but we expected code(s) %s', 
+			$type, 
+			$statusCode, 
+			implode(',', $expected)
+		);
 	}
 
 	/**
