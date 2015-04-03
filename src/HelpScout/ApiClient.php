@@ -45,7 +45,7 @@ final class ApiClient {
 	 * @param  \Curl
 	 * @return void
 	 */
-	public function setCurl($curl) {
+	public function setCurl(\Curl $curl) {
 		$this->curl = $curl;
 	}
 
@@ -178,11 +178,14 @@ final class ApiClient {
 	 * @return \HelpScout\model\Conversation
 	 */
 	public function getConversation($conversationId, $fields=null) {
-		if (!is_numeric($conversationId) || $conversationId < 1) {
+		if (!is_numeric($conversationId) || ($conversationId < 1)) {
 			throw new ApiException(sprintf('Invalid conversationId in getConversation method [%s]', $conversationId));
 		}
 		return $this->getItem(
-			sprintf('conversations/%d.json', $conversationId), $this->getParams(array('fields' => $fields)), 'getConversation', '\HelpScout\model\Conversation'
+			sprintf('conversations/%d.json', $conversationId),
+			$this->getParams(array('fields' => $fields)),
+			'getConversation',
+			'\HelpScout\model\Conversation'
 		);
 	}
 
@@ -635,7 +638,7 @@ final class ApiClient {
 	 * @return \HelpScout\Collection|boolean
 	 */
 	private function getCollection($url, $params, $method, $model) {
-		list($statusCode, $json) = $this->callServer($url, 'GET', $params);
+		list($statusCode, $json) = $this->doGet($url, $params);
 
 		$this->checkStatus($statusCode, $method);
 
@@ -658,7 +661,7 @@ final class ApiClient {
 	 * @return mixed
 	 */
 	private function getItem($url, $params, $method, $model) {
-		list($statusCode, $json) = $this->callServer($url, 'GET', $params);
+		list($statusCode, $json) = $this->doGet($url, $params);
 		$this->checkStatus($statusCode, $method);
 
 		$json = json_decode($json);
@@ -683,10 +686,10 @@ final class ApiClient {
 	private function checkStatus($statusCode, $type, $expected = 200, $responseBody = array()) {
 		$expected = (array) $expected;
 
-		if (! in_array($statusCode, $expected)) {
+		if (!in_array($statusCode, $expected)) {
 			$exception = new ApiException(
 				$this->getErrorMessage($statusCode, $type, $expected, $responseBody),
-				$responseBody['code']
+				$statusCode
 			);
 
 			if (array_key_exists('validationErrors', $responseBody)) {
@@ -698,7 +701,7 @@ final class ApiClient {
 				'ERROR',
 				array(
 					'method' => $type,
-					'code' => $exception->getCode(),
+					'code'   => $exception->getCode(),
 					'errors' => $exception->getErrors()
 				)
 			);
@@ -855,57 +858,6 @@ final class ApiClient {
 	}
 
 	/**
-	 * @param  string   $url
-	 * @param  boolean  $requestBody
-	 * @param  integer  $expectedCode
-	 * @return array
-	 * @throws \HelpScout\ApiException If no API key is provided
-	 */
-	private function doPost($url, $requestBody=false, $expectedCode) {
-		if (empty($this->apiKey)) {
-			throw new ApiException('Invalid API Key', 401);
-		}
-
-		$this->debug('request = ' . $requestBody, null, array(
-			'method' => 'POST'
-		));
-
-		if ($requestBody !== false) {
-			$this->curl->headers['accept']         = 'application/json';
-			$this->curl->headers['content-type']   = 'application/json';
-			$this->curl->headers['content-length'] = strlen($requestBody);
-		}
-
-		$this->curl->options = array(
-			'url'            => self::API_URL . $url,
-			'httpauth'       => CURLAUTH_BASIC,
-			'userpwd'        => $this->apiKey . ':X',
-			'returntransfer' => true,
-			'timeout'        => 30,
-			'connecttimeout' => 30,
-			'ssl_verifypeer' => false,
-			'ssl_verifyhost' => 2,
-			'header'         => true,
-			'encoding'       => 'gzip,deflate',
-			'useragent'      => $this->getUserAgent()
-		);
-
-		$response = $this->curl->post($url, $requestBody);
-		$response->body = json_decode($response->body, true);
-
-		$this->debug('response = ' . json_encode($response->body), null, array(
-			'method' => 'POST'
-		));
-
-		$this->checkStatus($response->headers['Status-Code'], 'POST', $expectedCode, $response->body);
-
-		return array(
-			$this->getIdFromLocation($response->headers['Location']),
-			$response->body
-		);
-	}
-
-	/**
 	 * @param  string  $location header
 	 * @return boolean|string
 	 */
@@ -923,7 +875,7 @@ final class ApiClient {
      * @throws ApiException
      */
 	private function doPut($url, $requestBody, $expectedCode) {
-		if ($this->apiKey === false || empty($this->apiKey)) {
+		if (empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
 
@@ -931,40 +883,15 @@ final class ApiClient {
 			'method' => 'PUT'
 		));
 
-		$ch = curl_init();
+		$this->curl->headers = $this->getDefaultCurlHeaders(strlen($requestBody));
+		$this->curl->options = $this->getDefaultCurlOptions();
+		$response = $this->put(self::API_URL . $url, $requestBody);
 
-		curl_setopt_array($ch, array(
-			CURLOPT_URL            => self::API_URL . $url,
-			CURLOPT_CUSTOMREQUEST  => 'PUT',
-			CURLOPT_HTTPHEADER     => array(
-				'Accept: application/json',
-				'Content-Type: application/json',
-				'Content-Length: ' . strlen($requestBody)
-			),
-			CURLOPT_POSTFIELDS     => $requestBody,
-			CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
-			CURLOPT_USERPWD        => $this->apiKey . ':X',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT        => 30,
-			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => 2,
-			CURLOPT_HEADER         => true,
-			CURLOPT_ENCODING       => 'gzip,deflate',
-			CURLOPT_USERAGENT      => $this->getUserAgent()
-		));
-
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$response = $this->parseResponse($ch, curl_exec($ch));
-		$info = curl_getinfo($ch);
-
-		curl_close($ch);
-
-		$this->debug('response = ' . json_encode($response['body']), null, array(
+		$this->debug('response = ' . json_encode($response->body), null, array(
 			'method' => 'PUT'
 		));
 
-		$this->checkStatus($info['http_code'], 'PUT', $expectedCode, $response['body']);
+		$this->checkStatus($response->headers['Status-Code'], 'PUT', $expectedCode, $response->body);
 	}
 
     /**
@@ -974,7 +901,7 @@ final class ApiClient {
      * @throws ApiException
      */
 	private function doDelete($url, $expectedCode) {
-		if ($this->apiKey === false || empty($this->apiKey)) {
+		if (empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
 
@@ -982,88 +909,80 @@ final class ApiClient {
 			'method' => 'DELETE'
 		));
 
-		$ch = curl_init();
+		$this->curl->options = $this->getDefaultCurlOptions();
+		$response = $this->curl->delete(self::API_URL . $url);
+		$response->body = json_decode($response->body, true);
 
-		curl_setopt_array($ch, array(
-			CURLOPT_URL            => self::API_URL . $url,
-			CURLOPT_CUSTOMREQUEST  => 'DELETE',
-			CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
-			CURLOPT_USERPWD        => $this->apiKey . ':X',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT        => 30,
-			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => 2,
-			CURLOPT_HEADER         => true,
-			CURLOPT_ENCODING       => 'gzip,deflate',
-			CURLOPT_USERAGENT      => $this->getUserAgent()
-		));
-
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		$response = $this->parseResponse($ch, curl_exec($ch));
-		$info = curl_getinfo($ch);
-
-		curl_close($ch);
-
-		$this->checkStatus($info['http_code'], 'DELETE', $expectedCode, $response['body']);
+		$this->checkStatus($response->headers['Status-Code'], 'DELETE', $expectedCode, $response->body);
 	}
 
     /**
      * @param string $url
-     * @param string $method
      * @param array $params
      * @return array
      * @throws ApiException
      */
-	private function callServer($url, $method='GET', $params=null) {
-		if ($this->apiKey === false || empty($this->apiKey)) {
+	private function doGet($url, $params=null) {
+		if (empty($this->apiKey)) {
 			$exception = new ApiException('Invalid API Key', 401);
 			$this->debug(
 				$exception->getMessage(),
 				'ERROR',
 				array(
-					'method' => $method,
-					'code' => $exception->getCode(),
+					'method' => 'GET',
+					'code'   => $exception->getCode(),
 					'errors' => $exception->getErrors()
 				)
 			);
 		}
 
-		$ch = curl_init();
-		$opts = array(
-			CURLOPT_URL            => self::API_URL . $url,
-			CURLOPT_CUSTOMREQUEST  => $method,
-			CURLOPT_HTTPHEADER     => array(
-				'Accept: application/json',
-				'Content-Type: application/json'
-			),
-			CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
-			CURLOPT_USERPWD        => $this->apiKey . ':X',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT        => 30,
-			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => 2,
-			CURLOPT_HEADER         => false,
-			CURLOPT_ENCODING       => 'gzip,deflate',
-			CURLOPT_USERAGENT      => $this->getUserAgent()
-		);
-		if ($params) {
-			if ($method=='GET') {
-				$opts[CURLOPT_URL] = self::API_URL . $url . '?' . http_build_query($params);
-			} else {
-				$opts[CURLOPT_POSTFIELDS] = $params;
-			}
+		$this->curl->headers = $this->getDefaultCurlHeaders();
+		$this->curl->options = $this->getDefaultCurlOptions();
+		$response = $this->curl->get(self::API_URL . $url, $params);
+		$response->body = json_decode($response->body, true);
+
+		$this->debug('response = ' . json_encode($response->body), null, array(
+			'method' => 'GET',
+			'url'    => $url,
+			'params' => $params
+		));
+
+		return array($response->headers['Status-Code'], $response->body);
+	}
+
+	/**
+	 * @param  string   $url
+	 * @param  boolean  $requestBody
+	 * @param  integer  $expectedCode
+	 * @return array
+	 * @throws \HelpScout\ApiException If no API key is provided
+	 */
+	private function doPost($url, $requestBody=false, $expectedCode) {
+		if (empty($this->apiKey)) {
+			throw new ApiException('Invalid API Key', 401);
 		}
-		curl_setopt_array($ch, $opts);
 
-		$response   = curl_exec($ch);
-		$statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$this->debug('request = ' . $requestBody, null, array(
+			'method' => 'POST'
+		));
 
-		curl_close($ch);
+		if ($requestBody !== false) {
+			$this->curl->headers = $this->getDefaultCurlHeaders(strlen($requestBody));
+		}
 
-		return array($statusCode, $response);
+		$this->curl->options = $this->getDefaultCurlOptions();
+		$response = $this->curl->post($url, $requestBody);
+		$response->body = json_decode($response->body, true);
+		$this->debug('response = ' . json_encode($response->body), null, array(
+			'method' => 'POST'
+		));
+
+		$this->checkStatus($response->headers['Status-Code'], 'POST', $expectedCode, $response->body);
+
+		return array(
+			$this->getIdFromLocation($response->headers['Location']),
+			$response->body
+		);
 	}
 
 	/**
@@ -1082,5 +1001,33 @@ final class ApiClient {
 		} else {
 			echo $text;
 		}
+	}
+
+	private function getDefaultCurlHeaders($contentLength = 0)
+	{
+		$headers = array(
+			'accept'         => 'application/json',
+			'content-type'   => 'application/json'
+		);
+		if ($contentLength) {
+			$header['content-length'] = $contentLength;
+		}
+		return $headers;
+	}
+
+	private function getDefaultCurlOptions()
+	{
+		return array(
+			'httpauth'       => CURLAUTH_BASIC,
+			'userpwd'        => $this->apiKey . ':X',
+			'returntransfer' => true,
+			'timeout'        => 30,
+			'connecttimeout' => 30,
+			'ssl_verifypeer' => false,
+			'ssl_verifyhost' => 2,
+			'header'         => true,
+			'encoding'       => 'gzip,deflate',
+			'useragent'      => $this->getUserAgent()
+		);
 	}
 }
