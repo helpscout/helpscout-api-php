@@ -3,6 +3,8 @@ namespace HelpScout;
 
 require_once 'ClassLoader.php';
 
+use HelpScout\model\Attachment;
+
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
 	const API_URL    = 'https://api.helpscout.net/v1/';
@@ -196,7 +198,7 @@ final class ApiClient {
 	 */
 	public function getAttachmentData($attachmentId) {
 		if (!is_numeric($attachmentId) || $attachmentId < 1) {
-			throw new ApiException(sprintf('Invalid attachmentId in getAttachmentData method [%s]', attachmentId));
+			throw new ApiException(sprintf('Invalid attachmentId in getAttachmentData method [%s]', $attachmentId));
 		}
 		$json = $this->getItem(
 			sprintf('attachments/%d/data.json', $attachmentId), null, 'getAttachmentData', false
@@ -368,13 +370,25 @@ final class ApiClient {
 
     /**
      * @param  \HelpScout\model\Conversation $conversation
-     * @param bool $imported
+     * @param boolean $imported
+     * @param boolean $autoReply Enables auto replies to be sent when a conversation is created via the API
+     * @param boolean $reload Return the created conversation in the response
      * @return boolean|string
      */
-	public function createConversation(model\Conversation $conversation, $imported=false) {
+	public function createConversation(model\Conversation $conversation, $imported=false, $autoReply=false, $reload=false) {
 		$url = 'conversations.json';
+		$params = array();
 		if ($imported) {
-			$url = $url . '?imported=true';
+			$params['imported'] = 'true';
+		}
+		if ($autoReply) {
+			$params['autoReply'] = 'true';
+		}
+		if ($reload) {
+			$params['reload'] = 'true';
+		}
+		if ($params) {
+			$url .= '?' . http_build_query($params);
 		}
 		$json = $conversation->toJSON();
 		list($id, ) = $this->doPost($url, $json, 201);
@@ -410,8 +424,8 @@ final class ApiClient {
 	 * @param  \HelpScout\model\Attachment $attachment
 	 * @return void
 	 */
-	public function createAttachment(\HelpScout\model\Attachment $attachment) {
-		list($id, $body) = $this->doPost('attachments.json', $attachment->toJson(), 201);
+	public function createAttachment(Attachment $attachment) {
+		list(,$body) = $this->doPost('attachments.json', $attachment->toJson(), 201);
 
 		if ($body) {
 			$body = json_decode($body);
@@ -619,7 +633,7 @@ final class ApiClient {
 	 * @param  array  $params
 	 * @param  string $method
 	 * @param  string $model
-	 * @return $$model|boolean
+	 * @return mixed
 	 */
 	private function getItem($url, $params, $method, $model) {
 		list($statusCode, $json) = $this->callServer($url, 'GET', $params);
@@ -899,12 +913,13 @@ final class ApiClient {
 		return $id;
 	}
 
-	/**
-	 * @param  string  $url
-	 * @param  string  $requestBody
-	 * @param  integer $expectedCode
-	 * @return void
-	 */
+    /**
+     * @param string $url
+     * @param string $requestBody
+     * @param int $expectedCode
+     * @return void
+     * @throws ApiException
+     */
 	private function doPut($url, $requestBody, $expectedCode) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
@@ -950,11 +965,12 @@ final class ApiClient {
 		$this->checkStatus($info['http_code'], 'PUT', $expectedCode, $response['body']);
 	}
 
-	/**
-	 * @param  string  $url          [description]
-	 * @param  integer $expectedCode [description]
-	 * @return void
-	 */
+    /**
+     * @param string $url
+     * @param int $expectedCode
+     * @return void
+     * @throws ApiException
+     */
 	private function doDelete($url, $expectedCode) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
@@ -990,12 +1006,13 @@ final class ApiClient {
 		$this->checkStatus($info['http_code'], 'DELETE', $expectedCode, $response['body']);
 	}
 
-	/**
-	 * @param  string $url
-	 * @param  string $method
-	 * @param  array  $params
-	 * @return array
-	 */
+    /**
+     * @param string $url
+     * @param string $method
+     * @param array $params
+     * @return array
+     * @throws ApiException
+     */
 	private function callServer($url, $method='GET', $params=null) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			$exception = new ApiException('Invalid API Key', 401);
