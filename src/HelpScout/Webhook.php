@@ -48,14 +48,32 @@ final class Webhook {
 	 * @return string
 	 */
 	public function getEventType() {
-		return $this->getHeader('HTTP_X_HELPSCOUT_EVENT');
+		return $this->findHeader(array('HTTP_X_HELPSCOUT_EVENT', 'X_HELPSCOUT_EVENT'));
 	}
 
 	private function getHeader($header) {
 		if (isset($_SERVER[$header])) {
 			return $_SERVER[$header];
 		}
-		return false;
+		$theVal = false;
+		foreach($_SERVER as $headerVal => $headerText) {
+			if (strtoupper($headerVal) == $header) {
+				$theVal = $headerText;
+				break;
+			}
+		}
+		return $theVal;
+	}
+
+	private function findHeader($list) {
+		$val = false;
+		foreach($list as $header) {
+			$val = $this->getHeader($header);
+			if ($val) {
+				break;
+			}
+		}
+		return $val;
 	}
 
 	/**
@@ -65,7 +83,7 @@ final class Webhook {
 	public function isValid() {
 		$signature = $this->generateSignature();
 		if ($signature) {
-			return $signature == $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE');
+			return $signature == $this->findHeader(array('HTTP_X_HELPSCOUT_SIGNATURE', 'X_HELPSCOUT_SIGNATURE'));
 		}
 		return false;
 	}

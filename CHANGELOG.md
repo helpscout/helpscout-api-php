@@ -1,3 +1,11 @@
+#### 1.3.11 (December 3, 2014)
+* Fixed issue that would prevent from json from being constructed properly when adding an attachment to an existing thread
+* Adding support for missing autoReply and reload params in createConversation. Thanks [@bradt](https://github.com/bradt)
+* Clean up phpdocs
+
+#### 1.3.10 (October 9, 2014)
+* Updated header code logic to look for both "HTTP_" and normal header variations.
+
 #### 1.3.9 (May 28, 2014)
 * Exposed "openedAt" attribute on Message thread object (which indicates when a customer viewed the message)
 

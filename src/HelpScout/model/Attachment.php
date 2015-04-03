@@ -52,14 +52,18 @@ class Attachment {
 		}
 	}
 	public function getObjectVars() {
-		return get_object_vars($this);
+        $vars = get_object_vars($this);
+
+        if (isset($vars['hash']) && !empty($vars['hash'])) {
+            unset($vars['data']);
+        } else {
+            $vars['data'] = base64_encode($this->data);
+        }
+        return $vars;
 	}
 
 	public function toJson() {
-		$vars = get_object_vars($this);
-		$vars['data'] = base64_encode($this->data);
-
-		return json_encode($vars);
+		return json_encode($this->getObjectVars());
 	}
 
 	/**
