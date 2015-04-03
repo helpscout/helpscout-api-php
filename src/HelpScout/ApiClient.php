@@ -7,13 +7,14 @@ use HelpScout\model\Attachment;
 
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
-	const API_URL    = 'https://api.helpscout.net/v1/';
+	const API_URL    = 'https://dev-api.helpscout.net/v1/';
 	const NAMESPACE_SEPARATOR = '\\';
 
 	private $userAgent = false;
 	private $apiKey    = false;
 	private $isDebug   = false;
 	private $debugDir  = false;
+	private $curl      = false;
 
 	/**
 	 * @var \HelpScout\ApiClient
@@ -22,6 +23,7 @@ final class ApiClient {
 
 	private function __construct() {
 		ClassLoader::register();
+		$this->curl = new \Curl();
 	}
 
 	/**
@@ -35,6 +37,16 @@ final class ApiClient {
 			self::$instance = new ApiClient();
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * Set ApiClient Curl Wrapper
+	 *
+	 * @param  \Curl
+	 * @return void
+	 */
+	public function setCurl($curl) {
+		$this->curl = $curl;
 	}
 
 	/**
@@ -64,6 +76,11 @@ final class ApiClient {
 		$this->apiKey = $apiKey;
 	}
 
+	/**
+	 * Set the User Agent to use with this request
+	 *
+	 * @param string $userAgent
+	 */
 	public function setUserAgent($userAgent) {
 		$userAgent = trim($userAgent);
 		if (!empty($userAgent)) {
@@ -71,6 +88,11 @@ final class ApiClient {
 		}
 	}
 
+	/**
+	 * Get the User Agent used with this request
+	 *
+	 * @param string
+	 */
 	private function getUserAgent() {
 		if ($this->userAgent) {
 			return $this->userAgent;
@@ -441,14 +463,14 @@ final class ApiClient {
 		$this->doDelete('attachments/' . $id . '.json', 200);
 	}
 
-    /**
-     * Deletes a note thread.
-     *
-     * @param $threadId
-     */
-    public function deleteNote($threadId) {
-        $this->doDelete('notes/' . $threadId . '.json', 200);
-    }
+	/**
+	 * Deletes a note thread.
+	 *
+	 * @param $threadId
+	 */
+	public function deleteNote($threadId) {
+		$this->doDelete('notes/' . $threadId . '.json', 200);
+	}
 
 	/**
 	 * Update a conversation
@@ -711,11 +733,11 @@ final class ApiClient {
 		} elseif (array_key_exists($statusCode, $errorKey)) {
 			return $errorKey[$statusCode];
 		}
-		
+
 		return sprintf(
-			'Method %s returned status code %d but we expected code(s) %s', 
-			$type, 
-			$statusCode, 
+			'Method %s returned status code %d but we expected code(s) %s',
+			$type,
+			$statusCode,
 			implode(',', $expected)
 		);
 	}
@@ -840,7 +862,7 @@ final class ApiClient {
 	 * @throws \HelpScout\ApiException If no API key is provided
 	 */
 	private function doPost($url, $requestBody=false, $expectedCode) {
-		if ($this->apiKey === false || empty($this->apiKey)) {
+		if (empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
 
@@ -848,69 +870,49 @@ final class ApiClient {
 			'method' => 'POST'
 		));
 
-		$httpHeaders = array();
 		if ($requestBody !== false) {
-			$httpHeaders[] = 'Accept: application/json';
-			$httpHeaders[] = 'Content-Type: application/json';
-			$httpHeaders[] = 'Content-Length: ' . strlen($requestBody);
+			$this->curl->headers['accept']         = 'application/json';
+			$this->curl->headers['content-type']   = 'application/json';
+			$this->curl->headers['content-length'] = strlen($requestBody);
 		}
 
-		$ch = curl_init();
-		curl_setopt_array($ch, array(
-			CURLOPT_URL            => self::API_URL . $url,
-			CURLOPT_CUSTOMREQUEST  => 'POST',
-			CURLOPT_HTTPHEADER     => $httpHeaders,
-			CURLOPT_POSTFIELDS     => $requestBody,
-			CURLOPT_HTTPAUTH       => CURLAUTH_BASIC,
-			CURLOPT_USERPWD        => $this->apiKey . ':X',
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT        => 30,
-			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_SSL_VERIFYHOST => 2,
-			CURLOPT_HEADER         => true,
-			CURLOPT_ENCODING       => 'gzip,deflate',
-			CURLOPT_USERAGENT      => $this->getUserAgent()
-		));
+		$this->curl->options = array(
+			'url'            => self::API_URL . $url,
+			'httpauth'       => CURLAUTH_BASIC,
+			'userpwd'        => $this->apiKey . ':X',
+			'returntransfer' => true,
+			'timeout'        => 30,
+			'connecttimeout' => 30,
+			'ssl_verifypeer' => false,
+			'ssl_verifyhost' => 2,
+			'header'         => true,
+			'encoding'       => 'gzip,deflate',
+			'useragent'      => $this->getUserAgent()
+		);
 
-		$response = $this->parseResponse($ch, curl_exec($ch));
-		$info = curl_getinfo($ch);
+		$response = $this->curl->post($url, $requestBody);
+		$response->body = json_decode($response->body, true);
 
-		curl_close($ch);
-
-		$this->debug('response = ' . json_encode($response['body']), null, array(
+		$this->debug('response = ' . json_encode($response->body), null, array(
 			'method' => 'POST'
 		));
 
-		$this->checkStatus($info['http_code'], 'POST', $expectedCode, $response['body']);
+		$this->checkStatus($response->headers['Status-Code'], 'POST', $expectedCode, $response->body);
 
-		return array($this->getIdFromLocation($response, $info['header_size']), substr($response, $info['header_size']));
+		return array(
+			$this->getIdFromLocation($response->headers['Location']),
+			$response->body
+		);
 	}
 
 	/**
-	 * @param  string  $response
-	 * @param  integer $headerSize
+	 * @param  string  $location header
 	 * @return boolean|string
 	 */
-	private function getIdFromLocation($response, $headerSize) {
-		$location = false;
-		$headerText = substr($response, 0, $headerSize);
-		$headerLines = explode("\r\n", $headerText);
-
-		foreach($headerLines as $line) {
-			$parts = explode(': ',$line);
-			if (strtolower($parts[0]) == 'location') {
-				$location = chop($parts[1]);
-				break;
-			}
-		}
-
-		$id = false;
-		if ($location) {
-			$start = strrpos($location, '/') + 1;
-			$id = substr($location, $start, -5);
-		}
-		return $id;
+	private function getIdFromLocation($location) {
+		// Location is in the form of /api/model/5345.json and we extract the
+		// id from this location.
+		return pathinfo($location, PATHINFO_FILENAME);
 	}
 
     /**
@@ -924,7 +926,7 @@ final class ApiClient {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
-		
+
 		$this->debug('request = ' . $requestBody, null, array(
 			'method' => 'PUT'
 		));
@@ -955,13 +957,13 @@ final class ApiClient {
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$response = $this->parseResponse($ch, curl_exec($ch));
 		$info = curl_getinfo($ch);
-		
+
 		curl_close($ch);
 
 		$this->debug('response = ' . json_encode($response['body']), null, array(
 			'method' => 'PUT'
 		));
-		
+
 		$this->checkStatus($info['http_code'], 'PUT', $expectedCode, $response['body']);
 	}
 
@@ -979,7 +981,7 @@ final class ApiClient {
 		$this->debug('request = ' . $url, null, array(
 			'method' => 'DELETE'
 		));
-		
+
 		$ch = curl_init();
 
 		curl_setopt_array($ch, array(
