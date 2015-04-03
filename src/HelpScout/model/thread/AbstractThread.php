@@ -145,6 +145,7 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 		if ($list) {
 			$attachments = array();
 			foreach($list as $attachment) {
+                /* @var $attachment \HelpScout\model\Attachment */
 				$attachments[] = $attachment->getObjectVars();
 			}
 			$vars['attachments'] = $attachments;
@@ -248,7 +249,7 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	}
 
 	/**
-	 * @return the $type
+	 * @return string
 	 */
 	public function getType()
 	{
@@ -256,42 +257,42 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 	}
 
 	/**
-	 * @return the $state
+	 * @return string
 	 */
 	public function getState() {
 		return $this->state;
 	}
 
 	/**
-	 * @return the $body
+	 * @return string
 	 */
 	public function getBody() {
 		return $this->body;
 	}
 
 	/**
-	 * @return the $to list
+	 * @return mixed
 	 */
 	public function getToList() {
 		return $this->toList;
 	}
 
 	/**
-	 * @return the $cc list
+	 * @return mixed
 	 */
 	public function getCcList() {
 		return $this->ccList;
 	}
 
 	/**
-	 * @return the $bcc list
+	 * @return mixed
 	 */
 	public function getBccList() {
 		return $this->bccList;
 	}
 
 	/**
-	 * @return the $attachments
+	 * @return array
 	 */
 	public function getAttachments() {
 		return $this->attachments;

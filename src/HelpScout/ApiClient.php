@@ -3,6 +3,8 @@ namespace HelpScout;
 
 require_once 'ClassLoader.php';
 
+use HelpScout\model\Attachment;
+
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
 	const API_URL    = 'https://api.helpscout.net/v1/';
@@ -196,7 +198,7 @@ final class ApiClient {
 	 */
 	public function getAttachmentData($attachmentId) {
 		if (!is_numeric($attachmentId) || $attachmentId < 1) {
-			throw new ApiException(sprintf('Invalid attachmentId in getAttachmentData method [%s]', attachmentId));
+			throw new ApiException(sprintf('Invalid attachmentId in getAttachmentData method [%s]', $attachmentId));
 		}
 		$json = $this->getItem(
 			sprintf('attachments/%d/data.json', $attachmentId), null, 'getAttachmentData', false
@@ -212,7 +214,7 @@ final class ApiClient {
 	}
 
 	private function getConvoParams(array $params, $fields) {
-		return $this->getParams(array_merge($params, array('fields' => $fields)), array('page','fields','status','modifiedSince'));
+		return $this->getParams(array_merge($params, array('fields' => $fields)), array('page','fields','status','modifiedSince','tag'));
 	}
 
 	/**
@@ -368,13 +370,25 @@ final class ApiClient {
 
     /**
      * @param  \HelpScout\model\Conversation $conversation
-     * @param bool $imported
+     * @param boolean $imported
+     * @param boolean $autoReply Enables auto replies to be sent when a conversation is created via the API
+     * @param boolean $reload Return the created conversation in the response
      * @return boolean|string
      */
-	public function createConversation(model\Conversation $conversation, $imported=false) {
+	public function createConversation(model\Conversation $conversation, $imported=false, $autoReply=false, $reload=false) {
 		$url = 'conversations.json';
+		$params = array();
 		if ($imported) {
-			$url = $url . '?imported=true';
+			$params['imported'] = 'true';
+		}
+		if ($autoReply) {
+			$params['autoReply'] = 'true';
+		}
+		if ($reload) {
+			$params['reload'] = 'true';
+		}
+		if ($params) {
+			$url .= '?' . http_build_query($params);
 		}
 		$json = $conversation->toJSON();
 		list($id, ) = $this->doPost($url, $json, 201);
@@ -410,8 +424,8 @@ final class ApiClient {
 	 * @param  \HelpScout\model\Attachment $attachment
 	 * @return void
 	 */
-	public function createAttachment(\HelpScout\model\Attachment $attachment) {
-		list($id, $body) = $this->doPost('attachments.json', $attachment->toJson(), 201);
+	public function createAttachment(Attachment $attachment) {
+		list(,$body) = $this->doPost('attachments.json', $attachment->toJson(), 201);
 
 		if ($body) {
 			$body = json_decode($body);
@@ -619,7 +633,7 @@ final class ApiClient {
 	 * @param  array  $params
 	 * @param  string $method
 	 * @param  string $model
-	 * @return $$model|boolean
+	 * @return mixed
 	 */
 	private function getItem($url, $params, $method, $model) {
 		list($statusCode, $json) = $this->callServer($url, 'GET', $params);
@@ -637,51 +651,102 @@ final class ApiClient {
 	}
 
 	/**
-	 * @param  integer $statusCode The HTTP status code returned
-	 * @param  string  $type       The type of request (e.g., GET, POST, etc.)
-	 * @param  integer $expected   The expected HTTP status code
+	 * @param  integer             $statusCode   The HTTP status code returned
+	 * @param  string              $type         The type of request (e.g., GET, POST, etc.)
+	 * @param  integer             $expected     The expected HTTP status code
+	 * @param  string|array|object $responseBody The returned body
 	 * @return void
 	 * @throws \HelpScout\ApiException If the expected $statusCode isn't returned
 	 */
-	private function checkStatus($statusCode, $type, $expected = 200) {
-		if (!is_array($expected)) {
-			$expected = array($expected);
-		}
+	private function checkStatus($statusCode, $type, $expected = 200, $responseBody = array()) {
+		$expected = (array) $expected;
 
-		if (!in_array($statusCode, $expected)) {
-			switch($statusCode) {
-				case 400:
-					throw new ApiException('The request was not formatted correctly', 400);
-					break;
-				case 401:
-					throw new ApiException('Invalid API key', 401);
-					break;
-				case 402:
-					throw new ApiException('API key suspended', 402);
-					break;
-				case 403:
-					throw new ApiException('Access denied', 403);
-					break;
-				case 404:
-					throw new ApiException(sprintf('Resource not found [%s]', $type), 404);
-					break;
-				case 405:
-					throw new ApiException('Invalid method type', 405);
-					break;
-				case 429:
-					throw new ApiException('Throttle limit reached. Too many requests', 429);
-					break;
-				case 500:
-					throw new ApiException('Application error or server error', 500);
-					break;
-				case 503:
-					throw new ApiException('Service Temporarily Unavailable', 503);
-					break;
-				default:
-					throw new ApiException(sprintf('Method %s returned status code %d but we expected code(s) %s', $type, $statusCode, implode(',', $expected)));
-					break;
+		if (! in_array($statusCode, $expected)) {
+			$exception = new ApiException(
+				$this->getErrorMessage($statusCode, $type, $expected, $responseBody),
+				$responseBody['code']
+			);
+
+			if (array_key_exists('validationErrors', $responseBody)) {
+				$exception->setErrors($responseBody['validationErrors']);
 			}
+
+			$this->debug(
+				$exception->getMessage(),
+				'ERROR',
+				array(
+					'method' => $type,
+					'code' => $exception->getCode(),
+					'errors' => $exception->getErrors()
+				)
+			);
+
+			throw $exception;
 		}
+	}
+
+	/**
+	 * @param integer $statusCode   The HTTP status code returned
+	 * @param string  $type         The type of request (e.g., GET, POST, etc.)
+	 * @param array   $expected     The expected HTTP status code
+	 * @param array   $responseBody The returned body
+	 *
+	 * @return string
+	 */
+	private function getErrorMessage($statusCode, $type, array $expected, array $responseBody) {
+		$errorKey = array(
+			400 => 'The request was not formatted correctly',
+			401 => 'Invalid API key',
+			402 => 'API key suspended',
+			403 => 'Access denied',
+			404 => sprintf('Resource not found [%s]', $type),
+			405 => 'Invalid method type',
+			429 => 'Throttle limit reached. Too many requests',
+			500 => 'Application error or server error',
+			503 => 'Service Temporarily Unavailable'
+		);
+
+		if (array_key_exists('error', $responseBody)) {
+			return $responseBody['error'];
+		} elseif (array_key_exists($statusCode, $errorKey)) {
+			return $errorKey[$statusCode];
+		}
+		
+		return sprintf(
+			'Method %s returned status code %d but we expected code(s) %s', 
+			$type, 
+			$statusCode, 
+			implode(',', $expected)
+		);
+	}
+
+	/**
+	 * @param curl   $ch       The cURL object
+	 * @param string $response The raw response to be parsed
+	 *
+	 * @return array
+	 */
+	private function parseResponse($ch, $response)
+	{
+		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		$header = substr($response, 0, $header_size);
+		$body = substr($response, $header_size);
+
+		$response = array(
+			'body' => json_decode($body, true)
+		);
+
+		foreach (explode("\r\n", $header) as $i => $line) {
+	        if ($i === 0) {
+	            $headers['http_code'] = $line;
+	        } else {
+	            list ($key, $value) = explode(': ', $line);
+	            $headers[$key] = $value;
+	        }
+	    }
+	    $response['headers'] = $headers;
+
+	    return $response;
 	}
 
 	/**
@@ -779,9 +844,9 @@ final class ApiClient {
 			throw new ApiException('Invalid API Key', 401);
 		}
 
-		if ($this->isDebug) {
-			$this->debug($requestBody);
-		}
+		$this->debug('request = ' . $requestBody, null, array(
+			'method' => 'POST'
+		));
 
 		$httpHeaders = array();
 		if ($requestBody !== false) {
@@ -801,7 +866,6 @@ final class ApiClient {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_HEADER         => true,
@@ -809,12 +873,16 @@ final class ApiClient {
 			CURLOPT_USERAGENT      => $this->getUserAgent()
 		));
 
-		$response = curl_exec($ch);
+		$response = $this->parseResponse($ch, curl_exec($ch));
 		$info = curl_getinfo($ch);
 
 		curl_close($ch);
 
-		$this->checkStatus($info['http_code'], 'POST', $expectedCode);
+		$this->debug('response = ' . json_encode($response['body']), null, array(
+			'method' => 'POST'
+		));
+
+		$this->checkStatus($info['http_code'], 'POST', $expectedCode, $response['body']);
 
 		return array($this->getIdFromLocation($response, $info['header_size']), substr($response, $info['header_size']));
 	}
@@ -845,19 +913,21 @@ final class ApiClient {
 		return $id;
 	}
 
-	/**
-	 * @param  string  $url
-	 * @param  string  $requestBody
-	 * @param  integer $expectedCode
-	 * @return void
-	 */
+    /**
+     * @param string $url
+     * @param string $requestBody
+     * @param int $expectedCode
+     * @return void
+     * @throws ApiException
+     */
 	private function doPut($url, $requestBody, $expectedCode) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
-		if ($this->isDebug) {
-			$this->debug($requestBody);
-		}
+		
+		$this->debug('request = ' . $requestBody, null, array(
+			'method' => 'PUT'
+		));
 
 		$ch = curl_init();
 
@@ -875,7 +945,6 @@ final class ApiClient {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_HEADER         => true,
@@ -884,27 +953,33 @@ final class ApiClient {
 		));
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$response = curl_exec($ch);
+		$response = $this->parseResponse($ch, curl_exec($ch));
 		$info = curl_getinfo($ch);
-
+		
 		curl_close($ch);
 
-		$this->checkStatus($info['http_code'], 'PUT', $expectedCode);
+		$this->debug('response = ' . json_encode($response['body']), null, array(
+			'method' => 'PUT'
+		));
+		
+		$this->checkStatus($info['http_code'], 'PUT', $expectedCode, $response['body']);
 	}
 
-	/**
-	 * @param  string  $url          [description]
-	 * @param  integer $expectedCode [description]
-	 * @return void
-	 */
+    /**
+     * @param string $url
+     * @param int $expectedCode
+     * @return void
+     * @throws ApiException
+     */
 	private function doDelete($url, $expectedCode) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
 			throw new ApiException('Invalid API Key', 401);
 		}
 
-		if ($this->isDebug) {
-			$this->debug($url);
-		}
+		$this->debug('request = ' . $url, null, array(
+			'method' => 'DELETE'
+		));
+		
 		$ch = curl_init();
 
 		curl_setopt_array($ch, array(
@@ -915,7 +990,6 @@ final class ApiClient {
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_FAILONERROR    => true,
 			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_SSL_VERIFYHOST => 2,
 			CURLOPT_HEADER         => true,
@@ -924,23 +998,33 @@ final class ApiClient {
 		));
 
 		/** @noinspection PhpUnusedLocalVariableInspection */
-		$response = curl_exec($ch);
+		$response = $this->parseResponse($ch, curl_exec($ch));
 		$info = curl_getinfo($ch);
 
 		curl_close($ch);
 
-		$this->checkStatus($info['http_code'], 'DELETE', $expectedCode);
+		$this->checkStatus($info['http_code'], 'DELETE', $expectedCode, $response['body']);
 	}
 
-	/**
-	 * @param  string $url
-	 * @param  string $method
-	 * @param  array  $params
-	 * @return array
-	 */
+    /**
+     * @param string $url
+     * @param string $method
+     * @param array $params
+     * @return array
+     * @throws ApiException
+     */
 	private function callServer($url, $method='GET', $params=null) {
 		if ($this->apiKey === false || empty($this->apiKey)) {
-			throw new ApiException('Invalid API Key', 401);
+			$exception = new ApiException('Invalid API Key', 401);
+			$this->debug(
+				$exception->getMessage(),
+				'ERROR',
+				array(
+					'method' => $method,
+					'code' => $exception->getCode(),
+					'errors' => $exception->getErrors()
+				)
+			);
 		}
 
 		$ch = curl_init();
@@ -984,8 +1068,12 @@ final class ApiClient {
 	 * @param  string $mesg
 	 * @return void
 	 */
-	private function debug($mesg) {
-		$text = strftime('%b %d %H:%M:%S') . ': ' . $mesg . PHP_EOL;
+	private function debug($mesg, $level = 'DEBUG', array $context = array()) {
+		if ($this->isDebug == false) return;
+
+		$level = strtoupper($level ?: 'DEBUG');
+
+		$text = strftime('[%b %d %H:%M:%S]') . ' ' . $level . ': ' . $mesg . '; context: ' . json_encode($context) . PHP_EOL;
 
 		if ($this->debugDir) {
 			file_put_contents($this->debugDir . DIRECTORY_SEPARATOR . 'apiclient.log', $text, FILE_APPEND);
