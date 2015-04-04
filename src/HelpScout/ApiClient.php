@@ -284,15 +284,15 @@ final class ApiClient {
 		);
 	}
 
-    /**
-     * Gets the User associated with the API key used to make the request.
-     *
-     * @param null $fields
-     * @return \HelpScout\model\User
-     */
-    public function getUserMe($fields=null) {
-        return $this->getItem('users/me.json', $this->getParams(array('fields' => $fields)), 'getUser', '\HelpScout\model\User');
-    }
+	/**
+	 * Gets the User associated with the API key used to make the request.
+	 *
+	 * @param null $fields
+	 * @return \HelpScout\model\User
+	 */
+	public function getUserMe($fields=null) {
+		return $this->getItem('users/me.json', $this->getParams(array('fields' => $fields)), 'getUser', '\HelpScout\model\User');
+	}
 
 	/**
 	 * Returns a Collection of all the customers for the company.
@@ -369,37 +369,37 @@ final class ApiClient {
 		return $this->getCollection("customers.json", $this->getParams($params), 'searchCustomers', '\HelpScout\model\Customer');
 	}
 
-    /**
-     * @param string $query
-     * @param null $sortField
-     * @param null $sortOrder
-     * @param int $page
-     * @return \HelpScout\Collection
-     */
-    public function customerSearch($query='*', $sortField=null, $sortOrder=null, $page=1) {
-        $params = array('query' => $query, 'sortField' => $sortField, 'sortOrder' => $sortOrder, 'page' => $page);
-        return $this->getCollection("search/customers.json", $this->getParams($params), 'customerSearch', '\HelpScout\model\SearchCustomer');
-    }
+	/**
+	 * @param string $query
+	 * @param null $sortField
+	 * @param null $sortOrder
+	 * @param int $page
+	 * @return \HelpScout\Collection
+	 */
+	public function customerSearch($query='*', $sortField=null, $sortOrder=null, $page=1) {
+		$params = array('query' => $query, 'sortField' => $sortField, 'sortOrder' => $sortOrder, 'page' => $page);
+		return $this->getCollection("search/customers.json", $this->getParams($params), 'customerSearch', '\HelpScout\model\SearchCustomer');
+	}
 
-    /**
-     * @param string $query
-     * @param null $sortField
-     * @param null $sortOrder
-     * @param int $page
-     * @return \HelpScout\Collection
-     */
-    public function conversationSearch($query='*', $sortField=null, $sortOrder=null, $page=1) {
-        $params = array('query' => $query, 'sortField' => $sortField, 'sortOrder' => $sortOrder, 'page' => $page);
-        return $this->getCollection("search/customers.json", $this->getParams($params), 'conversationSearch', '\HelpScout\model\SearchConversation');
-    }
+	/**
+	 * @param string $query
+	 * @param null $sortField
+	 * @param null $sortOrder
+	 * @param int $page
+	 * @return \HelpScout\Collection
+	 */
+	public function conversationSearch($query='*', $sortField=null, $sortOrder=null, $page=1) {
+		$params = array('query' => $query, 'sortField' => $sortField, 'sortOrder' => $sortOrder, 'page' => $page);
+		return $this->getCollection("search/customers.json", $this->getParams($params), 'conversationSearch', '\HelpScout\model\SearchConversation');
+	}
 
-    /**
-     * @param  \HelpScout\model\Conversation $conversation
-     * @param boolean $imported
-     * @param boolean $autoReply Enables auto replies to be sent when a conversation is created via the API
-     * @param boolean $reload Return the created conversation in the response
-     * @return boolean|string
-     */
+	/**
+	 * @param  \HelpScout\model\Conversation $conversation
+	 * @param boolean $imported
+	 * @param boolean $autoReply Enables auto replies to be sent when a conversation is created via the API
+	 * @param boolean $reload Return the created conversation in the response
+	 * @return boolean|string
+	 */
 	public function createConversation(model\Conversation $conversation, $imported=false, $autoReply=false, $reload=false) {
 		$url = 'conversations.json';
 		$params = array();
@@ -435,15 +435,15 @@ final class ApiClient {
 		$thread->setId($id);
 	}
 
-    /**
-     * @param $conversationId
-     * @param $threadId
-     * @param $text
-     */
-    public function updateThreadText($conversationId, $threadId, $text) {
-        $json = '{ "body": ' . json_encode($text) . ' }';
-        $this->doPut('conversations/' . $conversationId . '/threads/' . $threadId . '.json', $json, 200);
-    }
+	/**
+	 * @param $conversationId
+	 * @param $threadId
+	 * @param $text
+	 */
+	public function updateThreadText($conversationId, $threadId, $text) {
+		$json = '{ "body": ' . json_encode($text) . ' }';
+		$this->doPut('conversations/' . $conversationId . '/threads/' . $threadId . '.json', $json, 200);
+	}
 
 	/**
 	 * @param  \HelpScout\model\Attachment $attachment
@@ -746,35 +746,6 @@ final class ApiClient {
 	}
 
 	/**
-	 * @param curl   $ch       The cURL object
-	 * @param string $response The raw response to be parsed
-	 *
-	 * @return array
-	 */
-	private function parseResponse($ch, $response)
-	{
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$header = substr($response, 0, $header_size);
-		$body = substr($response, $header_size);
-
-		$response = array(
-			'body' => json_decode($body, true)
-		);
-
-		foreach (explode("\r\n", $header) as $i => $line) {
-	        if ($i === 0) {
-	            $headers['http_code'] = $line;
-	        } else {
-	            list ($key, $value) = explode(': ', $line);
-	            $headers[$key] = $value;
-	        }
-	    }
-	    $response['headers'] = $headers;
-
-	    return $response;
-	}
-
-	/**
 	 * @param  array  $params
 	 * @param  array  $accepted
 	 * @return null|array
@@ -813,15 +784,15 @@ final class ApiClient {
 				case 'email':
 					$params[$key] = $val;
 					break;
-                case 'query':
-                    $params[$key] = $val;
-                    break;
-                case 'sortField':
-                    $params[$key] = $val;
-                    break;
-                case 'sortOrder':
-                    $params[$key] = $val;
-                    break;
+				case 'query':
+					$params[$key] = $val;
+					break;
+				case 'sortField':
+					$params[$key] = $val;
+					break;
+				case 'sortOrder':
+					$params[$key] = $val;
+					break;
 				case 'status':
 					if (!in_array($val, array('all','active','pending'))) {
 						unset($params[$key]);
@@ -865,55 +836,6 @@ final class ApiClient {
 		// Location is in the form of /api/model/5345.json and we extract the
 		// id from this location.
 		return pathinfo($location, PATHINFO_FILENAME);
-	}
-
-    /**
-     * @param string $url
-     * @param string $requestBody
-     * @param int $expectedCode
-     * @return void
-     * @throws ApiException
-     */
-	private function doPut($url, $requestBody, $expectedCode) {
-		if (empty($this->apiKey)) {
-			throw new ApiException('Invalid API Key', 401);
-		}
-
-		$this->debug('request = ' . $requestBody, null, array(
-			'method' => 'PUT'
-		));
-
-		$this->curl->headers = $this->getDefaultCurlHeaders(strlen($requestBody));
-		$this->curl->options = $this->getDefaultCurlOptions();
-		$response = $this->put(self::API_URL . $url, $requestBody);
-
-		$this->debug('response = ' . json_encode($response->body), null, array(
-			'method' => 'PUT'
-		));
-
-		$this->checkStatus($response->headers['Status-Code'], 'PUT', $expectedCode, $response->body);
-	}
-
-    /**
-     * @param string $url
-     * @param int $expectedCode
-     * @return void
-     * @throws ApiException
-     */
-	private function doDelete($url, $expectedCode) {
-		if (empty($this->apiKey)) {
-			throw new ApiException('Invalid API Key', 401);
-		}
-
-		$this->debug('request = ' . $url, null, array(
-			'method' => 'DELETE'
-		));
-
-		$this->curl->options = $this->getDefaultCurlOptions();
-		$response = $this->curl->delete(self::API_URL . $url);
-		$response->body = json_decode($response->body, true);
-
-		$this->checkStatus($response->headers['Status-Code'], 'DELETE', $expectedCode, $response->body);
 	}
 
     /**
@@ -983,6 +905,55 @@ final class ApiClient {
 			$this->getIdFromLocation($response->headers['Location']),
 			$response->body
 		);
+	}
+
+    /**
+     * @param string $url
+     * @param string $requestBody
+     * @param int $expectedCode
+     * @return void
+     * @throws ApiException
+     */
+	private function doPut($url, $requestBody, $expectedCode) {
+		if (empty($this->apiKey)) {
+			throw new ApiException('Invalid API Key', 401);
+		}
+
+		$this->debug('request = ' . $requestBody, null, array(
+			'method' => 'PUT'
+		));
+
+		$this->curl->headers = $this->getDefaultCurlHeaders(strlen($requestBody));
+		$this->curl->options = $this->getDefaultCurlOptions();
+		$response = $this->put(self::API_URL . $url, $requestBody);
+
+		$this->debug('response = ' . json_encode($response->body), null, array(
+			'method' => 'PUT'
+		));
+
+		$this->checkStatus($response->headers['Status-Code'], 'PUT', $expectedCode, $response->body);
+	}
+
+    /**
+     * @param string $url
+     * @param int $expectedCode
+     * @return void
+     * @throws ApiException
+     */
+	private function doDelete($url, $expectedCode) {
+		if (empty($this->apiKey)) {
+			throw new ApiException('Invalid API Key', 401);
+		}
+
+		$this->debug('request = ' . $url, null, array(
+			'method' => 'DELETE'
+		));
+
+		$this->curl->options = $this->getDefaultCurlOptions();
+		$response = $this->curl->delete(self::API_URL . $url);
+		$response->body = json_decode($response->body, true);
+
+		$this->checkStatus($response->headers['Status-Code'], 'DELETE', $expectedCode, $response->body);
 	}
 
 	/**
