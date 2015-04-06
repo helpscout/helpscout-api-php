@@ -496,7 +496,7 @@ final class ApiClient {
 	 * @return void
 	 */
 	public function deleteConversation($id) {
-		$this->doDelete('conversations/' . $id . '.json', 200);
+		return $this->doDelete('conversations/' . $id . '.json', 200);
 	}
 
 	/**
@@ -861,9 +861,10 @@ final class ApiClient {
 		$this->curl->headers = $this->getDefaultCurlHeaders();
 		$this->curl->options = $this->getDefaultCurlOptions();
 		$response = $this->curl->get(self::API_URL . $url, $params);
-		$response->body = json_decode($response->body, true);
+		// Note that doGet doesn't decode here, it returns the actual response
+		// body.
 
-		$this->debug('response = ' . json_encode($response->body), null, array(
+		$this->debug('response = ' . $response->body, null, array(
 			'method' => 'GET',
 			'url'    => $url,
 			'params' => $params
@@ -893,7 +894,7 @@ final class ApiClient {
 		}
 
 		$this->curl->options = $this->getDefaultCurlOptions();
-		$response = $this->curl->post($url, $requestBody);
+		$response = $this->curl->post(self::API_URL . $url, $requestBody);
 		$response->body = json_decode($response->body, true);
 		$this->debug('response = ' . json_encode($response->body), null, array(
 			'method' => 'POST'
@@ -925,13 +926,14 @@ final class ApiClient {
 
 		$this->curl->headers = $this->getDefaultCurlHeaders(strlen($requestBody));
 		$this->curl->options = $this->getDefaultCurlOptions();
-		$response = $this->put(self::API_URL . $url, $requestBody);
+		$response = $this->curl->put(self::API_URL . $url, $requestBody);
 
 		$this->debug('response = ' . json_encode($response->body), null, array(
 			'method' => 'PUT'
 		));
 
 		$this->checkStatus($response->headers['Status-Code'], 'PUT', $expectedCode, $response->body);
+		return true;
 	}
 
     /**
@@ -954,6 +956,7 @@ final class ApiClient {
 		$response->body = json_decode($response->body, true);
 
 		$this->checkStatus($response->headers['Status-Code'], 'DELETE', $expectedCode, $response->body);
+		return true;
 	}
 
 	/**
