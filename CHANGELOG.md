@@ -1,3 +1,10 @@
+#### 1.5.0 (April 7, 2015)
+* Added new cURL abstraction wrapper using [shuber/curl](https://github.com/hamstar/curl)
+* Added dependency injector to allow mocking and testing
+* Added tests and fixture data
+* Fixed issue where `modifiedAt` was renamed to `userModifiedAt` in the API but not the client
+* Fixed issue to rename type of `unassigned` to `open`. [PR #18](https://github.com/helpscout/helpscout-api-php/pull/18)
+
 #### 1.4.0 (April 2, 2015)
 * Fixed issue that didn't allow "tag" as a valid search parameter - [#13](https://github.com/helpscout/helpscout-api-php/issues/13)
 * Rewrote API error messaging to return more descriptive messages from the server
