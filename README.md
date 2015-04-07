@@ -1,6 +1,6 @@
-Help Scout PHP Wrapper
-======================
-PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our developer site: [http://developer.helpscout.net](http://developer.helpscout.net).
+Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscout-api-php.svg)](https://travis-ci.org/helpscout/helpscout-api-php)
+================================================================================
+> PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
 
 Version 1.4.0 Released
 ---------------------
@@ -53,7 +53,7 @@ $list = $hs->getConversationsForMailbox(99, array('page' => 2));
 // to get all the closed conversations:
 $closed = $hs->getConversationsForMailbox(99, array('page' => 1, 'status' => 'closed'));
 
-// to get page 2 of a list of conversations, 
+// to get page 2 of a list of conversations,
 // while only returning the "id" and "number" attributes on a conversation:
 $convos = $hs->getConversationsForMailbox(99, array('page' => 2), array('id', 'number'));
 
@@ -98,7 +98,7 @@ When field selectors are used, a JSON object is returned with the specificed fie
 ### Returned JSON
 <pre><code>{
     "name": "My Mailbox",
-    "email": "help@mymailbox.com"	
+    "email": "help@mymailbox.com"
 }
 </code></pre>
 
@@ -164,14 +164,14 @@ if ($webhook->isValid()) {
         $customer = $webhook->getCustomer();
         // do something
         break;
-  } 
+  }
 }
 </code></pre>
 
 Debugging
 ------------------------
 
-Enable debugging by calling the `setDebug(true)` method. 
+Enable debugging by calling the `setDebug(true)` method.
 
 The `setDebug` method accepts two parameters: The first is a `boolean` to turn debugging on or off (`true` = on, `false` = off). The second (optional) parameter is a directory in which to save a debug output file. If no directory is passed, the output will echo instead of writing to a log file.
 
