@@ -89,7 +89,7 @@ class Mailbox {
 	 * @return \HelpScout\model\Folder
 	 */
 	public function getUnassignedFolder() {
-		return $this->getFolderByType('unassigned');
+		return $this->getFolderByType('open');
 	}
 
 	/**
