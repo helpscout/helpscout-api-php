@@ -14,9 +14,9 @@ script:
   - ./vendor/bin/phpunit
 
 after_script:
-  - CODECLIMATE_REPO_TOKEN="b94a19a1f2ecc6c2289f823f994b95b017714b1b7c9d290567446818d1f0988d" ./vendor/bin/test-reporter --stdout > codeclimate.json
+  - ./vendor/bin/test-reporter --stdout > codeclimate.json
   - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"
 
 addons:
   code_climate:
-    repo_token: b94a19a1f2ecc6c2289f823f994b95b017714b1b7c9d290567446818d1f0988d
+    repo_token: $CODECLIMATE_REPO_TOKEN
