@@ -1,3 +1,6 @@
+#### 1.5.1 (April 17, 2015)
+* Fixed bug in the `conversationSearch` method that routed to the incorrect URI, using "customers" instead of "conversations".
+
 #### 1.5.0 (April 7, 2015)
 * Added new cURL abstraction wrapper using [shuber/curl](https://github.com/hamstar/curl)
 * Added dependency injector to allow mocking and testing
