@@ -390,7 +390,7 @@ final class ApiClient {
 	 */
 	public function conversationSearch($query='*', $sortField=null, $sortOrder=null, $page=1) {
 		$params = array('query' => $query, 'sortField' => $sortField, 'sortOrder' => $sortOrder, 'page' => $page);
-		return $this->getCollection("search/customers.json", $this->getParams($params), 'conversationSearch', '\HelpScout\model\SearchConversation');
+		return $this->getCollection("search/conversations.json", $this->getParams($params), 'conversationSearch', '\HelpScout\model\SearchConversation');
 	}
 
 	/**
