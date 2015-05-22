@@ -453,8 +453,7 @@ final class ApiClient {
 		list(,$body) = $this->doPost('attachments.json', $attachment->toJson(), 201);
 
 		if ($body) {
-			$body = json_decode($body);
-			$attachment->setHash($body->item->hash);
+			$attachment->setHash($body['item']['hash']);
 		}
 	}
 
@@ -903,7 +902,9 @@ final class ApiClient {
 		$this->checkStatus($response->headers['Status-Code'], 'POST', $expectedCode, $response->body);
 
 		return array(
-			$this->getIdFromLocation($response->headers['Location']),
+			array_key_exists('Location', $response->headers) 
+				? $this->getIdFromLocation($response->headers['Location'])
+				: null,
 			$response->body
 		);
 	}
