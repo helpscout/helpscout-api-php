@@ -1,3 +1,8 @@
+#### 1.5.2 (May 22, 2015)
+* Fixed a bug with `ApiClient::createAttachment()` that was doing a `json_decode` on an already decoded response. Also updated reference to the response hash to be retrieved via an array interface instead of the previous object method.
+* Fixed a bug that caused an error when a response didn't have a location header to create a response ID from. If no location header is present, a null value is returned.
+This addresses the issue pointed out in [#21](https://github.com/helpscout/helpscout-api-php/issues/21)
+
 #### 1.5.1 (April 17, 2015)
 * Fixed bug in the `conversationSearch` method that routed to the incorrect URI, using "customers" instead of "conversations".
 
