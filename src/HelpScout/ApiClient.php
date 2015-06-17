@@ -16,6 +16,17 @@ final class ApiClient {
 	private $debugDir  = false;
 	private $curl      = false;
 
+    private $services = [];
+
+    private $serviceDescriptionLocations = [
+        'reports/conversations.php',
+        'reports/docs.php',
+        'reports/happiness.php',
+        'reports/productivity.php',
+        'reports/team.php',
+        'reports/user.php'
+    ];
+
 	/**
 	 * @var \HelpScout\ApiClient
 	 */
@@ -24,6 +35,7 @@ final class ApiClient {
 	private function __construct() {
 		ClassLoader::register();
 		$this->curl = new \Curl();
+        $this->services = $this->loadServiceDescriptions();
 	}
 
 	/**
@@ -38,6 +50,28 @@ final class ApiClient {
 		}
 		return self::$instance;
 	}
+
+	/**
+	 * Get all available service descriptions and
+	 * their configurations.
+	 * 
+	 * @return array
+	 */
+    public function getServiceDescriptions()
+    {
+        return $this->services;
+    }
+
+    /**
+     * Get the public API method names as described via 
+     * a service description.
+     * 
+     * @return array
+     */
+    public function getServiceDescriptionMethods()
+    {
+        return array_keys($this->services);
+    }
 
 	/**
 	 * Set ApiClient Curl Wrapper
@@ -1005,4 +1039,84 @@ final class ApiClient {
 			'useragent'      => $this->getUserAgent()
 		);
 	}
+
+	/**
+	 * Call a service description if one is available.
+	 * 
+	 * @param  string $method
+	 * @param  array $args
+	 * @return mixed
+	 * @throws BadMethodCallException
+	 */
+    public function __call($method, $args)
+    {
+        if (isset($this->services[$method])) {
+            return $this->callServiceDescription($method, $args[0]);
+        }
+
+        throw new \BadMethodCallException(sprintf(
+        	'The required method "%s" does not exist for %s',
+        	$method,
+        	get_class($this)
+        ));
+    }
+
+    /**
+     * Construct a call to be made to the API via a Service
+     * Description. Do parameter checking. Call the appropriate
+     * HTTP verb method (ie: `doGet`).
+     * 
+     * @param  string $service
+     * @param  array $params
+     * @return stdObject|array
+     */
+    private function callServiceDescription($service, $params)
+    {
+        $service = $this->services[$service];
+        $method = 'do' . ucfirst(strtolower($service['httpMethod']));
+        $queryParams = [];
+
+        foreach ($service['parameters'] as $param => $paramSettings) {
+            $required = isset($paramSettings['required'])
+                ? $paramSettings['required']
+                : false;
+
+            if ($required && ! isset($params[$param])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The %s parameter is required',
+                    $param
+                ));
+            }
+
+            if (isset($params[$param])
+                && $paramSettings['location'] === 'query'
+            ) {
+                $queryParams[$param] = $params[$param];
+            }
+        }
+
+        list($responseCode, $response) = $this->$method($service['uri'], $queryParams);
+
+        return json_decode($response);
+    }
+
+    /**
+     * Loop through all stated service description locations and 
+     * load their configuration arrays into one merged array.
+     * 
+     * @return array
+     */
+    private function loadServiceDescriptions()
+    {
+        $services = [];
+
+        foreach ($this->serviceDescriptionLocations as $location) {
+            $services = array_merge(
+                $services,
+                require __DIR__ . '/descriptions/' . $location
+            );
+        }
+
+        return $services;
+    }
 }
