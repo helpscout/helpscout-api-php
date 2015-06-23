@@ -129,9 +129,9 @@ final class ApiClient {
 	 */
 	private function getUserAgent() {
 		if ($this->userAgent) {
-			return $this->userAgent;
+			return $this->userAgent . '(Version: ' . getphpversion() . ')';
 		}
-		return self::USER_AGENT;
+		return self::USER_AGENT . '(Version: ' . getphpversion() . ')';
 	}
 
 	/**
