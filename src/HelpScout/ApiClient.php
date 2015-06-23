@@ -16,16 +16,16 @@ final class ApiClient {
 	private $debugDir  = false;
 	private $curl      = false;
 
-    private $services = [];
+    private $services = array();
 
-    private $serviceDescriptionLocations = [
+    private $serviceDescriptionLocations = array(
         'reports/conversations.php',
         'reports/docs.php',
         'reports/happiness.php',
         'reports/productivity.php',
         'reports/team.php',
         'reports/user.php'
-    ];
+    );
 
 	/**
 	 * @var \HelpScout\ApiClient
@@ -1074,7 +1074,7 @@ final class ApiClient {
     {
         $service = $this->services[$service];
         $method = 'do' . ucfirst(strtolower($service['httpMethod']));
-        $queryParams = [];
+        $queryParams = array();
 
         foreach ($service['parameters'] as $param => $paramSettings) {
             $required = isset($paramSettings['required'])
@@ -1108,7 +1108,7 @@ final class ApiClient {
      */
     private function loadServiceDescriptions()
     {
-        $services = [];
+        $services = array();
 
         foreach ($this->serviceDescriptionLocations as $location) {
             $services = array_merge(
