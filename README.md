@@ -2,7 +2,7 @@ Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscou
 ================================================================================
 > PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
 
-Version 1.5.2 Released
+Version 1.6.0 Released
 ---------------------
 Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
 
@@ -13,7 +13,8 @@ Requirements
 
 Example Usage: API
 ---------------------
-<pre><code>include 'HelpScout/ApiClient.php';
+```
+include 'HelpScout/ApiClient.php';
 
 use HelpScout\ApiClient;
 
@@ -87,20 +88,23 @@ $convo->setCustomer($customerRef);
 $convo->addLineItem($note);
 
 $hs->createConversation($convo);
-</code></pre>
+```
 
 Field Selectors
 ---------------------
 Field selectors can be given as a string or an array.
 
 When field selectors are used, a JSON object is returned with the specificed fields. If no fields are given, you will be given the proper object. For example, the following code will return a JSON object with fields for 'name' and 'email'.
-<pre><code>$mailbox = ApiClient::getInstance()->getMailbox(99, array('name','email'));</code></pre>
+```
+$mailbox = ApiClient::getInstance()->getMailbox(99, array('name','email'));
+```
 ### Returned JSON
-<pre><code>{
+```
+{
     "name": "My Mailbox",
     "email": "help@mymailbox.com"
 }
-</code></pre>
+```
 
 API Client Methods
 --------------------
@@ -141,9 +145,62 @@ API Client Methods
 * getUsersForMailbox($mailboxId, $page=1, $fields=null)
 * getUser($userId, $fields=null)
 
+### Reports (available via Service Descriptions)
+
+* getConversationsReport()
+* getConversationsBusyTimesReport()
+* getNewConversationsReport()
+* getConversationsDrillDownReport()
+* getConversationsDrillDownByFieldReport()
+* getNewConversationsDrillDownReport()
+* getDocsReport()
+* getHappinessReport()
+* getHappinessRatingsReport()
+* getProductivityReport()
+* getFirstResponseTimeProductivityReport()
+* getRepliesSentProductivityReport()
+* getResolvedProductivityReport()
+* getResolutionTimeProductivityReport()
+* getResponseTimeProductivityReport()
+* getProductivityDrillDownReport()
+* getTeamReport()
+* getCustomersHelpedTeamReport()
+* getTeamDrillDownReport()
+* getUserReport()
+* getUserConversationHistoryReport()
+* getUserCustomersHelpedReport()
+* getUserDrillDownReport()
+* getUserRepliesReport()
+* getUserResolutionsReport()
+* getUserHappinessReport()
+* getUserRatingsReport()
+
+Example Usage: Reports
+------------------------
+```
+include 'HelpScout/ApiClient.php';
+
+use HelpScout\ApiClient;
+
+$scout = ApiClient::getInstance();
+$scout->setKey('your-api-key-here');
+
+$report = $scout->getConversationsReport([
+	'start' => '2014-01-01T00:00:00Z',
+	'end' => '2014-12-31T23:59:59Z'
+]);
+```
+
+Report methods are not hard coded into the `ApiClient` class, but rather they are "described" via Service Descriptions. Service Descriptions are PHP configuration arrays that declare the method name, where and how to call the API, and any parameters available and/or required. 
+
+URL configuration parameters are sent to the `ApiClient` method via a single configuration array parameter. `$scout->getDocsReport($config)`.
+
+A list of available reporting methods is available by calling `$scout->getServiceDescriptionMethods()`. 
+
 Example Usage: Webhooks
 ------------------------
-<pre><code>include 'HelpScout/Webhook.php';
+```
+include 'HelpScout/Webhook.php';
 
 $webhook = new \HelpScout\Webhook('secret-key-here');
 if ($webhook->isValid()) {
@@ -166,7 +223,7 @@ if ($webhook->isValid()) {
         break;
   }
 }
-</code></pre>
+```
 
 Debugging
 ------------------------

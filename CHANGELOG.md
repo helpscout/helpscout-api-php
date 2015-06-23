@@ -1,3 +1,7 @@
+#### 1.6.0 (June X, 2015)
+* Added support for the new Reports endpoints via Service Descriptions.
+* Added ability to add new endpoints via Service Descriptions. SD allow for an endpoint to be declared and configured via a PHP array configuration. This prevents cluttering of too many class methods.
+
 #### 1.5.2 (May 22, 2015)
 * Fixed a bug with `ApiClient::createAttachment()` that was doing a `json_decode` on an already decoded response. Also updated reference to the response hash to be retrieved via an array interface instead of the previous object method.
 * Fixed a bug that caused an error when a response didn't have a location header to create a response ID from. If no location header is present, a null value is returned.
