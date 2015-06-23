@@ -1,83 +1,83 @@
 <?php
 
-return [
+return array(
 
-    'getHappinessReport' => [
+    'getHappinessReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/happiness.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getHappinessRatingsReport' => [
+    'getHappinessRatingsReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/happiness/ratings.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'rating' => [
+            ),
+            'rating' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'sortField' => [
+            ),
+            'sortField' => array(
                 'location' => 'query'
-            ],
-            'sortOrder' => [
+            ),
+            'sortOrder' => array(
                 'location' => 'query'
-            ]
-        ]
-    ]
+            )
+        )
+    )
 
-];
+);

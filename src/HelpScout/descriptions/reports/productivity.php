@@ -1,270 +1,270 @@
 <?php
 
-return [
+return array(
 
-    'getProductivityReport' => [
+    'getProductivityReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/productivity.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'officeHours' => [
+            ),
+            'officeHours' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getFirstResponseTimeProductivityReport' => [
+    'getFirstResponseTimeProductivityReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/productivity/first-response-time.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'officeHours' => [
+            ),
+            'officeHours' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getRepliesSentProductivityReport' => [
+    'getRepliesSentProductivityReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/productivity/replies-sent.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getResolvedProductivityReport' => [
+    'getResolvedProductivityReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/productivity/resolved.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getResolutionTimeProductivityReport' => [
+    'getResolutionTimeProductivityReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/productivity/resolution-time.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'officeHours' => [
+            ),
+            'officeHours' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getResponseTimeProductivityReport' => [
+    'getResponseTimeProductivityReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/productivity/response-time.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'officeHours' => [
+            ),
+            'officeHours' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getProductivityDrillDownReport' => [
+    'getProductivityDrillDownReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/productivity/drilldown.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query'
-            ],
-            'rows' => [
+            ),
+            'rows' => array(
                 'location' => 'query'
-            ],
-            'range' => [
+            ),
+            'range' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'rangeId' => [
+            ),
+            'rangeId' => array(
                 'location' => 'query'
-            ]
-        ]
-    ]
+            )
+        )
+    )
 
-];
+);

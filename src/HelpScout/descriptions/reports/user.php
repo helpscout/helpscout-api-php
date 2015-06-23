@@ -1,318 +1,318 @@
 <?php
 
-return [
+return array(
 
-    'getUserReport' => [
+    'getUserReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/user.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getUserConversationHistoryReport' => [
+    'getUserConversationHistoryReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/user/conversation-history.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'sortField' => [
+            ),
+            'sortField' => array(
                 'location' => 'query'
-            ],
-            'sortOrder' => [
+            ),
+            'sortOrder' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getUserCustomersHelpedReport' => [
+    'getUserCustomersHelpedReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/user/customers-helped.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getUserDrillDownReport' => [
+    'getUserDrillDownReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/users/drilldown.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query'
-            ],
-            'rows' => [
+            ),
+            'rows' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getUserRepliesReport' => [
+    'getUserRepliesReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/user/replies.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getUserResolutionsReport' => [
+    'getUserResolutionsReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/user/resolutions.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getUserHappinessReport' => [
+    'getUserHappinessReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/user/happiness.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getUserRatingsReport' => [
+    'getUserRatingsReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/user/ratings.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'user' => [
+            ),
+            'user' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'rating' => [
+            ),
+            'rating' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'sortField' => [
+            ),
+            'sortField' => array(
                 'location' => 'query'
-            ],
-            'sortOrder' => [
+            ),
+            'sortOrder' => array(
                 'location' => 'query'
-            ]
-        ]
-    ]
+            )
+        )
+    )
 
-];
+);

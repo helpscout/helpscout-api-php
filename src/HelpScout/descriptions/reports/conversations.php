@@ -1,208 +1,208 @@
 <?php
 
-return [
+return array(
 
-    'getConversationsReport' => [
+    'getConversationsReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/conversations.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getConversationsBusyTimesReport' => [
+    'getConversationsBusyTimesReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/conversations/busy-times.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getNewConversationsReport' => [
+    'getNewConversationsReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/conversations/new.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getConversationsDrillDownReport' => [
+    'getConversationsDrillDownReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/conversations/drilldown.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query'
-            ],
-            'rows' => [
+            ),
+            'rows' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getConversationsDrillDownByFieldReport' => [
+    'getConversationsDrillDownByFieldReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/conversations/fields-drilldown.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'field' => [
+            ),
+            'field' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'fieldid' => [
+            ),
+            'fieldid' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query'
-            ],
-            'rows' => [
+            ),
+            'rows' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getNewConversationsDrillDownReport' => [
+    'getNewConversationsDrillDownReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/conversations/new-drilldown.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query'
-            ],
-            'rows' => [
+            ),
+            'rows' => array(
                 'location' => 'query'
-            ]
-        ]
-    ]
+            )
+        )
+    )
 
-];
+);

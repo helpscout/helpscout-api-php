@@ -1,114 +1,114 @@
 <?php
 
-return [
+return array(
 
-    'getTeamReport' => [
+    'getTeamReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/team.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getCustomersHelpedTeamReport' => [
+    'getCustomersHelpedTeamReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/team/customers-helped.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'previousStart' => [
+            ),
+            'previousStart' => array(
                 'location' => 'query'
-            ],
-            'previousEnd' => [
+            ),
+            'previousEnd' => array(
                 'location' => 'query'
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'viewBy' => [
+            ),
+            'viewBy' => array(
                 'location' => 'query'
-            ]
-        ]
-    ],
+            )
+        )
+    ),
 
-    'getTeamDrillDownReport' => [
+    'getTeamDrillDownReport' => array(
         'httpMethod' => 'GET',
         'uri' => 'reports/team/drilldown.json',
-        'parameters' => [
-            'start' => [
+        'parameters' => array(
+            'start' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'end' => [
+            ),
+            'end' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'mailboxes' => [
+            ),
+            'mailboxes' => array(
                 'location' => 'query'
-            ],
-            'tags' => [
+            ),
+            'tags' => array(
                 'location' => 'query'
-            ],
-            'types' => [
+            ),
+            'types' => array(
                 'location' => 'query'
-            ],
-            'folders' => [
+            ),
+            'folders' => array(
                 'location' => 'query'
-            ],
-            'page' => [
+            ),
+            'page' => array(
                 'location' => 'query'
-            ],
-            'rows' => [
+            ),
+            'rows' => array(
                 'location' => 'query'
-            ],
-            'range' => [
+            ),
+            'range' => array(
                 'location' => 'query',
                 'required' => true
-            ],
-            'rangeId' => [
+            ),
+            'rangeId' => array(
                 'location' => 'query'
-            ]
-        ]
-    ]
+            )
+        )
+    )
 
-];
+);
