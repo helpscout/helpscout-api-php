@@ -1,4 +1,4 @@
-#### 1.6.1 (June 23, 2015)
+#### 1.6.2 (June 23, 2015)
 * Added support for the new Reports endpoints via Service Descriptions.
 * Added ability to add new endpoints via Service Descriptions. SD allow for an endpoint to be declared and configured via a PHP array configuration. This prevents cluttering of too many class methods.
 
