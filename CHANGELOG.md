@@ -1,3 +1,7 @@
+#### 1.6.3 (June 29, 2015)
+* Added an "expect" default header set to nothing. On some API calls, a dual HTTP status response was being returned. A fix was found [here](http://the-stickman.com/web-development/php-and-curl-disabling-100-continue-header/comment-page-1). By overriding the "expect" header, the server responds correctly.
+This addresses the issue pointed out in [#22](https://github.com/helpscout/helpscout-api-php/issues/22)
+
 #### 1.6.2 (June 23, 2015)
 * Added support for the new Reports endpoints via Service Descriptions.
 * Added ability to add new endpoints via Service Descriptions. SD allow for an endpoint to be declared and configured via a PHP array configuration. This prevents cluttering of too many class methods.
