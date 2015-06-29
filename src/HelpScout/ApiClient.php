@@ -1016,7 +1016,8 @@ final class ApiClient {
 	{
 		$headers = array(
 			'accept'         => 'application/json',
-			'content-type'   => 'application/json'
+			'content-type'   => 'application/json',
+			'expect'		 => ''
 		);
 		if ($contentLength) {
 			$header['content-length'] = $contentLength;
