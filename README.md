@@ -10,6 +10,24 @@ Requirements
 ---------------------
 * PHP 5.3.x
 * curl
+* shuber/curl
+
+Installation
+---------------------
+
+### .Zip + [Composer](https://getcomposer.org/)
+
+Download the [.zip](https://github.com/helpscout/helpscout-api-php/archive/master.zip) and unpack it. `cd` into the directory and run `composer install`
+
+### Manually
+
+- Download the [.zip](https://github.com/helpscout/helpscout-api-php/archive/master.zip) and unpack it.
+- Download the [shuber/curl .zip](https://github.com/hamstar/curl/archive/master.zip) and unpack it.
+
+```
+require_once '/path/to/shuber/curl/lib/curl.php';
+include_once '/path/to/helpscout/helpscout-api-php/src/HelpScout/ApiClient.php'
+```
 
 Example Usage: API
 ---------------------
