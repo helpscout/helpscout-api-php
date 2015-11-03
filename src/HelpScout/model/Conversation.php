@@ -9,30 +9,32 @@ class Conversation {
 
 	const OWNER_ANYONE = 1;
 
-	private $id          = null;
-	private $type        = null;
-	private $folderId    = 0;
-	private $draft       = null;
-	private $number      = 0;
-	private $owner       = null;
-	private $mailbox     = null;
-	private $customer    = null;
-	private $threadCount = 0;
-	private $status      = null;
-	private $subject     = null;
-	private $preview     = null;
-	private $createdBy   = null;
-	private $createdByType = null;
-	private $createdAt   = null;
-	private $modifiedAt  = null;
-	private $userModifiedAt  = null;
-	private $closedAt    = null;
-	private $closedBy    = null;
-	private $source      = null;
-	private $ccList      = null;
-	private $bccList     = null;
-	private $tags        = null;
-	private $threads     = null;
+	private $id             = null;
+	private $type           = null;
+	private $folderId       = 0;
+	private $draft          = null;
+	private $number         = 0;
+	private $owner          = null;
+	private $mailbox        = null;
+	private $customer       = null;
+	private $threadCount    = 0;
+	private $status         = null;
+	private $subject        = null;
+	private $preview        = null;
+	private $createdBy      = null;
+	private $createdByType  = null;
+	private $createdAt      = null;
+	private $modifiedAt     = null;
+	private $userModifiedAt = null;
+	private $closedAt       = null;
+	private $closedBy       = null;
+	private $source         = null;
+	private $ccList         = null;
+	private $bccList        = null;
+	private $tags           = null;
+	private $threads        = null;
+
+	private $unassigned     = false;
 
 	public function __construct($data = null) {
 		$this->status = self::STATUS_ACTIVE;
@@ -119,6 +121,10 @@ class Conversation {
 
 		if ($this->getOwner() != null) {
 			$vars['owner'] = $this->getOwner()->getObjectVars();
+		}
+
+		if (is_null($this->getOwner()) && $this->unassigned) {
+			$vars['owner'] = null;
 		}
 
 		if ($this->getCustomer() != null) {
@@ -287,6 +293,12 @@ class Conversation {
 	 */
 	public function setOwner(\HelpScout\model\ref\PersonRef $owner) {
 		$this->owner = $owner;
+		$this->unassigned = false;
+	}
+
+	public function unassign() {
+		$this->unassigned = true;
+		$this->owner = null;
 	}
 
 	/**
