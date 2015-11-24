@@ -18,8 +18,10 @@ class UnassignConversationTest extends TestCase
         $conversation = $this->getConversation();
         $conversation->unassign();
 
-        $this->assertTrue(array_key_exists('owner', $conversation->getObjectVars()));
-        $this->assertNull($conversation->getObjectVars()['owner']);
+        $objectVars = $conversation->getObjectVars();
+
+        $this->assertTrue(array_key_exists('owner', $objectVars));
+        $this->assertNull($objectVars['owner']);
     }
 
     private function getConversation()

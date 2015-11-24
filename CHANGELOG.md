@@ -1,3 +1,7 @@
+#### 1.6.4 (November 24, 2015)
+* Add `unassign` method to a conversation allowing anyone to be assigned
+* Updated the README and the `examples/CreateCustomer.php` with examples of catching a `HelpScout\ApiException` with errors.
+
 #### 1.6.3 (June 29, 2015)
 * Added an "expect" default header set to nothing. On some API calls, a dual HTTP status response was being returned. A fix was found [here](http://the-stickman.com/web-development/php-and-curl-disabling-100-continue-header/comment-page-1). By overriding the "expect" header, the server responds correctly.
 This addresses the issue pointed out in [#22](https://github.com/helpscout/helpscout-api-php/issues/22)

@@ -2,7 +2,7 @@ Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscou
 ================================================================================
 > PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
 
-Version 1.6.3 Released
+Version 1.6.4 Released
 ---------------------
 Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
 
@@ -261,3 +261,52 @@ The `setDebug` method accepts two parameters: The first is a `boolean` to turn d
 Debug lines consist of four parts: Timestamp `[Apr 02 20:54:28]`, Level `DEBUG`, Message, and Context.
 
 The example above debugging output represents 3 lines of debug text, all occurring within the same API call, a `PUT` method to update a Customer. The first is the request JSON, the second is the response JSON, and the third is an API error and its response from the server.
+
+Catching API Errors/Exceptions
+------------------------
+
+4\*\* and 5\*\* errors from the server are handled via the API client. After a the response is received from the API server, the client does a check to ensure the request succeeded. If a 4\*\* or 5\*\* error is detected, the client will throw a `HelpScout\ApiException`. This allows you to easily catch errors from the server, whether it's a validation error or the server can't be reached. This keeps your application from exploding and killing your request and allows you to recover.
+
+When errors are returned from the API server (for example: when validation fails), the errors are added to the exception and accessible via the `getErrors()` method.
+
+Example:
+
+```
+try {
+    $scout->createConversation($conversation);
+} catch (\HelpScout\ApiException $e) {
+    echo $e->getMessage();
+    echo "\n";
+    print_r($e->getErrors());
+}
+``` 
+
+That outputs 
+
+```
+Input could not be validated
+Array
+(
+    [0] => Array
+        (
+            [property] => createdBy
+            [value] => 1234
+            [message] => The specified createdBy is not valid
+        )
+
+    [1] => Array
+        (
+            [property] => customer
+            [value] => 5678
+            [message] => The specified customer is not valid
+        )
+
+    [2] => Array
+        (
+            [property] => mailbox
+            [value] => 012345
+            [message] => The specified mailbox is not valid
+        )
+
+)
+```
