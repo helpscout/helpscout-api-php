@@ -24,14 +24,14 @@ Download the [.zip](https://github.com/helpscout/helpscout-api-php/archive/maste
 - Download the [.zip](https://github.com/helpscout/helpscout-api-php/archive/master.zip) and unpack it.
 - Download the [shuber/curl .zip](https://github.com/hamstar/curl/archive/master.zip) and unpack it.
 
-```
+```php
 require_once '/path/to/shuber/curl/lib/curl.php';
 include_once '/path/to/helpscout/helpscout-api-php/src/HelpScout/ApiClient.php'
 ```
 
 Example Usage: API
 ---------------------
-```
+```php
 include 'HelpScout/ApiClient.php';
 
 use HelpScout\ApiClient;
@@ -113,11 +113,11 @@ Field Selectors
 Field selectors can be given as a string or an array.
 
 When field selectors are used, a JSON object is returned with the specificed fields. If no fields are given, you will be given the proper object. For example, the following code will return a JSON object with fields for 'name' and 'email'.
-```
+```php
 $mailbox = ApiClient::getInstance()->getMailbox(99, array('name','email'));
 ```
 ### Returned JSON
-```
+```json
 {
     "name": "My Mailbox",
     "email": "help@mymailbox.com"
@@ -195,7 +195,7 @@ API Client Methods
 
 Example Usage: Reports
 ------------------------
-```
+```php
 include 'HelpScout/ApiClient.php';
 
 use HelpScout\ApiClient;
@@ -217,7 +217,7 @@ A list of available reporting methods is available by calling `$scout->getServic
 
 Example Usage: Webhooks
 ------------------------
-```
+```php
 include 'HelpScout/Webhook.php';
 
 $webhook = new \HelpScout\Webhook('secret-key-here');
@@ -271,7 +271,7 @@ When errors are returned from the API server (for example: when validation fails
 
 Example:
 
-```
+```php
 try {
     $scout->createConversation($conversation);
 } catch (\HelpScout\ApiException $e) {
@@ -283,7 +283,7 @@ try {
 
 That outputs 
 
-```
+```php
 Input could not be validated
 Array
 (
