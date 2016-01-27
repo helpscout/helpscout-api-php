@@ -986,6 +986,7 @@ final class ApiClient {
 			'method' => 'DELETE'
 		));
 
+		$this->curl->headers = array();
 		$this->curl->options = $this->getDefaultCurlOptions();
 		$response = $this->curl->delete(self::API_URL . $url);
 		$response->body = json_decode($response->body, true);

@@ -1,3 +1,6 @@
+#### 1.6.5 (January 27, 2016)
+* Fixed a bug that threw an error when trying to delete a conversation after fetching it.
+
 #### 1.6.4 (November 24, 2015)
 * Add `unassign` method to a conversation allowing anyone to be assigned
 * Updated the README and the `examples/CreateCustomer.php` with examples of catching a `HelpScout\ApiException` with errors.
