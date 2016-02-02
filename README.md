@@ -2,7 +2,7 @@ Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscou
 ================================================================================
 > PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
 
-Version 1.6.5 Released
+Version 1.7.0 Released
 ---------------------
 Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
 
@@ -181,9 +181,9 @@ API Client Methods
 * getResolutionTimeProductivityReport()
 * getResponseTimeProductivityReport()
 * getProductivityDrillDownReport()
-* getTeamReport()
+* getCompanyReport()
 * getCustomersHelpedTeamReport()
-* getTeamDrillDownReport()
+* getCompanyDrillDownReport()
 * getUserReport()
 * getUserConversationHistoryReport()
 * getUserCustomersHelpedReport()
@@ -192,6 +192,7 @@ API Client Methods
 * getUserResolutionsReport()
 * getUserHappinessReport()
 * getUserRatingsReport()
+* getCustomersHelpedCompanyReport()
 
 Example Usage: Reports
 ------------------------
