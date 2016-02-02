@@ -1,3 +1,8 @@
+#### 1.7.0 (February 2, 2016)
+* Deprecated "Team" reports. With the arrival of "Teams" with the new Plus Plan, the previous "Team" report has been renamed "Company" report
+* Added new reports methods: `getCompanyReport`, `getCustomersHelpedCompanyReport`, `getCompanyDrillDownReport`
+* Aliased old Team reports: `getTeamReport` -> `getCompanyReport`, `getCustomersHelpedTeamReport` -> `getCustomersHelpedCompanyReport`, `getTeamDrillDownReport` -> `getCompanyDrillDownReport`
+
 #### 1.6.5 (January 27, 2016)
 * Fixed a bug that threw an error when trying to delete a conversation after fetching it.
 
