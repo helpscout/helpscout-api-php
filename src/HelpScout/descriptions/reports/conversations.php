@@ -133,7 +133,7 @@ return array(
 
     'getConversationsDrillDownByFieldReport' => array(
         'httpMethod' => 'GET',
-        'uri' => 'reports/conversations/fields-drilldown.json',
+        'uri' => 'reports/conversations/customfields-drilldown.json',
         'parameters' => array(
             'start' => array(
                 'location' => 'query',
