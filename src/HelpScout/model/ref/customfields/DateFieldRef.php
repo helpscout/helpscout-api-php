@@ -9,17 +9,18 @@ class DateFieldRef extends AbstractCustomFieldRef
     public function validate($value)
     {
         $didError = false;
-        $matches = [];
+        $matches = array();
         if ($value !== '') {
             if (! (bool) preg_match('/\d{4}-\d{2}-\d{2}/', $value, $matches)) {
                 $didError = true;
             } else {
                 // Grab the date string from the date value, if anything is left (timestamp or time zone)
                 // count it as an error.
-                if (isset($matches[0])
-                    && ! empty(trim(str_replace($matches[0], '', $value)))
-                ) {
-                    $didError = true;
+                if (isset($matches[0])) {
+                    $trimmed = trim(str_replace($matches[0], '', $value));
+                    if (! empty($trimmed)) {
+                        $didError = true;
+                    }
                 }
                 if (!$didError) {
                     $millis = strtotime($value);
