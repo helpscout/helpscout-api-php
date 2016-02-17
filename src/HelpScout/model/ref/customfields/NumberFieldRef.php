@@ -1,11 +1,15 @@
 <?php
 namespace HelpScout\model\ref\customfields;
 
+use HelpScout\ValidationException;
+
 class NumberFieldRef extends AbstractCustomFieldRef
 {
 
-    public function validate()
+    public function validate($value)
     {
-        // TODO: Implement validate() method.
+        if (!is_numeric($value)) {
+            throw new ValidationException('The value must be numeric');
+        }
     }
 }

@@ -6,22 +6,27 @@ abstract class AbstractCustomFieldRef
     /**
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var mixed
      */
-    private $value;
+    protected $value;
 
     /**
      * @var string
      */
-    private $type;
+    protected $type;
+
+    /**
+     * @var array
+     */
+    protected $options;
 
     public function __construct($data = null)
     {
@@ -34,7 +39,7 @@ abstract class AbstractCustomFieldRef
         }
     }
 
-    abstract public function validate();
+    abstract public function validate($value);
 
     /**
      * @return int
@@ -65,6 +70,7 @@ abstract class AbstractCustomFieldRef
      */
     public function setValue($value)
     {
+        $this->validate($value);
         $this->value = $value;
     }
 
