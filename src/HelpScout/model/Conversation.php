@@ -1,6 +1,8 @@
 <?php
 namespace HelpScout\model;
 
+use HelpScout\CustomFieldFactory;
+
 class Conversation {
 	const STATUS_ACTIVE  = 'active';
 	const STATUS_PENDING = 'pending';
@@ -33,6 +35,7 @@ class Conversation {
 	private $bccList        = null;
 	private $tags           = null;
 	private $threads        = null;
+	private $customFields   = null;
 
 	private $unassigned     = false;
 
@@ -99,6 +102,14 @@ class Conversation {
 					}
 				}
 			}
+
+			if (isset($data->customFields)) {
+				$this->customFields = array();
+
+				foreach ($data->customFields as $field) {
+					$this->customFields[] = CustomFieldFactory::fromConversation((array) $field);
+				}
+			}
 		}
 	}
 
@@ -154,6 +165,8 @@ class Conversation {
 		}
 		$this->addThreadsToVars($vars);
 
+		$this->addCustomFieldsToVars($vars);
+
 		return $vars;
 	}
 
@@ -168,6 +181,22 @@ class Conversation {
 			}
 		}
 		$vars['threads'] = $threads;
+	}
+
+	private function addCustomFieldsToVars(array &$vars) {
+		/* @var $field \HelpScout\model\ref\customfields\AbstractCustomFieldRef */
+		$fields = array();
+
+		if ($list = $this->getCustomFields()) {
+			foreach ($list as $field) {
+				$fields[] = array(
+					'fieldId' => $field->getId(),
+					'name' => $field->getName(),
+					'value' => $field->getValue()
+				);
+			}
+		}
+		$vars['customFields'] = $fields;
 	}
 
 	public function toJSON() {
@@ -569,5 +598,21 @@ class Conversation {
 			}
 		}
 		return $this->threads;
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public function getCustomFields()
+	{
+		return $this->customFields;
+	}
+
+	/**
+	 * @param array|null $customFields
+	 */
+	public function setCustomFields(array $customFields)
+	{
+		$this->customFields = $customFields;
 	}
 }
