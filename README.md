@@ -2,7 +2,7 @@ Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscou
 ================================================================================
 > PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
 
-Version 1.7.0 Released
+Version 1.8.0 Released
 ---------------------
 Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
 
@@ -244,6 +244,91 @@ if ($webhook->isValid()) {
 }
 ```
 
+Example Usage: Custom Fields
+------------------------
+
+### Retrieving custom fields for a mailbox
+
+```php
+include 'HelpScout/ApiClient.php';
+
+use HelpScout\ApiClient;
+
+$scout = ApiClient::getInstance();
+$scout->setKey('your-api-key-here');
+
+$mailbox = $scout->getMailbox(1234);
+$customFields = $mailbox->getCustomFields();
+```
+
+### Retrieving custom fields with responses for a conversation
+
+```php
+$conversation = $scout->getConversation(1234);
+$customFields = $conversation->getCustomFields();
+
+```
+
+### Filling in a value for a field on a conversation that hasn't been filled out yet
+
+This is if the conversation hasn't had **any** fields filled out yet
+
+```php
+$conversation = $scout->getConversation(1234);
+$mailbox = $scout->getMailbox($conversation->getMailbox()->getId());
+
+$conversationFields = [];
+
+foreach ($mailbox->getCustomFields() as $customField) {
+    if ($customField->getId() == 88) {
+        $field = clone $customField;
+        $field->setValue('Foo');
+        $conversationFields[] = $field;
+    }
+}
+
+$conversation->setCustomFields($conversationFields);
+
+$scout->updateConversation($conversation);
+```
+
+### Updating a value for a field on a conversation
+
+```php
+$conversation = $scout->getConversation(1234);
+
+foreach ($conversation->getCustomFields() as $customField) {
+    if ($customField->getId() == 88) {
+        $field->setValue('Bar');
+    }
+}
+
+$scout->updateConversation($conversation);
+```
+
+### Custom Field Validation
+
+#### Date Fields (`DateFieldRef`)
+
+Must be a valid date in the format of YYYY-MM-DD (year-month-day).
+
+#### Dropdown Fields (`DropdownFieldRef`)
+
+The value must be the ID of one of the available dropdown options.
+
+#### Multi Line Fields (`MultiLineFieldRef`)
+
+The maximum string length for a multi line value is 15000 characters.
+
+#### Number Fields (`NumberFieldRef`)
+
+Number values must be numeric. Integers and Decimals (floats) are allowed (ex: 100 or 12.34).
+
+#### Single Line Fields (`SingleLineFieldRef`)
+
+The maximum string length for a single line value is 255 characters.
+
+
 Debugging
 ------------------------
 
@@ -285,7 +370,6 @@ try {
 That outputs 
 
 ```php
-Input could not be validated
 Array
 (
     [0] => Array

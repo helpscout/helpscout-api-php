@@ -1,3 +1,7 @@
+#### 1.8.0 (February 19, 2016)
+* Added support for Custom Fields returned within a Mailbox details
+* Added support for Custom Field Responses returned with a Conversation
+
 #### 1.7.0 (February 2, 2016)
 * Deprecated "Team" reports. With the arrival of "Teams" with the new Plus Plan, the previous "Team" report has been renamed "Company" report
 * Added new reports methods: `getCompanyReport`, `getCustomersHelpedCompanyReport`, `getCompanyDrillDownReport`
