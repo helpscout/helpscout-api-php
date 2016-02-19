@@ -718,6 +718,7 @@ final class ApiClient {
 	 */
 	private function checkStatus($statusCode, $type, $expected = 200, $responseBody = array()) {
 		$expected = (array) $expected;
+		$responseBody = $responseBody ?: array();
 
 		if (!in_array($statusCode, $expected)) {
 			$exception = new ApiException(

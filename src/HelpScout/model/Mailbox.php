@@ -1,6 +1,8 @@
 <?php
 namespace HelpScout\model;
 
+use HelpScout\CustomFieldFactory;
+
 class Mailbox {
 	private $id = false;
 	private $name;
@@ -11,6 +13,8 @@ class Mailbox {
 
 	private $folders = false;
 
+	private $customFields = array();
+
 	public function __construct($data=null) {
 		if ($data) {
 			$this->id         = isset($data->id)         ? $data->id         : null;
@@ -19,6 +23,13 @@ class Mailbox {
 			$this->email      = isset($data->email)      ? $data->email      : null;
 			$this->createdAt  = isset($data->createdAt)  ? $data->createdAt  : null;
 			$this->modifiedAt = isset($data->modifiedAt) ? $data->modifiedAt : null;
+
+			if (isset($data->customFields)) {
+
+				foreach ($data->customFields as $field) {
+					$this->customFields[] = CustomFieldFactory::fromMailbox((array) $field);
+				}
+			}
 		}
 	}
 
@@ -192,5 +203,13 @@ class Mailbox {
 		$ref->setName($this->getName());
 
 		return $ref;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getCustomFields()
+	{
+		return $this->customFields;
 	}
 }
