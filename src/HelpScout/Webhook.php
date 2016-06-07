@@ -114,7 +114,7 @@ final class Webhook {
 	public function getCustomer() {
 		$obj = $this->getObject();
 		if ($obj) {
-			return new \HelpScout\model\Customer($obj);
+			return new \HelpScout\model\Customer($obj->customer);
 		}
 		return false;
 	}
