@@ -6,6 +6,7 @@ class SearchConversation {
     private $id = null;
     private $number = null;
     private $mailboxId = null;
+    private $status = null;
     private $subject = null;
     private $threadCount = null;
     private $preview = null;
@@ -18,6 +19,7 @@ class SearchConversation {
             $this->id = isset($data->id) ? $data->id : null;
             $this->number = isset($data->number) ? $data->number : null;
             $this->mailboxId = isset($data->mailboxId) ? $data->mailboxId : null;
+            $this->status = isset($data->status) ? $data->status : null;
             $this->subject = isset($data->subject) ? $data->subject : null;
             $this->threadCount = isset($data->threadCount) ? $data->threadCount : null;
             $this->preview = isset($data->preview) ? $data->preview : null;
@@ -88,6 +90,20 @@ class SearchConversation {
      */
     public function getMailboxId() {
         return $this->mailboxId;
+    }
+
+    /**
+     * @param null status
+     */
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+
+    /**
+     * @return null
+     */
+    public function getStatus() {
+        return $this->status;
     }
 
     /**
