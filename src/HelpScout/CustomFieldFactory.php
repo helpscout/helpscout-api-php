@@ -12,7 +12,8 @@ class CustomFieldFactory
     public static function fromMailbox(array $attributes)
     {
         $map = array(
-            'fieldName' => 'name'
+            'fieldName' => 'name',
+            'fieldType' => 'type'
         );
 
         return static::createField(

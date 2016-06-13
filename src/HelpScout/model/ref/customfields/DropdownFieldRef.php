@@ -21,6 +21,7 @@ class DropdownFieldRef extends AbstractCustomFieldRef
         $optionIds = array();
 
         foreach ($this->getOptions() as $option) {
+            $option = (array) $option;
             $optionIds[] = $option['id'];
         }
 

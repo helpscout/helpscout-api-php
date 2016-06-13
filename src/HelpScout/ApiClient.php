@@ -698,6 +698,7 @@ final class ApiClient {
 		$this->checkStatus($statusCode, $method);
 
 		$json = json_decode($json);
+		
 		if ($json) {
 			if (isset($params['fields']) || !$model) {
 				return $json->item;
