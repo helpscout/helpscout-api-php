@@ -1,3 +1,8 @@
+#### 1.8.1 (June 13, 2016)
+* Fix issue with setting the value of a dropdown custom field
+* Fix bug in the `getCustomer` method for Webhook
+* Add `status` to `SearchConversation` model
+
 #### 1.8.0 (February 19, 2016)
 * Added support for Custom Fields returned within a Mailbox details
 * Added support for Custom Field Responses returned with a Conversation

@@ -2,7 +2,7 @@ Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscou
 ================================================================================
 > PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
 
-Version 1.8.0 Released
+Version 1.8.1 Released
 ---------------------
 Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
 
