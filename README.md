@@ -69,9 +69,6 @@ if ($conversation) {
 // to get page 2 of a list of conversations:
 $list = $hs->getConversationsForMailbox(99, array('page' => 2));
 
-// to get all the closed conversations:
-$closed = $hs->getConversationsForMailbox(99, array('page' => 1, 'status' => 'closed'));
-
 // to get page 2 of a list of conversations,
 // while only returning the "id" and "number" attributes on a conversation:
 $convos = $hs->getConversationsForMailbox(99, array('page' => 2), array('id', 'number'));
