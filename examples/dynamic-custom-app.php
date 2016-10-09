@@ -32,8 +32,9 @@ class DynamicApp {
 	 */
 	private function isSignatureValid() {
 		$signature = $this->generateSignature();
-		if ($signature) {
-			return $signature === $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE');
+		$header    = $this->getHeader('HTTP_X_HELPSCOUT_SIGNATURE');
+		if ($signature && $header !== false) {
+            return hash_equals($signature, $header);
 		}
 		return false;
 	}

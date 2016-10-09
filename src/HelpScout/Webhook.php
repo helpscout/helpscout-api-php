@@ -9,6 +9,7 @@ final class Webhook {
 
 	public function __construct($secretKey) {
 		\HelpScout\ClassLoader::register();
+        require_once realpath(__DIR__ ."/../HelpScout/functions.php");
 
 		$this->secretKey = $secretKey;
 	}
@@ -82,8 +83,9 @@ final class Webhook {
 	 */
 	public function isValid() {
 		$signature = $this->generateSignature();
-		if ($signature) {
-			return $signature == $this->findHeader(array('HTTP_X_HELPSCOUT_SIGNATURE', 'X_HELPSCOUT_SIGNATURE'));
+        $headers = $this->findHeader(['HTTP_X_HELPSCOUT_SIGNATURE', 'X_HELPSCOUT_SIGNATURE']);
+		if ($signature && $headers !== false) {
+			return hash_equals($signature, $headers);
 		}
 		return false;
 	}
