@@ -77,7 +77,7 @@ class Conversation {
 			$this->bccList     = isset($data->bcc) ? $data->bcc : null;
 			$this->tags        = isset($data->tags) ? $data->tags : null;
 
-			if ($data->closedBy) {
+			if (isset($data->closedBy)) {
 				$this->closedBy = new \HelpScout\model\ref\PersonRef($data->closedBy);
 			}
 
