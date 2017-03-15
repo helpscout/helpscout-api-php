@@ -964,6 +964,7 @@ final class ApiClient {
 		$this->curl->headers = $this->getDefaultCurlHeaders(strlen($requestBody));
 		$this->curl->options = $this->getDefaultCurlOptions();
 		$response = $this->curl->put(self::API_URL . $url, $requestBody);
+                $response->body = json_decode($response->body, true);
 
 		$this->debug('response = ' . json_encode($response->body), null, array(
 			'method' => 'PUT'
