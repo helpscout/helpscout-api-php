@@ -8,7 +8,7 @@
     "require": {
         "php": ">=5.3.2",
         "ext-curl": "*",
-        "shuber/curl": "dev-master"
+        "shuber/curl": "1.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.*",
