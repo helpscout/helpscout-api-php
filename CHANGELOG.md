@@ -1,3 +1,8 @@
+#### 1.8.2 (March 15, 2017)
+* Update `composer.json` to use a tagged version of `codeclimate/php-test-reporter` instead of `dev-master`.
+* Fix issue where `Conversation` threads default to `null` so `getThreads()` always returned `null`. [PR #42](https://github.com/helpscout/helpscout-api-php/pull/42)
+* Fix issue where `PUT` request responses were not decoded to an array similiar to `POST` and `DELETE`. [PR #49](https://github.com/helpscout/helpscout-api-php/pull/49)
+
 #### 1.8.1 (June 13, 2016)
 * Fix issue with setting the value of a dropdown custom field
 * Fix bug in the `getCustomer` method for Webhook
