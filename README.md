@@ -25,7 +25,7 @@ Download the [.zip](https://github.com/helpscout/helpscout-api-php/archive/maste
 - Download the [shuber/curl .zip](https://github.com/hamstar/curl/archive/master.zip) and unpack it.
 
 ```php
-require_once '/path/to/shuber/curl/lib/curl.php';
+require_once '/path/to/shuber/curl/curl.php';
 include_once '/path/to/helpscout/helpscout-api-php/src/HelpScout/ApiClient.php'
 ```
 

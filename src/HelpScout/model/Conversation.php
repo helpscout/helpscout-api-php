@@ -94,6 +94,9 @@ class Conversation {
 					'phone'         => '\HelpScout\model\thread\Phone'
 				);
 				foreach ($data->threads as $thread) {
+					if (is_null($thread)) {
+						continue;
+					}
 					$type = $thread->type;
 					if (isset($types[$type])) {
 						$this->threads[] = new $types[$type]($thread);
