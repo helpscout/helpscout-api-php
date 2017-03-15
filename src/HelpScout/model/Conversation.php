@@ -590,7 +590,7 @@ class Conversation {
 	 * @return array|null
 	 */
 	public function getThreads($cache = true, $apiCall = true) {
-		if ($this->threads === false && $apiCall) {
+		if ($this->threads === null && $apiCall) {
 			$convo = \HelpScout\ApiClient::getInstance()->getConversation($this->id);
 			if ($convo) {
 				if ($cache) {
