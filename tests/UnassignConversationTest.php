@@ -26,10 +26,10 @@ class UnassignConversationTest extends TestCase
 
     private function getConversation()
     {
-        $conversation = new Conversation((object)[
+        $conversation = new Conversation((object) array(
             'threads' => array(),
             'createdBy' => 12345
-        ]);
+        ));
         $conversation->setMailbox(new MailboxRef);
         $conversation->setCreatedBy(new PersonRef);
 
