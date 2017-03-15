@@ -5,7 +5,7 @@ require_once 'ClassLoader.php';
 
 use HelpScout\model\Attachment;
 
-final class ApiClient {
+class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
 	const API_URL    = 'https://api.helpscout.net/v1/';
 	const NAMESPACE_SEPARATOR = '\\';
