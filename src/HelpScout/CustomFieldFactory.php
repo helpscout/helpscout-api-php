@@ -38,19 +38,19 @@ class CustomFieldFactory
     {
         $attributes = (object) $attributes;
         switch ($type) {
-            case 'SINGLE_LINE' :
+            case 'SINGLE_LINE':
                 return new SingleLineFieldRef($attributes);
                 break;
-            case 'MULTI_LINE' :
+            case 'MULTI_LINE':
                 return new MultiLineFieldRef($attributes);
                 break;
-            case 'DROPDOWN' :
+            case 'DROPDOWN':
                 return new DropdownFieldRef($attributes);
                 break;
-            case 'DATE' :
+            case 'DATE':
                 return new DateFieldRef($attributes);
                 break;
-            case 'NUMBER' :
+            case 'NUMBER':
                 return new NumberFieldRef($attributes);
                 break;
         }

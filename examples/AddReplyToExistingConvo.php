@@ -20,4 +20,3 @@ $thread->setCreatedBy($client->getUserRefProxy(4));
 $client->createThread($conversationId, $thread);
 
 echo $thread->getId();
-

@@ -20,13 +20,13 @@ $client->createAttachment($attachment);
 $customerRef = $client->getCustomerRefProxy(null, 'customer@example.com');
 
 $conversation = new \HelpScout\model\Conversation();
-$conversation->setType     ('email');
-$conversation->setSubject  ('I need help');
-$conversation->setCustomer ($customerRef);
+$conversation->setType('email');
+$conversation->setSubject('I need help');
+$conversation->setCustomer($customerRef);
 $conversation->setCreatedBy($customerRef);
 
 // The mailbox associated with the conversation
-$conversation->setMailbox  ($client->getMailboxProxy(2431));
+$conversation->setMailbox($client->getMailboxProxy(2431));
 
 // A conversation must have at least one thread
 $thread = new \HelpScout\model\thread\Customer();
@@ -44,4 +44,3 @@ $conversation->addLineItem($thread);
 $client->createConversation($conversation);
 
 echo $conversation->getId();
-

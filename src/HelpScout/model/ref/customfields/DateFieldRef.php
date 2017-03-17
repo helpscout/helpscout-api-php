@@ -5,7 +5,6 @@ use HelpScout\ValidationException;
 
 class DateFieldRef extends AbstractCustomFieldRef
 {
-
     public function validate($value)
     {
         $didError = false;

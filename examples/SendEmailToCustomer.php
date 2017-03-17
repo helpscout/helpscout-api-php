@@ -60,4 +60,3 @@ echo $conversation->getId();
 // The conversation was created in Help Scout - and Help Scout will proceed to prepare
 // an email, attaching your mailbox signature, etc and send it off to the customer
 // as if you'd sent it via the web interface.
-

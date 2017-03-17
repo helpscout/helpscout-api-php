@@ -1,6 +1,6 @@
 <?php
 namespace HelpScout\model\customer;
 
-class SocialProfileEntry extends CustomerEntry {
-
+class SocialProfileEntry extends CustomerEntry
+{
 }

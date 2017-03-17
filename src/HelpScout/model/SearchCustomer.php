@@ -1,8 +1,8 @@
 <?php
 namespace HelpScout\model;
 
-class SearchCustomer {
-
+class SearchCustomer
+{
     private $id;
     private $firstName;
     private $lastName;
@@ -18,7 +18,8 @@ class SearchCustomer {
     private $createdAt;
     private $modifiedAt;
 
-    public function __construct($data=null) {
+    public function __construct($data=null)
+    {
         if ($data) {
             $this->id = isset($data->id) ? $data->id : null;
             $this->firstName = isset($data->firstName) ? $data->firstName : null;
@@ -40,198 +41,224 @@ class SearchCustomer {
     /**
      * @param mixed $age
      */
-    public function setAge($age) {
+    public function setAge($age)
+    {
         $this->age = $age;
     }
 
     /**
      * @return mixed
      */
-    public function getAge() {
+    public function getAge()
+    {
         return $this->age;
     }
 
     /**
      * @param mixed $createdAt
      */
-    public function setCreatedAt($createdAt) {
+    public function setCreatedAt($createdAt)
+    {
         $this->createdAt = $createdAt;
     }
 
     /**
      * @return mixed
      */
-    public function getCreatedAt() {
+    public function getCreatedAt()
+    {
         return $this->createdAt;
     }
 
     /**
      * @param mixed $emails
      */
-    public function setEmails($emails) {
+    public function setEmails($emails)
+    {
         $this->emails = $emails;
     }
 
     /**
      * @return mixed
      */
-    public function getEmails() {
+    public function getEmails()
+    {
         return $this->emails;
     }
 
     /**
      * @param mixed $firstName
      */
-    public function setFirstName($firstName) {
+    public function setFirstName($firstName)
+    {
         $this->firstName = $firstName;
     }
 
     /**
      * @return mixed
      */
-    public function getFirstName() {
+    public function getFirstName()
+    {
         return $this->firstName;
     }
 
     /**
      * @param mixed $fullName
      */
-    public function setFullName($fullName) {
+    public function setFullName($fullName)
+    {
         $this->fullName = $fullName;
     }
 
     /**
      * @return mixed
      */
-    public function getFullName() {
+    public function getFullName()
+    {
         return $this->fullName;
     }
 
     /**
      * @param mixed $gender
      */
-    public function setGender($gender) {
+    public function setGender($gender)
+    {
         $this->gender = $gender;
     }
 
     /**
      * @return mixed
      */
-    public function getGender() {
+    public function getGender()
+    {
         return $this->gender;
     }
 
     /**
      * @param mixed $id
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
     /**
      * @return mixed
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @param mixed $jobTitle
      */
-    public function setJobTitle($jobTitle) {
+    public function setJobTitle($jobTitle)
+    {
         $this->jobTitle = $jobTitle;
     }
 
     /**
      * @return mixed
      */
-    public function getJobTitle() {
+    public function getJobTitle()
+    {
         return $this->jobTitle;
     }
 
     /**
      * @param mixed $lastName
      */
-    public function setLastName($lastName) {
+    public function setLastName($lastName)
+    {
         $this->lastName = $lastName;
     }
 
     /**
      * @return mixed
      */
-    public function getLastName() {
+    public function getLastName()
+    {
         return $this->lastName;
     }
 
     /**
      * @param mixed $location
      */
-    public function setLocation($location) {
+    public function setLocation($location)
+    {
         $this->location = $location;
     }
 
     /**
      * @return mixed
      */
-    public function getLocation() {
+    public function getLocation()
+    {
         return $this->location;
     }
 
     /**
      * @param mixed $modifiedAt
      */
-    public function setModifiedAt($modifiedAt) {
+    public function setModifiedAt($modifiedAt)
+    {
         $this->modifiedAt = $modifiedAt;
     }
 
     /**
      * @return mixed
      */
-    public function getModifiedAt() {
+    public function getModifiedAt()
+    {
         return $this->modifiedAt;
     }
 
     /**
      * @param mixed $organization
      */
-    public function setOrganization($organization) {
+    public function setOrganization($organization)
+    {
         $this->organization = $organization;
     }
 
     /**
      * @return mixed
      */
-    public function getOrganization() {
+    public function getOrganization()
+    {
         return $this->organization;
     }
 
     /**
      * @param mixed $photoType
      */
-    public function setPhotoType($photoType) {
+    public function setPhotoType($photoType)
+    {
         $this->photoType = $photoType;
     }
 
     /**
      * @return mixed
      */
-    public function getPhotoType() {
+    public function getPhotoType()
+    {
         return $this->photoType;
     }
 
     /**
      * @param mixed $photoUrl
      */
-    public function setPhotoUrl($photoUrl) {
+    public function setPhotoUrl($photoUrl)
+    {
         $this->photoUrl = $photoUrl;
     }
 
     /**
      * @return mixed
      */
-    public function getPhotoUrl() {
+    public function getPhotoUrl()
+    {
         return $this->photoUrl;
     }
-
-
-} 
+}
