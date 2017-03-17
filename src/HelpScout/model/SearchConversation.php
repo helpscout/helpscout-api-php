@@ -1,8 +1,8 @@
 <?php
 namespace HelpScout\model;
 
-class SearchConversation {
-
+class SearchConversation
+{
     private $id = null;
     private $number = null;
     private $mailboxId = null;
@@ -14,7 +14,8 @@ class SearchConversation {
     private $customerEmail = null;
     private $modifiedAt = null;
 
-    public function __construct($data=null) {
+    public function __construct($data=null)
+    {
         if ($data) {
             $this->id = isset($data->id) ? $data->id : null;
             $this->number = isset($data->number) ? $data->number : null;
@@ -32,149 +33,168 @@ class SearchConversation {
     /**
      * @return array
      */
-    public function getObjectVars() {
+    public function getObjectVars()
+    {
         return get_object_vars($this);
     }
 
     /**
      * @param null $customerEmail
      */
-    public function setCustomerEmail($customerEmail) {
+    public function setCustomerEmail($customerEmail)
+    {
         $this->customerEmail = $customerEmail;
     }
 
     /**
      * @return null
      */
-    public function getCustomerEmail() {
+    public function getCustomerEmail()
+    {
         return $this->customerEmail;
     }
 
     /**
      * @param null $customerName
      */
-    public function setCustomerName($customerName) {
+    public function setCustomerName($customerName)
+    {
         $this->customerName = $customerName;
     }
 
     /**
      * @return null
      */
-    public function getCustomerName() {
+    public function getCustomerName()
+    {
         return $this->customerName;
     }
 
     /**
      * @param null $id
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 
     /**
      * @return null
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @param null $mailboxId
      */
-    public function setMailboxId($mailboxId) {
+    public function setMailboxId($mailboxId)
+    {
         $this->mailboxId = $mailboxId;
     }
 
     /**
      * @return null
      */
-    public function getMailboxId() {
+    public function getMailboxId()
+    {
         return $this->mailboxId;
     }
 
     /**
      * @param null status
      */
-    public function setStatus($status) {
+    public function setStatus($status)
+    {
         $this->status = $status;
     }
 
     /**
      * @return null
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
 
     /**
      * @param null $modifiedAt
      */
-    public function setModifiedAt($modifiedAt) {
+    public function setModifiedAt($modifiedAt)
+    {
         $this->modifiedAt = $modifiedAt;
     }
 
     /**
      * @return null
      */
-    public function getModifiedAt() {
+    public function getModifiedAt()
+    {
         return $this->modifiedAt;
     }
 
     /**
      * @param null $number
      */
-    public function setNumber($number) {
+    public function setNumber($number)
+    {
         $this->number = $number;
     }
 
     /**
      * @return null
      */
-    public function getNumber() {
+    public function getNumber()
+    {
         return $this->number;
     }
 
     /**
      * @param null $preview
      */
-    public function setPreview($preview) {
+    public function setPreview($preview)
+    {
         $this->preview = $preview;
     }
 
     /**
      * @return null
      */
-    public function getPreview() {
+    public function getPreview()
+    {
         return $this->preview;
     }
 
     /**
      * @param null $subject
      */
-    public function setSubject($subject) {
+    public function setSubject($subject)
+    {
         $this->subject = $subject;
     }
 
     /**
      * @return null
      */
-    public function getSubject() {
+    public function getSubject()
+    {
         return $this->subject;
     }
 
     /**
      * @param null $threadCount
      */
-    public function setThreadCount($threadCount) {
+    public function setThreadCount($threadCount)
+    {
         $this->threadCount = $threadCount;
     }
 
     /**
      * @return null
      */
-    public function getThreadCount() {
+    public function getThreadCount()
+    {
         return $this->threadCount;
     }
-
-
-} 
+}

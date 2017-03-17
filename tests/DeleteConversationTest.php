@@ -1,6 +1,7 @@
 <?php
 
-class DeleteConversationTest extends TestCase {
+class DeleteConversationTest extends TestCase
+{
     public function testCanDeleteConversation()
     {
         $client = $this->getTestClient('DeleteConversation-200', 'delete');

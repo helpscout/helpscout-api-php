@@ -1,6 +1,7 @@
 <?php
 
-class CreateConversationWithNewCustomerTest extends TestCase {
+class CreateConversationWithNewCustomerTest extends TestCase
+{
     public function testCanCreateConversation()
     {
         $client = $this->getTestClient('CreateConversationWithNewCustomer-201', 'post');

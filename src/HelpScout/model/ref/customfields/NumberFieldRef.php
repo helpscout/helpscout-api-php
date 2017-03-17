@@ -5,7 +5,6 @@ use HelpScout\ValidationException;
 
 class NumberFieldRef extends AbstractCustomFieldRef
 {
-
     public function validate($value)
     {
         if (!is_numeric($value)) {

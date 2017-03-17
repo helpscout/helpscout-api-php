@@ -14,13 +14,13 @@ $customer->setLastName("Appleseed");
 // entries as well (social profiles, websites, chats, phones)
 // ~~~~~
 foreach ($customer->getEmails() as $email) {
-	if ($email->getValue() === 'john@example.com') {
-		// Update an email
-		$email->setValue("test@example.com");
-	} else if ($email->getValue === 'appleseed@example.com') {
-		// Delete an email be prefixing the id with a minus sign
-		$email->setId(-1);
-	}
+    if ($email->getValue() === 'john@example.com') {
+        // Update an email
+        $email->setValue("test@example.com");
+    } elseif ($email->getValue === 'appleseed@example.com') {
+        // Delete an email be prefixing the id with a minus sign
+        $email->setId(-1);
+    }
 }
 
 // Add a new email

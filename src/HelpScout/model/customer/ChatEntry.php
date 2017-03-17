@@ -1,6 +1,6 @@
 <?php
 namespace HelpScout\model\customer;
 
-class ChatEntry extends CustomerEntry {
-
+class ChatEntry extends CustomerEntry
+{
 }

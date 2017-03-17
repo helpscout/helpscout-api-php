@@ -5,7 +5,6 @@ use HelpScout\ValidationException;
 
 class DropdownFieldRef extends AbstractCustomFieldRef
 {
-
     public function getOptions()
     {
         return $this->options;
