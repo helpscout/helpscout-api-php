@@ -335,9 +335,12 @@ final class ApiClient {
 	 * @return \HelpScout\Collection
 	 */
 	public function getCustomers($page=1, $fields=null) {
-		return $this->getCollection(
-			'customers.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getCustomers', '\HelpScout\model\Customer'
-		);
+		$params = $fields;
+        $params['page'] = $page;
+
+        return $this->getCollection(
+            'customers.json', $params, 'getCustomers', '\HelpScout\model\Customer'
+        );
 	}
 
 	/**
