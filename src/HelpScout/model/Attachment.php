@@ -30,7 +30,9 @@ class Attachment {
 		if (file_exists($filename)) {
 			$this->data     = file_get_contents($filename);
 			$this->fileName = basename($filename);
-			$this->mimeType = mime_content_type($filename);
+			if(!$this->mimeType) {
+				$this->mimeType = _mime_content_type($filename);
+			}
 			$this->size     = filesize($filename);
 
 			if (substr($this->mimeType, 0, 5) == 'image') {
@@ -51,6 +53,16 @@ class Attachment {
 			}
 		}
 	}
+
+	public function _mime_content_type($filename){
+		$f = new finfo();
+		if(is_resource($f) === true){
+			return $f->file($filename, FILEINFO_MIME_TYPE);
+		}
+		return mime_content_type($filename);
+	}
+
+
 	public function getObjectVars() {
         $vars = get_object_vars($this);
 
