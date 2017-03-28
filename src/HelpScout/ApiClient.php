@@ -335,7 +335,7 @@ final class ApiClient {
 	 * @return \HelpScout\Collection
 	 */
 	public function getCustomers($page=1, $fields=null) {
-		$params = $fields;
+		$params['fields'] = $fields;
         $params['page'] = $page;
 
         return $this->getCollection(
