@@ -288,6 +288,19 @@ final class ApiClient {
 			'users.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getUsers', '\HelpScout\model\User'
 		);
 	}
+	
+	/**
+	 * Returns a Collection of all the tags for the company.
+	 *
+	 * @param  integer      $page
+	 * @param  string|array $fields
+	 * @return \HelpScout\Collection
+	 */
+	public function getTags($page=1, $fields=null) {
+		return $this->getCollection(
+			'tags.json', $this->getParams(array('fields' => $fields, 'page' => $page)), 'getTags', '\HelpScout\model\Tag'
+		);
+	}
 
 	/**
 	 * Returns a Collection of users that have access to the given mailbox.
