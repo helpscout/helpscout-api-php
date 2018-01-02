@@ -1,3 +1,7 @@
+#### 1.9.0 (January 2, 2018)
+* Minor tweak to avoid any confusion when creating a new `Message` thread and the `PersonRef` has a `customer` type instead of `user`.
+* Added method to retrieve all the tags (Thanks [@crodas](https://github.com/crodas) and [@Vardkin](https://github.com/Vardkin) for PRs [#61](https://github.com/helpscout/helpscout-api-php/pull/61) and [#57](https://github.com/helpscout/helpscout-api-php/pull/57) respectively)
+
 #### 1.8.2 (March 15, 2017)
 * Update `composer.json` to use a tagged version of `codeclimate/php-test-reporter` instead of `dev-master`.
 * Fix issue where `Conversation` threads default to `null` so `getThreads()` always returned `null`. [PR #42](https://github.com/helpscout/helpscout-api-php/pull/42)
