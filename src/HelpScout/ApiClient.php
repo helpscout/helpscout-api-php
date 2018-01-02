@@ -663,6 +663,23 @@ final class ApiClient {
 		return $this->doPost(sprintf('workflows/%s/conversations.json', $workflowId), $requestBody, 200);
 	}
 
+    /**
+     * Returns a Collection of all the tags.
+     *
+	 * @param  integer      $page
+	 * @param  string|array $fields
+	 * @return \HelpScout\Collection
+     */
+    public function getTags($page=1, $fields=null)
+    {
+        return $this->getCollection(
+            'tags.json',
+            $this->getParams(array('fields' => $fields, 'page' => $page)),
+            __METHOD__,
+            '\HelpScout\model\Tag'
+        );
+    }
+
 	/**
 	 * @param  string $url
 	 * @param  array  $params
