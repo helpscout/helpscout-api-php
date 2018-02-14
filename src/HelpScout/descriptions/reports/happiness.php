@@ -31,10 +31,6 @@ return array(
             ),
             'folders' => array(
                 'location' => 'query'
-            ),
-            'user' => array(
-                'location' => 'query',
-                'required' => true
             )
         )
     ),
