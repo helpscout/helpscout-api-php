@@ -85,7 +85,7 @@ class Conversation {
 				$this->threads = array();
 				$types = array(
 					'lineitem'      => '\HelpScout\model\thread\LineItem',
-                    'beaconchat'    => '\HelpScout\model\thread\BeaconChat',
+					'beaconchat'    => '\HelpScout\model\thread\BeaconChat',
 					'customer'      => '\HelpScout\model\thread\Customer',
 					'message'       => '\HelpScout\model\thread\Message',
 					'note'          => '\HelpScout\model\thread\Note',
