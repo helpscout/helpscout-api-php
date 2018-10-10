@@ -6,7 +6,7 @@ class CreateBeaconChatTest extends TestCase {
         $client = $this->getTestClient('BeaconChatConversation', 'get');
         $conversation = $client->getConversation(1);
 
-        $this->assertInstanceOf(\HelpScout\model\Conversation::class, $conversation);
+        $this->assertNotEmpty($conversation);
     }
 }
 
