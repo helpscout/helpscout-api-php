@@ -203,6 +203,43 @@ return array(
                 'location' => 'query'
             )
         )
+    ),
+
+
+    'getConversationsReceivedMessagesReport' => array(
+        'httpMethod' => 'GET',
+        'uri' => 'reports/conversations/received-messages.json',
+        'parameters' => array(
+            'start' => array(
+                'location' => 'query',
+                'required' => true
+            ),
+            'end' => array(
+                'location' => 'query',
+                'required' => true
+            ),
+            'previousStart' => array(
+                'location' => 'query'
+            ),
+            'previousEnd' => array(
+                'location' => 'query'
+            ),
+            'mailboxes' => array(
+                'location' => 'query'
+            ),
+            'tags' => array(
+                'location' => 'query'
+            ),
+            'types' => array(
+                'location' => 'query'
+            ),
+            'folders' => array(
+                'location' => 'query'
+            ),
+            'viewBy' => array(
+                'location' => 'query'
+            )
+        )
     )
 
 );
