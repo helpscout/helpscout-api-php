@@ -208,7 +208,7 @@ return array(
 
     'getConversationsReceivedMessagesReport' => array(
         'httpMethod' => 'GET',
-        'uri' => 'reports/conversations/new-drilldown.json',
+        'uri' => 'reports/conversations/received-messages.json',
         'parameters' => array(
             'start' => array(
                 'location' => 'query',
