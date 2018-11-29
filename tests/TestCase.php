@@ -1,8 +1,16 @@
 <?php
 use HelpScout\ApiClient;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends BaseTestCase
 {
+    protected function getMock($class)
+    {
+        return $this->getMockBuilder($class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function getTestClient($fixture, $method = 'get')
     {
         $client = ApiClient::getInstance();
