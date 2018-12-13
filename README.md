@@ -1,6 +1,6 @@
 # Help Scout API PHP Client [![Build Status](https://travis-ci.com/helpscout/helpscout-api-php-v2.svg?token=qCN6xBzzwNkXLxmSnTDj&branch=master)](https://travis-ci.com/helpscout/helpscout-api-php-v2)
 
-This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout API](http://developer.helpscout.net/help-desk-api-v2/).
+This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout Mailbox API](http://developer.helpscout.net/help-desk-api-v2/).
 
 ## Requirements
 
