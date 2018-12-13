@@ -1,397 +1,737 @@
-Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscout-api-php.svg)](https://travis-ci.org/helpscout/helpscout-api-php)
-================================================================================
-> PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
+# Help Scout API PHP Client [![Build Status](https://travis-ci.com/helpscout/helpscout-api-php-v2.svg?token=qCN6xBzzwNkXLxmSnTDj&branch=master)](https://travis-ci.com/helpscout/helpscout-api-php-v2)
 
-Version 1.9.0 Released
----------------------
-Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
+This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout API](http://developer.helpscout.net/help-desk-api-v2/).
 
-Requirements
----------------------
-* PHP 5.3.x
-* curl
-* shuber/curl
+## Requirements
 
-Installation
----------------------
+* PHP >= 7.1
+* A [HTTPlug](http://httplug.io/) adapter
 
-### .Zip + [Composer](https://getcomposer.org/)
+## Table of Contents
 
-Download the [.zip](https://github.com/helpscout/helpscout-api-php/archive/master.zip) and unpack it. `cd` into the directory and run `composer install`
+ * [Installation](#installation)
+ * [Usage](#usage)
+   * [Customers](#customers)
+   * [Mailboxes](#mailboxes)
+   * [Conversations](#conversations)
+    * [Threads](#threads)
+     * [Attachments](#attachments)
+   * [Tags](#tags)
+   * [Users](#users)
+   * [Reports](#reports)
+   * [Webhooks](#webhooks)
+   * [Workflows](#workflows)
+ * [Error Handling](#error-handling)
+ * [Pagination](#pagination)
 
-### Manually
+## Installation
 
-- Download the [.zip](https://github.com/helpscout/helpscout-api-php/archive/master.zip) and unpack it.
-- Download the [shuber/curl .zip](https://github.com/hamstar/curl/archive/master.zip) and unpack it.
+The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
+
+The client is not coupled to any particular PHP HTTP client library, e.g. Guzzle. Instead it uses an abstraction called [HTTPlug](http://docs.php-http.org/en/latest/httplug/users.html).
+This gives you the flexibility to choose which PSR-7 implementation and HTTP client to use. If you want to get started quickly you should run the following command:
+
+```bash
+composer require helpscout/api php-http/guzzle6-adapter
+```
+
+This will install the API client and [Guzzle](http://docs.guzzlephp.org/en/latest/index.html), which is our preferred HTTP adapter.
+
+## Usage
+
+You should always use Composer's autoloader in your application to autoload classes. All examples below assume you've already included this in your code:
 
 ```php
-require_once '/path/to/shuber/curl/curl.php';
-include_once '/path/to/helpscout/helpscout-api-php/src/HelpScout/ApiClient.php'
+require_once 'vendor/autoload.php';
 ```
 
-Example Usage: API
----------------------
+### Creating the client
+
 ```php
-include 'HelpScout/ApiClient.php';
+use HelpScout\Api\ApiClientFactory;
 
-use HelpScout\ApiClient;
-
-$hs = ApiClient::getInstance();
-$hs->setKey('your-api-key-here');
-
-$mailboxes = $hs->getMailboxes();
-if ($mailboxes) {
-    // do something
-}
-
-$mailbox = $hs->getMailbox(99);
-if ($mailbox) {
-    $mailboxName = $mailbox->getName();
-    $folders = $mailbox->getFolders();
-    // do something
-}
-
-$conversation = $hs->getConversation(999);
-if ($conversation) {
-    // do something
-    $threads = $conversation->getThreads();
-    foreach($threads as $thread) {
-        if ($thread instanceof \HelpScout\model\thread\LineItem) {
-          // do something else
-          continue;
-        }
-        if ($thread instanceof \HelpScout\model\thread\ConversationThread) {
-          // do something again
-        }
-    }
-}
-
-// to get page 2 of a list of conversations:
-$list = $hs->getConversationsForMailbox(99, array('page' => 2));
-
-// to get page 2 of a list of conversations,
-// while only returning the "id" and "number" attributes on a conversation:
-$convos = $hs->getConversationsForMailbox(99, array('page' => 2), array('id', 'number'));
-
-// to get page 2 conversations from a specific folder:
-$convos = $hs->getConversationsForFolder(99, 22, array('page' => 2)); // where 99=MailboxId and 22=FolderId
-
-
-// to create a new conversation with a note and an attachment
-$at = new \HelpScout\model\Attachment();
-$at->load('/path/to/some/image.jpg');
-
-$hs->createAttachment($at);
-
-$note = new \HelpScout\model\thread\Note();
-$note->setBody('Hey this is a note');
-$note->addAttachment($at);
-
-// if you already know the ID of the Help Scout user, you can simply get a ref
-$userRef = $hs->getUserRefProxy(4);
-
-$note->setCreatedBy($userRef);
-
-$convo = new \HelpScout\model\Conversation();
-$convo->setMailbox($hs->getMailboxProxy(2431));
-$convo->setCreatedBy($userRef);
-$convo->setSubject('Note test');
-
-// every conversation must be tied to a customer
-$convo->setCustomer($customerRef);
-
-$convo->addLineItem($note);
-
-$hs->createConversation($convo);
+$client = ApiClientFactory::createClient();
+$client->setAccessToken('secret');
 ```
-
-Field Selectors
----------------------
-Field selectors can be given as a string or an array.
-
-When field selectors are used, a JSON object is returned with the specificed fields. If no fields are given, you will be given the proper object. For example, the following code will return a JSON object with fields for 'name' and 'email'.
-```php
-$mailbox = ApiClient::getInstance()->getMailbox(99, array('name','email'));
-```
-### Returned JSON
-```json
-{
-    "name": "My Mailbox",
-    "email": "help@mymailbox.com"
-}
-```
-
-API Client Methods
---------------------
-
-### Mailboxes
-* getMailboxes($page=1, $fields=null)
-* getMailbox($mailboxId, $fields=null)
-
-### Folders
-* getFolders($mailboxId, $page=1, $fields=null)
-
-### Conversations
-* getConversationsForFolder($mailboxId, $folderId, array $params=array(), $fields=null)
-* getConversationsForMailbox($mailboxId, array $params=array(), $fields=null)
-* getConversationsForCustomerByMailbox($mailboxId, $customerId, array $params=array(), $fields=null)
-* getConversation($conversationId, $fields=null)
-* createConversation($conversation)
-* createThread($conversationId, $thread)
-* updateConversation($conversation)
-* deleteConversation($id)
-
-### Attachments
-* getAttachmentData($attachmentId)
-* createAttachment($attachment)
-* deleteAttachment($id)
 
 ### Customers
-* getCustomers($page=1, $fields=null)
-* searchCustomers($firstName=null, $lastName=null, $email=null, $page=1, $fields=null)
-* searchCustomersByEmail($email, $page=1, $fields=null)
-* searchCustomersByName($firstName, $lastName, $page=1, $fields=null)
-* getCustomer($customerId, $fields=null)
-* createCustomer($customer)
-* updateCustomer($customer)
 
-### Users
-* getUsers($page=1, $fields=null)
-* getUsersForMailbox($mailboxId, $page=1, $fields=null)
-* getUser($userId, $fields=null)
+Get a customer.
+
+```php
+$customer = $client->getCustomer($customerId);
+```
+
+Get a customer with pre-loaded sub-entities.
+
+A customer entity has a number of related sub-entities:
+
+* Address
+* Chats
+* Emails
+* Phone numbers
+* Social profiles
+* Websites
+
+Each of these sub-entities can be pre-loaded when fetching a customer to remove the need for multiple method calls. The `CustomerRequest` class is used
+to describe which sub-entities should be pre-loaded. For example:
+
+```php
+use HelpScout\Api\Customers\CustomerRequest;
+
+$request = (new CustomerRequest)
+    ->withAddress()
+    ->withEmails();
+
+$customer = $client->customers()->get($customerId, $request);
+
+$address = $customer->getAddress();
+$emails = $customer->getEmails();
+```
+
+Get customers.
+
+```php
+$customers = $client->customers()->list();
+```
+
+Get customers with a filter.
+
+As described in the API docs the [customer list can be filtered](http://developer.helpscout.net/help-desk-api-v2/customers/list) by a variety of fields. The `CustomerFields` class
+provides a simple interface to set filter values. For example:
+
+```php
+use HelpScout\Api\Customers\CustomerFilters;
+
+$filter = new (CustomerFilters)
+    ->withFirstName('Tom')
+    ->withLastName('Graham');
+
+$customers = $client->customers()->list($filter);
+```
+
+Get customers with pre-loaded sub-entities.
+
+```php
+use HelpScout\Api\Customers\CustomerRequest;
+
+$request = (new CustomerRequest)
+    ->withChats()
+    ->withEmails();
+
+$customers = $client->customers()->list($filter, $request);
+```
+
+Create a customer.
+
+```php
+use HelpScout\Api\Customers\Customer;
+
+$customer = new Customer();
+$customer->setFirstName('Bob');
+// ...
+
+$client->customers()->create($customer);
+```
+
+Update a customer.
+
+```php
+// ...
+$customer->setFirstName('Bob');
+
+$client->customers()->update($customer);
+```
+
+Delete a customer.
+
+```php
+$client->customers()->delete($customerId);
+```
+
+#### Address
+
+Create a customer address.
+
+```php
+use HelpScout\Api\Customers\Entry\Address;
+
+$address = new Address();
+$address->setCity('Boston');
+// ...
+
+$client->customerEntry()->createAddress($customerId, $address);
+```
+
+Update a customer address.
+
+```php
+// ...
+$address->setCity('Boston');
+
+$client->customerEntry()->updateAddress($customerId, $address);
+```
+
+Delete a customer address.
+
+```php
+$client->customerEntry()->deleteAddress($customerId);
+```
+
+#### Chat
+
+Create a customer chat.
+
+```php
+use HelpScout\Api\Customers\Entry\Chat;
+
+$chat = new Chat();
+$chat->setValue('Hi, can you help me?');
+$chat->setType('facebook');
+// ...
+
+$client->customerEntry()->createChat($customerId, $chat);
+```
+
+Update a customer chat.
+
+```php
+// ...
+$chat->setType('facebook');
+
+$client->customerEntry()->updateChat($customerId, $chat);
+```
+
+Delete a customer chat.
+
+```php
+$client->customerEntry()->deleteChat($customerId, $chatId);
+```
+
+#### Email
+
+Create a customer email.
+
+```php
+use HelpScout\Api\Customers\Entry\Email;
+
+$email = new Email();
+$email->setValue('lucy@helpscout.com');
+$email->setType('work');
+// ...
+
+$client->customerEntry()->createEmail($customerId, $email);
+```
+
+Update a customer email.
+
+```php
+// ...
+$email->setType('home');
+
+$client->customerEntry()->updateEmail($customerId, $email);
+```
+
+Delete a customer email.
+
+```php
+$client->customerEntry()->deleteEmail($customerId, $emailId);
+```
+
+#### Phone number
+
+Create a customer phone.
+
+```php
+use HelpScout\Api\Customers\Entry\Phone;
+
+$phone = new Phone();
+$phone->setValue('123456789');
+$phone->setType('work');
+// ...
+
+$client->customerEntry()->createPhone($customerId, $phone);
+```
+
+Update a customer phone.
+
+```php
+// ...
+$phone->setType('home');
+
+$client->customerEntry()->updatePhone($customerId, $phone);
+```
+
+Delete a customer phone.
+
+```php
+$client->customerEntry()->deletePhone($customerId, $phoneId);
+```
+
+#### Social profile
+
+Create a customer social profile.
+
+```php
+use HelpScout\Api\Customers\Entry\SocialProfile;
+
+$socialProfile = new SocialProfile();
+$socialProfile->setValue('helpscout');
+$socialProfile->setType('twitter');
+// ...
+
+$client->customerEntry()->createSocialProfile($customerId, $socialProfile);
+```
+
+Update a customer social profile.
+
+```php
+// ...
+$socialProfile->setType('facebook');
+
+$client->customerEntry()->updateSocialProfile($customerId, $socialProfile);
+```
+
+Delete a customer social profile.
+
+```php
+$client->customerEntry()->deleteSocialProfile($customerId, $socialProfileId);
+```
+
+#### Website
+
+Create a customer website.
+
+```php
+use HelpScout\Api\Customers\Entry\Website;
+
+$website = new Website();
+$website->setValue('https://www.helpscout.com');
+// ...
+
+$client->customerEntry()->createWebsite($customerId, $website);
+```
+
+Update a customer website.
+
+```php
+// ...
+$website->setValue('https://www.helpscout.net');
+
+$client->customerEntry()->updateWebsite($customerId, $website);
+```
+
+Delete a customer website.
+
+```php
+$client->customerEntry()->deleteWebsite($customerId, $websiteId);
+```
+
+### Mailboxes
+
+Get a mailbox.
+
+```php
+$mailbox = $client->mailboxes()->get($mailboxId);
+```
+
+Get a mailbox with pre-loaded sub-entities.
+
+A mailbox entity has two related sub-entities:
+
+* Fields
+* Folders
+
+Each of these sub-entities can be pre-loaded when fetching a mailbox to remove the need for multiple method calls. The `MailboxRequest` class is used
+to describe which sub-entities should be pre-loaded. For example:
+
+```php
+use HelpScout\Api\Mailboxes\MailboxRequest;
+
+$request = (new MailboxRequest)
+    ->withFields()
+    ->withFolders();
+
+$mailbox = $client->mailboxes()->get($mailboxId, $request);
+
+$fields = $mailbox->getFields();
+$folders = $mailbox->getFolders();
+```
+
+Get mailboxes.
+
+```php
+$mailboxes = $client->mailboxes()->list();
+```
+
+Get mailboxes with pre-loaded sub-entities.
+
+```php
+use HelpScout\Api\Mailboxes\MailboxRequest;
+
+$request = (new MailboxRequest)
+    ->withFields()
+    ->withFolders();
+
+$mailboxes = $client->mailboxes()->list($request);
+```
+
+### Conversations
+
+Get a conversation.
+
+```php
+$conversation = $client->conversations()->get($conversationId);
+```
+
+You can easily eager load additional information/relationships for a conversation.  For example:
+
+```php
+use HelpScout\Api\Conversations\ConversationRequest;
+
+$request = (new ConversationRequest)
+    ->withMailbox()
+    ->withPrimaryCustomer()
+    ->withCreatedByCustomer()
+    ->withCreatedByUser()
+    ->withClosedBy()
+    ->withThreads()
+    ->withAssignee();
+
+$conversation = $client->conversations()->get($conversationId, $request);
+
+$mailbox = $conversation->getMailbox();
+$primaryCustomer = $conversation->getPrimaryCustomer();
+```
+
+Get conversations.
+
+```php
+$conversations = $client->conversations()->list();
+```
+
+Get conversations with pre-loaded sub-entities.
+
+```php
+use HelpScout\Api\Conversations\ConversationRequest;
+
+$request = (new ConversationRequest)
+    ->withMailbox()
+    ->withPrimaryCustomer()
+    ->withCreatedByCustomer()
+    ->withCreatedByUser()
+    ->withClosedBy()
+    ->withThreads()
+    ->withAssignee();
+
+$conversations = $client->conversations()->list();
+```
+
+Update the custom fields on a conversation:
+
+```php
+$customField = new CustomField();
+$customField->setId(10524);
+$customField->setValue(new DateTime('today'));
+$client->conversations()->updateCustomFields($conversationId, [$customField]);
+```
+
+Delete a conversation:
+
+```php
+$client->conversations()->delete($conversationId);
+```
+
+Update an existing conversation:
+
+```php
+$client->conversations()->move($conversationId, 18);
+$client->conversations()->updateSubject($conversationId, 'Need more help please');
+$client->conversations()->updateCustomer($conversationId, 6854);
+$client->conversations()->publishDraft($conversationId);
+$client->conversations()->updateStatus($conversationId, 'closed');
+$client->conversations()->assign($conversationId, 127);
+$client->conversations()->unassign($conversationId);
+```
+
+#### Threads
+
+##### Chat Threads
+
+Create new Chat threads for a conversation.
+
+```php
+use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Conversations\Threads\ChatThread;
+
+$thread = new ChatThread();
+$customer = new Customer();
+$customer->setId(163487350);
+
+$thread->setCustomer($customer);
+$thread->setText('Thanks for reaching out to us!');
+
+$client->threads()->create($conversationId, $thread);
+```
+
+##### Customer Threads
+
+Create new Customer threads for a conversation.
+
+```php
+use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Conversations\Threads\CustomerThread;
+
+$thread = new CustomerThread();
+$customer = new Customer();
+$customer->setId(163487350);
+
+$thread->setCustomer($customer);
+$thread->setText('Please help me figure this out');
+
+$client->threads()->create($conversationId, $thread);
+```
+
+##### Note Threads
+
+Create new Note threads for a conversation.
+
+```php
+use HelpScout\Api\Conversations\Threads\NoteThread;
+
+$thread->setText('We are still looking into this');
+
+$client->threads()->create($conversationId, $thread);
+```
+
+##### Phone Threads
+
+Create new Phone threads for a conversation.
+
+```php
+use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Conversations\Threads\PhoneThread;
+
+$thread = new PhoneThread();
+$customer = new Customer();
+$customer->setId(163487350);
+
+$thread->setCustomer($customer);
+$thread->setText('This customer called and spoke with us directly about the delay on their order');
+
+$client->threads()->create($conversationId, $thread);
+```
+
+##### Reply Threads
+
+Create new Reply threads for a conversation.
+
+```php
+use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Conversations\Threads\ReplyThread;
+
+$thread = new ReplyThread();
+$customer = new Customer();
+$customer->setId(163487350);
+
+$thread->setCustomer($customer);
+$thread->setText("Thanks, we'll be with you shortly!");
+
+$client->threads()->create($conversationId, $thread);
+```
+
+Get threads for a conversation.
+
+```php
+$threads = $client->threads()->list($conversationId);
+```
+
+##### Attachments
+
+Get an attachment.
+
+```php
+$attachment = $client->attachments()->get($conversationId, $attachmentId);
+$attachment->getData(); // attached file's contents
+```
+
+Create an attachment:
+
+```php
+use HelpScout\Api\Conversations\Threads\Attachments\AttachmentFactory;
+use HelpScout\Api\Support\Filesystem;
+
+$attachmentFactory = new AttachmentFactory(new Filesystem());
+$attachment = $attachmentFactory->make('path/to/profile.jpg);
+
+$attachment->getMimeType(); // image/jpeg
+$attachment->getFilename(); // profile.jpg
+$attachment->getData(); // base64 encoded contents of the file
+
+$client->attachments()->create($conversationId, $threadId, $attachment);
+```
+
+Delete an attachment:
+
+```php
+$client->attachments()->delete($conversationId, $attachmentId);
+```
 
 ### Tags
-* getTags($page=1, $fields=null)
 
-### Reports (available via Service Descriptions)
-
-* getConversationsReport()
-* getConversationsBusyTimesReport()
-* getNewConversationsReport()
-* getConversationsDrillDownReport()
-* getConversationsDrillDownByFieldReport()
-* getNewConversationsDrillDownReport()
-* getDocsReport()
-* getHappinessReport()
-* getHappinessRatingsReport()
-* getProductivityReport()
-* getFirstResponseTimeProductivityReport()
-* getRepliesSentProductivityReport()
-* getResolvedProductivityReport()
-* getResolutionTimeProductivityReport()
-* getResponseTimeProductivityReport()
-* getProductivityDrillDownReport()
-* getCompanyReport()
-* getCustomersHelpedTeamReport()
-* getCompanyDrillDownReport()
-* getUserReport()
-* getUserConversationHistoryReport()
-* getUserCustomersHelpedReport()
-* getUserDrillDownReport()
-* getUserRepliesReport()
-* getUserResolutionsReport()
-* getUserHappinessReport()
-* getUserRatingsReport()
-* getCustomersHelpedCompanyReport()
-
-Example Usage: Reports
-------------------------
-```php
-include 'HelpScout/ApiClient.php';
-
-use HelpScout\ApiClient;
-
-$scout = ApiClient::getInstance();
-$scout->setKey('your-api-key-here');
-
-$report = $scout->getConversationsReport([
-	'start' => '2014-01-01T00:00:00Z',
-	'end' => '2014-12-31T23:59:59Z'
-]);
-```
-
-Report methods are not hard coded into the `ApiClient` class, but rather they are "described" via Service Descriptions. Service Descriptions are PHP configuration arrays that declare the method name, where and how to call the API, and any parameters available and/or required. 
-
-URL configuration parameters are sent to the `ApiClient` method via a single configuration array parameter. `$scout->getDocsReport($config)`.
-
-A list of available reporting methods is available by calling `$scout->getServiceDescriptionMethods()`. 
-
-Example Usage: Webhooks
-------------------------
-```php
-include 'HelpScout/Webhook.php';
-
-$webhook = new \HelpScout\Webhook('secret-key-here');
-if ($webhook->isValid()) {
-  $eventType = $webhook->getEventType();
-  switch($eventType) {
-    case 'convo.created':
-        $conversation = $webhook->getConversation();
-        // do something
-        break;
-    case 'convo.deleted':
-        $obj = $webhook->getObject();
-        if ($obj) {
-          $convoId = $obj->id;
-          // do something
-        }
-        break;
-    case 'customer.created':
-        $customer = $webhook->getCustomer();
-        // do something
-        break;
-  }
-}
-```
-
-Example Usage: Custom Fields
-------------------------
-
-### Retrieving custom fields for a mailbox
+List the tags
 
 ```php
-include 'HelpScout/ApiClient.php';
-
-use HelpScout\ApiClient;
-
-$scout = ApiClient::getInstance();
-$scout->setKey('your-api-key-here');
-
-$mailbox = $scout->getMailbox(1234);
-$customFields = $mailbox->getCustomFields();
+$tags = $client->tags()->list();
 ```
 
-### Retrieving custom fields with responses for a conversation
+### Users
+
+Get a user.
 
 ```php
-$conversation = $scout->getConversation(1234);
-$customFields = $conversation->getCustomFields();
-
+$user = $client->users()->get($userId);
 ```
 
-### Filling in a value for a field on a conversation that hasn't been filled out yet
-
-This is if the conversation hasn't had **any** fields filled out yet
+Get users.
 
 ```php
-$conversation = $scout->getConversation(1234);
-$mailbox = $scout->getMailbox($conversation->getMailbox()->getId());
-
-$conversationFields = [];
-
-foreach ($mailbox->getCustomFields() as $customField) {
-    if ($customField->getId() == 88) {
-        $field = clone $customField;
-        $field->setValue('Foo');
-        $conversationFields[] = $field;
-    }
-}
-
-$conversation->setCustomFields($conversationFields);
-
-$scout->updateConversation($conversation);
+$users = $client->users()->list();
 ```
 
-### Updating a value for a field on a conversation
+### Reports
+
+When running reports using the SDK, refer to the [developer docs](https://developer.helpscout.com/mailbox-api/) for the exact endpoint, parameters, and response formats. While most of the endpoints in this SDK are little more than pass-through methods to call the API, there are a few conveniences. 
+
+First, for the `start`, `end`, `previousStart`, and `previousEnd` parameters, you may pass a formatted date-time string or any object implementing the `\DateTimeInterface` as the parameter. The client will automatically convert these objects to the proper format.
+
+For those parameters that accept multiple values (`mailboxes`, `tags`, `types,` and `folders`), you may pass an array of values and let the client convert them to the proper format. You may also pass a single value (or a comma-separated list of values) if you like.
+
+To run the report, use the `runReport` method available on the `ApiClient` instance. Pass the name of the report class you'd like to use as the first argument and the array of report parameters as the second argument. Be sure the keys in the parameter array match the URL params specified in the docs. The client will convert the JSON response returned by the API into an array. 
 
 ```php
-$conversation = $scout->getConversation(1234);
+// Example of running the Company Overall Report
+// https://developer.helpscout.com/mailbox-api/endpoints/reports/company/reports-company-overall/ 
 
-foreach ($conversation->getCustomFields() as $customField) {
-    if ($customField->getId() == 88) {
-        $field->setValue('Bar');
-    }
-}
+use HelpScout\Api\Reports\Company;
 
-$scout->updateConversation($conversation);
+$params = [
+    // Date interval fields can be passed as an object implementing the \DateTimeInterface 
+    // or as a string in the 'Y-m-d\Th:m:s\Z' format. All times should be in UTC.
+    'start' => new \DateTime('-7 days'),
+    'end' => new \DateTimeImmutable(),
+    'previousStart' => '2015-01-01T00:00:00Z',
+    'previousEnd' => '2015-01-31T23:59:59Z',
+    
+    // Fields accepting multiple values can be passed as an array or a comma-separated string
+    'mailboxes' => [123, 321],
+    'tags' => '987,789',
+    'types' => ['chat', 'email'],
+    'folders' => [111, 222]
+];
+
+$report = $client->runReport(Company\Overall::class, $params);
 ```
 
-### Custom Field Validation
+### Webhooks
 
-#### Date Fields (`DateFieldRef`)
-
-Must be a valid date in the format of YYYY-MM-DD (year-month-day).
-
-#### Dropdown Fields (`DropdownFieldRef`)
-
-The value must be the ID of one of the available dropdown options.
-
-#### Multi Line Fields (`MultiLineFieldRef`)
-
-The maximum string length for a multi line value is 15000 characters.
-
-#### Number Fields (`NumberFieldRef`)
-
-Number values must be numeric. Integers and Decimals (floats) are allowed (ex: 100 or 12.34).
-
-#### Single Line Fields (`SingleLineFieldRef`)
-
-The maximum string length for a single line value is 255 characters.
-
-
-Debugging
-------------------------
-
-Enable debugging by calling the `setDebug(true)` method.
-
-The `setDebug` method accepts two parameters: The first is a `boolean` to turn debugging on or off (`true` = on, `false` = off). The second (optional) parameter is a directory in which to save a debug output file. If no directory is passed, the output will echo instead of writing to a log file.
-
-### Example output
-
-```
-[Apr 02 20:54:28] DEBUG: request = {"id":49424262,"firstName":"John","lastName":"Doe","photoUrl":null,"photoType":null,"gender":"unknown","age":null,"organization":null,"jobTitle":null,"location":"Dallas, TX","createdAt":"2015-04-01T18:08:10Z","modifiedAt":"2015-04-02T15:09:37Z","background":null,"address":{"id":5678,"lines":["123 Main Street"],"city":"Dallas","state":"","postalCode":74206,"country":"US","createdAt":null,"modifiedAt":null},"socialProfiles":[],"emails":[],"phones":[],"chats":[],"websites":[]}; context: {"method":"PUT"}
-[Apr 02 20:54:28] DEBUG: response = {"code":400,"error":"Input could not be validated","validationErrors":[{"property":"address:state","value":null,"message":"Value is required"}]}; context: {"method":"PUT"}
-[Apr 02 20:54:28] ERROR: Input could not be validated; context: {"method":"PUT","code":400,"errors":[{"property":"address:state","value":null,"message":"Value is required"}]}
-
-```
-Debug lines consist of four parts: Timestamp `[Apr 02 20:54:28]`, Level `DEBUG`, Message, and Context.
-
-The example above debugging output represents 3 lines of debug text, all occurring within the same API call, a `PUT` method to update a Customer. The first is the request JSON, the second is the response JSON, and the third is an API error and its response from the server.
-
-Catching API Errors/Exceptions
-------------------------
-
-4\*\* and 5\*\* errors from the server are handled via the API client. After a the response is received from the API server, the client does a check to ensure the request succeeded. If a 4\*\* or 5\*\* error is detected, the client will throw a `HelpScout\ApiException`. This allows you to easily catch errors from the server, whether it's a validation error or the server can't be reached. This keeps your application from exploding and killing your request and allows you to recover.
-
-When errors are returned from the API server (for example: when validation fails), the errors are added to the exception and accessible via the `getErrors()` method.
-
-Example:
+Get a webhook.
 
 ```php
-try {
-    $scout->createConversation($conversation);
-} catch (\HelpScout\ApiException $e) {
-    echo $e->getMessage();
-    echo "\n";
-    print_r($e->getErrors());
-}
-``` 
+$webhook = $client->webhooks()->get($webhookId);
+```
 
-That outputs 
+List webhooks.
 
 ```php
-Array
-(
-    [0] => Array
-        (
-            [property] => createdBy
-            [value] => 1234
-            [message] => The specified createdBy is not valid
-        )
+$webhooks = $client->webhooks()->list();
+```
 
-    [1] => Array
-        (
-            [property] => customer
-            [value] => 5678
-            [message] => The specified customer is not valid
-        )
+Create a webhook.
 
-    [2] => Array
-        (
-            [property] => mailbox
-            [value] => 012345
-            [message] => The specified mailbox is not valid
-        )
+The default state for a newly-created webhook is `enabled`.
 
-)
+```php
+use HelpScout\Api\Webhooks\Webhook;
+
+$data = [
+    'url' => 'http://bad-url.com',
+    'events' => ['convo.assigned', 'convo.moved'],
+    'secret' => 'notARealSecret'
+];
+$webhook = new Webhook();
+$webhook->hydrate($data);
+// ...
+
+$client->webhooks()->create($webhook);
+```
+
+Update a webhook
+
+This operation replaces the entire webhook entity, so you must provide the secret again. Once updated, the webhook will be in the `enabled` state again.
+```php
+$webhook->setUrl('http://bad-url.com/really_really_bad');
+$webhook->setSecret('mZ9XbGHodY');
+$client->webhooks()->update($webhook);
+```
+
+Delete a webhook.
+
+```php
+$client->webhooks()->delete($webhookId);
+```
+
+### Workflows
+
+Fetch a paginated list of all workflows.
+```php
+$workflows = $client->workflows()->list(); 
+```
+
+Run a manual workflow on a list of conversations.
+```php
+$convos = [
+    123,
+    321
+];
+$client->workflows()->runWorkflow($id, $convos);
+```
+
+Change a workflow status to either "active" or "inactive"
+```php
+$client->workflows()->updateStatus($id, 'active');
+```
+
+## Error handling
+
+Any exception thrown by the client directly will implement `HelpScout\Api\Exception` and HTTP errors will result in `Http\Client\Exception\RequestException` being thrown.
+
+## Pagination
+
+When fetching a collection of entities the client will return an instance of `HelpScout\Api\Entity\Collection`. If the end point supports pagination then it will return an instance of `HelpScout\Api\Entity\PagedCollection`.
+
+```php
+/** @var PagedCollection $users */
+$users = $client->getUsers();
+
+// The current page number
+$users->getPageNumber();
+
+// The total number of pages
+$users->getTotalPageCount();
+
+// Load the next page
+$nextUsers = $users->getNextPage();
+
+// Load the previous page
+$previousUsers = $users->getPreviousPage();
+
+// Load the first page
+$firstUsers = $users->getFirstPage();
+
+// Load the last page
+$lastUsers = $users->getLastPage();
+
+// Load a specific page
+$otherUsers = $users->getPage(12);
 ```
