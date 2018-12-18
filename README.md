@@ -1,4 +1,4 @@
-# Help Scout API PHP Client [![Build Status](https://travis-ci.com/helpscout/helpscout-api-php-v2.svg?token=qCN6xBzzwNkXLxmSnTDj&branch=master)](https://travis-ci.com/helpscout/helpscout-api-php-v2)
+# Help Scout API PHP Client [![Build Status](https://travis-ci.com/helpscout/helpscout-api-php-v2.svg?token=qCN6xBzzwNkXLxmSnTDj&branch=master)](https://travis-ci.com/helpscout/helpscout-api-php-v2) [![Maintainability](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/maintainability)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/test_coverage)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/test_coverage)
 
 This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout API](http://developer.helpscout.net/help-desk-api-v2/).
 
