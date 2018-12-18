@@ -10,9 +10,10 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\ApiClient;
-use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Authenticator;
-use HelpScout\Api\Http\Handlers\Handlers;
+use HelpScout\Api\Http\Handlers\ClientErrorHandler;
+use HelpScout\Api\Http\Handlers\RateLimitHandler;
+use HelpScout\Api\Http\Handlers\ValidationHandler;
 use HelpScout\Api\Http\RestClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -42,14 +43,13 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         $handler = HandlerStack::create($this->mockHandler);
 
         $handler->push(Middleware::history($this->history));
-        $handler->push(Handlers::rateLimit());
-        $handler->push(Handlers::validation());
-        $handler->push(Handlers::clientError());
+        $handler->push(new ClientErrorHandler());
+        $handler->push(new RateLimitHandler());
+        $handler->push(new ValidationHandler());
 
-        $client = new Client(['handler' => $handler]);
+        $client = new Client(['handler' => $handler, 'http_errors' => false]);
 
-        $auth = new ClientCredentials('123', '321');
-        $authenticator = new Authenticator($client, $auth);
+        $authenticator = new Authenticator($client);
         $authenticator->setAccessToken('abc123');
 
         $this->client = new ApiClient(

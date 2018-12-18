@@ -10,7 +10,9 @@ use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
-use HelpScout\Api\Http\Handlers\Handlers;
+use HelpScout\Api\Http\Handlers\ClientErrorHandler;
+use HelpScout\Api\Http\Handlers\RateLimitHandler;
+use HelpScout\Api\Http\Handlers\ValidationHandler;
 
 class RestClientBuilder
 {
@@ -95,6 +97,7 @@ class RestClientBuilder
 
         $options = [
             'handler' => $stack,
+            'http_errors' => false,
         ];
 
         if (isset($this->config['base_uri'])) {
@@ -109,20 +112,12 @@ class RestClientBuilder
      */
     protected function getHandlerStack(): HandlerStack
     {
-        $handlerStack = HandlerStack::create();
+        $handler = HandlerStack::create();
 
-        $handlerStack->push(
-            Handlers::rateLimit()
-        );
+        $handler->push(new ClientErrorHandler());
+        $handler->push(new RateLimitHandler());
+        $handler->push(new ValidationHandler());
 
-        $handlerStack->push(
-            Handlers::validation()
-        );
-
-//        $handlerStack->push(
-//            Handlers::clientError()
-//        );
-
-        return $handlerStack;
+        return $handler;
     }
 }

@@ -41,7 +41,11 @@ class ValidationErrorIntegrationTest extends ApiClientIntegrationTestCase
         $this->expectException(RequestException::class);
 
         $this->stubResponse(
-            $this->getResponse(400, ErrorPayloads::validationErrors(), ['Content-Type' => 'application/json;charset=UTF-8'])
+            $this->getResponse(
+                400,
+                ErrorPayloads::validationErrors(),
+                ['Content-Type' => 'application/json;charset=UTF-8']
+            )
         );
 
         $this->client->customers()->create(new Customer());
