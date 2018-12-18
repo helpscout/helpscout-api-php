@@ -126,8 +126,9 @@ class RestClientTest extends TestCase
 
     /**
      * @dataProvider noRetryParamProvider
+     *
      * @param array $params
-     * @return void
+     *
      * @throws \ReflectionException
      */
     public function testDeciderDoesNotRetry(...$params)
@@ -205,8 +206,9 @@ class RestClientTest extends TestCase
 
     /**
      * @dataProvider retryParamProvider
+     *
      * @param array $params
-     * @return void
+     *
      * @throws \ReflectionException
      */
     public function testDeciderDoesRetry(...$params)

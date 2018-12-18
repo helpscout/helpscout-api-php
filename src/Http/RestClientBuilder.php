@@ -148,5 +148,4 @@ class RestClientBuilder
             return $retries < 4;
         };
     }
-
 }

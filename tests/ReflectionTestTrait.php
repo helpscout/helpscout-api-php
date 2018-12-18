@@ -7,17 +7,19 @@ namespace HelpScout\Api\Tests;
 trait ReflectionTestTrait
 {
     /**
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $method
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @return mixed
+     *
      * @throws \ReflectionException
      */
     public function invokeMethod($object, string $method, array $parameters = [])
     {
         $class = \get_class($object);
 
-        $reflection      = new \ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
         $reflectedMethod = $reflection->getMethod($method);
         $reflectedMethod->setAccessible(true);
 
@@ -25,24 +27,27 @@ trait ReflectionTestTrait
     }
 
     /**
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $attributeName
+     *
      * @return mixed
+     *
      * @throws \ReflectionException
      */
     public function getAttribute($object, string $attributeName)
     {
         $reflection = new \ReflectionClass($object);
-        $property   = $reflection->getProperty($attributeName);
+        $property = $reflection->getProperty($attributeName);
         $property->setAccessible(true);
 
         return $property->getValue($object);
     }
 
     /**
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $attributeName
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @throws \ReflectionException
      */
     public function setAttribute($object, string $attributeName, $value): void
@@ -56,6 +61,7 @@ trait ReflectionTestTrait
 
     /**
      * @param mixed $object
+     *
      * @return string
      */
     protected function getClassName(&$object): string
@@ -68,8 +74,10 @@ trait ReflectionTestTrait
     }
 
     /**
-     * getFullMock
+     * getFullMock.
+     *
      * @param string $name
+     *
      * @return mixed
      */
     public function getFullMock(string $name)
@@ -80,7 +88,7 @@ trait ReflectionTestTrait
     }
 
     /**
-     * getPartialMock
+     * getPartialMock.
      *
      * @param string $name
      * @param array  $methods
