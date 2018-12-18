@@ -47,5 +47,15 @@
         "php-http/guzzle6-adapter": "Our preferred HTTP adapter"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HelpScout\\Api\\Support\\Providers\\HelpscoutLaravelServiceProvider"
+            ],
+            "aliases": {
+                "HelpScout": "HelpScout\\Api\\Support\\Facades\\HelpScout"
+            }
+        }
+    }
 }

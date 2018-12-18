@@ -4,3 +4,7 @@ parameters:
         - '#.*MockObject given.*#'
         - '#.*MockInterface given.*#'
         - '#.*does not accept PHPUnit\\Framework\\MockObject\\MockObject.*#'
+    excludes_analyse:
+        - %rootDir%/../../../config/*
+        - %rootDir%/../../../src/Support/Providers/*
+        - %rootDir%/../../../src/Support/Facades/*
