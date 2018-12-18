@@ -43,7 +43,9 @@
         "fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
         "sniff": "vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run --stop-on-violation",
         "phpunit": "vendor/bin/phpunit",
+        "phpunit:clover": "vendor/bin/phpunit --coverage-clover build/reports/phpunit",
         "test": ["@sniff", "@analyse", "@phpunit"],
+        "test:travis": ["@sniff", "@analyse", "@phpunit:clover"],
         "test:report": "vendor/bin/phpunit --coverage-html build/reports/phpunit"
     },
     "suggest": {

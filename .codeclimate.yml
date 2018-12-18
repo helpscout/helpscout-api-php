@@ -1,0 +1,27 @@
+engines:
+  fixme:
+    enabled: true
+    config:
+      strings:
+      - FIXME
+
+  phpcodesniffer:
+    enabled: true
+    config:
+      file_extensions: "php"
+      standard: "PSR1,PSR2"
+      ignore_warnings: true
+
+  duplication:
+      enabled: true
+      config:
+        languages:
+        - php:
+
+ratings:
+  paths:
+  - "**.php"
+
+exclude_paths:
+- "examples/"
+- "tests/"
