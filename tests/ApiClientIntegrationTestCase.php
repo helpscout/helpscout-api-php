@@ -4,20 +4,36 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\ApiClient;
-use HelpScout\Api\ApiClientFactory;
-use HelpScout\Api\Http\RestClientBuilder;
-use Http\Mock\Client as MockHttpClient;
+use HelpScout\Api\Http\Authenticator;
+use HelpScout\Api\Http\Handlers\ClientErrorHandler;
+use HelpScout\Api\Http\Handlers\RateLimitHandler;
+use HelpScout\Api\Http\Handlers\ValidationHandler;
+use HelpScout\Api\Http\RestClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 
 abstract class ApiClientIntegrationTestCase extends TestCase
 {
     /**
-     * @var MockHttpClient
+     * @var array
      */
-    protected $mockHttpClient;
+    protected $history = [];
+
+    /**
+     * @var MockHandler
+     */
+    protected $mockHandler;
+
+    /**
+     * @var Authenticator
+     */
+    protected $authenticator;
 
     /**
      * @var ApiClient
@@ -26,31 +42,63 @@ abstract class ApiClientIntegrationTestCase extends TestCase
 
     public function setUp()
     {
-        $this->mockHttpClient = new MockHttpClient();
+        $this->history = [];
+        $this->mockHandler = new MockHandler();
 
-        $restClientBuilder = new RestClientBuilder($this->mockHttpClient);
-        $this->client = ApiClientFactory::createClient('https://api.helpscout.net', $restClientBuilder);
-        $this->client->setAccessToken('secret');
+        $handler = HandlerStack::create($this->mockHandler);
+
+        $handler->push(Middleware::history($this->history));
+        $handler->push(new ClientErrorHandler());
+        $handler->push(new RateLimitHandler());
+        $handler->push(new ValidationHandler());
+
+        $client = new Client(['handler' => $handler, 'http_errors' => false]);
+
+        $this->authenticator = new Authenticator($client);
+        $this->authenticator->setAccessToken('abc123');
+
+        $this->client = new ApiClient(
+            new RestClient($client, $this->authenticator)
+        );
+    }
+
+    /**
+     * @param array $responses
+     */
+    protected function stubResponses(array $responses): void
+    {
+        foreach ($responses as $response) {
+            $this->mockHandler->append($response);
+        }
+    }
+
+    /**
+     * @param Response $response
+     */
+    protected function stubResponse(Response $response): void
+    {
+        $this->mockHandler->append($response);
     }
 
     /**
      * @param int    $status
      * @param string $body
      * @param array  $headers
+     *
+     * @return Response
      */
-    protected function stubResponse(int $status, string $body = '', array $headers = []): void
+    protected function getResponse($status = 200, $body = '', $headers = []): Response
     {
-        $this->mockHttpClient->addResponse(new Response($status, $headers, $body));
+        return new Response($status, $headers, $body);
     }
 
-    protected function verifyMultpleRequests(array $expected): void
+    protected function verifyMultipleRequests(array $expected): void
     {
-        $requests = $this->mockHttpClient->getRequests();
         foreach ($expected as $key => $data) {
             [$expectedMethod, $expectedUri] = $data;
 
             $this->verifyRequestMethodAndUri(
-                $requests[$key],
+                $this->history[$key]['request'],
                 $expectedMethod,
                 $expectedUri
             );
@@ -59,26 +107,17 @@ abstract class ApiClientIntegrationTestCase extends TestCase
 
     protected function verifyMultipleRequestsWithData(array $expected): void
     {
-        $requests = $this->mockHttpClient->getRequests();
         foreach ($expected as $key => $data) {
             [$expectedMethod, $expectedUri, $expectedData] = $data;
 
             $this->verifyRequestMethodAndUri(
-                $requests[$key],
+                $this->history[$key]['request'],
                 $expectedMethod,
                 $expectedUri
             );
 
-            $this->verifyRequestData($requests[$key], $expectedData);
+            $this->verifyRequestData($this->history[$key]['request'], $expectedData);
         }
-    }
-
-    protected function verifyMultipleRequestCount(array $expected): void
-    {
-        /** @var array $requests */
-        $requests = $this->mockHttpClient->getRequests();
-        $expectedTotalRequests = \count($expected);
-        $this->assertCount($expectedTotalRequests, $requests);
     }
 
     protected function verifyRequestMethodAndUri(
@@ -97,13 +136,11 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         string $expectedUri,
         string $expectedMethod = 'GET'
     ): void {
-        /** @var array $requests */
-        $requests = $this->mockHttpClient->getRequests();
+        $this->assertCount(1, $this->history);
 
-        $this->assertCount(1, $requests);
-
+        $request = $this->history[0]['request'];
         $this->verifyRequestMethodAndUri(
-            $requests[0],
+            $request,
             $expectedMethod,
             $expectedUri
         );
@@ -117,7 +154,7 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         $this->verifySingleRequest($expectedUri, $expectedMethod);
 
         $this->verifyRequestData(
-            $this->mockHttpClient->getLastRequest(),
+            $this->history[0]['request'],
             $data
         );
     }

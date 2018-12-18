@@ -72,6 +72,9 @@ class ConversationTest extends TestCase
             'primaryCustomer' => [
                 'id' => 238604,
             ],
+            'customer' => [
+                'id' => 123,
+            ],
             'customFields' => [
                 [
                     'id' => 6688,

@@ -4,54 +4,35 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http;
 
-use Http\Client\Common\HttpMethodsClient;
-use Http\Client\Common\Plugin;
-use Http\Client\Common\Plugin\AddHostPlugin;
-use Http\Client\Common\Plugin\HeaderDefaultsPlugin;
-use Http\Client\Common\PluginClient;
-use Http\Client\HttpClient;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Discovery\StreamFactoryDiscovery;
-use Http\Discovery\UriFactoryDiscovery;
-use Http\Message\RequestFactory;
-use Http\Message\StreamFactory;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use HelpScout\Api\Http\Auth\Auth;
+use HelpScout\Api\Http\Auth\ClientCredentials;
+use HelpScout\Api\Http\Auth\LegacyCredentials;
+use HelpScout\Api\Http\Auth\NullCredentials;
+use HelpScout\Api\Http\Auth\RefreshCredentials;
+use HelpScout\Api\Http\Handlers\ClientErrorHandler;
+use HelpScout\Api\Http\Handlers\RateLimitHandler;
+use HelpScout\Api\Http\Handlers\ValidationHandler;
 
 class RestClientBuilder
 {
     /**
-     * @var HttpClient
-     */
-    private $httpClient;
-
-    /**
-     * @var RequestFactory
-     */
-    private $requestFactory;
-
-    /**
-     * @var StreamFactory
-     */
-    private $streamFactory;
-
-    /**
      * @var array
      */
-    private $plugins;
+    private $config;
 
     /**
-     * @param HttpClient|null     $httpClient
-     * @param RequestFactory|null $requestFactory
-     * @param StreamFactory|null  $streamFactory
+     * @param array $config
      */
-    public function __construct(
-        HttpClient $httpClient = null,
-        RequestFactory $requestFactory = null,
-        StreamFactory $streamFactory = null
-    ) {
-        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
-        $this->requestFactory = $requestFactory ?: MessageFactoryDiscovery::find();
-        $this->streamFactory = $streamFactory ?: StreamFactoryDiscovery::find();
+    public function __construct(array $config = [])
+    {
+        $this->config = $config;
     }
 
     /**
@@ -60,37 +41,111 @@ class RestClientBuilder
     public function build(): RestClient
     {
         return new RestClient(
-            new HttpMethodsClient(
-                new PluginClient($this->httpClient, $this->plugins),
-                $this->requestFactory
-            )
+            $this->getGuzzleClient(),
+            $this->getAuthenticator()
         );
     }
 
     /**
-     * @param Plugin $plugin
+     * @return Client
      */
-    public function addPlugin(Plugin $plugin)
+    protected function getGuzzleClient(): Client
     {
-        $this->plugins[] = $plugin;
+        $options = $this->getOptions();
+
+        return new Client($options);
     }
 
     /**
-     * @param string $baseUri
+     * @return Authenticator
      */
-    public function setBaseUri(string $baseUri)
+    protected function getAuthenticator(): Authenticator
     {
-        $baseUri = UriFactoryDiscovery::find()->createUri($baseUri);
-        $this->addPlugin(new AddHostPlugin($baseUri));
+        $authConfig = $this->config['auth'] ?? [];
+
+        return new Authenticator(
+            new Client(),
+            $this->getAuthClass($authConfig)
+        );
     }
 
     /**
-     * @param string $userAgent
+     * @param array $authConfig
+     *
+     * @return Auth
      */
-    public function setUserAgent(string $userAgent)
+    protected function getAuthClass(array $authConfig = []): Auth
     {
-        $this->addPlugin(new HeaderDefaultsPlugin([
-            'User-Agent' => $userAgent,
-        ]));
+        $type = $authConfig['type'] ?? '';
+
+        switch ($type) {
+            case ClientCredentials::TYPE:
+                return new ClientCredentials(
+                    $authConfig['appId'],
+                    $authConfig['appSecret']
+                );
+            case LegacyCredentials::TYPE:
+                return new LegacyCredentials(
+                    $authConfig['clientId'],
+                    $authConfig['apiKey']
+                );
+            case RefreshCredentials::TYPE:
+                return new RefreshCredentials(
+                    $authConfig['appId'],
+                    $authConfig['appSecret'],
+                    $authConfig['refreshToken']
+                );
+            default:
+                return new NullCredentials();
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptions(): array
+    {
+        return [
+            'handler' => $this->getHandlerStack(),
+            'http_errors' => false,
+        ];
+    }
+
+    /**
+     * @return HandlerStack
+     */
+    protected function getHandlerStack(): HandlerStack
+    {
+        $handler = HandlerStack::create();
+
+        $handler->push(new ClientErrorHandler());
+        $handler->push(new RateLimitHandler());
+        $handler->push(new ValidationHandler());
+        $handler->push(Middleware::retry($this->getRetryDecider()));
+
+        return $handler;
+    }
+
+    /**
+     * Should we retry this failure?
+     *
+     * @return \Closure
+     */
+    protected function getRetryDecider(): callable
+    {
+        return function (
+            $retries,
+            Request $request,
+            Response $response = null,
+            RequestException $exception = null
+        ) {
+            // Don't retry unless this is a Connection issue
+            if (!$exception instanceof ConnectException) {
+                return false;
+            }
+
+            // Limit the number of retries
+            return $retries < 4;
+        };
     }
 }

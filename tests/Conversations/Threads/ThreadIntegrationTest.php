@@ -15,7 +15,7 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testCreateThread()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
         $thread = new CustomerThread();
 
         $this->client->threads()->create(14, $thread);
@@ -28,7 +28,9 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetThreads()
     {
-        $this->stubResponse(200, ThreadPayloads::getThreads(1, 10));
+        $this->stubResponse(
+            $this->getResponse(200, ThreadPayloads::getThreads(1, 10))
+        );
 
         $conversations = $this->client->threads()->list(14);
 
@@ -42,7 +44,7 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetThreadsParsesPageMetadata()
     {
-        $this->stubResponse(200, ThreadPayloads::getThreads(3, 35));
+        $this->stubResponse($this->getResponse(200, ThreadPayloads::getThreads(3, 35)));
 
         $threads = $this->client->threads()->list(1);
 
@@ -55,7 +57,7 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetThreadsWithEmptyCollection()
     {
-        $this->stubResponse(200, ThreadPayloads::getThreads(1, 0));
+        $this->stubResponse($this->getResponse(200, ThreadPayloads::getThreads(1, 0)));
 
         $conversations = $this->client->threads()->list(1);
 
@@ -69,15 +71,17 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
     public function testGetThreadsLazyLoadsPages()
     {
         $totalElements = 20;
-        $this->stubResponse(200, ThreadPayloads::getThreads(1, $totalElements));
-        $this->stubResponse(200, ThreadPayloads::getThreads(2, $totalElements));
+        $this->stubResponses([
+            $this->getResponse(200, ThreadPayloads::getThreads(1, $totalElements)),
+            $this->getResponse(200, ThreadPayloads::getThreads(2, $totalElements)),
+        ]);
 
         $conversations = $this->client->threads()->list(1)->getPage(2);
 
         $this->assertCount(10, $conversations);
         $this->assertInstanceOf(CustomerThread::class, $conversations[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1/threads'],
             ['GET', 'https://api.helpscout.net/v2/conversations/1/threads?page=2'],
         ]);
@@ -85,6 +89,7 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCanUpdateThreadText()
     {
+        $this->stubResponse($this->getResponse(201));
         $this->client->threads()->updateText(1, 1432, 'This is new text');
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1/threads/1432', 'PATCH', [

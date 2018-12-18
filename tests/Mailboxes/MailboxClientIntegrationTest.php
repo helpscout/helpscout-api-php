@@ -18,11 +18,12 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testGetMailbox()
     {
-        $this->stubResponse(200, MailboxPayloads::getMailbox(1));
+        $this->stubResponse(
+            $this->getResponse(200, MailboxPayloads::getMailbox(1))
+        );
 
         $mailbox = $this->client->mailboxes()->get(1);
 
-        $this->assertInstanceOf(Mailbox::class, $mailbox);
         $this->assertSame(1, $mailbox->getId());
 
         $this->verifySingleRequest(
@@ -32,8 +33,10 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsFields()
     {
-        $this->stubResponse(200, MailboxPayloads::getMailbox(1));
-        $this->stubResponse(200, MailboxPayloads::getFields(1));
+        $this->stubResponses([
+            $this->getResponse(200, MailboxPayloads::getMailbox(1)),
+            $this->getResponse(200, MailboxPayloads::getFields(1)),
+        ]);
 
         $request = (new MailboxRequest())
             ->withFields();
@@ -43,7 +46,7 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertCount(1, $fields);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/mailboxes/1'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes/1/fields'],
         ]);
@@ -51,8 +54,10 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsFolders()
     {
-        $this->stubResponse(200, MailboxPayloads::getMailbox(1));
-        $this->stubResponse(200, MailboxPayloads::getFolders(1));
+        $this->stubResponses([
+            $this->getResponse(200, MailboxPayloads::getMailbox(1)),
+            $this->getResponse(200, MailboxPayloads::getFolders(1)),
+        ]);
 
         $request = (new MailboxRequest())
             ->withFolders();
@@ -62,7 +67,7 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertCount(1, $folders);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/mailboxes/1'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes/1/folders'],
         ]);
@@ -70,7 +75,9 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetMailboxes()
     {
-        $this->stubResponse(200, MailboxPayloads::getMailboxes(1, 10));
+        $this->stubResponse(
+            $this->getResponse(200, MailboxPayloads::getMailboxes(1, 10))
+        );
 
         $mailboxes = $this->client->mailboxes()->list();
 
@@ -84,9 +91,11 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetMailboxesPreloadsFields()
     {
-        $this->stubResponse(200, MailboxPayloads::getMailboxes(1, 2));
-        $this->stubResponse(200, MailboxPayloads::getFields(1));
-        $this->stubResponse(200, MailboxPayloads::getFields(2));
+        $this->stubResponses([
+            $this->getResponse(200, MailboxPayloads::getMailboxes(1, 2)),
+            $this->getResponse(200, MailboxPayloads::getFields(1)),
+            $this->getResponse(200, MailboxPayloads::getFields(2)),
+        ]);
 
         $request = (new MailboxRequest())
             ->withFields();
@@ -97,7 +106,7 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
         $this->assertInstanceOf(Field::class, $mailboxes[0]->getFields()[0]);
         $this->assertInstanceOf(Field::class, $mailboxes[1]->getFields()[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/mailboxes'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes/1/fields'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes/2/fields'],
@@ -106,9 +115,11 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetMailboxesPreloadsFolders()
     {
-        $this->stubResponse(200, MailboxPayloads::getMailboxes(1, 2));
-        $this->stubResponse(200, MailboxPayloads::getFolders(1));
-        $this->stubResponse(200, MailboxPayloads::getFolders(2));
+        $this->stubResponses([
+            $this->getResponse(200, MailboxPayloads::getMailboxes(1, 2)),
+            $this->getResponse(200, MailboxPayloads::getFolders(1)),
+            $this->getResponse(200, MailboxPayloads::getFolders(2)),
+        ]);
 
         $request = (new MailboxRequest())
             ->withFolders();
@@ -119,7 +130,7 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
         $this->assertInstanceOf(Folder::class, $mailboxes[0]->getFolders()[0]);
         $this->assertInstanceOf(Folder::class, $mailboxes[1]->getFolders()[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/mailboxes'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes/1/folders'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes/2/folders'],
@@ -128,16 +139,17 @@ class MailboxClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetMailboxesLazyLoadsPages()
     {
-        $totalElements = 20;
-        $this->stubResponse(200, MailboxPayloads::getMailboxes(1, $totalElements));
-        $this->stubResponse(200, MailboxPayloads::getMailboxes(2, $totalElements));
+        $this->stubResponses([
+            $this->getResponse(200, MailboxPayloads::getMailboxes(1, 20)),
+            $this->getResponse(200, MailboxPayloads::getMailboxes(1, 20)),
+        ]);
 
         $mailboxes = $this->client->mailboxes()->list()->getPage(2);
 
         $this->assertCount(10, $mailboxes);
         $this->assertInstanceOf(Mailbox::class, $mailboxes[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/mailboxes'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes?page=2'],
         ]);

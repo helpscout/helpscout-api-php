@@ -17,7 +17,9 @@ class RateLimitErrorIntegrationTest extends ApiClientIntegrationTestCase
     {
         $this->expectException(RateLimitExceededException::class);
 
-        $this->stubResponse(429, ErrorPayloads::rateLimitExceededError());
+        $this->stubResponse(
+            $this->getResponse(429, ErrorPayloads::rateLimitExceededError())
+        );
 
         $this->client->customers()->get(1);
     }

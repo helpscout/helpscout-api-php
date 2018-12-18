@@ -29,6 +29,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testDeleteConversation()
     {
+        $this->stubResponse($this->getResponse(201));
         $this->client->conversations()->delete(1);
 
         $this->verifySingleRequest(
@@ -39,7 +40,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversation()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
+        $this->stubResponse(
+            $this->getResponse(200, ConversationPayloads::getConversation(1))
+        );
 
         $conversation = $this->client->conversations()->get(1);
 
@@ -53,7 +56,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCreateConversation()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
+        $this->stubResponse($this->getResponse(200, ConversationPayloads::getConversation(1)));
 
         $conversation = new Conversation();
         $conversation->hydrate([
@@ -72,8 +75,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationPreloadsAssignee()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
-        $this->stubResponse(200, UserPayloads::getUser(256));
+        $this->stubResponses([
+            $this->getResponse(200, ConversationPayloads::getConversation(1)),
+            $this->getResponse(200, UserPayloads::getUser(256)),
+        ]);
 
         $request = (new ConversationRequest())
             ->withAssignee();
@@ -83,7 +88,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertInstanceOf(User::class, $assignee);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],
             ['GET', 'https://api.helpscout.net/v2/users/256'],
         ]);
@@ -91,8 +96,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationPreloadsClosedBy()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
-        $this->stubResponse(200, UserPayloads::getUser(17));
+        $this->stubResponses([
+            $this->getResponse(200, ConversationPayloads::getConversation(1)),
+            $this->getResponse(200, UserPayloads::getUser(17)),
+        ]);
 
         $request = (new ConversationRequest())
             ->withClosedBy();
@@ -102,7 +109,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertInstanceOf(User::class, $closedBy);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],
             ['GET', 'https://api.helpscout.net/v2/users/17'],
         ]);
@@ -110,8 +117,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationPreloadsCreatedByCustomer()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
-        $this->stubResponse(200, CustomerPayloads::getCustomer(12));
+        $this->stubResponses([
+            $this->getResponse(200, ConversationPayloads::getConversation(1)),
+            $this->getResponse(200, CustomerPayloads::getCustomer(12)),
+        ]);
 
         $request = (new ConversationRequest())
             ->withCreatedByCustomer();
@@ -121,7 +130,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertInstanceOf(Customer::class, $createdByCustomer);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/12'],
         ]);
@@ -137,8 +146,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
             'href' => 'https://api.helpscout.net/v2/users/17',
         ];
 
-        $this->stubResponse(200, json_encode($conversationPayload));
-        $this->stubResponse(200, UserPayloads::getUser(17));
+        $this->stubResponses([
+            $this->getResponse(200, json_encode($conversationPayload)),
+            $this->getResponse(200, UserPayloads::getUser(17)),
+        ]);
 
         $request = (new ConversationRequest())
             ->withCreatedByUser();
@@ -148,7 +159,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertInstanceOf(User::class, $createdByUser);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],
             ['GET', 'https://api.helpscout.net/v2/users/17'],
         ]);
@@ -156,8 +167,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationPreloadsMailboxes()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
-        $this->stubResponse(200, MailboxPayloads::getMailbox(1));
+        $this->stubResponses([
+            $this->getResponse(200, ConversationPayloads::getConversation(1)),
+            $this->getResponse(200, MailboxPayloads::getMailbox(1)),
+        ]);
 
         $request = (new ConversationRequest())
             ->withMailbox();
@@ -167,7 +180,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertInstanceOf(Mailbox::class, $mailbox);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],
             ['GET', 'https://api.helpscout.net/v2/mailboxes/85'],
         ]);
@@ -175,8 +188,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationPreloadsPrimaryCustomer()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
-        $this->stubResponse(200, CustomerPayloads::getCustomer(238604));
+        $this->stubResponses([
+            $this->getResponse(200, ConversationPayloads::getConversation(1)),
+            $this->getResponse(200, CustomerPayloads::getCustomer(238604)),
+        ]);
 
         $request = (new ConversationRequest())
             ->withPrimaryCustomer();
@@ -185,7 +200,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         $customer = $conversation->getCustomer();
         $this->assertInstanceOf(Customer::class, $customer);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/238604'],
         ]);
@@ -193,8 +208,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationPreloadsThreads()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversation(1));
-        $this->stubResponse(200, ThreadPayloads::getThreads(1, 5));
+        $this->stubResponses([
+            $this->getResponse(200, ConversationPayloads::getConversation(1)),
+            $this->getResponse(200, ThreadPayloads::getThreads(1, 5)),
+        ]);
 
         $request = (new ConversationRequest())
             ->withThreads();
@@ -205,7 +222,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         $this->assertInstanceOf(Collection::class, $threads);
         $this->assertInstanceOf(Thread::class, $threads[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],
             ['GET', 'https://api.helpscout.net/v2/conversations/1/threads'],
         ]);
@@ -213,7 +230,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testListConversations()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversations(1, 10));
+        $this->stubResponse(
+            $this->getResponse(200, ConversationPayloads::getConversations(1, 10))
+        );
 
         $conversations = $this->client->conversations()->list();
 
@@ -227,7 +246,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testListConversationsWithFilters()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversations(1, 10));
+        $this->stubResponse(
+            $this->getResponse(200, ConversationPayloads::getConversations(1, 10))
+        );
 
         $filters = (new ConversationFilters())
             ->withAssignedTo(256);
@@ -244,7 +265,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationsWithEmptyCollection()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversations(1, 0));
+        $this->stubResponse(
+            $this->getResponse(200, ConversationPayloads::getConversations(1, 0))
+        );
 
         $conversations = $this->client->conversations()->list();
 
@@ -257,7 +280,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetConversationsParsesPageMetadata()
     {
-        $this->stubResponse(200, ConversationPayloads::getConversations(3, 35));
+        $this->stubResponse($this->getResponse(200, ConversationPayloads::getConversations(3, 35)));
 
         $conversations = $this->client->conversations()->list();
 
@@ -271,8 +294,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
     public function testGetConversationsLazyLoadsPages()
     {
         $totalElements = 20;
-        $this->stubResponse(200, ConversationPayloads::getConversations(1, $totalElements));
-        $this->stubResponse(200, ConversationPayloads::getConversations(2, $totalElements));
+        $this->stubResponses([
+            $this->getResponse(200, ConversationPayloads::getConversations(1, $totalElements)),
+            $this->getResponse(200, ConversationPayloads::getConversations(2, $totalElements)),
+        ]);
 
         $conversations = $this->client->conversations()->list()->getPage(2);
 
@@ -283,11 +308,14 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
             ['GET', 'https://api.helpscout.net/v2/conversations'],
             ['GET', 'https://api.helpscout.net/v2/conversations?page=2'],
         ];
-        $this->verifyMultpleRequests($requests);
+        $this->verifyMultipleRequests($requests);
     }
 
     public function testCanMoveConversations()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->move(1, 43);
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
@@ -299,6 +327,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCanUpdateSubject()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->updateSubject(1, 'Help me');
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
@@ -310,6 +341,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCanUpdateCustomer()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->updateCustomer(1, 13);
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
@@ -321,6 +355,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCanPublishDraft()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->publishDraft(1);
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
@@ -332,6 +369,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCanUpdateConversationStatus()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->updateStatus(1, 'closed');
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
@@ -343,6 +383,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCanAssignConversation()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->assign(1, 9835);
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
@@ -354,6 +397,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCanUnassignConversation()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->unassign(1);
 
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
@@ -364,6 +410,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdatesCustomFields()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
+
         $customField = new CustomField();
         $customField->setId(10524);
         $customField->setValue(new \DateTime('today'));
@@ -382,6 +432,9 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdatesTags()
     {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
         $this->client->conversations()->updateTags(14, ['Support']);
 
         $tags = new TagsCollection();

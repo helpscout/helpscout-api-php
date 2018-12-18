@@ -18,7 +18,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testCreateCustomer()
     {
-        $this->stubResponse(201);
+        $this->stubResponse($this->getResponse(201));
 
         $customer = new Customer();
         $customer->setFirstName('Big');
@@ -46,7 +46,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateCustomer()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $customer = new Customer();
         $customer->setId(12);
@@ -75,7 +75,9 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomer()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
+        $this->stubResponse(
+            $this->getResponse(200, CustomerPayloads::getCustomer(1))
+        );
 
         $customer = $this->client->customers()->get(1);
 
@@ -89,8 +91,10 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsAddress()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
-        $this->stubResponse(200, CustomerPayloads::getAddress(1));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomer(1)),
+            $this->getResponse(200, CustomerPayloads::getAddress(1)),
+        ]);
 
         $request = (new CustomerRequest())
             ->withAddress();
@@ -100,7 +104,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertInstanceOf(Address::class, $address);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/1/address'],
         ]);
@@ -108,8 +112,10 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsChats()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
-        $this->stubResponse(200, CustomerPayloads::getChats(1));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomer(1)),
+            $this->getResponse(200, CustomerPayloads::getChats(1)),
+        ]);
 
         $request = (new CustomerRequest())
             ->withChats();
@@ -119,7 +125,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertCount(1, $chats);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/1/chats'],
         ]);
@@ -127,8 +133,10 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsEmails()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
-        $this->stubResponse(200, CustomerPayloads::getEmails(1));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomer(1)),
+            $this->getResponse(200, CustomerPayloads::getEmails(1)),
+        ]);
 
         $request = (new CustomerRequest())
             ->withEmails();
@@ -138,7 +146,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertCount(1, $emails);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/1/emails'],
         ]);
@@ -146,8 +154,10 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsPhones()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
-        $this->stubResponse(200, CustomerPayloads::getPhones(1));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomer(1)),
+            $this->getResponse(200, CustomerPayloads::getPhones(1)),
+        ]);
 
         $request = (new CustomerRequest())
             ->withPhones();
@@ -157,7 +167,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertCount(1, $phones);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/1/phones'],
         ]);
@@ -165,8 +175,10 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsSocialProfiles()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
-        $this->stubResponse(200, CustomerPayloads::getSocialProfiles(1));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomer(1)),
+            $this->getResponse(200, CustomerPayloads::getSocialProfiles(1)),
+        ]);
 
         $request = (new CustomerRequest())
             ->withSocialProfiles();
@@ -176,7 +188,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertCount(1, $socialProfiles);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/1/social-profiles'],
         ]);
@@ -184,8 +196,10 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomerPreloadsWebsites()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
-        $this->stubResponse(200, CustomerPayloads::getWebsites(1));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomer(1)),
+            $this->getResponse(200, CustomerPayloads::getWebsites(1)),
+        ]);
 
         $request = (new CustomerRequest())
             ->withWebsites();
@@ -195,7 +209,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->assertCount(1, $websites);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers/1'],
             ['GET', 'https://api.helpscout.net/v2/customers/1/websites'],
         ]);
@@ -203,7 +217,9 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomers()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomers(1, 10));
+        $this->stubResponse(
+            $this->getResponse(200, CustomerPayloads::getCustomers(1, 10))
+        );
 
         $customers = $this->client->customers()->list();
 
@@ -217,7 +233,9 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomersWithFilters()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomers(1, 10));
+        $this->stubResponse(
+            $this->getResponse(200, CustomerPayloads::getCustomers(1, 10))
+        );
 
         $filters = (new CustomerFilters())
             ->withFirstName('Tom')
@@ -235,9 +253,11 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomersPreloadsAddresses()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomers(1, 2));
-        $this->stubResponse(200, CustomerPayloads::getAddress(1));
-        $this->stubResponse(200, CustomerPayloads::getAddress(2));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomers(1, 2)),
+            $this->getResponse(200, CustomerPayloads::getAddress(1)),
+            $this->getResponse(200, CustomerPayloads::getAddress(2)),
+        ]);
 
         $request = (new CustomerRequest())
             ->withAddress();
@@ -248,7 +268,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
         $this->assertInstanceOf(Address::class, $customers[0]->getAddress());
         $this->assertInstanceOf(Address::class, $customers[1]->getAddress());
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers'],
             ['GET', 'https://api.helpscout.net/v2/customers/1/address'],
             ['GET', 'https://api.helpscout.net/v2/customers/2/address'],
@@ -257,7 +277,9 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomersWithEmptyCollection()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomers(1, 0));
+        $this->stubResponse(
+            $this->getResponse(200, CustomerPayloads::getCustomers(1, 0))
+        );
 
         $customers = $this->client->customers()->list();
 
@@ -270,7 +292,9 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomersParsesPageMetadata()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomers(3, 35));
+        $this->stubResponse(
+            $this->getResponse(200, CustomerPayloads::getCustomers(3, 35))
+        );
 
         $customers = $this->client->customers()->list();
 
@@ -283,16 +307,17 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetCustomersLazyLoadsPages()
     {
-        $totalElements = 20;
-        $this->stubResponse(200, CustomerPayloads::getCustomers(1, $totalElements));
-        $this->stubResponse(200, CustomerPayloads::getCustomers(2, $totalElements));
+        $this->stubResponses([
+            $this->getResponse(200, CustomerPayloads::getCustomers(1, 20)),
+            $this->getResponse(200, CustomerPayloads::getCustomers(2, 20)),
+        ]);
 
         $customers = $this->client->customers()->list()->getPage(2);
 
         $this->assertCount(10, $customers);
         $this->assertInstanceOf(Customer::class, $customers[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/customers'],
             ['GET', 'https://api.helpscout.net/v2/customers?page=2'],
         ]);

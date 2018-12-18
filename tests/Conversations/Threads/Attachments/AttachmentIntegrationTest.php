@@ -15,6 +15,7 @@ class AttachmentIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testDeleteAttachment()
     {
+        $this->stubResponse($this->getResponse(204));
         $this->client->attachments()->delete(1, 12);
 
         $this->verifySingleRequest(
@@ -29,6 +30,7 @@ class AttachmentIntegrationTest extends ApiClientIntegrationTestCase
         $attachment->setMimeType('image/jpeg');
         $attachment->setData('ZmlsZQ==');
 
+        $this->stubResponse($this->getResponse(204));
         $this->client->attachments()->create(1, 12, $attachment);
 
         $this->verifySingleRequest(
@@ -39,7 +41,7 @@ class AttachmentIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetAttachmentData()
     {
-        $this->stubResponse(200, AttachmentPayloads::getAttachmentData(12));
+        $this->stubResponse($this->getResponse(200, AttachmentPayloads::getAttachmentData(12)));
 
         $conversation = $this->client->attachments()->get(1, 12);
 
