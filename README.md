@@ -23,6 +23,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
    * [Workflows](#workflows)
  * [Error Handling](#error-handling)
  * [Pagination](#pagination)
+ * [Testing](#testing)
 
 ## Installation
 
@@ -792,3 +793,26 @@ $lastUsers = $users->getLastPage();
 // Load a specific page
 $otherUsers = $users->getPage(12);
 ```
+
+## Testing
+
+The SDK comes with a handy `mock` method on the `ApiClient` class. To use this, pass in the name of the endpoint you want to mock. You'll get a `\Mockery\MockInterface` object back. Once you set the mock, any subsequent calls to that endpoint will return the mocked object.
+
+```php
+// From within the tests/ApiClientTest.php file...
+public function testMockReturnsProperMock()
+{
+    $client = ApiClientFactory::createClient();
+    $mockedWorkflows = $client->mock('workflows');
+
+    $this->assertInstanceOf(WorkflowsEndpoint::class, $mockedWorkflows);
+    $this->assertInstanceOf(MockInterface::class, $mockedWorkflows);
+
+    $this->assertSame(
+        $mockedWorkflows,
+        $client->workflows()
+    );
+}
+``` 
+
+Once you've mocked an endpoint, you may want to clear it later on. To do this, you can use the `clearMock($endpoint)` method on the `ApiClient`. 
