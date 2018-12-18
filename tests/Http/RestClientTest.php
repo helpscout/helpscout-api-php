@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Http;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
@@ -15,10 +18,13 @@ use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Http\RestClientBuilder;
 use HelpScout\Api\Reports\Docs\Overall;
 use HelpScout\Api\Reports\ParameterBag;
+use HelpScout\Api\Tests\ReflectionTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class RestClientTest extends TestCase
 {
+    use ReflectionTestTrait;
+
     public $methodsClient;
     public $authenticator;
 
@@ -116,5 +122,158 @@ class RestClientTest extends TestCase
             NullCredentials::class,
             $client->getAuthenticator()->getAuthCredentials()
         );
+    }
+
+    /**
+     * @dataProvider noRetryParamProvider
+     * @param array $params
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testDeciderDoesNotRetry(...$params)
+    {
+        $builder = new RestClientBuilder();
+        $decider = $this->invokeMethod($builder, 'getRetryDecider');
+
+        $shouldRetry = \call_user_func($decider, ...$params);
+
+        $this->assertFalse($shouldRetry);
+    }
+
+    public function noRetryParamProvider(): \Generator
+    {
+        $request = new Request(
+            'POST',
+            'https://api.helpscout.net/v2/uuid-4/chat'
+        );
+
+        $serverException = new ServerException('BAD_REQUEST', $request);
+
+        $badResponse = new Response(400, [], 'bad response');
+
+        $connectionException = new ConnectException(
+            'SERVER_WENT_AWAY',
+            $request
+        );
+
+        yield [
+            0,
+            $request,
+        ];
+
+        yield [
+            0,
+            $request,
+            null,
+        ];
+
+        yield [
+            0,
+            $request,
+            null,
+            null,
+        ];
+
+        yield [
+            0,
+            $request,
+            null,
+            $serverException,
+        ];
+
+        yield [
+            0,
+            $request,
+            $badResponse,
+            $serverException,
+        ];
+
+        yield [
+            4,
+            $request,
+            null,
+            $connectionException,
+        ];
+
+        yield [
+            100,
+            $request,
+            null,
+            $connectionException,
+        ];
+    }
+
+    /**
+     * @dataProvider retryParamProvider
+     * @param array $params
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testDeciderDoesRetry(...$params)
+    {
+        $builder = new RestClientBuilder();
+        $decider = $this->invokeMethod($builder, 'getRetryDecider');
+
+        $shouldRetry = \call_user_func($decider, ...$params);
+
+        $this->assertTrue($shouldRetry);
+    }
+
+    public function retryParamProvider(): \Generator
+    {
+        $request = new Request(
+            'POST',
+            'https://api.helpscout.net/v2/uuid-1234/chat'
+        );
+
+        $badResponse = new Response(400, [], 'bad response');
+
+        $connectionException = new ConnectException(
+            'SERVER_WENT_AWAY',
+            $request
+        );
+
+        // This technically should never happen, but just in case
+        yield [
+            0,
+            $request,
+            $badResponse,
+            $connectionException,
+        ];
+
+        yield [
+            0,
+            $request,
+            null,
+            $connectionException,
+        ];
+
+        yield [
+            1,
+            $request,
+            null,
+            $connectionException,
+        ];
+
+        yield [
+            2,
+            $request,
+            null,
+            $connectionException,
+        ];
+
+        yield [
+            3,
+            $request,
+            null,
+            $connectionException,
+        ];
+    }
+
+    protected function getHelper()
+    {
+        return new class() {
+            use GuzzleHelpers;
+        };
     }
 }

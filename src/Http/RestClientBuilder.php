@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace HelpScout\Api\Http;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
@@ -116,7 +121,32 @@ class RestClientBuilder
         $handler->push(new ClientErrorHandler());
         $handler->push(new RateLimitHandler());
         $handler->push(new ValidationHandler());
+        $handler->push(Middleware::retry($this->getRetryDecider()));
 
         return $handler;
     }
+
+    /**
+     * Should we retry this failure?
+     *
+     * @return \Closure
+     */
+    protected function getRetryDecider(): callable
+    {
+        return function (
+            $retries,
+            Request $request,
+            Response $response = null,
+            RequestException $exception = null
+        ) {
+            // Don't retry unless this is a Connection issue
+            if (!$exception instanceof ConnectException) {
+                return false;
+            }
+
+            // Limit the number of retries
+            return $retries < 4;
+        };
+    }
+
 }
