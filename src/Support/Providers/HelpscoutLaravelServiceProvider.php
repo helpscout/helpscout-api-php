@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace HelpScout\Api\Suppor\Providers;
+namespace HelpScout\Api\Support\Providers;
 
 use HelpScout\Api\ApiClient;
+use HelpScout\Api\ApiClientFactory;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -12,11 +13,6 @@ use Illuminate\Support\ServiceProvider;
  */
 class HelpscoutLaravelServiceProvider extends ServiceProvider
 {
-    /**
-     * @var bool
-     */
-    protected $defer = true;
-
     /**
      * @return array
      */
@@ -45,13 +41,12 @@ class HelpscoutLaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(
-            'helpscout',
-            function () {
-                $config = config('helpscout', []);
+        $config = config('helpscout', []);
 
-                return ApiClientFactory::createClient($config);
-            }
-        );
+        $this->app->singleton(ApiClient::class, function ($app) use ($config) {
+            return  ApiClientFactory::createClient($config);
+        });
+
+        $this->app->alias(ApiClient::class, 'helpscout');
     }
 }

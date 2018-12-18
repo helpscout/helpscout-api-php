@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Support\Providers;
 
 use HelpScout\Api\ApiClient;
+use HelpScout\Api\ApiClientFactory;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
@@ -15,13 +16,10 @@ class HelpscoutLeagueServiceProvider extends AbstractServiceProvider
     /**
      * @return array
      */
-    public function provides()
-    {
-        return [
-            ApiClient::class,
-            'helpscout',
-        ];
-    }
+    protected $provides = [
+        ApiClient::class,
+        'helpscout',
+    ];
 
     /**
      * Register the service provider.
@@ -30,11 +28,15 @@ class HelpscoutLeagueServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
+        $client = ApiClientFactory::createClient();
         $this->getContainer()->share(
             'helpscout',
-            function () {
-                return ApiClientFactory::createClient();
-            }
+            $client
+        );
+
+        $this->getContainer()->share(
+            ApiClient::class,
+            $client
         );
     }
 }

@@ -16,6 +16,7 @@ use HelpScout\Api\Tags\TagsEndpoint;
 use HelpScout\Api\Users\UsersEndpoint;
 use HelpScout\Api\Webhooks\WebhooksEndpoint;
 use HelpScout\Api\Workflows\WorkflowsEndpoint;
+use Illuminate\Support\Facades\Facade;
 
 /**
  * @codeCoverageIgnore
