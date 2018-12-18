@@ -31,7 +31,7 @@ class HelpscoutLaravelServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../config/helpscout.php' => config_path('helpscout.php'),
-        ]);
+        ], 'helpscout');
     }
 
     /**
