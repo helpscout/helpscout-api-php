@@ -1,6 +1,5 @@
 parameters:
     ignoreErrors:
         # Ignore type errors for passing a Mock
-        - '#Call to an undefined method .*::shouldReceive\(\)#'
         - '#.*MockObject given.*#'
         - '#.*does not accept PHPUnit\\Framework\\MockObject\\MockObject.*#'

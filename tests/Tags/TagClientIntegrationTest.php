@@ -15,7 +15,9 @@ class TagClientIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testGetTags()
     {
-        $this->stubTagResponse(200, 1, 10);
+        $this->stubResponse(
+            $this->getResponse(200, TagPayloads::getTags(1, 10))
+        );
 
         $tags = $this->client->tags()->list();
 
@@ -29,32 +31,19 @@ class TagClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetTagsLazyLoadsPages()
     {
-        $totalElements = 20;
-
-        $this->stubTagResponse(200, 1, $totalElements);
-        $this->stubTagResponse(200, 2, $totalElements);
+        $this->stubResponses([
+            $this->getResponse(200, TagPayloads::getTags(1, 20)),
+            $this->getResponse(200, TagPayloads::getTags(2, 20)),
+        ]);
 
         $tags = $this->client->tags()->list()->getPage(2);
 
         $this->assertCount(10, $tags);
         $this->assertInstanceOf(Tag::class, $tags[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/tags'],
             ['GET', 'https://api.helpscout.net/v2/tags?page=2'],
         ]);
-    }
-
-    protected function stubTagResponse(
-        int $status,
-        int $page,
-        int $totalElements,
-        array $headers = []
-    ): void {
-        $this->stubResponse(
-            $status,
-            TagPayloads::getTags($page, $totalElements),
-            $headers
-        );
     }
 }

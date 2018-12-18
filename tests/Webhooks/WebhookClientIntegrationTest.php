@@ -19,7 +19,9 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
         $headers = [
             'Resource-ID' => $id,
         ];
-        $this->stubResponse(201, '', $headers);
+        $this->stubResponse(
+            $this->getResponse(201, '', $headers)
+        );
 
         $data = [
             'url' => 'http://bad-url.com',
@@ -48,7 +50,7 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateWebhook()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $data = [
             'id' => 123,
@@ -82,7 +84,9 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetWebhook()
     {
-        $this->stubResponse(200, WebhookPayloads::getWebhook(123));
+        $this->stubResponse(
+            $this->getResponse(200, WebhookPayloads::getWebhook(123))
+        );
 
         $webhook = $this->client->webhooks()->get(123);
 
@@ -96,7 +100,9 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetWebhooks()
     {
-        $this->stubResponse(200, WebhookPayloads::getWebhooks(1, 10));
+        $this->stubResponse(
+            $this->getResponse(200, WebhookPayloads::getWebhooks(1, 10))
+        );
 
         $webhooks = $this->client->webhooks()->list();
 
@@ -110,7 +116,9 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testListWebhooksWithEmptyCollection()
     {
-        $this->stubResponse(200, WebhookPayloads::getWebhooks(1, 0));
+        $this->stubResponse(
+            $this->getResponse(200, WebhookPayloads::getWebhooks(1, 0))
+        );
 
         $webhooks = $this->client->webhooks()->list();
 
@@ -123,7 +131,9 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testListWebhooksParsesPageMetadata()
     {
-        $this->stubResponse(200, WebhookPayloads::getWebhooks(3, 35));
+        $this->stubResponse(
+            $this->getResponse(200, WebhookPayloads::getWebhooks(3, 35))
+        );
 
         $webhooks = $this->client->webhooks()->list();
 
@@ -137,15 +147,17 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
     public function testListWebhooksLazyLoadsPages()
     {
         $totalElements = 20;
-        $this->stubResponse(200, WebhookPayloads::getWebhooks(1, $totalElements));
-        $this->stubResponse(200, WebhookPayloads::getWebhooks(2, $totalElements));
+        $this->stubResponses([
+            $this->getResponse(200, WebhookPayloads::getWebhooks(1, $totalElements)),
+            $this->getResponse(200, WebhookPayloads::getWebhooks(2, $totalElements)),
+        ]);
 
         $webhooks = $this->client->webhooks()->list()->getPage(2);
 
         $this->assertCount(10, $webhooks);
         $this->assertInstanceOf(Webhook::class, $webhooks[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/webhooks'],
             ['GET', 'https://api.helpscout.net/v2/webhooks?page=2'],
         ]);
@@ -153,6 +165,7 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testDeleteWebhook()
     {
+        $this->stubResponse($this->getResponse(204));
         $this->client->webhooks()->delete(1);
 
         $this->verifySingleRequest(

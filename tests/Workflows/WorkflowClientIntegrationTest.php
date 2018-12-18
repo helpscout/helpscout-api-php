@@ -16,7 +16,10 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testGetWorkflows()
     {
-        $this->stubWorkflowResponse(200, 1, 10);
+        $this->stubResponse($this->getResponse(
+            200,
+            WorkflowPayloads::getWorkflows(1, 10)
+        ));
 
         $workflows = $this->client->workflows()->list();
 
@@ -30,7 +33,10 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetWorkflowsWithEmptyCollection()
     {
-        $this->stubWorkflowResponse(200, 1, 0);
+        $this->stubResponse($this->getResponse(
+            200,
+            WorkflowPayloads::getWorkflows(1, 0)
+        ));
 
         $workflows = $this->client->workflows()->list();
 
@@ -43,7 +49,10 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetWorkflowsParsesPageMetadata()
     {
-        $this->stubWorkflowResponse(200, 3, 35);
+        $this->stubResponse($this->getResponse(
+            200,
+            WorkflowPayloads::getWorkflows(3, 35)
+        ));
 
         $workflows = $this->client->workflows()->list();
 
@@ -58,15 +67,17 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
     {
         $totalElements = 20;
 
-        $this->stubWorkflowResponse(200, 1, $totalElements);
-        $this->stubWorkflowResponse(200, 2, $totalElements);
+        $this->stubResponses([
+            $this->getResponse(200, WorkflowPayloads::getWorkflows(1, $totalElements)),
+            $this->getResponse(200, WorkflowPayloads::getWorkflows(2, $totalElements)),
+        ]);
 
         $workflows = $this->client->workflows()->list()->getPage(2);
 
         $this->assertCount(10, $workflows);
         $this->assertInstanceOf(Workflow::class, $workflows[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/workflows'],
             ['GET', 'https://api.helpscout.net/v2/workflows?page=2'],
         ]);
@@ -81,6 +92,7 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testRunManualWorkflow()
     {
+        $this->stubResponse($this->getResponse(201));
         $convoIds = range(1, 10);
         $this->client->workflows()->runWorkflow(123, $convoIds);
 
@@ -93,6 +105,11 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testRunManualWorkflowSplitsBatchWhenTooLarge()
     {
+        $this->stubResponses([
+            $this->getResponse(201),
+            $this->getResponse(201),
+        ]);
+
         $convoIds = range(1, 51);
         $this->client->workflows()->runWorkflow(123, $convoIds);
 
@@ -115,6 +132,7 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateStatusCallsEndpoint()
     {
+        $this->stubResponse($this->getResponse(201));
         $workflowId = 123;
         $status = 'active';
 
@@ -125,19 +143,6 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
         $this->verifySingleRequest(
             'https://api.helpscout.net/v2/workflows/123',
             'PATCH'
-        );
-    }
-
-    protected function stubWorkflowResponse(
-        int $status,
-        int $page,
-        int $totalElements,
-        array $headers = []
-    ): void {
-        $this->stubResponse(
-            $status,
-            WorkflowPayloads::getWorkflows($page, $totalElements),
-            $headers
         );
     }
 }

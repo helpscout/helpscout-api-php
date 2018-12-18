@@ -19,7 +19,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testCreateCustomerAddress()
     {
-        $this->stubResponse(201);
+        $this->stubResponse($this->getResponse(201));
 
         $address = new Address();
         $address->hydrate([
@@ -47,7 +47,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateCustomerAddress()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $address = new Address();
         $address->hydrate([
@@ -75,7 +75,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testDeleteCustomerAddress()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $this->client->customerEntry()->deleteAddress(12);
 
@@ -87,7 +87,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCreateCustomerChat()
     {
-        $this->stubResponse(201);
+        $this->stubResponse($this->getResponse(201));
 
         $chat = new Chat();
         $chat->hydrate([
@@ -109,7 +109,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateCustomerChat()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $chat = new Chat();
         $chat->hydrate([
@@ -132,7 +132,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testDeleteCustomerChat()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $this->client->customerEntry()->deleteChat(12, 42);
 
@@ -144,7 +144,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCreateCustomerEmail()
     {
-        $this->stubResponse(201);
+        $this->stubResponse($this->getResponse(201));
 
         $email = new Email();
         $email->hydrate([
@@ -166,7 +166,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateCustomerEmail()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $email = new Email();
         $email->hydrate([
@@ -189,7 +189,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testDeleteCustomerEmail()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $this->client->customerEntry()->deleteEmail(12, 42);
 
@@ -201,7 +201,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCreateCustomerPhone()
     {
-        $this->stubResponse(201);
+        $this->stubResponse($this->getResponse(201));
 
         $phone = new Phone();
         $phone->hydrate([
@@ -223,7 +223,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateCustomerPhone()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $phone = new Phone();
         $phone->hydrate([
@@ -246,7 +246,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testDeleteCustomerPhone()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $this->client->customerEntry()->deletePhone(12, 42);
 
@@ -258,7 +258,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCreateCustomerSocialProfile()
     {
-        $this->stubResponse(201);
+        $this->stubResponse($this->getResponse(201));
 
         $socialProfile = new SocialProfile();
         $socialProfile->hydrate([
@@ -280,7 +280,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateCustomerSocialProfile()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $socialProfile = new SocialProfile();
         $socialProfile->hydrate([
@@ -303,7 +303,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testDeleteCustomerSocialProfile()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $this->client->customerEntry()->deleteSocialProfile(12, 42);
 
@@ -315,7 +315,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testCreateCustomerWebsite()
     {
-        $this->stubResponse(201);
+        $this->stubResponse($this->getResponse(201));
 
         $website = new Website();
         $website->hydrate([
@@ -333,7 +333,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testUpdateCustomerWebsite()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $website = new Website();
         $website->hydrate([
@@ -352,7 +352,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testDeleteCustomerWebsite()
     {
-        $this->stubResponse(204);
+        $this->stubResponse($this->getResponse(204));
 
         $this->client->customerEntry()->deleteWebsite(12, 42);
 

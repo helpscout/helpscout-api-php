@@ -14,13 +14,13 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testAuthenticatesRequests()
     {
-        $this->stubResponse(200, CustomerPayloads::getCustomer(1));
+        $this->stubResponse($this->getResponse(200, CustomerPayloads::getCustomer(1)));
 
         $this->client->customers()->get(1);
 
-        $requests = $this->mockHttpClient->getRequests();
+        $requests = $this->history;
         $this->assertCount(1, $requests);
-        $this->assertTrue($requests[0]->hasHeader('Authorization'));
-        $this->assertSame(['Bearer secret'], $requests[0]->getHeader('Authorization'));
+        $this->assertTrue($requests[0]['request']->hasHeader('Authorization'));
+        $this->assertSame(['Bearer abc123'], $requests[0]['request']->getHeader('Authorization'));
     }
 }

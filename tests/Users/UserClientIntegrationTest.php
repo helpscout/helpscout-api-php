@@ -15,11 +15,12 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
 {
     public function testGetUser()
     {
-        $this->stubResponse(200, UserPayloads::getUser(1));
+        $this->stubResponse(
+            $this->getResponse(200, UserPayloads::getUser(1))
+        );
 
         $user = $this->client->users()->get(1);
 
-        $this->assertInstanceOf(User::class, $user);
         $this->assertSame(1, $user->getId());
 
         $this->verifySingleRequest(
@@ -29,7 +30,9 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetAuthenticatedUser()
     {
-        $this->stubResponse(200, UserPayloads::getUser(1));
+        $this->stubResponse(
+            $this->getResponse(200, UserPayloads::getUser(1))
+        );
 
         $user = $this->client->users()->getAuthenticatedUser();
 
@@ -43,7 +46,9 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetUsers()
     {
-        $this->stubUserResponse(200, 1, 10);
+        $this->stubResponse(
+            $this->getResponse(200, UserPayloads::getUsers(1, 10))
+        );
 
         $users = $this->client->users()->list();
 
@@ -57,7 +62,9 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetUsersWithEmptyCollection()
     {
-        $this->stubUserResponse(200, 1, 0);
+        $this->stubResponse(
+            $this->getResponse(200, UserPayloads::getUsers(1, 0))
+        );
 
         $users = $this->client->users()->list();
 
@@ -70,7 +77,9 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
 
     public function testGetUsersParsesPageMetadata()
     {
-        $this->stubUserResponse(200, 3, 35);
+        $this->stubResponse(
+            $this->getResponse(200, UserPayloads::getUsers(3, 35))
+        );
 
         $users = $this->client->users()->list();
 
@@ -84,30 +93,19 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
     public function testGetUsersLazyLoadsPages()
     {
         $totalElements = 20;
-        $this->stubUserResponse(200, 1, $totalElements);
-        $this->stubUserResponse(200, 2, $totalElements);
+        $this->stubResponses([
+            $this->getResponse(200, UserPayloads::getUsers(1, $totalElements)),
+            $this->getResponse(200, UserPayloads::getUsers(2, $totalElements)),
+        ]);
 
         $users = $this->client->users()->list()->getPage(2);
 
         $this->assertCount(10, $users);
         $this->assertInstanceOf(User::class, $users[0]);
 
-        $this->verifyMultpleRequests([
+        $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/users'],
             ['GET', 'https://api.helpscout.net/v2/users?page=2'],
         ]);
-    }
-
-    protected function stubUserResponse(
-        int $status,
-        int $page,
-        int $totalElements,
-        array $headers = []
-    ): void {
-        $this->stubResponse(
-            $status,
-            UserPayloads::getUsers($page, $totalElements),
-            $headers
-        );
     }
 }

@@ -4,110 +4,66 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Http\Hal\HalDeserializer;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Http\Hal\HalResources;
 use HelpScout\Api\Reports\Report;
-use Http\Client\Common\HttpMethodsClient;
+use Psr\Http\Message\ResponseInterface;
 
 class RestClient
 {
+    public const BASE_URI = 'https://api.helpscout.net';
     public const CONTENT_TYPE = 'application/json;charset=UTF-8';
-    public const TOKEN_URL = 'https://api.helpscout.net/v2/oauth2/token';
-    public const TRANSITION_URL = 'https://transition.helpscout.net';
+    public const CLIENT_USER_AGENT = 'Help Scout PHP API Client/%s (PHP %s)';
 
     /**
-     * @var HttpMethodsClient
+     * @var Client
      */
-    private $httpClient;
+    private $client;
 
     /**
-     * @param HttpMethodsClient $httpClient
+     * @var Authenticator
      */
-    public function __construct(HttpMethodsClient $httpClient)
+    private $authenticator;
+
+    /**
+     * @param Client        $client
+     * @param Authenticator $authenticator
+     */
+    public function __construct(Client $client, Authenticator $authenticator)
     {
-        $this->httpClient = $httpClient;
+        $this->client = $client;
+        $this->authenticator = $authenticator;
     }
 
     /**
-     * @param string $appId
-     * @param string $appSecret
-     *
-     * @return array
+     * @return Authenticator
      */
-    public function fetchAccessAndRefreshToken(string $appId, string $appSecret): array
+    public function getAuthenticator(): Authenticator
     {
-        $payload = [
-            'grant_type' => 'client_credentials',
-            'client_id' => $appId,
-            'client_secret' => $appSecret,
-        ];
-
-        return $this->requestAuthTokens($payload, self::TOKEN_URL);
+        return $this->authenticator;
     }
 
     /**
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $refreshToken
-     *
      * @return array
      */
-    public function refreshTokens(string $appId, string $appSecret, string $refreshToken): array
+    public function getAuthHeader(): array
     {
-        $payload = [
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $refreshToken,
-            'client_id' => $appId,
-            'client_secret' => $appSecret,
-        ];
-
-        return $this->requestAuthTokens($payload, self::TOKEN_URL);
+        return $this->authenticator->getAuthHeader();
     }
 
     /**
-     * @param string $clientId
-     * @param string $apiKey
-     *
      * @return array
      */
-    public function convertLegacyToken(string $clientId, string $apiKey): array
+    protected function getDefaultHeaders(): array
     {
-        $payload = [
-            'clientId' => $clientId,
-            'apiKey' => $apiKey,
-        ];
-
-        $tokens = $this->requestAuthTokens($payload, self::TRANSITION_URL);
-
-        return [
-            'access_token' => $tokens['accessToken'],
-            'refresh_token' => $tokens['refreshToken'],
-            'expires_in' => $tokens['expiresIn'],
-            'token_type' => 'bearer',
-        ];
-    }
-
-    /**
-     * @param array  $payload
-     * @param string $url
-     *
-     * @return array
-     */
-    private function requestAuthTokens(array $payload, string $url): array
-    {
-        $headers = [
-            'Content-Type' => self::CONTENT_TYPE,
-            'X-Token-Request' => true,
-        ];
-        $response = $this->httpClient->post(
-            $url,
-            $headers,
-            json_encode($payload)
+        return array_merge(
+            ['Content-Type' => self::CONTENT_TYPE],
+            $this->getAuthHeader()
         );
-
-        return json_decode((string) $response->getBody(), true);
     }
 
     /**
@@ -118,11 +74,14 @@ class RestClient
      */
     public function createResource(Extractable $entity, string $uri): ?int
     {
-        $response = $this->httpClient->post(
+        $request = new Request(
+            'POST',
             $uri,
-            ['Content-Type' => self::CONTENT_TYPE],
+            $this->getDefaultHeaders(),
             $this->encodeEntity($entity)
         );
+
+        $response = $this->send($request);
 
         return $response->hasHeader('Resource-ID')
             ? (int) \current($response->getHeader('Resource-ID'))
@@ -133,34 +92,43 @@ class RestClient
      * @param Extractable $entity
      * @param string      $uri
      */
-    public function updateResource(Extractable $entity, string $uri)
+    public function updateResource(Extractable $entity, string $uri): void
     {
-        $this->httpClient->put(
+        $request = new Request(
+            'PUT',
             $uri,
-            ['Content-Type' => self::CONTENT_TYPE],
+            $this->getDefaultHeaders(),
             $this->encodeEntity($entity)
         );
+        $this->send($request);
     }
 
     /**
      * @param Extractable $entity
      * @param string      $uri
      */
-    public function patchResource(Extractable $entity, string $uri)
+    public function patchResource(Extractable $entity, string $uri): void
     {
-        $this->httpClient->patch(
+        $request = new Request(
+            'PATCH',
             $uri,
-            ['Content-Type' => self::CONTENT_TYPE],
+            $this->getDefaultHeaders(),
             $this->encodeEntity($entity)
         );
+        $this->send($request);
     }
 
     /**
      * @param string $uri
      */
-    public function deleteResource(string $uri)
+    public function deleteResource(string $uri): void
     {
-        $this->httpClient->delete($uri);
+        $request = new Request(
+            'DELETE',
+            $uri,
+            $this->getDefaultHeaders()
+        );
+        $this->send($request);
     }
 
     /**
@@ -171,7 +139,12 @@ class RestClient
      */
     public function getResource($entityClass, string $uri): HalResource
     {
-        $response = $this->httpClient->get($uri);
+        $request = new Request(
+            'GET',
+            $uri,
+            $this->getDefaultHeaders()
+        );
+        $response = $this->send($request);
         $halDocument = HalDeserializer::deserializeDocument((string) $response->getBody());
 
         return HalDeserializer::deserializeResource($entityClass, $halDocument);
@@ -184,7 +157,13 @@ class RestClient
      */
     public function getReport(Report $report): array
     {
-        $response = $this->httpClient->get($report->getUriPath());
+        $uri = $report->getUriPath();
+        $request = new Request(
+            'GET',
+            $uri,
+            $this->getDefaultHeaders()
+        );
+        $response = $this->send($request);
         $halDocument = HalDeserializer::deserializeDocument((string) $response->getBody());
 
         return $halDocument->getData();
@@ -199,7 +178,12 @@ class RestClient
      */
     public function getResources($entityClass, string $rel, string $uri): HalResources
     {
-        $response = $this->httpClient->get($uri);
+        $request = new Request(
+            'GET',
+            $uri,
+            $this->getDefaultHeaders()
+        );
+        $response = $this->send($request);
         $halDocument = HalDeserializer::deserializeDocument((string) $response->getBody());
 
         return HalDeserializer::deserializeResources($entityClass, $rel, $halDocument);
@@ -213,5 +197,20 @@ class RestClient
     private function encodeEntity(Extractable $entity): string
     {
         return json_encode($entity->extract());
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return mixed|ResponseInterface
+     */
+    private function send(Request $request)
+    {
+        $options = [
+            'base_uri' => self::BASE_URI,
+            'http_errors' => false,
+        ];
+
+        return $this->client->send($request, $options);
     }
 }

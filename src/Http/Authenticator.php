@@ -4,29 +4,202 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http;
 
-use HelpScout\Api\Http\Plugin\AuthenticationPlugin;
-use Http\Message\Authentication\Bearer;
+use GuzzleHttp\Client;
+use HelpScout\Api\Http\Auth\Auth;
+use HelpScout\Api\Http\Auth\ClientCredentials;
+use HelpScout\Api\Http\Auth\LegacyCredentials;
+use HelpScout\Api\Http\Auth\RefreshCredentials;
 
 class Authenticator
 {
-    /**
-     * @var AuthenticationPlugin
-     */
-    private $authenticationPlugin;
+    public const AUTH_CODE = 'authorization-code';
+    public const TOKEN_URL = 'https://api.helpscout.net/v2/oauth2/token';
+    public const TRANSITION_URL = 'https://transition.helpscout.net';
+    public const CONTENT_TYPE = 'application/json;charset=UTF-8';
 
     /**
-     * @param AuthenticationPlugin $authenticationPlugin
+     * @var Client
      */
-    public function __construct(AuthenticationPlugin $authenticationPlugin)
+    private $client;
+
+    /**
+     * @var Auth
+     */
+    private $auth;
+
+    /**
+     * @var string
+     */
+    private $accessToken;
+
+    /**
+     * @var string
+     */
+    private $refreshToken;
+
+    /**
+     * @var int
+     */
+    private $ttl;
+
+    /**
+     * @param Client $client
+     * @param Auth   $auth
+     */
+    public function __construct(Client $client, Auth $auth = null)
     {
-        $this->authenticationPlugin = $authenticationPlugin;
+        $this->client = $client;
+        $this->auth = $auth;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTokens(): array
+    {
+        return [
+            'refresh_token' => $this->refreshToken,
+            'token_type' => 'Bearer',
+            'access_token' => $this->accessToken,
+            'expires_in' => $this->ttl,
+        ];
     }
 
     /**
      * @param string $accessToken
+     *
+     * @return Authenticator
      */
-    public function setAccessToken(string $accessToken)
+    public function setAccessToken(string $accessToken): Authenticator
     {
-        $this->authenticationPlugin->setAuthentication(new Bearer($accessToken));
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    /**
+     * @param Client $client
+     *
+     * @return Authenticator
+     */
+    public function setClient(Client $client): Authenticator
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAuthHeader(): array
+    {
+        if ($this->accessToken === null) {
+            $this->fetchTokens();
+        }
+
+        return [
+            'Authorization' => 'Bearer '.$this->accessToken,
+        ];
+    }
+
+    /**
+     * @param string $appId
+     * @param string $appSecret
+     */
+    public function useClientCredentials(string $appId, string $appSecret): void
+    {
+        $auth = new ClientCredentials($appId, $appSecret);
+
+        $this->auth = $auth;
+    }
+
+    /**
+     * @param string $clientId
+     * @param string $apiKey
+     */
+    public function useLegacyToken(string $clientId, string $apiKey): void
+    {
+        $auth = new LegacyCredentials($clientId, $apiKey);
+
+        $this->auth = $auth;
+    }
+
+    public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): void
+    {
+        $auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
+
+        $this->auth = $auth;
+    }
+
+    protected function fetchTokens(): void
+    {
+        $exception = new \InvalidArgumentException('Cannot fetch tokens without app credentials');
+        if ($this->auth === null) {
+            throw $exception;
+        }
+
+        switch ($this->auth->getType()) {
+            case LegacyCredentials::TYPE:
+                $this->convertLegacyToken();
+                break;
+            case ClientCredentials::TYPE:
+            case RefreshCredentials::TYPE:
+                $this->fetchAccessAndRefreshToken();
+                break;
+            default:
+                throw $exception;
+        }
+    }
+
+    public function fetchAccessAndRefreshToken(): void
+    {
+        $tokens = $this->requestAuthTokens(
+            $this->auth->getPayload(),
+            self::TOKEN_URL
+        );
+
+        $this->accessToken = $tokens['access_token'];
+        $this->ttl = $tokens['expires_in'];
+        $this->refreshToken = $tokens['refresh_token'] ?? null;
+    }
+
+    /**
+     * @return array
+     */
+    public function convertLegacyToken(): array
+    {
+        $tokens = $this->requestAuthTokens(
+            $this->auth->getPayload(),
+            self::TRANSITION_URL
+        );
+
+        $this->accessToken = $tokens['accessToken'];
+        $this->refreshToken = $tokens['refreshToken'];
+        $this->ttl = $tokens['expiresIn'];
+    }
+
+    /**
+     * @param array  $payload
+     * @param string $url
+     *
+     * @return array
+     */
+    private function requestAuthTokens(array $payload, string $url): array
+    {
+        $headers = [
+            'Content-Type' => self::CONTENT_TYPE,
+        ];
+        $options = [
+            'headers' => $headers,
+            'json' => $payload,
+        ];
+
+        $response = $this->client->post(
+            $url,
+            $options
+        );
+
+        return json_decode((string) $response->getBody(), true);
     }
 }
