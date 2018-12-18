@@ -117,9 +117,7 @@ class Authenticator
      */
     public function useClientCredentials(string $appId, string $appSecret): void
     {
-        $auth = new ClientCredentials($appId, $appSecret);
-
-        $this->auth = $auth;
+        $this->auth = new ClientCredentials($appId, $appSecret);
     }
 
     /**
@@ -128,9 +126,7 @@ class Authenticator
      */
     public function useLegacyToken(string $clientId, string $apiKey): void
     {
-        $auth = new LegacyCredentials($clientId, $apiKey);
-
-        $this->auth = $auth;
+        $this->auth = new LegacyCredentials($clientId, $apiKey);
     }
 
     /**
@@ -140,9 +136,7 @@ class Authenticator
      */
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): void
     {
-        $auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
-
-        $this->auth = $auth;
+        $this->auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
     }
 
     protected function fetchTokens(): void
