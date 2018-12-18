@@ -10,6 +10,7 @@ use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
+use HelpScout\Api\Http\Auth\RefreshCredentials;
 use HelpScout\Api\Http\Handlers\ClientErrorHandler;
 use HelpScout\Api\Http\Handlers\RateLimitHandler;
 use HelpScout\Api\Http\Handlers\ValidationHandler;
@@ -83,6 +84,12 @@ class RestClientBuilder
                     $authConfig['clientId'],
                     $authConfig['apiKey']
                 );
+            case RefreshCredentials::TYPE:
+                return new RefreshCredentials(
+                    $authConfig['appId'],
+                    $authConfig['appSecret'],
+                    $authConfig['refreshToken']
+                );
             default:
                 return new NullCredentials();
         }
@@ -93,18 +100,10 @@ class RestClientBuilder
      */
     protected function getOptions(): array
     {
-        $stack = $this->getHandlerStack();
-
-        $options = [
-            'handler' => $stack,
+        return [
+            'handler' => $this->getHandlerStack(),
             'http_errors' => false,
         ];
-
-        if (isset($this->config['base_uri'])) {
-            $options['base_uri'] = $this->config['base_uri'];
-        }
-
-        return $options;
     }
 
     /**

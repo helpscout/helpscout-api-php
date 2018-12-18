@@ -4,30 +4,55 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests;
 
+use GuzzleHttp\Client;
 use HelpScout\Api\ApiClient;
-use HelpScout\Api\Http\History;
+use HelpScout\Api\ApiClientFactory;
+use HelpScout\Api\Http\Authenticator;
 use HelpScout\Api\Http\RestClient;
+use HelpScout\Api\Webhooks\WebhooksEndpoint;
+use HelpScout\Api\Workflows\WorkflowsEndpoint;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit\Framework\TestCase;
 
 class ApiClientTest extends TestCase
 {
     /**
-     * @var History
+     * @var MockInterface|Authenticator
      */
-    private $history;
+    private $authenticator;
+
+    /**
+     * @var RestClient
+     */
+    private $restClient;
 
     /**
      * @var ApiClient
      */
     private $client;
 
+    /**
+     * @var MockInterface|Client
+     */
+    private $guzzle;
+
     public function setUp()
     {
-        /** @var RestClient $restClient */
-        $restClient = Mockery::mock(RestClient::class);
+        $this->authenticator = Mockery::mock(Authenticator::class);
+        $this->guzzle = Mockery::mock(Client::class);
 
-        $this->client = new ApiClient($restClient);
+        $this->restClient = new RestClient($this->guzzle, $this->authenticator);
+
+        $this->client = new ApiClient($this->restClient);
+    }
+
+    public function testCreateClient()
+    {
+        $this->assertInstanceOf(
+            ApiClient::class,
+            ApiClientFactory::createClient()
+        );
     }
 
     public function testRunReportWithInvalidReport()
@@ -55,5 +80,121 @@ class ApiClientTest extends TestCase
         $client = new ApiClient($restClient);
 
         $this->assertSame($response, $client->runReport($report, $params));
+    }
+
+    public function testSecondFetchUsesContainer()
+    {
+        $endpoint = $this->client->workflows();
+        $this->assertSame(
+            $endpoint,
+            $this->client->workflows()
+        );
+    }
+
+    public function testMockReturnsProperMock()
+    {
+        $mockedWorkflows = $this->client->mock('workflows');
+
+        $this->assertInstanceOf(WorkflowsEndpoint::class, $mockedWorkflows);
+        $this->assertInstanceOf(MockInterface::class, $mockedWorkflows);
+
+        $this->assertSame(
+            $mockedWorkflows,
+            $this->client->workflows()
+        );
+
+        $this->client->mock('webhooks');
+        $this->client->clearMock('workflows');
+
+        $workflows = $this->client->workflows();
+        $this->assertInstanceOf(WorkflowsEndpoint::class, $workflows);
+        $this->assertFalse($workflows instanceof MockInterface);
+
+        $webhookMock = $this->client->webhooks();
+        $this->assertInstanceOf(MockInterface::class, $webhookMock);
+
+        $this->client->clearContainer();
+
+        $webhooks = $this->client->webhooks();
+        $this->assertInstanceOf(WebhooksEndpoint::class, $webhooks);
+        $this->assertFalse($webhooks instanceof MockInterface);
+    }
+
+    public function testGetAuthenticator()
+    {
+        $this->assertSame(
+            $this->authenticator,
+            $this->client->getAuthenticator()
+        );
+    }
+
+    public function testSetAccessToken()
+    {
+        $this->authenticator->shouldReceive('setAccessToken')
+            ->once()
+            ->with('123abc');
+        $result = $this->client->setAccessToken('123abc');
+        $this->assertSame(
+            $result,
+            $this->client
+        );
+    }
+
+    public function testGetTokens()
+    {
+        $tokens = ['tokens'];
+        $this->authenticator->shouldReceive('getTokens')
+            ->once()
+            ->andReturn($tokens);
+        $this->assertSame(
+            $tokens,
+            $this->client->getTokens()
+        );
+    }
+
+    public function testUseClientCredentials()
+    {
+        $appId = 'abc123';
+        $appSecret = '321cba';
+
+        $this->authenticator->shouldReceive('useClientCredentials')
+            ->once()
+            ->with($appId, $appSecret);
+        $result = $this->client->useClientCredentials($appId, $appSecret);
+        $this->assertSame(
+            $result,
+            $this->client
+        );
+    }
+
+    public function testUseLegacyCredentials()
+    {
+        $clientId = 'abc123';
+        $apiKey = '321cba';
+
+        $this->authenticator->shouldReceive('useLegacyToken')
+            ->once()
+            ->with($clientId, $apiKey);
+        $result = $this->client->useLegacyToken($clientId, $apiKey);
+        $this->assertSame(
+            $result,
+            $this->client
+        );
+    }
+
+    public function testUseRefreshToken()
+    {
+        $appId = 'abc123';
+        $appSecret = '321cba';
+        $refreshToken = '987fdsa';
+
+        $this->authenticator->shouldReceive('useRefreshToken')
+            ->once()
+            ->with($appId, $appSecret, $refreshToken);
+        $result = $this->client->useRefreshToken($appId, $appSecret, $refreshToken);
+        $this->assertSame(
+            $result,
+            $this->client
+        );
     }
 }

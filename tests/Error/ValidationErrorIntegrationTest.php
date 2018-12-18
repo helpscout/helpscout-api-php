@@ -50,4 +50,18 @@ class ValidationErrorIntegrationTest extends ApiClientIntegrationTestCase
 
         $this->client->customers()->create(new Customer());
     }
+
+    public function testDoesNotHandleValidationErrorWithoutContentTypeHeader()
+    {
+        $this->expectException(RequestException::class);
+
+        $this->stubResponse(
+            $this->getResponse(
+                400,
+                ErrorPayloads::validationErrors()
+            )
+        );
+
+        $this->client->customers()->create(new Customer());
+    }
 }

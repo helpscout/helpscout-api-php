@@ -31,6 +31,11 @@ abstract class ApiClientIntegrationTestCase extends TestCase
     protected $mockHandler;
 
     /**
+     * @var Authenticator
+     */
+    protected $authenticator;
+
+    /**
      * @var ApiClient
      */
     protected $client;
@@ -49,11 +54,11 @@ abstract class ApiClientIntegrationTestCase extends TestCase
 
         $client = new Client(['handler' => $handler, 'http_errors' => false]);
 
-        $authenticator = new Authenticator($client);
-        $authenticator->setAccessToken('abc123');
+        $this->authenticator = new Authenticator($client);
+        $this->authenticator->setAccessToken('abc123');
 
         $this->client = new ApiClient(
-            new RestClient($client, $authenticator)
+            new RestClient($client, $this->authenticator)
         );
     }
 

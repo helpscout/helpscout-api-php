@@ -8,11 +8,11 @@ use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
+use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
 
 class Authenticator
 {
-    public const AUTH_CODE = 'authorization-code';
     public const TOKEN_URL = 'https://api.helpscout.net/v2/oauth2/token';
     public const TRANSITION_URL = 'https://transition.helpscout.net';
     public const CONTENT_TYPE = 'application/json;charset=UTF-8';
@@ -49,7 +49,7 @@ class Authenticator
     public function __construct(Client $client, Auth $auth = null)
     {
         $this->client = $client;
-        $this->auth = $auth;
+        $this->auth = $auth ?? new NullCredentials();
     }
 
     /**
@@ -104,6 +104,14 @@ class Authenticator
     }
 
     /**
+     * @return Auth
+     */
+    public function getAuthCredentials(): Auth
+    {
+        return $this->auth;
+    }
+
+    /**
      * @param string $appId
      * @param string $appSecret
      */
@@ -125,6 +133,11 @@ class Authenticator
         $this->auth = $auth;
     }
 
+    /**
+     * @param string $appId
+     * @param string $appSecret
+     * @param string $refreshToken
+     */
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): void
     {
         $auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
@@ -134,11 +147,6 @@ class Authenticator
 
     protected function fetchTokens(): void
     {
-        $exception = new \InvalidArgumentException('Cannot fetch tokens without app credentials');
-        if ($this->auth === null) {
-            throw $exception;
-        }
-
         switch ($this->auth->getType()) {
             case LegacyCredentials::TYPE:
                 $this->convertLegacyToken();
@@ -148,7 +156,7 @@ class Authenticator
                 $this->fetchAccessAndRefreshToken();
                 break;
             default:
-                throw $exception;
+                throw new \InvalidArgumentException('Cannot fetch tokens without app credentials');
         }
     }
 
@@ -164,10 +172,7 @@ class Authenticator
         $this->refreshToken = $tokens['refresh_token'] ?? null;
     }
 
-    /**
-     * @return array
-     */
-    public function convertLegacyToken(): array
+    public function convertLegacyToken(): void
     {
         $tokens = $this->requestAuthTokens(
             $this->auth->getPayload(),
@@ -195,7 +200,8 @@ class Authenticator
             'json' => $payload,
         ];
 
-        $response = $this->client->post(
+        $response = $this->client->request(
+            'POST',
             $url,
             $options
         );

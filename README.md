@@ -47,12 +47,69 @@ require_once 'vendor/autoload.php';
 
 ### Creating the client
 
+Use the factory to create a client. Once created, you can set the various credentials to make requests.
+
 ```php
 use HelpScout\Api\ApiClientFactory;
 
 $client = ApiClientFactory::createClient();
-$client->setAccessToken('secret');
+
+// Set Auth token directly if you have it
+$client->setAccessToken('abc123');
+
+// Set Client credentials if using that grant type
+$client->useClientCredentials($appId, $appSecret);
+
+// Use legacy clientId and apiKey
+$client->useLegacyToken($clientId, $apiKey);
+
+// Use a refresh token to get a new access token
+$client->useRefreshToken($appId, $appSecret, $refreshToken);
 ```
+
+You can also pass auth credentials when you create the client.
+
+```php
+// client credentials grant
+$config = [
+    'auth' => [
+        'type' => 'client_credentials',
+        'appId' => 'asdf1234',
+        'appSecret' => 'fdas4321'
+    ]
+];
+$client = ApiClientFactory::createClient($config);
+
+// Using Legacy credentials
+$config = [
+    'auth' => [
+        'type' => 'legacy_credentials',
+        'clientId' => 'asdf1234',
+        'apiKey' => 'fdas4321'
+    ]
+];
+$client = ApiClientFactory::createClient($config);
+
+// Using a refresh token
+$config = [
+    'auth' => [
+        'type' => 'refresh_token',
+        'clientId' => 'asdf1234',
+        'apiKey' => 'fdas4321',
+        'refreshToken' => 'asdfasdf
+    ]
+];
+$client = ApiClientFactory::createClient($config);
+```
+
+**Note**
+
+All credential types will trigger a pre-flight request to get an access token (HTTP 'POST' request). To avoid this, set the access token on the client before making a request using the `setAccessToken` method on the client.
+```php
+$client = ApiClientFactory::createClient();
+$client->setAccessToken('asdfasdf');
+```
+The access token will always be used if available, regardless of whether you have other credentials set or not.
 
 ### Customers
 
