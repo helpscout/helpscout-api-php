@@ -30,7 +30,7 @@ class HelpscoutLaravelServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/helpscout.php' => config_path('helpscout.php'),
+            __DIR__.'/../../../config/helpscout.php' => config_path('helpscout.php'),
         ], 'helpscout');
     }
 

@@ -5,7 +5,6 @@ This is the official Help Scout PHP client. This client contains methods for eas
 ## Requirements
 
 * PHP >= 7.1
-* A [HTTPlug](http://httplug.io/) adapter
 
 ## Table of Contents
 
