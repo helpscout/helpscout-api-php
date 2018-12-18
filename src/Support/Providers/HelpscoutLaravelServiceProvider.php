@@ -41,6 +41,10 @@ class HelpscoutLaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(
+            __DIR__.'/../../../config/helpscout.php', 'courier'
+        );
+
         $config = config('helpscout', []);
 
         $this->app->singleton(ApiClient::class, function ($app) use ($config) {

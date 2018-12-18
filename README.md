@@ -45,6 +45,27 @@ You should always use Composer's autoloader in your application to autoload clas
 require_once 'vendor/autoload.php';
 ```
 
+#### Laravel
+
+If you're using Laravel or Lumen, add 
+
+```php
+\HelpScout\Api\Support\Providers\HelpscoutLaravelServiceProvider::class
+```
+to the `providers` array in `config/app.php`.
+
+Then, add 
+```php
+'HelpScout' => \HelpScout\Api\Support\Facades\HelpScout::class
+```
+to the `aliases` array in `config/app.php`.
+
+If you want to publish the config file, run `php artisan vendor:publish --tag=helpscout`. This will publish the config to `config/helpscout.php`. Otherwise, you can set the environment variables in the `.env` file.
+
+#### League Container
+
+If you're using the [PHP League Container](http://container.thephpleague.com/3.x/), a service provider is available for use. Be sure to register the `HelpScout\Api\Support\Providers\HelpscoutLeagueServiceProvider` with your container instance. When using this provider, you'll need to set the auth credentials manually.
+
 ### Creating the client
 
 Use the factory to create a client. Once created, you can set the various credentials to make requests.

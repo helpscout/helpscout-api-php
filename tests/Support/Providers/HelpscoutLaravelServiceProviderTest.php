@@ -15,7 +15,7 @@ class HelpscoutLaravelServiceProviderTest extends TestCase
     protected function getPackageProviders($app)
     {
         return [
-            'HelpScout\Api\Support\Providers\HelpscoutLaravelServiceProvider',
+            HelpscoutLaravelServiceProvider::class,
         ];
     }
 
