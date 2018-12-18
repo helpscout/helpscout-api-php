@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.1",
         "psr/http-message": "^1.0",
         "php-http/client-common": "^1.3",
         "ql/uri-template": "^1.1",
