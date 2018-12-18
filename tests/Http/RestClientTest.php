@@ -271,11 +271,4 @@ class RestClientTest extends TestCase
             $connectionException,
         ];
     }
-
-    protected function getHelper()
-    {
-        return new class() {
-            use GuzzleHelpers;
-        };
-    }
 }
