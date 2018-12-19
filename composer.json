@@ -22,6 +22,9 @@
             "tests/TestCase.php"
         ]
     },
+    "suggest": {
+        "helpscout/api": "This version of the API has been deprecated. Please migrate to v2. On June 9th, 2019, the Mailbox v1 API will be shut down"
+    },
     "minimum-stability": "dev",
     "prefer-stable" : true,
     "scripts": {
