@@ -31,6 +31,9 @@
     "autoload-dev": {
         "psr-4": { "HelpScout\\Api\\Tests\\": "tests/" }
     },
+    "suggest": {
+        "helpscout/api-laravel": "API adapters for use with Laravel and Lumen"
+    },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse src tests --level=5",
         "fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
