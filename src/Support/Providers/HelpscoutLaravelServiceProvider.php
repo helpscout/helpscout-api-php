@@ -18,10 +18,16 @@ class HelpscoutLaravelServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [
+        $clientKeys = [
             ApiClient::class,
             'helpscout',
         ];
+
+        return \array_merge(
+            $clientKeys,
+            \array_values(ApiClient::AVAILABLE_ENDPOINTS),
+            \array_keys(ApiClient::AVAILABLE_ENDPOINTS)
+        );
     }
 
     /**
@@ -45,6 +51,12 @@ class HelpscoutLaravelServiceProvider extends ServiceProvider
             __DIR__.'/../../../config/helpscout.php', 'courier'
         );
 
+        $this->registerApiClient();
+        $this->registerEndpoints();
+    }
+
+    protected function registerApiClient(): void
+    {
         $config = config('helpscout', []);
 
         $this->app->singleton(ApiClient::class, function ($app) use ($config) {
@@ -52,5 +64,20 @@ class HelpscoutLaravelServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(ApiClient::class, 'helpscout');
+    }
+
+    protected function registerEndpoints(): void
+    {
+        $client = $this->app->get(ApiClient::class);
+
+        foreach (ApiClient::AVAILABLE_ENDPOINTS as $alias => $endpoint) {
+            $method = $method = \str_replace('hs.', '', $alias);
+            $concrete = $client->{$method}();
+
+            $this->app->singleton($endpoint, function ($app) use ($concrete) {
+                return $concrete;
+            });
+            $this->app->alias($endpoint, $alias);
+        }
     }
 }

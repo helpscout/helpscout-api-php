@@ -62,6 +62,33 @@ to the `aliases` array in `config/app.php`.
 
 If you want to publish the config file, run `php artisan vendor:publish --tag=helpscout`. This will publish the config to `config/helpscout.php`. Otherwise, you can set the environment variables in the `.env` file.
 
+You can also resolve each available endpoint from the container. When you type-hint an endpoint as a dependency in a class constructor, the Laravel container will resolve a configured client that is ready for use. 
+
+```php
+<?php
+use HelpScout\Api\Webhooks\WebhooksEndpoint;
+use HelpScout\Api\Entity\PagedCollection;
+
+class Foo
+{
+    private $endpoint;
+    
+    public function __construct(WebhooksEndpoint $endpoint) 
+    {
+        $this->endpoint = $endpoint;
+    }
+    
+    public function getHsWebhooks(): PagedCollection
+    {
+        return $this->endpoint->list();
+    }
+}
+
+// usage
+$foo = app(Foo::class);
+$webhooks = $foo->getHsWebhooks();
+```
+
 #### League Container
 
 If you're using the [PHP League Container](http://container.thephpleague.com/3.x/), a service provider is available for use. Be sure to register the `HelpScout\Api\Support\Providers\HelpscoutLeagueServiceProvider` with your container instance. When using this provider, you'll need to set the auth credentials manually.

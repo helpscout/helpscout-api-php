@@ -27,6 +27,21 @@ abstract class Endpoint
     }
 
     /**
+     * @return RestClient
+     */
+    public function getRestClient(): RestClient
+    {
+        return $this->restClient;
+    }
+
+    public function setAccessToken(string $accessToken): void
+    {
+        $this->getRestClient()
+            ->getAuthenticator()
+            ->setAccessToken($accessToken);
+    }
+
+    /**
      * @param string $entityClass
      * @param string $url
      *

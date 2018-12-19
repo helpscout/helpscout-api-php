@@ -7,6 +7,7 @@ namespace HelpScout\Api\Tests\Support\Providers;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\Support\Facades\HelpScout;
 use HelpScout\Api\Support\Providers\HelpscoutLaravelServiceProvider;
+use HelpScout\Api\Webhooks\WebhooksEndpoint;
 use HelpScout\Api\Workflows\WorkflowsEndpoint;
 use Orchestra\Testbench\TestCase;
 
@@ -54,6 +55,50 @@ class HelpscoutLaravelServiceProviderTest extends TestCase
         $this->assertSame(
             $client,
             $app->get('helpscout')
+        );
+    }
+
+    public function endpointDataProvider(): \Generator
+    {
+        foreach (ApiClient::AVAILABLE_ENDPOINTS as $alias => $endpoint) {
+            yield [
+                $alias,
+                $endpoint,
+            ];
+        }
+    }
+
+    /** @dataProvider endpointDataProvider */
+    public function testContainerResolvesEndpoints($alias, $endpoint)
+    {
+        $aliasResult = $this->app->get($alias);
+        $endpointResult = $this->app->get($endpoint);
+
+        $this->assertSame($aliasResult, $endpointResult);
+        $this->assertInstanceOf($endpoint, $endpointResult);
+    }
+
+    public function testResolution()
+    {
+        $accessToken = 'abc123';
+        $workflows = $this->app->get('hs.workflows');
+        $webhooks = $this->app->get(WebhooksEndpoint::class);
+
+        $this->assertSame(
+            $workflows->getRestClient(),
+            $webhooks->getRestClient()
+        );
+
+        $authHeader = ['Authorization' => 'Bearer '.$accessToken];
+        $workflows->setAccessToken($accessToken);
+        $this->assertSame(
+            $authHeader,
+            $workflows->getRestClient()->getAuthenticator()->getAuthHeader()
+        );
+
+        $this->assertSame(
+            $authHeader,
+            $webhooks->getRestClient()->getAuthenticator()->getAuthHeader()
         );
     }
 }
