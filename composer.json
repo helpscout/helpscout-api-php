@@ -14,8 +14,6 @@
     ],
     "require": {
         "php": "^7.1",
-        "psr/http-message": "^1.0",
-        "php-http/client-common": "^1.3",
         "ql/uri-template": "^1.1",
         "webmozart/assert": "^1.2",
         "guzzlehttp/guzzle": "^6.3",
@@ -42,9 +40,6 @@
         "test": ["@sniff", "@analyse", "@phpunit"],
         "test:travis": ["@sniff", "@analyse", "@phpunit:clover"],
         "test:report": "vendor/bin/phpunit --coverage-html build/reports/phpunit"
-    },
-    "suggest": {
-        "php-http/guzzle6-adapter": "Our preferred HTTP adapter"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Exception;
 
-use Http\Client\Exception\HttpException;
+use GuzzleHttp\Exception\RequestException;
 
-class RateLimitExceededException extends HttpException implements Exception
+class RateLimitExceededException extends RequestException implements Exception
 {
 }

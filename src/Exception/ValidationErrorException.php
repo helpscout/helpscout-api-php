@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Exception;
 
+use GuzzleHttp\Exception\RequestException;
 use HelpScout\Api\Http\Hal\VndError;
-use Http\Client\Exception\HttpException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class ValidationErrorException extends HttpException implements Exception
+class ValidationErrorException extends RequestException implements Exception
 {
     /**
      * @var VndError
