@@ -43,9 +43,6 @@
         "test:travis": ["@sniff", "@analyse", "@phpunit:clover"],
         "test:report": "vendor/bin/phpunit --coverage-html build/reports/phpunit"
     },
-    "suggest": {
-        "php-http/guzzle6-adapter": "Our preferred HTTP adapter"
-    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
