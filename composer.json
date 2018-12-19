@@ -16,8 +16,7 @@
         "php": "^7.1",
         "ql/uri-template": "^1.1",
         "webmozart/assert": "^1.2",
-        "guzzlehttp/guzzle": "^6.3",
-        "psr/container": "^1.0"
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
@@ -31,6 +30,9 @@
     "autoload-dev": {
         "psr-4": { "HelpScout\\Api\\Tests\\": "tests/" }
     },
+    "suggest": {
+        "helpscout/api-laravel": "API adapters for use with Laravel and Lumen"
+    },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse src tests --level=5",
         "fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
@@ -41,6 +43,6 @@
         "test:travis": ["@sniff", "@analyse", "@phpunit:clover"],
         "test:report": "vendor/bin/phpunit --coverage-html build/reports/phpunit"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

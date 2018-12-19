@@ -1,4 +1,8 @@
-# Help Scout API PHP Client [![Build Status](https://travis-ci.com/helpscout/helpscout-api-php-v2.svg?token=qCN6xBzzwNkXLxmSnTDj&branch=master)](https://travis-ci.com/helpscout/helpscout-api-php-v2) [![Maintainability](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/maintainability)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/test_coverage)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/test_coverage)
+# Help Scout API PHP Client
+
+[![Build Status](https://travis-ci.com/helpscout/helpscout-api-php-v2.svg?token=qCN6xBzzwNkXLxmSnTDj&branch=master)](https://travis-ci.com/helpscout/helpscout-api-php-v2)
+[![Maintainability](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/maintainability)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/test_coverage)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/test_coverage)
 
 This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout Mailbox API](http://developer.helpscout.net/help-desk-api-v2/).
 
@@ -659,28 +663,28 @@ $users = $client->users()->list();
 
 ### Reports
 
-When running reports using the SDK, refer to the [developer docs](https://developer.helpscout.com/mailbox-api/) for the exact endpoint, parameters, and response formats. While most of the endpoints in this SDK are little more than pass-through methods to call the API, there are a few conveniences. 
+When running reports using the SDK, refer to the [developer docs](https://developer.helpscout.com/mailbox-api/) for the exact endpoint, parameters, and response formats. While most of the endpoints in this SDK are little more than pass-through methods to call the API, there are a few conveniences.
 
 First, for the `start`, `end`, `previousStart`, and `previousEnd` parameters, you may pass a formatted date-time string or any object implementing the `\DateTimeInterface` as the parameter. The client will automatically convert these objects to the proper format.
 
 For those parameters that accept multiple values (`mailboxes`, `tags`, `types,` and `folders`), you may pass an array of values and let the client convert them to the proper format. You may also pass a single value (or a comma-separated list of values) if you like.
 
-To run the report, use the `runReport` method available on the `ApiClient` instance. Pass the name of the report class you'd like to use as the first argument and the array of report parameters as the second argument. Be sure the keys in the parameter array match the URL params specified in the docs. The client will convert the JSON response returned by the API into an array. 
+To run the report, use the `runReport` method available on the `ApiClient` instance. Pass the name of the report class you'd like to use as the first argument and the array of report parameters as the second argument. Be sure the keys in the parameter array match the URL params specified in the docs. The client will convert the JSON response returned by the API into an array.
 
 ```php
 // Example of running the Company Overall Report
-// https://developer.helpscout.com/mailbox-api/endpoints/reports/company/reports-company-overall/ 
+// https://developer.helpscout.com/mailbox-api/endpoints/reports/company/reports-company-overall/
 
 use HelpScout\Api\Reports\Company;
 
 $params = [
-    // Date interval fields can be passed as an object implementing the \DateTimeInterface 
+    // Date interval fields can be passed as an object implementing the \DateTimeInterface
     // or as a string in the 'Y-m-d\Th:m:s\Z' format. All times should be in UTC.
     'start' => new \DateTime('-7 days'),
     'end' => new \DateTimeImmutable(),
     'previousStart' => '2015-01-01T00:00:00Z',
     'previousEnd' => '2015-01-31T23:59:59Z',
-    
+
     // Fields accepting multiple values can be passed as an array or a comma-separated string
     'mailboxes' => [123, 321],
     'tags' => '987,789',
@@ -743,7 +747,7 @@ $client->webhooks()->delete($webhookId);
 
 Fetch a paginated list of all workflows.
 ```php
-$workflows = $client->workflows()->list(); 
+$workflows = $client->workflows()->list();
 ```
 
 Run a manual workflow on a list of conversations.
@@ -813,6 +817,6 @@ public function testMockReturnsProperMock()
         $client->workflows()
     );
 }
-``` 
+```
 
-Once you've mocked an endpoint, you may want to clear it later on. To do this, you can use the `clearMock($endpoint)` method on the `ApiClient`. 
+Once you've mocked an endpoint, you may want to clear it later on. To do this, you can use the `clearMock($endpoint)` method on the `ApiClient`.
