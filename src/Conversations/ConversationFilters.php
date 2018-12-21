@@ -102,7 +102,7 @@ class ConversationFilters
      *
      * @return ConversationFilters
      */
-    public function withCustomField(int $id, $value)
+    public function withCustomField(int $id, $value): ConversationFilters
     {
         $filters = clone $this;
         if ($this->customFieldIds === null) {
@@ -118,7 +118,7 @@ class ConversationFilters
      *
      * @return ConversationFilters
      */
-    public function withCustomFields(array $fields)
+    public function withCustomFields(array $fields): ConversationFilters
     {
         $filters = clone $this;
         $filters->customFieldIds = $fields;
