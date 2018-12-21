@@ -56,10 +56,18 @@ class ConversationFilters
     private $sortOrder;
 
     /**
+     * @var array
+     */
+    private $customFieldIds;
+
+    /**
      * @var string
      */
     private $query;
 
+    /**
+     * @return array
+     */
     public function getParams(): array
     {
         $params = [
@@ -74,14 +82,48 @@ class ConversationFilters
             'query' => $this->query,
         ];
 
-        if (is_array($this->tag)) {
+        if (\is_array($this->tag)) {
             $params['tag'] = implode(',', $this->tag);
+        }
+
+        if (\is_array($this->customFieldIds)) {
+            $params['customFieldIds'] = implode(',', $this->customFieldIds);
         }
 
         // Filter out null values
         return array_filter($params, function ($param) {
             return $param !== null;
         });
+    }
+
+    /**
+     * @param int   $id
+     * @param mixed $value
+     *
+     * @return ConversationFilters
+     */
+    public function withCustomField(int $id, $value)
+    {
+        $filters = clone $this;
+        if ($this->customFieldIds === null) {
+            $this->customFieldIds = [];
+        }
+        $filters->customFieldIds[] = "$id:$value";
+
+        return $filters;
+    }
+
+    /**
+     * @param array $fields
+     *
+     * @return ConversationFilters
+     */
+    public function withCustomFields(array $fields)
+    {
+        $filters = clone $this;
+        $filters->customFieldIds = $fields;
+
+        return $filters;
     }
 
     /**
