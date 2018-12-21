@@ -4,22 +4,37 @@ require '_credentials.php';
 
 use HelpScout\Api\ApiClientFactory;
 use HelpScout\Api\Conversations\Conversation;
+use HelpScout\Api\Conversations\ConversationFilters;
 use HelpScout\Api\Conversations\CustomField;
 use HelpScout\Api\Conversations\Threads\ChatThread;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
-use HelpScout\Api\Tags\Tag;
 
 $client = ApiClientFactory::createClient();
 $client = $client->useClientCredentials($appId, $appSecret);
 
 // GET conversation
-$conversation = $client->getConversation(12);
+$conversation = $client->conversations()->get(12);
 
 // List conversations
-$conversations = $client->getConversations()
+$conversations = $client->conversations()
+    ->list()
     ->getFirstPage()
     ->toArray();
+
+$filters = (new ConversationFilters())
+    ->withMailbox(1)
+    ->withFolder(13)
+    ->withStatus('all')
+    ->withTag('testing')
+    ->withAssignedTo(1771)
+    ->withNumber(42)
+    ->withSortField('createdAt')
+    ->withSortOrder('asc')
+    ->withQuery('query')
+    ->withCustomField(123, 'blue');
+
+$conversations = $client->conversations()->list($filters);
 
 // Create conversation
 $noteCustomer = new Customer();
