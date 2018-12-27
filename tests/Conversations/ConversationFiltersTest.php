@@ -31,7 +31,8 @@ class ConversationFiltersTest extends TestCase
             ->withNumber(42)
             ->withSortField('createdAt')
             ->withSortOrder('asc')
-            ->withQuery('query');
+            ->withQuery('query')
+            ->withCustomFieldById(123, 'blue');
 
         $this->assertSame([
             'mailbox' => 1,
@@ -44,6 +45,21 @@ class ConversationFiltersTest extends TestCase
             'sortOrder' => 'asc',
             'query' => 'query',
             'tag' => 'testing',
+            'customFieldIds' => '123:blue',
+        ], $filters->getParams());
+    }
+
+    public function testMultipleCustomFields()
+    {
+        $filters = (new ConversationFilters())
+            ->withCustomFieldsById([
+                '123:blue',
+                '456:yellow',
+                '789:red',
+                '11:none-more-black',
+            ]);
+        $this->assertSame([
+            'customFieldIds' => '123:blue,456:yellow,789:red,11:none-more-black',
         ], $filters->getParams());
     }
 

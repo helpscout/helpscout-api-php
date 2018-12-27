@@ -486,7 +486,46 @@ $request = (new ConversationRequest)
     ->withThreads()
     ->withAssignee();
 
-$conversations = $client->conversations()->list();
+$conversations = $client->conversations()->list(null, $request);
+```
+Get filtered conversations
+
+```php
+use HelpScout\Api\Conversations\ConversationFilters;
+
+$filters = (new ConversationFilters())
+    ->withMailbox(1)
+    ->withFolder(13)
+    ->withStatus('all')
+    ->withTag('testing')
+    ->withAssignedTo(1771)
+    ->withModifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
+    ->withNumber(42)
+    ->withSortField('createdAt')
+    ->withSortOrder('asc')
+    ->withQuery('query')
+    ->withCustomFieldById(123, 'blue');
+
+$conversations = $client->conversations()->list($filters);
+
+```
+
+You can even combine the filters with the pre-loaded sub-entities in one request
+
+```php
+use HelpScout\Api\Conversations\ConversationRequest;
+use HelpScout\Api\Conversations\ConversationFilters;
+
+$request = (new ConversationRequest)
+    ->withMailbox()
+    ->withThreads();
+    
+$filters = (new ConversationFilters())
+    ->withMailbox(1)
+    ->withFolder(13)
+    ->withCustomFieldById(123, 'blue');
+    
+$conversations = $client->conversations()->list($filters, $request);
 ```
 
 Update the custom fields on a conversation:
