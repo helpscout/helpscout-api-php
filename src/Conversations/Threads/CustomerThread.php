@@ -35,9 +35,13 @@ class CustomerThread extends Thread
         $data['type'] = self::TYPE;
 
         if ($this->customer instanceof Customer) {
-            $data['customer'] = [
-                'id' => $this->getCustomer()->getId(),
+            // We need either customerId or customerEmail...
+            $customerData = [
+                'id' => $this->customer->getId(),
+                'email' => $this->customer->getFirstEmail()
             ];
+
+            $data['customer'] = array_filter($customerData);
         }
 
         return $data;
