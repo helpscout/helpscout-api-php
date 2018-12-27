@@ -288,7 +288,7 @@ class Conversation implements Extractable, Hydratable
         if ($customer !== null) {
             $customerData = [
                 'id' => $customer->getId(),
-                'email' => $customer->getFirstEmail()
+                'email' => $customer->getFirstEmail(),
             ];
 
             $data['customer'] = array_filter($customerData);
