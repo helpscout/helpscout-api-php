@@ -494,6 +494,17 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
+     * @return null|string
+     */
+    public function getFirstEmail(): ?string
+    {
+        $emails = $this->emails->toArray();
+        $email = array_shift($emails);
+
+        return $email ?? null;
+    }
+
+    /**
      * @param Email[]|Collection $emails
      *
      * @return Customer
