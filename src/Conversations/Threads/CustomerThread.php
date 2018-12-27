@@ -38,7 +38,7 @@ class CustomerThread extends Thread
             // We need either customerId or customerEmail...
             $customerData = [
                 'id' => $this->customer->getId(),
-                'email' => $this->customer->getFirstEmail()
+                'email' => $this->customer->getFirstEmail(),
             ];
 
             $data['customer'] = array_filter($customerData);
