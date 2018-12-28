@@ -95,10 +95,14 @@ class Webhook implements Hydratable, Extractable
 
     /**
      * @param int|null $id
+     *
+     * @return Webhook
      */
-    public function setId(?int $id): void
+    public function setId(?int $id): Webhook
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -111,14 +115,18 @@ class Webhook implements Hydratable, Extractable
 
     /**
      * @param string|null $state
+     *
+     * @return Webhook
      */
-    public function setState(?string $state): void
+    public function setState(?string $state): Webhook
     {
         if (null !== $state) {
             Assert::oneOf($state, self::VALID_STATES);
 
             $this->state = $state;
         }
+
+        return $this;
     }
 
     /**
@@ -131,8 +139,10 @@ class Webhook implements Hydratable, Extractable
 
     /**
      * @param array $events
+     *
+     * @return Webhook
      */
-    public function setEvents(array $events = []): void
+    public function setEvents(array $events = []): Webhook
     {
         $validEvents = array_values(
             array_intersect(self::VALID_EVENTS, $events)
@@ -141,6 +151,8 @@ class Webhook implements Hydratable, Extractable
         Assert::notEmpty($validEvents);
 
         $this->events = $validEvents;
+
+        return $this;
     }
 
     /**
@@ -153,10 +165,14 @@ class Webhook implements Hydratable, Extractable
 
     /**
      * @param string $url
+     *
+     * @return Webhook
      */
-    public function setUrl(?string $url): void
+    public function setUrl(?string $url): Webhook
     {
         $this->url = $url;
+
+        return $this;
     }
 
     /**
@@ -169,9 +185,13 @@ class Webhook implements Hydratable, Extractable
 
     /**
      * @param string $secret
+     *
+     * @return Webhook
      */
-    public function setSecret(?string $secret): void
+    public function setSecret(?string $secret): Webhook
     {
         $this->secret = $secret;
+
+        return $this;
     }
 }

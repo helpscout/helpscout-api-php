@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Mailboxes;
 
 use DateTime;
+use HelpScout\Api\Mailboxes\Entry\Field;
+use HelpScout\Api\Mailboxes\Entry\Folder;
 use HelpScout\Api\Mailboxes\Mailbox;
 use PHPUnit\Framework\TestCase;
 
@@ -58,5 +60,21 @@ class MailboxTest extends TestCase
         ]);
 
         $this->assertNull($mailbox->getUpdatedAt());
+    }
+
+    public function testAddMethods()
+    {
+        $mailbox = new Mailbox();
+
+        $this->assertEmpty($mailbox->getFields()->toArray());
+        $this->assertEmpty($mailbox->getFolders()->toArray());
+
+        $field = new Field();
+        $mailbox->addField($field);
+        $this->assertSame($field, $mailbox->getFields()->toArray()[0]);
+
+        $folder = new Folder();
+        $mailbox->addFolder($folder);
+        $this->assertSame($folder, $mailbox->getFolders()->toArray()[0]);
     }
 }

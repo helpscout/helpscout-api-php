@@ -101,11 +101,13 @@ class Attachment implements Extractable, Hydratable
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): Attachment
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     public function getFilename(): ?string
@@ -115,10 +117,14 @@ class Attachment implements Extractable, Hydratable
 
     /**
      * @param string|null $filename
+     *
+     * @return Attachment
      */
-    public function setFilename($filename)
+    public function setFilename($filename): Attachment
     {
         $this->filename = $filename;
+
+        return $this;
     }
 
     public function getMimeType(): ?string
@@ -128,10 +134,14 @@ class Attachment implements Extractable, Hydratable
 
     /**
      * @param string|null $mimeType
+     *
+     * @return Attachment
      */
-    public function setMimeType($mimeType)
+    public function setMimeType($mimeType): Attachment
     {
         $this->mimeType = $mimeType;
+
+        return $this;
     }
 
     public function getData(): ?string
@@ -141,10 +151,14 @@ class Attachment implements Extractable, Hydratable
 
     /**
      * @param string|null $data
+     *
+     * @return Attachment
      */
-    public function setData($data)
+    public function setData($data): Attachment
     {
         $this->data = $data;
+
+        return $this;
     }
 
     public function getWidth(): ?int
@@ -152,11 +166,13 @@ class Attachment implements Extractable, Hydratable
         return $this->width;
     }
 
-    public function setWidth(int $width)
+    public function setWidth(int $width): Attachment
     {
         Assert::greaterThan($width, 0);
 
         $this->width = $width;
+
+        return $this;
     }
 
     public function getHeight(): ?int
@@ -164,11 +180,13 @@ class Attachment implements Extractable, Hydratable
         return $this->height;
     }
 
-    public function setHeight(int $height)
+    public function setHeight(int $height): Attachment
     {
         Assert::greaterThan($height, 0);
 
         $this->height = $height;
+
+        return $this;
     }
 
     public function getSize(): ?int
@@ -176,10 +194,12 @@ class Attachment implements Extractable, Hydratable
         return $this->size;
     }
 
-    public function setSize(int $size)
+    public function setSize(int $size): Attachment
     {
         Assert::greaterThan($size, 0);
 
         $this->size = $size;
+
+        return $this;
     }
 }

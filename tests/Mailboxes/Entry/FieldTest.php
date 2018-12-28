@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Mailboxes\Entry;
 
+use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Mailboxes\Entry\Field;
+use HelpScout\Api\Mailboxes\Entry\FieldOption;
 use PHPUnit\Framework\TestCase;
 
 class FieldTest extends TestCase
@@ -48,5 +50,19 @@ class FieldTest extends TestCase
         $this->assertSame(170, $options[1]->getId());
         $this->assertSame(2, $options[1]->getOrder());
         $this->assertSame('Stout', $options[1]->getLabel());
+    }
+
+    public function testMailboxFieldOptions()
+    {
+        $field = new Field();
+        $this->assertEmpty($field->getOptions());
+
+        $options = new Collection([new FieldOption()]);
+        $field->setOptions($options);
+        $this->assertCount(1, $field->getOptions());
+
+        $option = new FieldOption();
+        $field->addOption($option);
+        $this->assertSame($option, $field->getOptions()->toArray()[1]);
     }
 }

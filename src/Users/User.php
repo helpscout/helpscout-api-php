@@ -86,156 +86,196 @@ class User implements Hydratable
     }
 
     /**
-     * @param int $id
+     * @param null|int $id
+     *
+     * @return User
      */
-    public function setId(int $id)
+    public function setId(?int $id): User
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     /**
      * @return DateTime|null
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
     /**
      * @param DateTime|null $createdAt
+     *
+     * @return User
      */
-    public function setCreatedAt(DateTime $createdAt = null)
+    public function setCreatedAt(DateTime $createdAt = null): User
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
      * @return DateTime|null
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
     /**
      * @param DateTime|null $updatedAt
+     *
+     * @return User
      */
-    public function setUpdatedAt(DateTime $updatedAt = null)
+    public function setUpdatedAt(DateTime $updatedAt = null): User
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getFirstName()
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
     /**
      * @param string|null $firstName
+     *
+     * @return User
      */
-    public function setFirstName($firstName)
+    public function setFirstName($firstName): User
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getLastName()
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
     /**
      * @param string|null $lastName
+     *
+     * @return User
      */
-    public function setLastName($lastName)
+    public function setLastName($lastName): User
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     /**
      * @param string|null $email
+     *
+     * @return User
      */
-    public function setEmail($email)
+    public function setEmail($email): User
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getRole()
+    public function getRole(): ?string
     {
         return $this->role;
     }
 
     /**
      * @param string|null $role
+     *
+     * @return User
      */
-    public function setRole($role)
+    public function setRole($role): User
     {
         $this->role = $role;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getTimezone()
+    public function getTimezone(): ?string
     {
         return $this->timezone;
     }
 
     /**
      * @param string|null $timezone
+     *
+     * @return User
      */
-    public function setTimezone($timezone)
+    public function setTimezone($timezone): User
     {
         $this->timezone = $timezone;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getPhotoUrl()
+    public function getPhotoUrl(): ?string
     {
         return $this->photoUrl;
     }
 
     /**
      * @param string|null $photoUrl
+     *
+     * @return User
      */
-    public function setPhotoUrl($photoUrl)
+    public function setPhotoUrl($photoUrl): User
     {
         $this->photoUrl = $photoUrl;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
      * @param string|null $type
+     *
+     * @return User
      */
-    public function setType($type)
+    public function setType($type): User
     {
         $this->type = $type;
+
+        return $this;
     }
 }

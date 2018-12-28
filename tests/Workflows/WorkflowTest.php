@@ -24,7 +24,14 @@ class WorkflowTest extends TestCase
 
         $workflow = new Workflow();
         $workflow->hydrate($data);
+        $this->assertTrue($workflow->isManual());
 
         $this->assertSame($data, $workflow->extract());
+
+        $workflow->setAutomatic();
+        $this->assertTrue($workflow->isAutomatic());
+
+        $workflow->setManual();
+        $this->assertTrue($workflow->isManual());
     }
 }

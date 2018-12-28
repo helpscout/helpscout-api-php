@@ -26,6 +26,21 @@ class Conversation implements Extractable, Hydratable
         IncludesThreadDetails,
         HasCustomer;
 
+    public const TYPE_CHAT = 'chat';
+    public const TYPE_EMAIL = 'email';
+    public const TYPE_PHONE = 'phone';
+
+    public const STATUS_OPEN = 'open';
+    public const STATUS_ALL = 'all';
+    public const STATUS_CLOSED = 'closed';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_SPAM = 'spam';
+
+    public const STATE_DELETED = 'deleted';
+    public const STATE_DRAFT = 'draft';
+    public const STATE_PUBLISHED = 'published';
+
     /**
      * @var int
      */
@@ -356,11 +371,13 @@ class Conversation implements Extractable, Hydratable
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): Conversation
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     public function getThreadCount(): ?int
@@ -368,9 +385,11 @@ class Conversation implements Extractable, Hydratable
         return $this->threadCount;
     }
 
-    public function setThreadCount(?int $threadCount)
+    public function setThreadCount(?int $threadCount): Conversation
     {
         $this->threadCount = $threadCount;
+
+        return $this;
     }
 
     public function isAutoReplyEnabled(): bool
@@ -378,9 +397,11 @@ class Conversation implements Extractable, Hydratable
         return $this->autoReplyEnabled;
     }
 
-    public function withAutoRepliesEnabled()
+    public function withAutoRepliesEnabled(): Conversation
     {
         $this->autoReplyEnabled = true;
+
+        return $this;
     }
 
     public function getNumber(): ?int
@@ -388,9 +409,11 @@ class Conversation implements Extractable, Hydratable
         return $this->number;
     }
 
-    public function setNumber(?int $number)
+    public function setNumber(?int $number): Conversation
     {
         $this->number = $number;
+
+        return $this;
     }
 
     public function getType(): ?string
@@ -398,14 +421,33 @@ class Conversation implements Extractable, Hydratable
         return $this->type;
     }
 
-    public function setType(?string $type)
+    public function setType(?string $type): Conversation
     {
         $this->type = $type;
+
+        return $this;
     }
 
-    public function setImported(bool $imported)
+    public function isChatConvo(): bool
+    {
+        return $this->getType() === self::TYPE_CHAT;
+    }
+
+    public function isEmailConvo(): bool
+    {
+        return $this->getType() === self::TYPE_EMAIL;
+    }
+
+    public function isPhoneConvo(): bool
+    {
+        return $this->getType() === self::TYPE_PHONE;
+    }
+
+    public function setImported(bool $imported): Conversation
     {
         $this->imported = $imported;
+
+        return $this;
     }
 
     public function isImported(): bool
@@ -418,9 +460,11 @@ class Conversation implements Extractable, Hydratable
         return $this->assignTo;
     }
 
-    public function setAssignTo(int $userId)
+    public function setAssignTo(int $userId): Conversation
     {
         $this->assignTo = $userId;
+
+        return $this;
     }
 
     public function getFolderId(): ?int
@@ -428,9 +472,11 @@ class Conversation implements Extractable, Hydratable
         return $this->folderId;
     }
 
-    public function setFolderId(?int $folderId)
+    public function setFolderId(?int $folderId): Conversation
     {
         $this->folderId = $folderId;
+
+        return $this;
     }
 
     public function getStatus(): ?string
@@ -438,9 +484,51 @@ class Conversation implements Extractable, Hydratable
         return $this->status;
     }
 
-    public function setStatus(?string $status)
+    public function setStatus(?string $status): Conversation
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function setClosed(): Conversation
+    {
+        return $this->setStatus(self::STATUS_CLOSED);
+    }
+
+    public function isClosed(): bool
+    {
+        return $this->getStatus() === self::STATUS_CLOSED;
+    }
+
+    public function setSpam(): Conversation
+    {
+        return $this->setStatus(self::STATUS_SPAM);
+    }
+
+    public function isSpam(): bool
+    {
+        return $this->getStatus() === self::STATUS_SPAM;
+    }
+
+    public function setPending(): Conversation
+    {
+        return $this->setStatus(self::STATUS_PENDING);
+    }
+
+    public function isPending(): bool
+    {
+        return $this->getStatus() === self::STATUS_PENDING;
+    }
+
+    public function setActive(): Conversation
+    {
+        return $this->setStatus(self::STATUS_ACTIVE);
+    }
+
+    public function isActive(): bool
+    {
+        return $this->getStatus() === self::STATUS_ACTIVE;
     }
 
     public function getState(): ?string
@@ -448,9 +536,41 @@ class Conversation implements Extractable, Hydratable
         return $this->state;
     }
 
-    public function setState(?string $state)
+    public function setState(?string $state): Conversation
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->getState() === self::STATE_PUBLISHED;
+    }
+
+    public function publish(): Conversation
+    {
+        return $this->setState(self::STATE_PUBLISHED);
+    }
+
+    public function makeDraft(): Conversation
+    {
+        return $this->setState(self::STATE_DRAFT);
+    }
+
+    public function delete(): Conversation
+    {
+        return $this->setState(self::STATE_DELETED);
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->getState() === self::STATE_DRAFT;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->getState() === self::STATE_DELETED;
     }
 
     public function getSubject(): ?string
@@ -458,9 +578,11 @@ class Conversation implements Extractable, Hydratable
         return $this->subject;
     }
 
-    public function setSubject(?string $subject)
+    public function setSubject(?string $subject): Conversation
     {
         $this->subject = $subject;
+
+        return $this;
     }
 
     public function getPreview(): ?string
@@ -468,9 +590,11 @@ class Conversation implements Extractable, Hydratable
         return $this->preview;
     }
 
-    public function setPreview(?string $preview)
+    public function setPreview(?string $preview): Conversation
     {
         $this->preview = $preview;
+
+        return $this;
     }
 
     public function getMailboxId(): ?int
@@ -478,9 +602,11 @@ class Conversation implements Extractable, Hydratable
         return $this->mailboxId;
     }
 
-    public function setMailboxId(?int $mailboxId)
+    public function setMailboxId(?int $mailboxId): Conversation
     {
         $this->mailboxId = $mailboxId;
+
+        return $this;
     }
 
     public function getAssignee(): ?User
@@ -488,9 +614,21 @@ class Conversation implements Extractable, Hydratable
         return $this->assignee;
     }
 
-    public function setAssignee(?User $assignee)
+    public function isAssigned(): bool
+    {
+        return $this->getAssignee() !== null;
+    }
+
+    public function setAssignee(?User $assignee): Conversation
     {
         $this->assignee = $assignee;
+
+        return $this;
+    }
+
+    public function assignTo(?User $assignee): Conversation
+    {
+        return $this->setAssignee($assignee);
     }
 
     public function getCreatedAt(): ?DateTimeInterface
@@ -498,9 +636,11 @@ class Conversation implements Extractable, Hydratable
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?DateTimeInterface $createdAt)
+    public function setCreatedAt(?DateTimeInterface $createdAt): Conversation
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     public function getClosedAt(): ?DateTimeInterface
@@ -508,9 +648,11 @@ class Conversation implements Extractable, Hydratable
         return $this->closedAt;
     }
 
-    public function setClosedAt(?DateTimeInterface $closedAt)
+    public function setClosedAt(?DateTimeInterface $closedAt): Conversation
     {
         $this->closedAt = $closedAt;
+
+        return $this;
     }
 
     public function getUserUpdatedAt(): ?DateTimeInterface
@@ -518,9 +660,11 @@ class Conversation implements Extractable, Hydratable
         return $this->userUpdatedAt;
     }
 
-    public function setUserUpdatedAt(?DateTimeInterface $userUpdatedAt)
+    public function setUserUpdatedAt(?DateTimeInterface $userUpdatedAt): Conversation
     {
         $this->userUpdatedAt = $userUpdatedAt;
+
+        return $this;
     }
 
     /**
@@ -531,9 +675,11 @@ class Conversation implements Extractable, Hydratable
         return $this->closedBy;
     }
 
-    public function setClosedBy(?User $closedBy)
+    public function setClosedBy(?User $closedBy): Conversation
     {
         $this->closedBy = $closedBy;
+
+        return $this;
     }
 
     public function getCustomerWaitingSince(): ?CustomerWaitingSince
@@ -541,9 +687,11 @@ class Conversation implements Extractable, Hydratable
         return $this->waitingSince;
     }
 
-    public function setCustomerWaitingSince(?CustomerWaitingSince $waitingSince)
+    public function setCustomerWaitingSince(?CustomerWaitingSince $waitingSince): Conversation
     {
         $this->waitingSince = $waitingSince;
+
+        return $this;
     }
 
     /**
@@ -554,9 +702,23 @@ class Conversation implements Extractable, Hydratable
         return $this->tags;
     }
 
-    public function setTags(Collection $tags)
+    /**
+     * @param Tag[]|Collection $tags
+     *
+     * @return Conversation
+     */
+    public function setTags(Collection $tags): Conversation
     {
         $this->tags = $tags;
+
+        return $this;
+    }
+
+    public function addTag(Tag $tag): Conversation
+    {
+        $this->getTags()->append($tag);
+
+        return $this;
     }
 
     /**
@@ -569,10 +731,21 @@ class Conversation implements Extractable, Hydratable
 
     /**
      * @param CustomField[]|Collection $customFields
+     *
+     * @return Conversation
      */
-    public function setCustomFields(Collection $customFields)
+    public function setCustomFields(Collection $customFields): Conversation
     {
         $this->customFields = $customFields;
+
+        return $this;
+    }
+
+    public function addCustomField(CustomField $customField): Conversation
+    {
+        $this->getCustomFields()->append($customField);
+
+        return $this;
     }
 
     /**
@@ -585,15 +758,28 @@ class Conversation implements Extractable, Hydratable
 
     /**
      * @param Thread[]|Collection $threads
+     *
+     * @return Conversation
      */
-    public function setThreads(Collection $threads)
+    public function setThreads(Collection $threads): Conversation
     {
         $this->threads = $threads;
+
+        return $this;
     }
 
-    public function setMailbox(Mailbox $mailbox)
+    public function addThread(Thread $thread): Conversation
+    {
+        $this->getThreads()->append($thread);
+
+        return $this;
+    }
+
+    public function setMailbox(Mailbox $mailbox): Conversation
     {
         $this->mailbox = $mailbox;
+
+        return $this;
     }
 
     public function getMailbox(): ?Mailbox

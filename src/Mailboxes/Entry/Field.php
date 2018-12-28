@@ -10,7 +10,7 @@ use HelpScout\Api\Entity\Hydratable;
 
 class Field implements Hydratable
 {
-    const TYPE_DROPDOWN = 'dropdown';
+    public const TYPE_DROPDOWN = 'dropdown';
 
     /**
      * @var int
@@ -74,28 +74,36 @@ class Field implements Hydratable
 
     /**
      * @param int $id
+     *
+     * @return Field
      */
-    public function setId(int $id)
+    public function setId(int $id): Field
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * @param string $name
+     *
+     * @return Field
      */
-    public function setName(string $name)
+    public function setName(string $name): Field
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -108,10 +116,14 @@ class Field implements Hydratable
 
     /**
      * @param string $type
+     *
+     * @return Field
      */
-    public function setType(string $type)
+    public function setType(string $type): Field
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -124,10 +136,14 @@ class Field implements Hydratable
 
     /**
      * @param int $order
+     *
+     * @return Field
      */
-    public function setOrder(int $order)
+    public function setOrder(int $order): Field
     {
         $this->order = $order;
+
+        return $this;
     }
 
     /**
@@ -140,10 +156,14 @@ class Field implements Hydratable
 
     /**
      * @param bool $required
+     *
+     * @return Field
      */
-    public function setRequired(bool $required)
+    public function setRequired(bool $required): Field
     {
         $this->required = $required;
+
+        return $this;
     }
 
     /**
@@ -152,5 +172,19 @@ class Field implements Hydratable
     public function getOptions(): Collection
     {
         return $this->options;
+    }
+
+    public function setOptions(Collection $options): Field
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function addOption(FieldOption $option): Field
+    {
+        $this->getOptions()->append($option);
+
+        return $this;
     }
 }
