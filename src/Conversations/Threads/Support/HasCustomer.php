@@ -40,4 +40,20 @@ trait HasCustomer
 
         $this->setCustomer($customer);
     }
+
+    protected function hasCustomer(): bool
+    {
+        return $this->getCustomer() instanceof Customer;
+    }
+
+    protected function getCustomerDataForEntity(): array
+    {
+        $customer = $this->getCustomer();
+        $customerData = [
+            'id' => $customer->getId(),
+            'email' => $customer->getFirstEmail(),
+        ];
+
+        return array_filter($customerData);
+    }
 }

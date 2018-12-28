@@ -6,7 +6,6 @@ namespace HelpScout\Api\Conversations\Threads;
 
 use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
-use HelpScout\Api\Customers\Customer;
 
 class CustomerThread extends Thread
 {
@@ -34,14 +33,8 @@ class CustomerThread extends Thread
         $data = parent::extract();
         $data['type'] = self::TYPE;
 
-        if ($this->customer instanceof Customer) {
-            // We need either customerId or customerEmail...
-            $customerData = [
-                'id' => $this->customer->getId(),
-                'email' => $this->customer->getFirstEmail(),
-            ];
-
-            $data['customer'] = array_filter($customerData);
+        if ($this->hasCustomer()) {
+            $data['customer'] = $this->getCustomerDataForEntity();
         }
 
         return $data;

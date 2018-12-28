@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace HelpScout\Api\Conversations\Threads;
 
 use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
-use HelpScout\Api\Customers\Customer;
 
 class PhoneThread extends Thread
 {
@@ -32,10 +31,8 @@ class PhoneThread extends Thread
         $data = parent::extract();
         $data['type'] = self::TYPE;
 
-        if ($this->customer instanceof Customer) {
-            $data['customer'] = [
-                'id' => $this->getCustomer()->getId(),
-            ];
+        if ($this->hasCustomer()) {
+            $data['customer'] = $this->getCustomerDataForEntity();
         }
 
         return $data;
