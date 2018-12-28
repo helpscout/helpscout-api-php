@@ -186,220 +186,276 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param int $id
+     *
+     * @return Customer
      */
-    public function setId(int $id)
+    public function setId(int $id): Customer
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     /**
      * @return DateTime|null
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
     /**
      * @param DateTime|null $createdAt
+     *
+     * @return Customer
      */
-    public function setCreatedAt(DateTime $createdAt = null)
+    public function setCreatedAt(DateTime $createdAt = null): Customer
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
      * @return DateTime|null
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
     /**
      * @param DateTime|null $updatedAt
+     *
+     * @return Customer
      */
-    public function setUpdatedAt(DateTime $updatedAt = null)
+    public function setUpdatedAt(DateTime $updatedAt = null): Customer
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getFirstName()
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
     /**
      * @param string|null $firstName
+     *
+     * @return Customer
      */
-    public function setFirstName($firstName)
+    public function setFirstName(?string $firstName): Customer
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getLastName()
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
     /**
      * @param string|null $lastName
+     *
+     * @return Customer
      */
-    public function setLastName($lastName)
+    public function setLastName(?string $lastName): Customer
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getGender()
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
     /**
      * @param string|null $gender
+     *
+     * @return Customer
      */
-    public function setGender($gender)
+    public function setGender(?string $gender): Customer
     {
         $this->gender = $gender;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getJobTitle()
+    public function getJobTitle(): ?string
     {
         return $this->jobTitle;
     }
 
     /**
      * @param string|null $jobTitle
+     *
+     * @return Customer
      */
-    public function setJobTitle($jobTitle)
+    public function setJobTitle(?string $jobTitle): Customer
     {
         $this->jobTitle = $jobTitle;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getLocation()
+    public function getLocation(): ?string
     {
         return $this->location;
     }
 
     /**
      * @param string|null $location
+     *
+     * @return Customer
      */
-    public function setLocation($location)
+    public function setLocation(?string $location): Customer
     {
         $this->location = $location;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getOrganization()
+    public function getOrganization(): ?string
     {
         return $this->organization;
     }
 
     /**
      * @param string|null $organization
+     *
+     * @return Customer
      */
-    public function setOrganization($organization)
+    public function setOrganization(?string $organization): Customer
     {
         $this->organization = $organization;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getPhotoType()
+    public function getPhotoType(): ?string
     {
         return $this->photoType;
     }
 
     /**
      * @param string|null $photoType
+     *
+     * @return Customer
      */
-    public function setPhotoType($photoType)
+    public function setPhotoType(?string $photoType): Customer
     {
         $this->photoType = $photoType;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getPhotoUrl()
+    public function getPhotoUrl(): ?string
     {
         return $this->photoUrl;
     }
 
     /**
      * @param string|null $photoUrl
+     *
+     * @return Customer
      */
-    public function setPhotoUrl($photoUrl)
+    public function setPhotoUrl(?string $photoUrl): Customer
     {
         $this->photoUrl = $photoUrl;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getBackground()
+    public function getBackground(): ?string
     {
         return $this->background;
     }
 
     /**
      * @param string|null $background
+     *
+     * @return Customer
      */
-    public function setBackground($background)
+    public function setBackground(?string $background): Customer
     {
         $this->background = $background;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getAge()
+    public function getAge(): ?string
     {
         return $this->age;
     }
 
     /**
      * @param string|null $age
+     *
+     * @return Customer
      */
-    public function setAge($age)
+    public function setAge(?string $age): Customer
     {
         $this->age = $age;
+
+        return $this;
     }
 
     /**
      * @return Address|null
      */
-    public function getAddress()
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
 
     /**
      * @param Address|null $address
+     *
+     * @return Customer
      */
-    public function setAddress($address)
+    public function setAddress(?Address $address): Customer
     {
         $this->address = $address;
+
+        return $this;
     }
 
     /**
@@ -412,10 +468,21 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Chat[]|Collection $chats
+     *
+     * @return Customer
      */
-    public function setChats(Collection $chats)
+    public function setChats(Collection $chats): Customer
     {
         $this->chats = $chats;
+
+        return $this;
+    }
+
+    public function addChat(Chat $chat): Customer
+    {
+        $this->getChats()->append($chat);
+
+        return $this;
     }
 
     /**
@@ -428,10 +495,21 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Email[]|Collection $emails
+     *
+     * @return Customer
      */
-    public function setEmails(Collection $emails)
+    public function setEmails(Collection $emails): Customer
     {
         $this->emails = $emails;
+
+        return $this;
+    }
+
+    public function addEmail(Email $email): Customer
+    {
+        $this->getEmails()->append($email);
+
+        return $this;
     }
 
     /**
@@ -444,10 +522,21 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Phone[]|Collection $phones
+     *
+     * @return Customer
      */
-    public function setPhones(Collection $phones)
+    public function setPhones(Collection $phones): Customer
     {
         $this->phones = $phones;
+
+        return $this;
+    }
+
+    public function addPhone(Phone $phone): Customer
+    {
+        $this->getPhones()->append($phone);
+
+        return $this;
     }
 
     /**
@@ -460,10 +549,21 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param SocialProfile[]|Collection $socialProfiles
+     *
+     * @return Customer
      */
-    public function setSocialProfiles(Collection $socialProfiles)
+    public function setSocialProfiles(Collection $socialProfiles): Customer
     {
         $this->socialProfiles = $socialProfiles;
+
+        return $this;
+    }
+
+    public function addSocialProfile(SocialProfile $profile): Customer
+    {
+        $this->getSocialProfiles()->append($profile);
+
+        return $this;
     }
 
     /**
@@ -476,9 +576,20 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Website[]|Collection $websites
+     *
+     * @return Customer
      */
-    public function setWebsites(Collection $websites)
+    public function setWebsites(Collection $websites): Customer
     {
         $this->websites = $websites;
+
+        return $this;
+    }
+
+    public function addWebsite(Website $website): Customer
+    {
+        $this->getWebsites()->append($website);
+
+        return $this;
     }
 }
