@@ -60,9 +60,9 @@ abstract class AbstractThread extends LineItem implements ConversationThread {
 		parent::__construct($data);
 		if ($data) {
 			$this->body    = isset($data->body)    ? $data->body    : null;
-			$this->toList  = isset($data->toList)  ? $data->toList  : null;
-			$this->ccList  = isset($data->ccList)  ? $data->ccList  : null;
-			$this->bccList = isset($data->bccList) ? $data->bccList : null;
+			$this->toList  = isset($data->to)      ? $data->to      : null;
+			$this->ccList  = isset($data->cc)      ? $data->cc      : null;
+			$this->bccList = isset($data->bcc)     ? $data->bcc     : null;
 			$this->state   = isset($data->state)   ? $data->state   : null;
 			$this->type    = isset($data->type)    ? $data->type    : null;
 			$this->openedAt= isset($data->openedAt)? $data->openedAt: null;
