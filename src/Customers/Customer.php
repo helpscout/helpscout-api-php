@@ -177,7 +177,7 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @return null|int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -494,7 +494,7 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getFirstEmail(): ?string
     {

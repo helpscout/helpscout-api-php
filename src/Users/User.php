@@ -86,7 +86,7 @@ class User implements Hydratable
     }
 
     /**
-     * @param null|int $id
+     * @param int|null $id
      *
      * @return User
      */

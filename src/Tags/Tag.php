@@ -157,7 +157,7 @@ class Tag implements Extractable, Hydratable
     }
 
     /**
-     * @return null|\DateTime
+     * @return \DateTime|null
      */
     public function getCreatedAt(): ?\DateTime
     {
@@ -165,7 +165,7 @@ class Tag implements Extractable, Hydratable
     }
 
     /**
-     * @param null|string $createdAt
+     * @param string|null $createdAt
      *
      * @return Tag
      */
@@ -177,7 +177,7 @@ class Tag implements Extractable, Hydratable
     }
 
     /**
-     * @return null|\DateTime
+     * @return \DateTime|null
      */
     public function getUpdatedAt(): ?\DateTime
     {
@@ -185,7 +185,7 @@ class Tag implements Extractable, Hydratable
     }
 
     /**
-     * @param null|string $updatedAt
+     * @param string|null $updatedAt
      *
      * @return Tag
      */
