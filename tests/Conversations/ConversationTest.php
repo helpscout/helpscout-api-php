@@ -15,6 +15,7 @@ use HelpScout\Api\Conversations\PhoneConversation;
 use HelpScout\Api\Conversations\Threads\ChatThread;
 use HelpScout\Api\Conversations\Threads\Thread;
 use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Tags\Tag;
 use HelpScout\Api\Users\User;
@@ -196,11 +197,11 @@ class ConversationTest extends TestCase
             'bear@secret.com',
         ]);
 
+        $email = new Email();
+        $email->setValue('mycustomer@domain.com');
         $customer = new Customer();
         $customer->setId(152);
-        $emails = new Collection([
-            'mycustomer@domain.com',
-        ]);
+        $emails = new Collection([$email]);
         $customer->setEmails($emails);
         $conversation->setCustomer($customer);
 
