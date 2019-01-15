@@ -253,7 +253,7 @@ class Workflow implements Hydratable, Extractable
     }
 
     /**
-     * @param null|string $createdAt
+     * @param string|null $createdAt
      *
      * @return Workflow
      */
@@ -273,7 +273,7 @@ class Workflow implements Hydratable, Extractable
     }
 
     /**
-     * @param null|string $modifiedAt
+     * @param string|null $modifiedAt
      *
      * @return Workflow
      */

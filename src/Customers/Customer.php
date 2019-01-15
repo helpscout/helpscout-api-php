@@ -177,9 +177,9 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -494,12 +494,26 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
+     * @return string|null
+     */
+    public function getFirstEmail(): ?string
+    {
+        $emails = $this->emails->toArray();
+        $email = array_shift($emails);
+
+        return $email instanceof Email
+            ? $email->getValue()
+            : null;
+    }
+
+    /**
      * @param Email[]|Collection $emails
      *
      * @return Customer
      */
     public function setEmails(Collection $emails): Customer
     {
+        $emails =
         $this->emails = $emails;
 
         return $this;

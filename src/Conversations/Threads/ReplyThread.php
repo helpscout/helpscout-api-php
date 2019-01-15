@@ -7,7 +7,6 @@ namespace HelpScout\Api\Conversations\Threads;
 use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
 use HelpScout\Api\Conversations\Threads\Support\HasUser;
-use HelpScout\Api\Customers\Customer;
 
 class ReplyThread extends Thread
 {
@@ -57,10 +56,8 @@ class ReplyThread extends Thread
         $data['type'] = self::TYPE;
         $data['draft'] = $this->isDraft();
 
-        if ($this->customer instanceof Customer) {
-            $data['customer'] = [
-                'id' => $this->getCustomer()->getId(),
-            ];
+        if ($this->hasCustomer()) {
+            $data['customer'] = $this->getCustomerDataForEntity();
         }
 
         // When creating threads "user" is expected to be numeric rather
