@@ -1,0 +1,50 @@
+{
+  "filterTags" : [ {
+    "id" : 123,
+    "name" : "sample-tag"
+  } ],
+  "current" : {
+    "startDate" : "2015-01-01T00:00:00Z",
+    "endDate" : "2015-01-31T23:59:59Z",
+    "customersHelped" : 28,
+    "closed" : 94,
+    "totalReplies" : 62,
+    "totalUsers" : 5,
+    "totalDays" : 30,
+    "repliesPerDayPerUser" : 0.41333333333333333,
+    "repliesPerDay" : 2.066666666666667,
+    "resolvedPerDay" : 0.03333333333333333
+  },
+  "previous" : {
+    "startDate" : "2014-01-01T00:00:00Z",
+    "endDate" : "2014-01-31T23:59:59Z",
+    "customersHelped" : 27,
+    "closed" : 49,
+    "totalReplies" : 636,
+    "totalUsers" : 4,
+    "totalDays" : 30,
+    "repliesPerDayPerUser" : 5.3,
+    "repliesPerDay" : 21.2,
+    "resolvedPerDay" : 0.4666666666666667
+  },
+  "deltas" : {
+    "customersHelped" : 3.703703703703698,
+    "totalReplies" : -90.25157232704403,
+    "repliesPerDay" : -90.25157232704403,
+    "closed" : 91.83673469387755,
+    "totalUsers" : 25.0,
+    "repliesPerDayPerUser" : -92.20125786163523
+  },
+  "users" : [ {
+    "customersHelped" : 26,
+    "happinessScore" : 66.66666666666666,
+    "previousCustomersHelped" : 16,
+    "replies" : 58,
+    "name" : "John Smith",
+    "previousHappinessScore" : 23.529411764705884,
+    "previousReplies" : 40,
+    "user" : "1",
+    "previousHandleTime" : 0.0,
+    "handleTime" : 78.96
+  } ]
+}
