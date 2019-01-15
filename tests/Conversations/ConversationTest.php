@@ -6,10 +6,14 @@ namespace HelpScout\Api\Tests\Conversations;
 
 use DateTime;
 use DateTimeInterface;
+use HelpScout\Api\Conversations\ChatConversation;
 use HelpScout\Api\Conversations\Conversation;
 use HelpScout\Api\Conversations\CustomerWaitingSince;
 use HelpScout\Api\Conversations\CustomField;
+use HelpScout\Api\Conversations\EmailConversation;
+use HelpScout\Api\Conversations\PhoneConversation;
 use HelpScout\Api\Conversations\Threads\ChatThread;
+use HelpScout\Api\Conversations\Threads\Thread;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Tags\Tag;
@@ -328,5 +332,79 @@ class ConversationTest extends TestCase
             'bcc' => [],
             'assignTo' => null,
         ], $conversation->extract());
+    }
+
+    public function testChatConvo()
+    {
+        $convo = new ChatConversation();
+        $this->assertSame(Conversation::TYPE_CHAT, $convo->getType());
+        $this->assertTrue($convo->isChatConvo());
+    }
+
+    public function testEmailConvo()
+    {
+        $convo = new EmailConversation();
+        $this->assertSame(Conversation::TYPE_EMAIL, $convo->getType());
+        $this->assertTrue($convo->isEmailConvo());
+    }
+
+    public function testPhoneConvo()
+    {
+        $convo = new PhoneConversation();
+        $this->assertSame(Conversation::TYPE_PHONE, $convo->getType());
+        $this->assertTrue($convo->isPhoneConvo());
+    }
+
+    public function testStatusMethods()
+    {
+        $convo = new Conversation();
+        $this->assertNull($convo->getStatus());
+
+        $convo->setActive();
+        $this->assertTrue($convo->isActive());
+
+        $convo->setPending();
+        $this->assertTrue($convo->isPending());
+
+        $convo->setSpam();
+        $this->assertTrue($convo->isSpam());
+
+        $convo->setClosed();
+        $this->assertTrue($convo->isClosed());
+
+        $this->assertNull($convo->getAssignee());
+        $this->assertFalse($convo->isAssigned());
+
+        $convo->assignTo(new User());
+        $this->assertTrue($convo->isAssigned());
+
+        $convo->publish();
+        $this->assertTrue($convo->isPublished());
+
+        $convo->makeDraft();
+        $this->assertTrue($convo->isDraft());
+
+        $convo->delete();
+        $this->assertTrue($convo->isDeleted());
+    }
+
+    public function testAddMethods()
+    {
+        $convo = new Conversation();
+
+        $tag = new Tag();
+        $this->assertEmpty($convo->getTags()->toArray());
+        $convo->addTag($tag);
+        $this->assertSame($tag, $convo->getTags()->toArray()[0]);
+
+        $field = new CustomField();
+        $this->assertEmpty($convo->getCustomFields()->toArray());
+        $convo->addCustomField($field);
+        $this->assertSame($field, $convo->getCustomFields()->toArray()[0]);
+
+        $thread = new Thread();
+        $this->assertEmpty($convo->getThreads()->toArray());
+        $convo->addThread($thread);
+        $this->assertSame($thread, $convo->getThreads()->toArray()[0]);
     }
 }

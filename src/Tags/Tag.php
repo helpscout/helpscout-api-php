@@ -112,18 +112,26 @@ class Tag implements Extractable, Hydratable
 
     /**
      * @param string|null $color
+     *
+     * @return Tag
      */
-    public function setColor($color)
+    public function setColor($color): Tag
     {
         $this->color = $color;
+
+        return $this;
     }
 
     /**
      * @param string|null $name
+     *
+     * @return Tag
      */
-    public function setName($name)
+    public function setName($name): Tag
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -133,10 +141,14 @@ class Tag implements Extractable, Hydratable
 
     /**
      * @param string|null $slug
+     *
+     * @return Tag
      */
-    public function setSlug($slug)
+    public function setSlug($slug): Tag
     {
         $this->slug = $slug;
+
+        return $this;
     }
 
     public function getSlug(): ?string
@@ -154,10 +166,14 @@ class Tag implements Extractable, Hydratable
 
     /**
      * @param null|string $createdAt
+     *
+     * @return Tag
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt($createdAt): Tag
     {
         $this->createdAt = $this->transformDateTime($createdAt);
+
+        return $this;
     }
 
     /**
@@ -170,10 +186,14 @@ class Tag implements Extractable, Hydratable
 
     /**
      * @param null|string $updatedAt
+     *
+     * @return Tag
      */
-    public function setUpdatedAt($updatedAt): void
+    public function setUpdatedAt($updatedAt): Tag
     {
         $this->updatedAt = $this->transformDateTime($updatedAt);
+
+        return $this;
     }
 
     /**
@@ -186,9 +206,13 @@ class Tag implements Extractable, Hydratable
 
     /**
      * @param int|null $ticketCount
+     *
+     * @return Tag
      */
-    public function setTicketCount(?int $ticketCount): void
+    public function setTicketCount(?int $ticketCount): Tag
     {
         $this->ticketCount = $ticketCount;
+
+        return $this;
     }
 }

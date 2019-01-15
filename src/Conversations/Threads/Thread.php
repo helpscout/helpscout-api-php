@@ -227,11 +227,13 @@ class Thread implements Extractable, Hydratable
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): Thread
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     public function getStatus(): ?string
@@ -246,7 +248,7 @@ class Thread implements Extractable, Hydratable
 
     public function wasCreatedByAction(): bool
     {
-        return is_string($this->actionText);
+        return \is_string($this->actionText);
     }
 
     public function getActionType(): ?string
@@ -264,9 +266,11 @@ class Thread implements Extractable, Hydratable
         return $this->text;
     }
 
-    public function setText(?string $text)
+    public function setText(?string $text): Thread
     {
         $this->text = $text;
+
+        return $this;
     }
 
     public function getAssignedTo(): ?array
@@ -289,9 +293,18 @@ class Thread implements Extractable, Hydratable
         return $this->openedAt;
     }
 
-    public function setAttachments(Collection $attachments)
+    public function setAttachments(Collection $attachments): Thread
     {
-        return $this->attachments = $attachments;
+        $this->attachments = $attachments;
+
+        return $this;
+    }
+
+    public function addAttachment(Attachment $attachment): Thread
+    {
+        $this->getAttachments()->append($attachment);
+
+        return $this;
     }
 
     public function getAttachments(): Collection
@@ -299,9 +312,11 @@ class Thread implements Extractable, Hydratable
         return $this->attachments;
     }
 
-    public function setImported(bool $imported)
+    public function setImported(bool $imported): Thread
     {
         $this->imported = $imported;
+
+        return $this;
     }
 
     public function isImported(): bool

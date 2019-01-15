@@ -42,34 +42,42 @@ class Website implements Extractable, Hydratable
     /**
      * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
+     * @return Website
      */
-    public function setId(int $id)
+    public function setId(int $id): Website
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
     /**
      * @param string|null $value
+     *
+     * @return Website
      */
-    public function setValue($value)
+    public function setValue($value): Website
     {
         $this->value = $value;
+
+        return $this;
     }
 }

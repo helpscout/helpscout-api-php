@@ -49,50 +49,62 @@ class Chat implements Extractable, Hydratable
     /**
      * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
+     * @return Chat
      */
-    public function setId(int $id)
+    public function setId(int $id): Chat
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
     /**
      * @param string|null $value
+     *
+     * @return Chat
      */
-    public function setValue($value)
+    public function setValue($value): Chat
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
      * @param string|null $type
+     *
+     * @return Chat
      */
-    public function setType($type)
+    public function setType($type): Chat
     {
         $this->type = $type;
+
+        return $this;
     }
 }

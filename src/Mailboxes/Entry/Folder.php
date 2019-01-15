@@ -66,12 +66,16 @@ class Folder implements Hydratable
 
     /**
      * @param int $id
+     *
+     * @return Folder
      */
-    public function setId(int $id)
+    public function setId(int $id): Folder
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -84,10 +88,14 @@ class Folder implements Hydratable
 
     /**
      * @param string $name
+     *
+     * @return Folder
      */
-    public function setName(string $name)
+    public function setName(string $name): Folder
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -100,10 +108,14 @@ class Folder implements Hydratable
 
     /**
      * @param string $type
+     *
+     * @return Folder
      */
-    public function setType(string $type)
+    public function setType(string $type): Folder
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -116,10 +128,14 @@ class Folder implements Hydratable
 
     /**
      * @param int $userId
+     *
+     * @return Folder
      */
-    public function setUserId(int $userId)
+    public function setUserId(int $userId): Folder
     {
         $this->userId = $userId;
+
+        return $this;
     }
 
     /**
@@ -132,10 +148,14 @@ class Folder implements Hydratable
 
     /**
      * @param int $totalCount
+     *
+     * @return Folder
      */
-    public function setTotalCount(int $totalCount)
+    public function setTotalCount(int $totalCount): Folder
     {
         $this->totalCount = $totalCount;
+
+        return $this;
     }
 
     /**
@@ -148,10 +168,14 @@ class Folder implements Hydratable
 
     /**
      * @param int $activeCount
+     *
+     * @return Folder
      */
-    public function setActiveCount(int $activeCount)
+    public function setActiveCount(int $activeCount): Folder
     {
         $this->activeCount = $activeCount;
+
+        return $this;
     }
 
     /**
@@ -164,9 +188,13 @@ class Folder implements Hydratable
 
     /**
      * @param DateTime $updatedAt
+     *
+     * @return Folder
      */
-    public function setUpdatedAt(DateTime $updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt): Folder
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 }

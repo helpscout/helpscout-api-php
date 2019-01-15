@@ -13,9 +13,11 @@ class Workflow implements Hydratable, Extractable
 {
     use HydratesData;
 
+    public const TYPE_MANUAL = 'manual';
+    public const TYPE_AUTOMATIC = 'automatic';
     public const VALID_TYPES = [
-        'manual',
-        'automatic',
+        self::TYPE_MANUAL,
+        self::TYPE_AUTOMATIC,
     ];
 
     /**
@@ -109,10 +111,14 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param int|null $id
+     *
+     * @return Workflow
      */
-    public function setId(?int $id): void
+    public function setId(?int $id): Workflow
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -125,10 +131,14 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param int|null $mailboxId
+     *
+     * @return Workflow
      */
-    public function setMailboxId(?int $mailboxId): void
+    public function setMailboxId(?int $mailboxId): Workflow
     {
         $this->mailboxId = $mailboxId;
+
+        return $this;
     }
 
     /**
@@ -141,13 +151,37 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param string|null $type
+     *
+     * @return Workflow
      */
-    public function setType(?string $type): void
+    public function setType(?string $type): Workflow
     {
         if ($type !== null) {
             Assert::oneOf($type, self::VALID_TYPES);
         }
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function isManual(): bool
+    {
+        return $this->getType() === self::TYPE_MANUAL;
+    }
+
+    public function isAutomatic(): bool
+    {
+        return $this->getType() === self::TYPE_AUTOMATIC;
+    }
+
+    public function setManual(): Workflow
+    {
+        return $this->setType(self::TYPE_MANUAL);
+    }
+
+    public function setAutomatic(): Workflow
+    {
+        return $this->setType(self::TYPE_AUTOMATIC);
     }
 
     /**
@@ -160,10 +194,14 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param string|null $status
+     *
+     * @return Workflow
      */
-    public function setStatus(?string $status): void
+    public function setStatus(?string $status): Workflow
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -176,10 +214,14 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param int|null $order
+     *
+     * @return Workflow
      */
-    public function setOrder(?int $order): void
+    public function setOrder(?int $order): Workflow
     {
         $this->order = $order;
+
+        return $this;
     }
 
     /**
@@ -192,10 +234,14 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param string|null $name
+     *
+     * @return Workflow
      */
-    public function setName(?string $name): void
+    public function setName(?string $name): Workflow
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -208,10 +254,14 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param null|string $createdAt
+     *
+     * @return Workflow
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt($createdAt): Workflow
     {
         $this->createdAt = $this->transformDateTime($createdAt);
+
+        return $this;
     }
 
     /**
@@ -224,9 +274,13 @@ class Workflow implements Hydratable, Extractable
 
     /**
      * @param null|string $modifiedAt
+     *
+     * @return Workflow
      */
-    public function setModifiedAt($modifiedAt): void
+    public function setModifiedAt($modifiedAt): Workflow
     {
         $this->modifiedAt = $this->transformDateTime($modifiedAt);
+
+        return $this;
     }
 }

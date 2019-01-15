@@ -60,17 +60,21 @@ class Address implements Extractable, Hydratable
     /**
      * @return string|null
      */
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
     /**
      * @param string|null $city
+     *
+     * @return Address
      */
-    public function setCity($city)
+    public function setCity($city): Address
     {
         $this->city = $city;
+
+        return $this;
     }
 
     /**
@@ -83,57 +87,73 @@ class Address implements Extractable, Hydratable
 
     /**
      * @param array $lines
+     *
+     * @return Address
      */
-    public function setLines(array $lines)
+    public function setLines(array $lines): Address
     {
         $this->lines = $lines;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getState()
+    public function getState(): ?string
     {
         return $this->state;
     }
 
     /**
      * @param string|null $state
+     *
+     * @return Address
      */
-    public function setState($state)
+    public function setState($state): Address
     {
         $this->state = $state;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getPostalCode()
+    public function getPostalCode(): ?string
     {
         return $this->postalCode;
     }
 
     /**
      * @param string|null $postalCode
+     *
+     * @return Address
      */
-    public function setPostalCode($postalCode)
+    public function setPostalCode($postalCode): Address
     {
         $this->postalCode = $postalCode;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getCountry()
+    public function getCountry(): ?string
     {
         return $this->country;
     }
 
     /**
      * @param string|null $country
+     *
+     * @return Address
      */
-    public function setCountry($country)
+    public function setCountry($country): Address
     {
         $this->country = $country;
+
+        return $this;
     }
 }

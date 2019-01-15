@@ -49,50 +49,62 @@ class Phone implements Extractable, Hydratable
     /**
      * @return int|null
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
      * @param int $id
+     *
+     * @return Phone
      */
-    public function setId(int $id)
+    public function setId(int $id): Phone
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
     /**
      * @param string|null $value
+     *
+     * @return Phone
      */
-    public function setValue($value)
+    public function setValue(?string $value): Phone
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
      * @return string|null
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
      * @param string|null $type
+     *
+     * @return Phone
      */
-    public function setType($type)
+    public function setType(?string $type): Phone
     {
         $this->type = $type;
+
+        return $this;
     }
 }

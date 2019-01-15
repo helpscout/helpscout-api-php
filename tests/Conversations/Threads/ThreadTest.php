@@ -6,6 +6,7 @@ namespace HelpScout\Api\Tests\Conversations\Threads;
 
 use DateTime;
 use DateTimeInterface;
+use HelpScout\Api\Conversations\Threads\Attachments\Attachment;
 use HelpScout\Api\Conversations\Threads\Thread;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Exception\RuntimeException;
@@ -286,5 +287,16 @@ class ThreadTest extends TestCase
         $this->expectExceptionMessage('Unrecognized thread type');
 
         Thread::resourceUrl(123);
+    }
+
+    public function testAddAttachment()
+    {
+        $thread = new Thread();
+
+        $this->assertEmpty($thread->getAttachments());
+
+        $attachment = new Attachment();
+        $thread->addAttachment($attachment);
+        $this->assertSame($attachment, $thread->getAttachments()->toArray()[0]);
     }
 }
