@@ -12,7 +12,7 @@ use HelpScout\Api\Customers\Entry\CustomerEntryEndpoint;
 use HelpScout\Api\Http\Authenticator;
 use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Mailboxes\MailboxesEndpoint;
-use HelpScout\Api\Reports\Report;
+use HelpScout\Api\Reports\ReportsEndpoint;
 use HelpScout\Api\Tags\TagsEndpoint;
 use HelpScout\Api\Users\UsersEndpoint;
 use HelpScout\Api\Webhooks\WebhooksEndpoint;
@@ -33,6 +33,7 @@ class ApiClient
         'hs.customerEntry' => CustomerEntryEndpoint::class,
         'hs.conversations' => ConversationsEndpoint::class,
         'hs.attachments' => AttachmentsEndpoint::class,
+        'hs.reports' => ReportsEndpoint::class,
     ];
 
     /**
@@ -163,14 +164,7 @@ class ApiClient
      */
     public function runReport(string $reportName, array $params = []): array
     {
-        if (!\class_exists($reportName)) {
-            throw new \InvalidArgumentException("'{$reportName}' is not a valid report");
-        }
-
-        /** @var Report $report */
-        $report = $reportName::getInstance($params);
-
-        return $this->restClient->getReport($report);
+        return $this->reports()->runReport($reportName, $params);
     }
 
     /**
@@ -221,6 +215,14 @@ class ApiClient
     public function tags(): TagsEndpoint
     {
         return $this->fetchFromContainer('hs.tags');
+    }
+
+    /**
+     * @return ReportsEndpoint
+     */
+    public function reports(): ReportsEndpoint
+    {
+        return $this->fetchFromContainer('hs.reports');
     }
 
     /**
