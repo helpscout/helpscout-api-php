@@ -434,7 +434,9 @@ class Customer implements Extractable, Hydratable
         $emails = $this->emails->toArray();
         $email = array_shift($emails);
 
-        return $email ?? null;
+        return $email instanceof Email
+            ? $email->getValue()
+            : null;
     }
 
     /**
@@ -442,6 +444,7 @@ class Customer implements Extractable, Hydratable
      */
     public function setEmails(Collection $emails)
     {
+        $emails =
         $this->emails = $emails;
     }
 
