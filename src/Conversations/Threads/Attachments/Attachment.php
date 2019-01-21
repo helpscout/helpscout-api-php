@@ -168,8 +168,6 @@ class Attachment implements Extractable, Hydratable
 
     public function setWidth(int $width): Attachment
     {
-        Assert::greaterThan($width, 0);
-
         $this->width = $width;
 
         return $this;
@@ -182,8 +180,6 @@ class Attachment implements Extractable, Hydratable
 
     public function setHeight(int $height): Attachment
     {
-        Assert::greaterThan($height, 0);
-
         $this->height = $height;
 
         return $this;
@@ -196,8 +192,6 @@ class Attachment implements Extractable, Hydratable
 
     public function setSize(int $size): Attachment
     {
-        Assert::greaterThan($size, 0);
-
         $this->size = $size;
 
         return $this;
