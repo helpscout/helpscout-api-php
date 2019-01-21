@@ -31,6 +31,20 @@ class AttachmentTest extends TestCase
         $this->assertSame(401230, $attachment->getSize());
     }
 
+    public function testCanHydrateFilesWithoutDimensions()
+    {
+        $attachment = new Attachment();
+        $attachment->hydrate([
+            'width' => 0,
+            'height' => 0,
+            'size' => 0,
+        ]);
+
+        $this->assertSame(0, $attachment->getWidth());
+        $this->assertSame(0, $attachment->getHeight());
+        $this->assertSame(0, $attachment->getSize());
+    }
+
     public function testHydratesWithLowercaseFilename()
     {
         $attachment = new Attachment();
