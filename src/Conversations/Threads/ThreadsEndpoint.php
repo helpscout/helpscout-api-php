@@ -25,10 +25,15 @@ class ThreadsEndpoint extends Endpoint
     /**
      * @param int    $conversationId
      * @param Thread $thread
+     *
+     * @return int|null
      */
-    public function create(int $conversationId, Thread $thread): void
+    public function create(int $conversationId, Thread $thread): ?int
     {
-        $this->restClient->createResource($thread, $thread::resourceUrl($conversationId));
+        return $this->restClient->createResource(
+            $thread,
+            $thread::resourceUrl($conversationId)
+        );
     }
 
     /**
