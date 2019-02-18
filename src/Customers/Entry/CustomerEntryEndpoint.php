@@ -23,10 +23,12 @@ class CustomerEntryEndpoint extends Endpoint
     /**
      * @param int     $customerId
      * @param Address $address
+     *
+     * @return int|null
      */
-    public function createAddress(int $customerId, Address $address): void
+    public function createAddress(int $customerId, Address $address): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $address,
             sprintf(self::CUSTOMER_ADDRESS, $customerId)
         );
@@ -56,10 +58,12 @@ class CustomerEntryEndpoint extends Endpoint
     /**
      * @param int  $customerId
      * @param Chat $chat
+     *
+     * @return int|null
      */
-    public function createChat(int $customerId, Chat $chat): void
+    public function createChat(int $customerId, Chat $chat): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $chat,
             sprintf(self::CREATE_CUSTOMER_CHAT, $customerId)
         );
@@ -91,10 +95,12 @@ class CustomerEntryEndpoint extends Endpoint
     /**
      * @param int   $customerId
      * @param Email $email
+     *
+     * @return int|null
      */
-    public function createEmail(int $customerId, Email $email): void
+    public function createEmail(int $customerId, Email $email): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $email,
             sprintf(self::CREATE_CUSTOMER_EMAIL, $customerId)
         );
@@ -126,10 +132,12 @@ class CustomerEntryEndpoint extends Endpoint
     /**
      * @param int   $customerId
      * @param Phone $phone
+     *
+     * @return int|null
      */
-    public function createPhone(int $customerId, Phone $phone): void
+    public function createPhone(int $customerId, Phone $phone): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $phone,
             sprintf(self::CREATE_CUSTOMER_PHONE, $customerId)
         );
@@ -161,10 +169,12 @@ class CustomerEntryEndpoint extends Endpoint
     /**
      * @param int           $customerId
      * @param SocialProfile $socialProfile
+     *
+     * @return int|null
      */
-    public function createSocialProfile(int $customerId, SocialProfile $socialProfile): void
+    public function createSocialProfile(int $customerId, SocialProfile $socialProfile): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $socialProfile,
             sprintf(self::CREATE_CUSTOMER_SOCIAL, $customerId)
         );
@@ -196,10 +206,12 @@ class CustomerEntryEndpoint extends Endpoint
     /**
      * @param int     $customerId
      * @param Website $website
+     *
+     * @return int|null
      */
-    public function createWebsite(int $customerId, Website $website): void
+    public function createWebsite(int $customerId, Website $website): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $website,
             sprintf(self::CREATE_CUSTOMER_WEBSITE, $customerId)
         );

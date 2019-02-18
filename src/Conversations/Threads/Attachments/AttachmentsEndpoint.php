@@ -28,10 +28,12 @@ class AttachmentsEndpoint extends Endpoint
      * @param int        $conversationId
      * @param int        $threadId
      * @param Attachment $attachment
+     *
+     * @return int|null
      */
-    public function create(int $conversationId, int $threadId, Attachment $attachment): void
+    public function create(int $conversationId, int $threadId, Attachment $attachment): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $attachment,
             sprintf('/v2/conversations/%d/threads/%d/attachments', $conversationId, $threadId)
         );

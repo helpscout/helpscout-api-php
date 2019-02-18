@@ -13,10 +13,12 @@ class CustomersEndpoint extends Endpoint
 {
     /**
      * @param Customer $customer
+     *
+     * @return int|null
      */
-    public function create(Customer $customer): void
+    public function create(Customer $customer): ?int
     {
-        $this->restClient->createResource(
+        return $this->restClient->createResource(
             $customer,
             '/v2/customers'
         );

@@ -36,10 +36,12 @@ class ConversationsEndpoint extends Endpoint
 
     /**
      * @param Conversation $conversation
+     *
+     * @return int|null
      */
-    public function create(Conversation $conversation): void
+    public function create(Conversation $conversation): ?int
     {
-        $this->restClient->createResource($conversation, sprintf('/v2/conversations'));
+        return $this->restClient->createResource($conversation, sprintf('/v2/conversations'));
     }
 
     /**
