@@ -813,7 +813,7 @@ When fetching a collection of entities the client will return an instance of `He
 
 ```php
 /** @var PagedCollection $users */
-$users = $client->getUsers();
+$users = $client->users()->list();
 
 // The current page number
 $users->getPageNumber();
