@@ -99,9 +99,9 @@ $client = ApiClientFactory::createClient($config);
 $config = [
     'auth' => [
         'type' => 'refresh_token',
-        'clientId' => 'asdf1234',
-        'apiKey' => 'fdas4321',
-        'refreshToken' => 'asdfasdf
+        'appId' => 'asdf1234',
+        'appSecret' => 'fdas4321',
+        'refreshToken' => 'asdfasdf'
     ]
 ];
 $client = ApiClientFactory::createClient($config);
