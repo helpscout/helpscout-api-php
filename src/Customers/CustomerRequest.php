@@ -6,6 +6,11 @@ namespace HelpScout\Api\Customers;
 
 use HelpScout\Api\Assert\Assert;
 
+/**
+ * This class is deprecated
+ *
+ * @deprecated
+ */
 class CustomerRequest
 {
     /**
