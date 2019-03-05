@@ -115,10 +115,15 @@ class HalDeserializer
         $resources = [];
         if (array_key_exists(self::EMBEDDED, $data)) {
             foreach ($data[self::EMBEDDED] as $rel => $resourceData) {
-                // TODO: Check if indexed (object or collection)
-                $resources[$rel] = array_map(function (array $data) {
-                    return self::createDocument($data);
-                }, $resourceData);
+                if (isset($resourceData[0]) && is_array($resourceData[0])) {
+                    $embeddedResource = array_map(function (array $data) {
+                        return self::createDocument($data);
+                    }, $resourceData);
+                } else {
+                    $embeddedResource = self::createDocument($resourceData);
+                }
+
+                $resources[$rel] = $embeddedResource;
             }
 
             unset($data[self::EMBEDDED]);

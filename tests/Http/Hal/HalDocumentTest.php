@@ -27,20 +27,33 @@ class HalDocumentTest extends TestCase
             $emptyLinks,
             [
                 'attachments' => [
-                    new HalDocument([
+                    new HalDocument(
+                        [
                             'id' => 4823,
                         ],
                         $emptyLinks,
                         []
                     ),
                 ],
+                'address' => new HalDocument(
+                    [
+                        'city' => 'London',
+                    ],
+                    $emptyLinks,
+                    []
+                ),
             ]
         );
 
         $entities = $thread->getEmbeddedEntities();
 
+        // Asserts that a HasMany collection of embedded entities is mapped correctly
         $this->assertArrayHasKey('attachments', $entities);
         $this->assertEquals(4823, $entities['attachments'][0]['id']);
+
+        // Asserts that a HasOne embedded entity is mapped correctly
+        $this->assertArrayHasKey('address', $entities);
+        $this->assertEquals('London', $entities['address']['city']);
     }
 
     public function testGetEmbedKeysIsAlwaysAnArray()

@@ -30,6 +30,14 @@ class HalDeserializerTest extends TestCase
         $this->assertCount(5, $halDocument->getEmbedded('entities'));
     }
 
+    public function testDeserializeDocumentWithCollectionWithEmbeddedEntity()
+    {
+        $halDocument = HalDeserializer::deserializeDocument(StubPayloads::getResourceWithEmbeddedEntity());
+
+        $this->assertInstanceOf(HalDocument::class, $halDocument);
+        $this->assertTrue($halDocument->hasEmbedded('address'));
+    }
+
     public function testDeserializeDocumentWithEmptyCollection()
     {
         $halDocument = HalDeserializer::deserializeDocument(StubPayloads::getResources(0));
