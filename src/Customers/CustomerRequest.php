@@ -7,7 +7,9 @@ namespace HelpScout\Api\Customers;
 use HelpScout\Api\Assert\Assert;
 
 /**
- * This class is deprecated
+ * This class is deprecated now that all entities are always provided
+ *
+ * @see https://developer.helpscout.com/mailbox-api/changelog/#2019-01-25-new-return-all-customer-entries-always
  *
  * @deprecated
  */
