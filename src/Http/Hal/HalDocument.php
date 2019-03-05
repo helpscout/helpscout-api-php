@@ -58,7 +58,7 @@ class HalDocument
     {
         /** @var HalDocument $embeddedItemData */
         $embeddedData = [];
-        // Convert HalDocument[] to nested arrays
+        // Convert HalDocument|HalDocument[] to nested arrays
         foreach ($this->embedded as $embeddedType => $embeddedItems) {
             if (is_array($embeddedItems)) {
                 foreach ($embeddedItems as $embeddedItemData) {
