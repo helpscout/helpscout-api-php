@@ -11,6 +11,17 @@ class StubPayloads
         return json_encode(self::resource(1));
     }
 
+    public static function getResourceWithEmbeddedEntity(): string
+    {
+        $resource = self::resource(1);
+
+        $resource['_embedded']['address'] = [
+            'city' => 'Frankfurt',
+        ];
+
+        return json_encode($resource);
+    }
+
     public static function getInvalidResource(): string
     {
         $resource = self::resource(1);
