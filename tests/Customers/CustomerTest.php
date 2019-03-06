@@ -51,6 +51,157 @@ class CustomerTest extends TestCase
         $this->assertSame('52', $customer->getAge());
     }
 
+    public function testHydratesOneAddress()
+    {
+        $customer = new Customer();
+        $customer->hydrate([
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'updatedAt' => '2017-04-21T14:43:24Z',
+        ], [
+            'address' => [
+                'city' => 'Norfolk',
+            ],
+        ]);
+
+        // Only asserting one field here as the details of what's inflated are covered by the entity's tests
+        $this->assertSame('Norfolk', $customer->getAddress()->getCity());
+    }
+
+    public function testHydratesManyChats()
+    {
+        $customer = new Customer();
+        $customer->hydrate([
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'updatedAt' => '2017-04-21T14:43:24Z',
+        ], [
+            'chats' => [
+                [
+                    'id' => 123123,
+                ],
+                [
+                    'id' => 456223,
+                ],
+            ],
+        ]);
+
+        $chats = $customer->getChats();
+
+        // Only asserting one field here as the details of what's inflated are covered by the entity's tests
+        $this->assertInstanceOf(Chat::class, $chats[0]);
+        $this->assertSame(123123, $chats[0]->getId());
+
+        $this->assertInstanceOf(Chat::class, $chats[1]);
+        $this->assertSame(456223, $chats[1]->getId());
+    }
+
+    public function testHydratesManyEmails()
+    {
+        $customer = new Customer();
+        $customer->hydrate([
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'updatedAt' => '2017-04-21T14:43:24Z',
+        ], [
+            'emails' => [
+                [
+                    'id' => 689,
+                ],
+                [
+                    'id' => 798,
+                ],
+            ],
+        ]);
+
+        $emails = $customer->getEmails();
+
+        // Only asserting one field here as the details of what's inflated are covered by the entity's tests
+        $this->assertInstanceOf(Email::class, $emails[0]);
+        $this->assertSame(689, $emails[0]->getId());
+
+        $this->assertInstanceOf(Email::class, $emails[1]);
+        $this->assertSame(798, $emails[1]->getId());
+    }
+
+    public function testHydratesManySocialProfiles()
+    {
+        $customer = new Customer();
+        $customer->hydrate([
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'updatedAt' => '2017-04-21T14:43:24Z',
+        ], [
+            'social_profiles' => [
+                [
+                    'id' => 1233,
+                ],
+                [
+                    'id' => 4512,
+                ],
+            ],
+        ]);
+
+        $socialProfiles = $customer->getSocialProfiles();
+
+        // Only asserting one field here as the details of what's inflated are covered by the entity's tests
+        $this->assertInstanceOf(SocialProfile::class, $socialProfiles[0]);
+        $this->assertSame(1233, $socialProfiles[0]->getId());
+
+        $this->assertInstanceOf(SocialProfile::class, $socialProfiles[1]);
+        $this->assertSame(4512, $socialProfiles[1]->getId());
+    }
+
+    public function testHydratesManyPhones()
+    {
+        $customer = new Customer();
+        $customer->hydrate([
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'updatedAt' => '2017-04-21T14:43:24Z',
+        ], [
+            'phones' => [
+                [
+                    'id' => 9966,
+                ],
+                [
+                    'id' => 4433,
+                ],
+            ],
+        ]);
+
+        $phones = $customer->getPhones();
+
+        // Only asserting one field here as the details of what's inflated are covered by the entity's tests
+        $this->assertInstanceOf(Phone::class, $phones[0]);
+        $this->assertSame(9966, $phones[0]->getId());
+
+        $this->assertInstanceOf(Phone::class, $phones[1]);
+        $this->assertSame(4433, $phones[1]->getId());
+    }
+
+    public function testHydratesManyWebsites()
+    {
+        $customer = new Customer();
+        $customer->hydrate([
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'updatedAt' => '2017-04-21T14:43:24Z',
+        ], [
+            'websites' => [
+                [
+                    'id' => 1390,
+                ],
+                [
+                    'id' => 9530,
+                ],
+            ],
+        ]);
+
+        $websites = $customer->getWebsites();
+
+        // Only asserting one field here as the details of what's inflated are covered by the entity's tests
+        $this->assertInstanceOf(Website::class, $websites[0]);
+        $this->assertSame(1390, $websites[0]->getId());
+
+        $this->assertInstanceOf(Website::class, $websites[1]);
+        $this->assertSame(9530, $websites[1]->getId());
+    }
+
     public function testHydrateWithoutCreatedAt()
     {
         $customer = new Customer();

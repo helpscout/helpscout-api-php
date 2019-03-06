@@ -172,18 +172,6 @@ $filter = new (CustomerFilters)
 $customers = $client->customers()->list($filter);
 ```
 
-Get customers with pre-loaded sub-entities.
-
-```php
-use HelpScout\Api\Customers\CustomerRequest;
-
-$request = (new CustomerRequest)
-    ->withChats()
-    ->withEmails();
-
-$customers = $client->customers()->list($filter, $request);
-```
-
 Create a customer.
 
 ```php

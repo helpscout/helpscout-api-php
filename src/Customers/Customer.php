@@ -155,6 +155,43 @@ class Customer implements Extractable, Hydratable
         $this->setPhotoUrl($data['photoUrl'] ?? null);
         $this->setBackground($data['background'] ?? null);
         $this->setAge($data['age'] ?? null);
+
+        if (isset($embedded['address']) && is_array($embedded['address'])) {
+            /** @var Address $address */
+            $address = $this->hydrateOne(Address::class, $embedded['address']);
+
+            $this->setAddress($address);
+        }
+
+        if (isset($embedded['chats']) && is_array($embedded['chats'])) {
+            $chats = $this->hydrateMany(Chat::class, $embedded['chats']);
+
+            $this->setChats($chats);
+        }
+
+        if (isset($embedded['emails']) && is_array($embedded['emails'])) {
+            $emails = $this->hydrateMany(Email::class, $embedded['emails']);
+
+            $this->setEmails($emails);
+        }
+
+        if (isset($embedded['social_profiles']) && is_array($embedded['social_profiles'])) {
+            $socialProfiles = $this->hydrateMany(SocialProfile::class, $embedded['social_profiles']);
+
+            $this->setSocialProfiles($socialProfiles);
+        }
+
+        if (isset($embedded['phones']) && is_array($embedded['phones'])) {
+            $phones = $this->hydrateMany(Phone::class, $embedded['phones']);
+
+            $this->setPhones($phones);
+        }
+
+        if (isset($embedded['websites']) && is_array($embedded['websites'])) {
+            $websites = $this->hydrateMany(Website::class, $embedded['websites']);
+
+            $this->setWebsites($websites);
+        }
     }
 
     /**
@@ -513,7 +550,6 @@ class Customer implements Extractable, Hydratable
      */
     public function setEmails(Collection $emails): Customer
     {
-        $emails =
         $this->emails = $emails;
 
         return $this;
