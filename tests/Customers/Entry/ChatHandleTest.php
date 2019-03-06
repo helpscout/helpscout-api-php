@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Customers\Entry;
 
-use HelpScout\Api\Customers\Entry\Chat;
+use HelpScout\Api\Customers\Entry\ChatHandle;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Tests for Chart are initially the same as ChatHandle.  We're duplicating the tests here because ChatHandle
- * may see additional functionality in the future and its tests/assertions change, whereas these shouldn't.
- */
-class ChatTest extends TestCase
+class ChatHandleTest extends TestCase
 {
     public function testHydrate()
     {
-        $chatHandle = new Chat();
+        $chatHandle = new ChatHandle();
         $chatHandle->hydrate([
             'id' => 12,
             'value' => 'Hello there',
@@ -29,7 +25,7 @@ class ChatTest extends TestCase
 
     public function testExtract()
     {
-        $chatHandle = new Chat();
+        $chatHandle = new ChatHandle();
         $chatHandle->setId(12);
         $chatHandle->setValue('Hello there');
         $chatHandle->setType('twitter');
@@ -42,7 +38,7 @@ class ChatTest extends TestCase
 
     public function testExtractNewEntity()
     {
-        $chatHandle = new Chat();
+        $chatHandle = new ChatHandle();
 
         $this->assertSame([
             'value' => null,

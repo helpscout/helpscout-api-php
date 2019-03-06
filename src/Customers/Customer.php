@@ -7,7 +7,7 @@ namespace HelpScout\Api\Customers;
 use DateTime;
 use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Customers\Entry\Address;
-use HelpScout\Api\Customers\Entry\Chat;
+use HelpScout\Api\Customers\Entry\ChatHandle;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
 use HelpScout\Api\Customers\Entry\SocialProfile;
@@ -92,7 +92,7 @@ class Customer implements Extractable, Hydratable
     private $address;
 
     /**
-     * @var Chat[]|Collection
+     * @var ChatHandle[]|Collection
      */
     private $chats;
 
@@ -164,9 +164,9 @@ class Customer implements Extractable, Hydratable
         }
 
         if (isset($embedded['chats']) && is_array($embedded['chats'])) {
-            $chats = $this->hydrateMany(Chat::class, $embedded['chats']);
+            $chats = $this->hydrateMany(ChatHandle::class, $embedded['chats']);
 
-            $this->setChats($chats);
+            $this->setChatHandles($chats);
         }
 
         if (isset($embedded['emails']) && is_array($embedded['emails'])) {
@@ -496,7 +496,36 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @return Chat[]|Collection
+     * @return ChatHandle[]|Collection
+     */
+    public function getChatHandles(): Collection
+    {
+        return $this->chats;
+    }
+
+    /**
+     * @param ChatHandle[]|Collection $chats
+     *
+     * @return Customer
+     */
+    public function setChatHandles(Collection $chats): Customer
+    {
+        $this->chats = $chats;
+
+        return $this;
+    }
+
+    public function addChatHandle(ChatHandle $chat): Customer
+    {
+        $this->getChatHandles()->append($chat);
+
+        return $this;
+    }
+
+    /**
+     * @deprecated
+     *
+     * @return ChatHandle[]|Collection
      */
     public function getChats(): Collection
     {
@@ -504,7 +533,9 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @param Chat[]|Collection $chats
+     * @deprecated
+     *
+     * @param ChatHandle[]|Collection $chats
      *
      * @return Customer
      */
@@ -515,7 +546,10 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    public function addChat(Chat $chat): Customer
+    /**
+     * @deprecated
+     */
+    public function addChat(ChatHandle $chat): Customer
     {
         $this->getChats()->append($chat);
 

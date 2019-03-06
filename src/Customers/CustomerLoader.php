@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace HelpScout\Api\Customers;
 
 use HelpScout\Api\Customers\Entry\Address;
-use HelpScout\Api\Customers\Entry\Chat;
+use HelpScout\Api\Customers\Entry\ChatHandle;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
 use HelpScout\Api\Customers\Entry\SocialProfile;
 use HelpScout\Api\Customers\Entry\Website;
 use HelpScout\Api\Entity\LinkedEntityLoader;
 
+/**
+ * This loader is responsible for making additional http requests to fetch additional
+ * entities without any additional steps from the user of the SDK.  Since all Customer
+ * entities are loaded eagerly, this is officially deprecated.
+ *
+ * @deprecated
+ */
 class CustomerLoader extends LinkedEntityLoader
 {
     public function load()
@@ -25,8 +32,8 @@ class CustomerLoader extends LinkedEntityLoader
         }
 
         if ($this->shouldLoadResource(CustomerLinks::CHATS)) {
-            $chats = $this->loadResources(Chat::class, CustomerLinks::CHATS);
-            $customer->setChats($chats);
+            $chats = $this->loadResources(ChatHandle::class, CustomerLinks::CHATS);
+            $customer->setChatHandles($chats);
         }
 
         if ($this->shouldLoadResource(CustomerLinks::EMAILS)) {
