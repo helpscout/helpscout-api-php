@@ -118,37 +118,10 @@ The access token will always be used if available, regardless of whether you hav
 
 ### Customers
 
-Get a customer.
+Get a customer.  Whenever getting a customer, all it's entities (email addresses, phone numbers, social profiles, etc.) come preloaded in the same request.
 
 ```php
 $customer = $client->getCustomer($customerId);
-```
-
-Get a customer with pre-loaded sub-entities.
-
-A customer entity has a number of related sub-entities:
-
-* Address
-* Chats
-* Emails
-* Phone numbers
-* Social profiles
-* Websites
-
-Each of these sub-entities can be pre-loaded when fetching a customer to remove the need for multiple method calls. The `CustomerRequest` class is used
-to describe which sub-entities should be pre-loaded. For example:
-
-```php
-use HelpScout\Api\Customers\CustomerRequest;
-
-$request = (new CustomerRequest)
-    ->withAddress()
-    ->withEmails();
-
-$customer = $client->customers()->get($customerId, $request);
-
-$address = $customer->getAddress();
-$emails = $customer->getEmails();
 ```
 
 Get customers.
