@@ -7,10 +7,6 @@ On April 1, 2019, we will move the v1 work off to a separate branch and merge th
 
 All v2 work and tagged releases moving forward will be on `master`. If you're targeting `dev-master` in your `composer.json` file, everything will break for you at this time. 
 
-Version 1.9.0 Released
----------------------
-Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
-
 Requirements
 ---------------------
 * PHP 5.3.x

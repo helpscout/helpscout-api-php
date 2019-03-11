@@ -1,3 +1,16 @@
+#### 1.9.4 (March 11, 2019)
+* Added notice of version switch
+
+#### 1.9.3 (January 15, 2019)
+* Fix Object names for To/CC/BCC as pulled from API (#83) - Thank you to @IanSimpson for submitting this fix. When creating a Thread (or any descendant) the AbstractThread base class was expect "toList", "ccList" and "bccList" items in the objects as pulled from the API. In practice, the "list" is just a construct within the API wrapper, and the fields in the API are called "to", "cc" and "bcc" respectively.
+* Upgrade phpunit and fix tests (#68) - PHPUnit has been upgraded to use v6
+
+#### 1.9.2 (November 1, 2018)
+* This version adds support for the [Conversations: Received Messages](https://developer.helpscout.com/help-desk-api/reports/conversations/received-messages/) endpoint in v1 of the Help Scout API
+
+#### 1.9.1 (October 10, 2018)
+* Introduced support for new [Beacon](https://www.helpscout.net/live-chat/) Chat conversation thread types
+
 #### 1.9.0 (January 2, 2018)
 * Minor tweak to avoid any confusion when creating a new `Message` thread and the `PersonRef` has a `customer` type instead of `user`.
 * Added method to retrieve all the tags (Thanks [@crodas](https://github.com/crodas) and [@Vardkin](https://github.com/Vardkin) for PRs [#61](https://github.com/helpscout/helpscout-api-php/pull/61) and [#57](https://github.com/helpscout/helpscout-api-php/pull/57) respectively)
