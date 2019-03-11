@@ -1,3 +1,6 @@
+#### 1.9.4 (March 11, 2019)
+* Added notice of version switch
+
 #### 1.9.3 (January 15, 2019)
 * Fix Object names for To/CC/BCC as pulled from API (#83) - Thank you to @IanSimpson for submitting this fix. When creating a Thread (or any descendant) the AbstractThread base class was expect "toList", "ccList" and "bccList" items in the objects as pulled from the API. In practice, the "list" is just a construct within the API wrapper, and the fields in the API are called "to", "cc" and "bcc" respectively.
 * Upgrade phpunit and fix tests (#68) - PHPUnit has been upgraded to use v6
