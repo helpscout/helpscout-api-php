@@ -2,6 +2,11 @@ Help Scout PHP Wrapper [![Build Status](https://travis-ci.org/helpscout/helpscou
 ================================================================================
 > PHP Wrapper for the Help Scout API and Webhooks implementation. More information on our [developer site](http://developer.helpscout.net).
 
+## Update
+On April 1, 2019, we will move the v1 work off to a separate branch and merge the `v2` branch into `master`. From that point until we sunset the Mailbox API v1 in June of 2019, all work on v1 will be on this new branch with tagged releases targeting the same. 
+
+All v2 work and tagged releases moving forward will be on `master`. If you're targeting `dev-master` in your `composer.json` file, everything will break for you at this time. 
+
 Version 1.9.0 Released
 ---------------------
 Please see the [Changelog](https://github.com/helpscout/helpscout-api-php/blob/master/CHANGELOG.md) for details.
