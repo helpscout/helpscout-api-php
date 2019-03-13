@@ -190,12 +190,12 @@ class Authenticator
         $this->ttl = $tokens['expiresIn'];
     }
 
-	/**
-	 * @param array $payload
-	 * @param string $url
-	 *
-	 * @return array
-	 */
+    /**
+     * @param array $payload
+     * @param string $url
+     *
+     * @return array
+     */
     private function requestAuthTokens(array $payload, string $url): array
     {
         $headers = [

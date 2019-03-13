@@ -96,12 +96,12 @@ class RestClientBuilder
                     $authConfig['appSecret'],
                     $authConfig['refreshToken']
                 );
-			case CodeCredentials::TYPE:
-				return new CodeCredentials(
-					$authConfig['appId'],
-					$authConfig['appSecret'],
-					$authConfig['code']
-				);
+            case CodeCredentials::TYPE:
+                return new CodeCredentials(
+                    $authConfig['appId'],
+                    $authConfig['appSecret'],
+                    $authConfig['code']
+                );
             default:
                 return new NullCredentials();
         }
