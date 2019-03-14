@@ -145,7 +145,7 @@ class Authenticator
      * @param string $appSecret
      * @param string $code
      */
-    public function useCode(string $appId, string $appSecret, string $code): void
+    public function useCodeToken(string $appId, string $appSecret, string $code): void
     {
         $this->auth = new CodeCredentials($appId, $appSecret, $code);
     }
