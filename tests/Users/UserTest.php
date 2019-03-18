@@ -59,4 +59,16 @@ class UserTest extends TestCase
 
         $this->assertNull($user->getUpdatedAt());
     }
+
+    public function testHydrateWithoutNameSuffixes()
+    {
+        $user = new User();
+        $user->hydrate([
+            'first' => 'John',
+            'last' => 'Smith',
+        ]);
+
+        $this->assertSame('John', $user->getFirstName());
+        $this->assertSame('Smith', $user->getLastName());
+    }
 }

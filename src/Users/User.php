@@ -68,8 +68,21 @@ class User implements Hydratable
         $this->setId($data['id'] ?? null);
         $this->setCreatedAt($this->transformDateTime($data['createdAt'] ?? null));
         $this->setUpdatedAt($this->transformDateTime($data['updatedAt'] ?? null));
-        $this->setFirstName($data['firstName'] ?? null);
-        $this->setLastName($data['lastName'] ?? null);
+
+        // When a User is supplied via the Conversation's "createdBy" field it doesn't use the "name" suffix
+        if (isset($data['firstName'])) {
+            $this->setFirstName($data['firstName']);
+        } elseif (isset($data['first'])) {
+            $this->setFirstName($data['first']);
+        }
+
+        // When a User is supplied via the Conversation's "createdBy" field it doesn't use the "name" suffix
+        if (isset($data['lastName'])) {
+            $this->setLastName($data['lastName']);
+        } elseif (isset($data['last'])) {
+            $this->setLastName($data['last']);
+        }
+
         $this->setEmail($data['email'] ?? null);
         $this->setRole($data['role'] ?? null);
         $this->setTimezone($data['timezone'] ?? null);
