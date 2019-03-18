@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HelpScout\Api\Tests\Http;
+namespace HelpScout\Api\Tests\Http\Auth;
 
 use HelpScout\Api\Http\Auth\CodeCredentials;
 use PHPUnit\Framework\TestCase;
@@ -18,9 +18,9 @@ class CodeCredentialsTest extends TestCase
         $credentials = new CodeCredentials($appId, $appSecret, $code);
 
         $this->assertSame([
-            'grant_type'    => CodeCredentials::TYPE,
-            'code'          => $code,
-            'client_id'     => $appId,
+            'grant_type' => CodeCredentials::TYPE,
+            'code' => $code,
+            'client_id' => $appId,
             'client_secret' => $appSecret,
         ], $credentials->getPayload());
     }

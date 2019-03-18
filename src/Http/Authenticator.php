@@ -215,7 +215,7 @@ class Authenticator
     }
 
     /**
-     * @param array $payload
+     * @param array  $payload
      * @param string $url
      *
      * @return array

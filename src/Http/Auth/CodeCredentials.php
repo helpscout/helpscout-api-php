@@ -79,4 +79,3 @@ class CodeCredentials implements Auth
         ];
     }
 }
-
