@@ -65,7 +65,9 @@ class User implements Hydratable
 
     public function hydrate(array $data, array $embedded = [])
     {
-        $this->setId($data['id'] ?? null);
+        if (isset($data['id'])) {
+            $this->setId((int) $data['id']);
+        }
         $this->setCreatedAt($this->transformDateTime($data['createdAt'] ?? null));
         $this->setUpdatedAt($this->transformDateTime($data['updatedAt'] ?? null));
 
