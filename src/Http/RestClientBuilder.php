@@ -16,6 +16,7 @@ use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
+use HelpScout\Api\Http\Auth\CodeCredentials;
 use HelpScout\Api\Http\Handlers\ClientErrorHandler;
 use HelpScout\Api\Http\Handlers\RateLimitHandler;
 use HelpScout\Api\Http\Handlers\ValidationHandler;
@@ -94,6 +95,12 @@ class RestClientBuilder
                     $authConfig['appId'],
                     $authConfig['appSecret'],
                     $authConfig['refreshToken']
+                );
+            case CodeCredentials::TYPE:
+                return new CodeCredentials(
+                    $authConfig['appId'],
+                    $authConfig['appSecret'],
+                    $authConfig['code']
                 );
             default:
                 return new NullCredentials();

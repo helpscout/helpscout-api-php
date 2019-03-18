@@ -156,6 +156,21 @@ class ApiClient
     }
 
     /**
+     * @param string $appId
+     * @param string $appSecret
+     * @param string $code
+     *
+     * @return ApiClient
+     */
+    public function useCodeToken(string $appId, string $appSecret, string $code): ApiClient
+    {
+        $this->getAuthenticator()
+            ->useCodeToken($appId, $appSecret, $code);
+
+        return $this;
+    }
+
+    /**
      * @param string $reportName
      * @param array  $params
      *

@@ -7,6 +7,7 @@ namespace HelpScout\Api\Http;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
+use HelpScout\Api\Http\Auth\CodeCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
@@ -139,6 +140,16 @@ class Authenticator
         $this->auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
     }
 
+    /**
+     * @param string $appId
+     * @param string $appSecret
+     * @param string $code
+     */
+    public function useCodeToken(string $appId, string $appSecret, string $code): void
+    {
+        $this->auth = new CodeCredentials($appId, $appSecret, $code);
+    }
+
     protected function fetchTokens(): void
     {
         switch ($this->auth->getType()) {
@@ -147,6 +158,7 @@ class Authenticator
                 break;
             case ClientCredentials::TYPE:
             case RefreshCredentials::TYPE:
+            case CodeCredentials::TYPE:
                 $this->fetchAccessAndRefreshToken();
                 break;
             default:
@@ -179,7 +191,7 @@ class Authenticator
     }
 
     /**
-     * @param array  $payload
+     * @param array $payload
      * @param string $url
      *
      * @return array
