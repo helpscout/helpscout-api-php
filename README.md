@@ -135,6 +135,20 @@ echo $credentials['refresh_token'].PHP_EOL;
 echo $credentials['expires_in'].PHP_EOL;
 ```
 
+In addition to providing the access/refresh tokens this will set the current auth to use those tokens, so you can freely make subsequent requests without reinitializing the client.
+
+```
+// uses the one-time authorization code for auth
+$client = $client->swapAuthorizationCodeForReusableTokens(
+    $appId,
+    $appSecret,
+    $authorizationCode
+);
+
+// uses access/refresh tokens for auth
+$client->users()->list();
+```
+
 ### Customers
 
 Get a customer.  Whenever getting a customer, all it's entities (email addresses, phone numbers, social profiles, etc.) come preloaded in the same request.
