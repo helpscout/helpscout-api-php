@@ -116,6 +116,25 @@ $client->setAccessToken('asdfasdf');
 ```
 The access token will always be used if available, regardless of whether you have other credentials set or not.
 
+### Authorization Code Flow
+
+Because the [authorization code](https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow) is only good for a single use, you'll need to exchange the code for and access token and refresh token prior to making additional api calls.  You'll also need to persist the tokens for reuse later.
+
+```php
+$client = ApiClientFactory::createClient();
+$client = $client->swapAuthorizationCodeForReusableTokens(
+    $appId,
+    $appSecret,
+    $authorizationCode
+);
+
+$credentials = $client->getAuthenticator()->getTokens();
+
+echo $credentials['access_token'].PHP_EOL;
+echo $credentials['refresh_token'].PHP_EOL;
+echo $credentials['expires_in'].PHP_EOL;
+```
+
 ### Customers
 
 Get a customer.  Whenever getting a customer, all it's entities (email addresses, phone numbers, social profiles, etc.) come preloaded in the same request.

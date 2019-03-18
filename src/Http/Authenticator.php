@@ -7,7 +7,6 @@ namespace HelpScout\Api\Http;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
-use HelpScout\Api\Http\Auth\CodeCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
@@ -79,6 +78,34 @@ class Authenticator
     }
 
     /**
+     * @return string
+     */
+    public function accessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * @param string $refreshToken
+     *
+     * @return Authenticator
+     */
+    public function setRefreshToken(string $refreshToken): Authenticator
+    {
+        $this->refreshToken = $refreshToken;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function refreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    /**
      * @param Client $client
      *
      * @return Authenticator
@@ -141,13 +168,11 @@ class Authenticator
     }
 
     /**
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $code
+     * @param Auth $auth
      */
-    public function useCodeToken(string $appId, string $appSecret, string $code): void
+    public function setAuth(Auth $auth): void
     {
-        $this->auth = new CodeCredentials($appId, $appSecret, $code);
+        $this->auth = $auth;
     }
 
     protected function fetchTokens(): void
@@ -158,7 +183,6 @@ class Authenticator
                 break;
             case ClientCredentials::TYPE:
             case RefreshCredentials::TYPE:
-            case CodeCredentials::TYPE:
                 $this->fetchAccessAndRefreshToken();
                 break;
             default:

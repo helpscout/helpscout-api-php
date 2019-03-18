@@ -9,6 +9,7 @@ use HelpScout\Api\Conversations\Threads\Attachments\AttachmentsEndpoint;
 use HelpScout\Api\Conversations\Threads\ThreadsEndpoint;
 use HelpScout\Api\Customers\CustomersEndpoint;
 use HelpScout\Api\Customers\Entry\CustomerEntryEndpoint;
+use HelpScout\Api\Http\Auth\CodeCredentials;
 use HelpScout\Api\Http\Authenticator;
 use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Mailboxes\MailboxesEndpoint;
@@ -156,16 +157,25 @@ class ApiClient
     }
 
     /**
+     * Takes an authorization code and exchanges it for an access/refresh token pair.
+     *
      * @param string $appId
      * @param string $appSecret
-     * @param string $code
+     * @param string $authorizationCode
      *
      * @return ApiClient
      */
-    public function useCodeToken(string $appId, string $appSecret, string $code): ApiClient
-    {
-        $this->getAuthenticator()
-            ->useCodeToken($appId, $appSecret, $code);
+    public function swapAuthorizationCodeForReusableTokens(
+        string $appId,
+        string $appSecret,
+        string $authorizationCode
+    ): ApiClient {
+        $authenticator = $this->getAuthenticator();
+
+        $authenticator->setAuth(new CodeCredentials($appId, $appSecret, $authorizationCode));
+        $authenticator->fetchAccessAndRefreshToken();
+
+        $this->useRefreshToken($appId, $appSecret, $authenticator->refreshToken());
 
         return $this;
     }
