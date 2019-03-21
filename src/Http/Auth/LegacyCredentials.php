@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http\Auth;
 
+/**
+ * Class LegacyCredentials
+ * @package HelpScout\Api\Http\Auth
+ * @deprecated
+ */
 class LegacyCredentials implements Auth
 {
     public const TYPE = 'legacy_credentials';
