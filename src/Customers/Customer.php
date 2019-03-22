@@ -133,14 +133,14 @@ class Customer implements Extractable, Hydratable
         $this->setCreatedAt($this->transformDateTime($data['createdAt'] ?? null));
         $this->setUpdatedAt($this->transformDateTime($data['updatedAt'] ?? null));
 
-        // When a customer is supplied via the "createdBy" field it doesn't use the "name" suffix
+        // When a customer is supplied via the Conversation's "createdBy" field it doesn't use the "name" suffix
         if (isset($data['firstName'])) {
             $this->setFirstName($data['firstName']);
         } elseif (isset($data['first'])) {
             $this->setFirstName($data['first']);
         }
 
-        // When a customer is supplied via the "createdBy" field it doesn't use the "name" suffix
+        // When a customer is supplied via the Conversation's "createdBy" field it doesn't use the "name" suffix
         if (isset($data['lastName'])) {
             $this->setLastName($data['lastName']);
         } elseif (isset($data['last'])) {
