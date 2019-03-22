@@ -72,6 +72,9 @@ $client->useLegacyToken($clientId, $apiKey);
 $client->useRefreshToken($appId, $appSecret, $refreshToken);
 ```
 
+**Note**
+The `legacy_credentials` auth method is provided for developer convenience while both v1 and v2 of the API are active. When v1 of the API sunsets on June 6th, 2019, this auth scheme will no longer be active. 
+
 You can also pass auth credentials when you create the client.
 
 ```php
@@ -85,7 +88,7 @@ $config = [
 ];
 $client = ApiClientFactory::createClient($config);
 
-// Using Legacy credentials
+// Using Legacy credentials - deprecated and will be removed on June 6, 2019
 $config = [
     'auth' => [
         'type' => 'legacy_credentials',
