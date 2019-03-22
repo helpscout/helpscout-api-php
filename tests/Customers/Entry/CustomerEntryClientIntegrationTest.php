@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Customers\Entry;
 
 use HelpScout\Api\Customers\Entry\Address;
-use HelpScout\Api\Customers\Entry\Chat;
+use HelpScout\Api\Customers\Entry\ChatHandle;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
 use HelpScout\Api\Customers\Entry\SocialProfile;
@@ -89,7 +89,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
     {
         $this->stubResponse($this->getResponse(201));
 
-        $chat = new Chat();
+        $chat = new ChatHandle();
         $chat->hydrate([
             'value' => 'Hello there',
             'type' => 'twitter',
@@ -111,7 +111,7 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
     {
         $this->stubResponse($this->getResponse(204));
 
-        $chat = new Chat();
+        $chat = new ChatHandle();
         $chat->hydrate([
             'id' => 42,
             'value' => 'Hello there',

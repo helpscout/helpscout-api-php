@@ -6,7 +6,7 @@ namespace HelpScout\Api\Tests\Customers;
 
 use DateTime;
 use HelpScout\Api\Customers\Customer;
-use HelpScout\Api\Customers\Entry\Chat;
+use HelpScout\Api\Customers\Entry\ChatHandle;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
 use HelpScout\Api\Customers\Entry\SocialProfile;
@@ -67,7 +67,7 @@ class CustomerTest extends TestCase
         $this->assertSame('Norfolk', $customer->getAddress()->getCity());
     }
 
-    public function testHydratesManyChats()
+    public function testHydratesManyChatHandles()
     {
         $customer = new Customer();
         $customer->hydrate([
@@ -84,13 +84,13 @@ class CustomerTest extends TestCase
             ],
         ]);
 
-        $chats = $customer->getChats();
+        $chats = $customer->getChatHandles();
 
         // Only asserting one field here as the details of what's inflated are covered by the entity's tests
-        $this->assertInstanceOf(Chat::class, $chats[0]);
+        $this->assertInstanceOf(ChatHandle::class, $chats[0]);
         $this->assertSame(123123, $chats[0]->getId());
 
-        $this->assertInstanceOf(Chat::class, $chats[1]);
+        $this->assertInstanceOf(ChatHandle::class, $chats[1]);
         $this->assertSame(456223, $chats[1]->getId());
     }
 
@@ -286,11 +286,11 @@ class CustomerTest extends TestCase
     public function testAddChat()
     {
         $customer = new Customer();
-        $this->assertEmpty($customer->getChats());
+        $this->assertEmpty($customer->getChatHandles());
 
-        $chat = new Chat();
-        $customer->addChat($chat);
-        $this->assertSame($chat, $customer->getChats()->toArray()[0]);
+        $chat = new ChatHandle();
+        $customer->addChatHandle($chat);
+        $this->assertSame($chat, $customer->getChatHandles()->toArray()[0]);
     }
 
     public function testAddEmail()

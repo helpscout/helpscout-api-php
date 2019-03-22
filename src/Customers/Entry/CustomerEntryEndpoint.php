@@ -56,12 +56,12 @@ class CustomerEntryEndpoint extends Endpoint
     }
 
     /**
-     * @param int  $customerId
-     * @param Chat $chat
+     * @param int        $customerId
+     * @param ChatHandle $chat
      *
      * @return int|null
      */
-    public function createChat(int $customerId, Chat $chat): ?int
+    public function createChat(int $customerId, ChatHandle $chat): ?int
     {
         return $this->restClient->createResource(
             $chat,
@@ -70,10 +70,10 @@ class CustomerEntryEndpoint extends Endpoint
     }
 
     /**
-     * @param int  $customerId
-     * @param Chat $chat
+     * @param int        $customerId
+     * @param ChatHandle $chat
      */
-    public function updateChat(int $customerId, Chat $chat): void
+    public function updateChat(int $customerId, ChatHandle $chat): void
     {
         $this->restClient->updateResource(
             $chat,

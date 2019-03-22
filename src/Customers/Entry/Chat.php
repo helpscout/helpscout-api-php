@@ -8,6 +8,12 @@ use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
 
+/**
+ * "Chat" has been renamed to ChatHandle.  We're keeping all the logic in this class so as to avoid any backwards
+ * incompatibilities.
+ *
+ * @deprecated
+ */
 class Chat implements Extractable, Hydratable
 {
     /**
