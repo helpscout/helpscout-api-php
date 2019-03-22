@@ -78,6 +78,34 @@ class Authenticator
     }
 
     /**
+     * @return string
+     */
+    public function accessToken(): ?string
+    {
+        return $this->accessToken;
+    }
+
+    /**
+     * @param string $refreshToken
+     *
+     * @return Authenticator
+     */
+    public function setRefreshToken(string $refreshToken): Authenticator
+    {
+        $this->refreshToken = $refreshToken;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function refreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    /**
      * @param Client $client
      *
      * @return Authenticator
@@ -144,6 +172,14 @@ class Authenticator
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): void
     {
         $this->auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
+    }
+
+    /**
+     * @param Auth $auth
+     */
+    public function setAuth(Auth $auth): void
+    {
+        $this->auth = $auth;
     }
 
     protected function fetchTokens(): void

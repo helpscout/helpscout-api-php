@@ -7,6 +7,7 @@ namespace HelpScout\Api\Tests;
 use GuzzleHttp\Client;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\ApiClientFactory;
+use HelpScout\Api\Http\Auth\CodeCredentials;
 use HelpScout\Api\Http\Authenticator;
 use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Webhooks\WebhooksEndpoint;
@@ -192,6 +193,40 @@ class ApiClientTest extends TestCase
             ->once()
             ->with($appId, $appSecret, $refreshToken);
         $result = $this->client->useRefreshToken($appId, $appSecret, $refreshToken);
+        $this->assertSame(
+            $result,
+            $this->client
+        );
+    }
+
+    public function testSwapsAuthorizationCodeForAccessAndRefreshTokens()
+    {
+        $appId = 'abc123';
+        $appSecret = '321cba';
+        $authorizationCode = '987fdsa';
+
+        $refreshToken = '987fdsa';
+
+        $this->authenticator->shouldReceive('setAuth')
+            ->with(Mockery::on(function ($argument) use ($appId, $appSecret, $authorizationCode) {
+                if ($argument instanceof CodeCredentials === false) {
+                    return false;
+                }
+
+                return $argument->getAppId() === $appId &&
+                    $argument->getAppSecret() === $appSecret &&
+                    $argument->getCode() === $authorizationCode;
+            }))
+            ->once();
+        $this->authenticator->shouldReceive('fetchAccessAndRefreshToken')
+            ->once();
+        $this->authenticator->shouldReceive('refreshToken')
+            ->andReturn($refreshToken);
+        $this->authenticator->shouldReceive('useRefreshToken')
+            ->with($appId, $appSecret, $refreshToken)
+            ->once();
+
+        $result = $this->client->swapAuthorizationCodeForReusableTokens($appId, $appSecret, $authorizationCode);
         $this->assertSame(
             $result,
             $this->client
