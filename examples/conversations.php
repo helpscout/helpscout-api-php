@@ -54,7 +54,7 @@ $conversation->setThreads(new Collection([
     $thread,
 ]));
 
-$client->createConversation($conversation);
+$client->conversations()->create($conversation);
 
 // Update conversation
 $conversationId = 12;
