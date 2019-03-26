@@ -58,13 +58,16 @@ $client->conversations()->create($conversation);
 
 // Update conversation
 $conversationId = 12;
-$client->moveConversation($conversationId, 18);
-$client->updateConversationSubject($conversationId, 'Need more help please');
-$client->updateConversationCustomer($conversationId, 6854);
-$client->publishConversationDraft($conversationId);
-$client->updateConversationStatus($conversationId, 'closed');
-$client->assignConversation($conversationId, 127);
-$client->unassignConversation($conversationId);
+$toMailboxId = 18;
+$newCustomerId = 6854;
+$assigneeId = 127;
+$client->conversations()->move($conversationId, $toMailboxId);
+$client->conversations()->updateSubject($conversationId, 'Need more help please');
+$client->conversations()->updateCustomer($conversationId, $newCustomerId);
+$client->conversations()->publishDraft($conversationId);
+$client->conversations()->updateStatus($conversationId, 'closed');
+$client->conversations()->assign($conversationId, $assigneeId);
+$client->conversations()->unassign($conversationId);
 $conversationId = 662118787;
 
 // Update custom fields on a conversation
