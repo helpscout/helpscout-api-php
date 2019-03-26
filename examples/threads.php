@@ -31,7 +31,7 @@ $file = $factory->make(__FILE__);
 $thread->setAttachments(new Collection([$file]));
 
 try {
-    $client->create($conversationId, $thread);
+    $client->threads()->create($conversationId, $thread);
 } catch (\HelpScout\Api\Exception\ValidationErrorException $e) {
     var_dump($e->getError());
 }
