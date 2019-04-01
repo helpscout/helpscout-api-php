@@ -252,6 +252,7 @@ class CustomerTest extends TestCase
         $customer->setAge('52');
 
         $this->assertSame([
+            'id' => 12,
             'firstName' => 'Big',
             'lastName' => 'Bird',
             'gender' => 'unknown',
@@ -262,6 +263,26 @@ class CustomerTest extends TestCase
             'photoUrl' => '',
             'background' => 'Big yellow bird',
             'age' => '52',
+            'email' => null,
+        ], $customer->extract());
+    }
+
+    /**
+     * Commonly in v2 of the API we see scenarios where if a "Customer" has an email or id it'll use the existing
+     * Customer associated with those, otherwise it'll create a new Customer.  When extracting a Customer it'll
+     * most likely be used for Creating something, so including email as a primary attribute this cleaner.
+     */
+    public function testExtractsEmailAsAttribute()
+    {
+        $customer = new Customer();
+
+        $email = new Email();
+        $email->setValue('tester@mysite.com');
+
+        $customer->addEmail($email);
+
+        $this->assertArraySubset([
+            'email' => 'tester@mysite.com',
         ], $customer->extract());
     }
 
@@ -270,6 +291,7 @@ class CustomerTest extends TestCase
         $customer = new Customer();
 
         $this->assertSame([
+            'id' => null,
             'firstName' => null,
             'lastName' => null,
             'gender' => null,
@@ -280,6 +302,7 @@ class CustomerTest extends TestCase
             'photoUrl' => null,
             'background' => null,
             'age' => null,
+            'email' => null,
         ], $customer->extract());
     }
 
