@@ -247,7 +247,7 @@ class CustomerTest extends TestCase
         $customer->setLocation('US');
         $customer->setOrganization('Sesame Street');
         $customer->setPhotoType('unknown');
-        $customer->setPhotoUrl('');
+        $customer->setPhotoUrl('https://photos.me');
         $customer->setBackground('Big yellow bird');
         $customer->setAge('52');
 
@@ -260,10 +260,9 @@ class CustomerTest extends TestCase
             'location' => 'US',
             'organization' => 'Sesame Street',
             'photoType' => 'unknown',
-            'photoUrl' => '',
+            'photoUrl' => 'https://photos.me',
             'background' => 'Big yellow bird',
             'age' => '52',
-            'email' => null,
         ], $customer->extract());
     }
 
@@ -290,20 +289,7 @@ class CustomerTest extends TestCase
     {
         $customer = new Customer();
 
-        $this->assertSame([
-            'id' => null,
-            'firstName' => null,
-            'lastName' => null,
-            'gender' => null,
-            'jobTitle' => null,
-            'location' => null,
-            'organization' => null,
-            'photoType' => null,
-            'photoUrl' => null,
-            'background' => null,
-            'age' => null,
-            'email' => null,
-        ], $customer->extract());
+        $this->assertSame([], $customer->extract());
     }
 
     public function testAddChat()

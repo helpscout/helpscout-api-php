@@ -199,7 +199,8 @@ class Customer implements Extractable, Hydratable
      */
     public function extract(): array
     {
-        return [
+        // ensure no empty values are included in the extraction for cleaner debugging
+        return array_filter([
             'id' => $this->getId(),
             'firstName' => $this->getFirstName(),
             'lastName' => $this->getLastName(),
@@ -212,7 +213,7 @@ class Customer implements Extractable, Hydratable
             'background' => $this->getBackground(),
             'age' => $this->getAge(),
             'email' => $this->getFirstEmail(),
-        ];
+        ]);
     }
 
     /**
