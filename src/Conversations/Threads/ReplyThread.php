@@ -57,7 +57,7 @@ class ReplyThread extends Thread
         $data['draft'] = $this->isDraft();
 
         if ($this->hasCustomer()) {
-            $data['customer'] = $this->getCustomerDataForEntity();
+            $data['customer'] = $this->getCustomer()->extract();
         }
 
         // When creating threads "user" is expected to be numeric rather
