@@ -34,7 +34,7 @@ class CustomerThread extends Thread
         $data['type'] = self::TYPE;
 
         if ($this->hasCustomer()) {
-            $data['customer'] = $this->getCustomerDataForEntity();
+            $data['customer'] = $this->getCustomer()->extract();
         }
 
         return $data;

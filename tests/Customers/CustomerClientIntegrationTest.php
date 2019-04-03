@@ -32,14 +32,6 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
             [
                 'firstName' => 'Big',
                 'lastName' => 'Bird',
-                'gender' => null,
-                'jobTitle' => null,
-                'location' => null,
-                'organization' => null,
-                'photoType' => null,
-                'photoUrl' => null,
-                'background' => null,
-                'age' => null,
             ]
         );
     }
@@ -59,16 +51,9 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
             'https://api.helpscout.net/v2/customers/12',
             'PUT',
             [
+                'id' => 12,
                 'firstName' => 'Big',
                 'lastName' => 'Bird',
-                'gender' => null,
-                'jobTitle' => null,
-                'location' => null,
-                'organization' => null,
-                'photoType' => null,
-                'photoUrl' => null,
-                'background' => null,
-                'age' => null,
             ]
         );
     }

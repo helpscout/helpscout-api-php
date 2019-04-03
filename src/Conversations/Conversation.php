@@ -285,7 +285,7 @@ class Conversation implements Extractable, Hydratable
         }
 
         if ($this->hasCustomer()) {
-            $data['customer'] = $this->getCustomerDataForEntity();
+            $data['customer'] = $this->getCustomer()->extract();
         }
 
         $assignee = $this->getAssignee();

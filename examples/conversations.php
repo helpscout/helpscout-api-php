@@ -32,7 +32,7 @@ $filters = (new ConversationFilters())
     ->withSortField('createdAt')
     ->withSortOrder('asc')
     ->withQuery('query')
-    ->withCustomField(123, 'blue');
+    ->withCustomFieldById(123, 'blue');
 
 $conversations = $client->conversations()->list($filters);
 
