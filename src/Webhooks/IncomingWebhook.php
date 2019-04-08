@@ -15,12 +15,12 @@ class IncomingWebhook
 {
     public const SIGNATURE_HEADERS = [
         'HTTP_X_HELPSCOUT_SIGNATURE',
-        'X_HELPSCOUT_SIGNATURE'
+        'X_HELPSCOUT_SIGNATURE',
     ];
 
     public const EVENT_HEADERS = [
         'HTTP_X_HELPSCOUT_EVENT',
-        'X_HELPSCOUT_EVENT'
+        'X_HELPSCOUT_EVENT',
     ];
 
     public const TEST_EVENT = 'helpscout.test';
@@ -39,13 +39,14 @@ class IncomingWebhook
 
     /**
      * IncomingWebhook constructor.
+     *
      * @param RequestInterface $request
-     * @param string $secret
+     * @param string           $secret
      */
     public function __construct(RequestInterface $request, string $secret)
     {
         $this->request = $request;
-        $this->secret  = $secret;
+        $this->secret = $secret;
 
         $this->validateSignature();
     }
@@ -56,7 +57,7 @@ class IncomingWebhook
     protected function validateSignature(): void
     {
         $signature = $this->generateSignature();
-        $header    = $this->findHeader(self::SIGNATURE_HEADERS);
+        $header = $this->findHeader(self::SIGNATURE_HEADERS);
 
         if ($signature !== $header) {
             throw new InvalidSignatureException($signature, $header);
@@ -82,6 +83,7 @@ class IncomingWebhook
 
     /**
      * @param array $headers
+     *
      * @return string
      */
     protected function findHeader(array $headers): string
@@ -92,7 +94,7 @@ class IncomingWebhook
                 $value = $this->request->getHeader($header);
                 $value = array_shift($value);
                 if ($value !== null) {
-                    $signature =  $value;
+                    $signature = $value;
                 }
             }
         }
@@ -126,6 +128,7 @@ class IncomingWebhook
 
     /**
      * @param string $eventType
+     *
      * @return bool
      */
     protected function isEventTypeOf(string $eventType): bool
@@ -174,6 +177,7 @@ class IncomingWebhook
 
     /**
      * @return Conversation
+     *
      * @throws JsonException
      */
     public function getConversation(): Conversation
@@ -190,6 +194,7 @@ class IncomingWebhook
 
     /**
      * @return Customer
+     *
      * @throws JsonException
      */
     public function getCustomer(): Customer
