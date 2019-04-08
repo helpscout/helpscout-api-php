@@ -74,7 +74,7 @@ class Conversation implements Extractable, Hydratable
     /**
      * @var int|null
      */
-    private $assignTo;
+    private $assigneeId;
 
     /**
      * @var int
@@ -449,12 +449,12 @@ class Conversation implements Extractable, Hydratable
 
     public function getAssigneeId(): ?int
     {
-        return $this->assignTo;
+        return $this->assigneeId;
     }
 
     public function setAssigneeId(int $userId): Conversation
     {
-        $this->assignTo = $userId;
+        $this->assigneeId = $userId;
 
         return $this;
     }
@@ -615,7 +615,7 @@ class Conversation implements Extractable, Hydratable
     {
         $this->assignee = $assignee;
         $this->setAssigneeId($assignee->getId());
-        
+
         return $this;
     }
 
