@@ -163,11 +163,16 @@ class ConversationTest extends TestCase
 
     public function testExtract()
     {
+        $assignee = new User();
+        $assignee->setId(9865);
+        $assignee->setFirstName('Mr');
+        $assignee->setLastName('Robot');
+
         $conversation = new Conversation();
         $conversation->setId(12);
         $conversation->setNumber(3526);
         $conversation->setThreadCount(2);
-        $conversation->setAssignTo(2942);
+        $conversation->setAssigneeId($assignee->getId());
         $conversation->withAutoRepliesEnabled();
         $conversation->setType('email');
         $conversation->setImported(true);
@@ -205,11 +210,8 @@ class ConversationTest extends TestCase
         $customer->setEmails($emails);
         $conversation->setCustomer($customer);
 
-        $user = new User();
-        $user->setId(9865);
-        $user->setFirstName('Mr');
-        $user->setLastName('Robot');
-        $conversation->setAssignee($user);
+        
+        $conversation->setAssignee($assignee);
 
         $customField = new CustomField();
         $customField->setId(936);
@@ -239,7 +241,7 @@ class ConversationTest extends TestCase
             'threadCount' => 2,
             'autoReply' => true,
             'type' => 'email',
-            'assignTo' => 2942,
+            'assignTo' => 9865,
             'imported' => true,
             'folderId' => 132,
             'status' => 'closed',
@@ -376,7 +378,9 @@ class ConversationTest extends TestCase
         $this->assertNull($convo->getAssignee());
         $this->assertFalse($convo->isAssigned());
 
-        $convo->assignTo(new User());
+        $user = new User();
+        $user->setId(1);
+        $convo->assignTo($user);
         $this->assertTrue($convo->isAssigned());
 
         $convo->publish();

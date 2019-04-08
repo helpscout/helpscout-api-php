@@ -257,7 +257,7 @@ class Conversation implements Extractable, Hydratable
             'threadCount' => $this->getThreadCount(),
             'autoReply' => $this->isAutoReplyEnabled(),
             'type' => $this->getType(),
-            'assignTo' => $this->getAssignTo(),
+            'assignTo' => $this->getAssigneeId(),
             'folderId' => $this->getFolderId(),
             'status' => $this->getStatus(),
             'state' => $this->getState(),
@@ -447,12 +447,12 @@ class Conversation implements Extractable, Hydratable
         return $this->imported;
     }
 
-    public function getAssignTo(): ?int
+    public function getAssigneeId(): ?int
     {
         return $this->assignTo;
     }
 
-    public function setAssignTo(int $userId): Conversation
+    public function setAssigneeId(int $userId): Conversation
     {
         $this->assignTo = $userId;
 
@@ -614,7 +614,8 @@ class Conversation implements Extractable, Hydratable
     public function setAssignee(?User $assignee): Conversation
     {
         $this->assignee = $assignee;
-
+        $this->setAssigneeId($assignee->getId());
+        
         return $this;
     }
 
