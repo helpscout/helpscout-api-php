@@ -163,16 +163,11 @@ class ConversationTest extends TestCase
 
     public function testExtract()
     {
-        $assignee = new User();
-        $assignee->setId(9865);
-        $assignee->setFirstName('Mr');
-        $assignee->setLastName('Robot');
-
         $conversation = new Conversation();
         $conversation->setId(12);
         $conversation->setNumber(3526);
         $conversation->setThreadCount(2);
-        $conversation->setAssigneeId($assignee->getId());
+        $conversation->setAssigneeId(9865);
         $conversation->withAutoRepliesEnabled();
         $conversation->setType('email');
         $conversation->setImported(true);
@@ -210,8 +205,11 @@ class ConversationTest extends TestCase
         $customer->setEmails($emails);
         $conversation->setCustomer($customer);
 
-        
-        $conversation->setAssignee($assignee);
+        $user = new User();
+        $user->setId(9865);
+        $user->setFirstName('Mr');
+        $user->setLastName('Robot');
+        $conversation->setAssignee($user);
 
         $customField = new CustomField();
         $customField->setId(936);
