@@ -779,6 +779,19 @@ Delete a webhook.
 $client->webhooks()->delete($webhookId);
 ```
 
+#### Processing an incoming webhook
+You can also use the SDK to easily process an incoming webhook. To do this, you'll need a request object that satisfies the PSR-7 `RequestInterface` and the secret key you used when setting up the webhook. Signature validation will happen when creating the new object, so no need to check if it is valid or not. If the signatures do not match, the constructor of the `IncomingWebhook` object will throw an `InvalidSignatureException` to let you know something is wrong.
+
+```php
+/** @var RequestInterface $request */
+$request = new Request(...);
+$secret = 'superSekretKey';
+
+$incoming = new IncomingWebhook($request, $secret);
+```
+
+Once you have the incoming webhook object, you can check the type of payload (customer, conversation, or test) as well as retrieve the data. If a customer or conversation, you can retrieve the model associated. Otherwise, you can get the payload as either an associative array or standard class object.
+
 ### Workflows
 
 Fetch a paginated list of all workflows.
