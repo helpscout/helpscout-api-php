@@ -118,8 +118,8 @@ class IncomingWebhookTest extends TestCase
         $secret = 'asdffdsa';
 
         $headers = [
-            'HTTP_X_HELPSCOUT_SIGNATURE' => 'asdfasdfasdfasdf',
-            'HTTP_X_HELPSCOUT_EVENT' => 'helpscout.test',
+            'X_HELPSCOUT_SIGNATURE' => 'asdfasdfasdfasdf',
+            'X_HELPSCOUT_EVENT' => 'helpscout.test',
         ];
 
         $webhook = new IncomingWebhook(

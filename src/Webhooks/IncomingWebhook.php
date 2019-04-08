@@ -95,6 +95,7 @@ class IncomingWebhook
                 $value = array_shift($value);
                 if ($value !== null) {
                     $signature = $value;
+                    continue;
                 }
             }
         }
