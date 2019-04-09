@@ -453,12 +453,8 @@ class Conversation implements Extractable, Hydratable
     }
 
     /**
-     * Sets the assignTo Property.
-     * (Slated for deprecation in next verion release in favor of more descriptive method name setAssigneeId()).
-     *
-     * @param int $userId
-     *
-     * @return Conversation
+     * @deprecated
+     * @see setAssignee()
      */
     public function setAssignTo(int $userId): Conversation
     {
