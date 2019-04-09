@@ -13,6 +13,7 @@ use HelpScout\Api\Conversations\Threads\Thread;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Mailboxes\Mailbox;
+use HelpScout\Api\Tags\Tag;
 use HelpScout\Api\Tags\TagsCollection;
 use HelpScout\Api\Tests\ApiClientIntegrationTestCase;
 use HelpScout\Api\Tests\Payloads\ConversationPayloads;
@@ -430,7 +431,32 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         );
     }
 
-    public function testUpdatesTags()
+    public function testUpdatesCustomFieldsWithEntityCollectionOfCustomFields()
+    {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
+
+        $customField = new CustomField();
+        $customField->setId(10524);
+        $customField->setValue(new \DateTime('today'));
+
+        $customFields = new Collection([$customField]);
+
+        $this->client->conversations()->updateCustomFields(12, $customFields);
+
+        $fields = new CustomFieldsCollection();
+
+        $fields->setCustomFields($customFields->toArray());
+
+        $this->verifyRequestWithData(
+            'https://api.helpscout.net/v2/conversations/12/fields',
+            'PUT',
+            $fields->extract()
+        );
+    }
+
+    public function testUpdatesTagsWithArrayOfTagNames()
     {
         $this->stubResponse(
             $this->getResponse(204)
@@ -444,6 +470,47 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
             'https://api.helpscout.net/v2/conversations/14/tags',
             'PUT',
             $tags->extract()
+        );
+    }
+
+    public function testUpdatesTagsWithTagCollection()
+    {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
+
+        $tags = new TagsCollection();
+        $tags->setTags(['Support']);
+
+        $this->client->conversations()->updateTags(14, $tags);
+
+        $this->verifyRequestWithData(
+            'https://api.helpscout.net/v2/conversations/14/tags',
+            'PUT',
+            $tags->extract()
+        );
+    }
+
+    public function testUpdatesTagsWithEntityCollectionOfTags()
+    {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
+
+        $tag = new Tag();
+        $tag->setName('Support');
+        $tags = new Collection([$tag]);
+
+        $this->client->conversations()->updateTags(14, $tags);
+
+        $this->verifyRequestWithData(
+            'https://api.helpscout.net/v2/conversations/14/tags',
+            'PUT',
+            [
+                'tags' => [
+                    'Support',
+                ],
+            ]
         );
     }
 }

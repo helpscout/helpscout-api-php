@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Conversations;
 
 use HelpScout\Api\Endpoint;
+use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\PagedCollection;
 use HelpScout\Api\Entity\Patch;
 use HelpScout\Api\Http\Hal\HalPagedResources;
@@ -47,13 +48,21 @@ class ConversationsEndpoint extends Endpoint
     /**
      * Updates the custom field values for a given conversation.  Ommitted fields are removed.
      *
-     * @param int           $conversationId
-     * @param CustomField[] $customFields
+     * @param int                                                   $conversationId
+     * @param CustomField[]|array|Collection|CustomFieldsCollection $customFields
      */
-    public function updateCustomFields(int $conversationId, array $customFields): void
+    public function updateCustomFields(int $conversationId, $customFields): void
     {
-        $customFieldsCollection = new CustomFieldsCollection();
-        $customFieldsCollection->setCustomFields($customFields);
+        if ($customFields instanceof CustomFieldsCollection) {
+            $customFieldsCollection = $customFields;
+        } else {
+            if ($customFields instanceof Collection) {
+                $customFields = $customFields->toArray();
+            }
+
+            $customFieldsCollection = new CustomFieldsCollection();
+            $customFieldsCollection->setCustomFields($customFields);
+        }
 
         $this->restClient->updateResource(
             $customFieldsCollection,
@@ -65,13 +74,25 @@ class ConversationsEndpoint extends Endpoint
      * Updates the tags for a given conversation.
      * Omitted tags are removed.
      *
-     * @param int   $conversationId
-     * @param array $tags
+     * @param int                             $conversationId
+     * @param array|Collection|TagsCollection $tags
      */
-    public function updateTags(int $conversationId, array $tags): void
+    public function updateTags(int $conversationId, $tags): void
     {
-        $tagsCollection = new TagsCollection();
-        $tagsCollection->setTags($tags);
+        if ($tags instanceof TagsCollection) {
+            $tagsCollection = $tags;
+        } else {
+            if ($tags instanceof Collection) {
+                $tagNames = [];
+                foreach ($tags as $tag) {
+                    $tagNames[] = $tag->getName();
+                }
+                $tags = $tagNames;
+            }
+
+            $tagsCollection = new TagsCollection();
+            $tagsCollection->setTags($tags);
+        }
 
         $this->restClient->updateResource(
             $tagsCollection,
