@@ -74,7 +74,7 @@ class Conversation implements Extractable, Hydratable
     /**
      * @var int|null
      */
-    private $assigneeId;
+    private $assignTo;
 
     /**
      * @var int
@@ -257,7 +257,7 @@ class Conversation implements Extractable, Hydratable
             'threadCount' => $this->getThreadCount(),
             'autoReply' => $this->isAutoReplyEnabled(),
             'type' => $this->getType(),
-            'assignTo' => $this->getAssigneeId(),
+            'assignTo' => $this->getAssignTo(),
             'folderId' => $this->getFolderId(),
             'status' => $this->getStatus(),
             'state' => $this->getState(),
@@ -447,14 +447,21 @@ class Conversation implements Extractable, Hydratable
         return $this->imported;
     }
 
-    public function getAssigneeId(): ?int
+    public function getAssignTo(): ?int
     {
-        return $this->assigneeId;
+        return $this->assignTo;
     }
 
-    public function setAssigneeId(int $userId): Conversation
+    /**
+     * Sets the assignTo Property.
+     * (Slated for deprecation in next verion release in favor of more descriptive method name setAssigneeId())
+     *
+     * @param integer $userId
+     * @return Conversation
+     */
+    public function setAssignTo(int $userId): Conversation
     {
-        $this->assigneeId = $userId;
+        $this->assignTo = $userId;
 
         return $this;
     }
@@ -614,7 +621,7 @@ class Conversation implements Extractable, Hydratable
     public function setAssignee(?User $assignee): Conversation
     {
         $this->assignee = $assignee;
-        $this->setAssigneeId($assignee->getId());
+        $this->setAssignTo($assignee->getId());
 
         return $this;
     }

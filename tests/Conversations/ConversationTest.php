@@ -167,7 +167,7 @@ class ConversationTest extends TestCase
         $conversation->setId(12);
         $conversation->setNumber(3526);
         $conversation->setThreadCount(2);
-        $conversation->setAssigneeId(9865);
+        $conversation->setAssignTo(9865);
         $conversation->withAutoRepliesEnabled();
         $conversation->setType('email');
         $conversation->setImported(true);
