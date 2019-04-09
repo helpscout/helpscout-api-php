@@ -346,7 +346,7 @@ class ConversationTest extends TestCase
         $assignee->setId(41);
         $convo->setAssignee($assignee);
 
-        $this->assertSame($user->getId(), $convo->getAssignTo());
+        $this->assertSame($assignee->getId(), $convo->getAssignTo());
     }
 
     public function testChatConvo()
