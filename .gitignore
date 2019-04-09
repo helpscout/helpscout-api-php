@@ -1,4 +1,9 @@
+.php_cs.cache
+phpunit.xml
 composer.lock
+coverage
 vendor
-.idea/
-build/
+.idea
+./examples/_credentials.php
+build
+.DS_Store

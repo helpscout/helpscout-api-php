@@ -1,33 +1,48 @@
 {
     "name": "helpscout/api",
     "type": "library",
-    "description": "API client for the Help Scout API",
-    "keywords": ["api", "api-client", "helpscout"],
-    "homepage": "http://www.helpscout.net",
+    "description": "Help Scout API v2 Client",
+    "homepage": "https://github.com/helpscout/helpscout-api-php",
+    "keywords": ["helpscout", "help desk", "support", "api"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Help Scout Platform Team",
+            "email": "developer@helpscout.net",
+            "homepage": "https://www.helpscout.net"
+        }
+    ],
     "require": {
-        "php": ">=7.0.0",
-        "ext-curl": "*",
-        "shuber/curl": "dev-master"
+        "php": "^7.1",
+        "ql/uri-template": "^1.1",
+        "webmozart/assert": "^1.2",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "6.*",
-        "codeclimate/php-test-reporter": "0.4.*"
+        "phpunit/phpunit": "^7.0",
+        "phpstan/phpstan": "^0.10.1",
+        "friendsofphp/php-cs-fixer": "^2.3",
+        "mockery/mockery": "^1.1"
     },
     "autoload": {
-        "psr-0": { "HelpScout\\": "src/" }
+        "psr-4": { "HelpScout\\Api\\": "src/" }
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/TestCase.php"
-        ]
+        "psr-4": { "HelpScout\\Api\\Tests\\": "tests/" }
     },
     "suggest": {
-        "helpscout/helpscout": "This version of the API has been deprecated. Please migrate to v2. On June 9th, 2019, the Mailbox v1 API will be shut down"
+        "helpscout/api-laravel": "API adapters for use with Laravel and Lumen"
     },
-    "minimum-stability": "dev",
-    "prefer-stable" : true,
     "scripts": {
-        "test": "vendor/bin/phpunit"
-    }
+        "analyse": "vendor/bin/phpstan analyse src tests --level=5",
+        "fix": "vendor/bin/php-cs-fixer fix --allow-risky=yes",
+        "sniff": "vendor/bin/php-cs-fixer fix --allow-risky=yes --dry-run --stop-on-violation",
+        "phpunit": "vendor/bin/phpunit",
+        "phpunit:clover": "vendor/bin/phpunit --coverage-clover build/logs/clover.xml",
+        "test": ["@sniff", "@analyse", "@phpunit"],
+        "test:travis": ["@sniff", "@analyse", "@phpunit:clover"],
+        "test:report": "vendor/bin/phpunit --coverage-html build/reports/phpunit"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

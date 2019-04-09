@@ -1,56 +1,20 @@
-language: php
-
-addons:
-  code_climate:
-    repo_token: $CODECLIMATE_REPO_TOKEN
-
-cache:
-  directories:
-    - vendor
-    - $HOME/.composer/cache
-
 env:
   global:
-    - TASK_TESTS_COVERAGE=0
+    - CC_TEST_REPORTER_ID=3c50cfb0b2a5794496aaf48cc9f58c65b8163876c7174a3c82fce75fe8f69dd0
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 
-matrix:
-  fast_finish: true
-  include:
-    - php: 7.0
+language: php
 
-    - php: 7.1
-
-    - php: 7.2
-
-install:
-  # show versions and env information
-  - php --version
-  - composer --version
-  - pg_config --version
-
-  # disable xdebug for performance reasons when code coverage is not needed.
-  - |
-    if [[ $TASK_TESTS_COVERAGE != 1 ]]; then
-      phpenv config-rm xdebug.ini || echo "xdebug is not installed"
-    fi
-
-  # Install dependencies
-  - travis_retry composer self-update
-  - travis_retry composer install --prefer-source --no-interaction --dev
+php:
+  - 7.1
+  - 7.2
 
 before_script:
-  # Enable code coverage
-  - |
-    if [ $TASK_TESTS_COVERAGE == 1 ]; then
-      PHPUNIT_FLAGS="--coverage-clover=$TRAVIS_BUILD_DIR/build/logs/clover.xml"
-    fi
-
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
-  - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS
-
-after_script:
-  - |
-    if [ $TASK_TESTS_COVERAGE == 1 ]; then
-      vendor/bin/test-reporter --stdout > codeclimate.json
-      curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports
-    fi
+  - composer test:travis
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build  -t clover --exit-code $TRAVIS_TEST_RESULT; fi
