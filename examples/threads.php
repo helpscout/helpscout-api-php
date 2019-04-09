@@ -39,4 +39,4 @@ try {
 // Update thread
 $conversationId = 0;
 $threadId = 0;
-$client->updateConversationThreadText($threadId, 18, 'I need help please');
+$client->threads()->updateText(18, $threadId, 'I need help please');
