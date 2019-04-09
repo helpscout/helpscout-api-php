@@ -167,7 +167,7 @@ class ConversationTest extends TestCase
         $conversation->setId(12);
         $conversation->setNumber(3526);
         $conversation->setThreadCount(2);
-        $conversation->setAssignTo(2942);
+        $conversation->setAssignTo(9865);
         $conversation->withAutoRepliesEnabled();
         $conversation->setType('email');
         $conversation->setImported(true);
@@ -239,7 +239,7 @@ class ConversationTest extends TestCase
             'threadCount' => 2,
             'autoReply' => true,
             'type' => 'email',
-            'assignTo' => 2942,
+            'assignTo' => 9865,
             'imported' => true,
             'folderId' => 132,
             'status' => 'closed',
@@ -335,6 +335,20 @@ class ConversationTest extends TestCase
         ], $conversation->extract());
     }
 
+    /**
+     * See https://github.com/helpscout/helpscout-api-php/issues/111.
+     */
+    public function testSettingAssigneeAlsoSetsAssignToId()
+    {
+        $convo = new Conversation();
+
+        $assignee = new User();
+        $assignee->setId(41);
+        $convo->setAssignee($assignee);
+
+        $this->assertSame($assignee->getId(), $convo->getAssignTo());
+    }
+
     public function testChatConvo()
     {
         $convo = new ChatConversation();
@@ -376,7 +390,9 @@ class ConversationTest extends TestCase
         $this->assertNull($convo->getAssignee());
         $this->assertFalse($convo->isAssigned());
 
-        $convo->assignTo(new User());
+        $user = new User();
+        $user->setId(1);
+        $convo->assignTo($user);
         $this->assertTrue($convo->isAssigned());
 
         $convo->publish();

@@ -614,6 +614,7 @@ class Conversation implements Extractable, Hydratable
     public function setAssignee(?User $assignee): Conversation
     {
         $this->assignee = $assignee;
+        $this->setAssignTo($assignee->getId());
 
         return $this;
     }
