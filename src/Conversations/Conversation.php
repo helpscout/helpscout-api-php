@@ -452,10 +452,6 @@ class Conversation implements Extractable, Hydratable
         return $this->assignTo;
     }
 
-    /**
-     * @deprecated
-     * @see setAssignee()
-     */
     public function setAssignTo(int $userId): Conversation
     {
         $this->assignTo = $userId;
