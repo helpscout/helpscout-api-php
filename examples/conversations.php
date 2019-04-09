@@ -74,10 +74,10 @@ $conversationId = 662118787;
 $customField = new CustomField();
 $customField->setId(10524);
 $customField->setValue(new DateTime('today'));
-$client->updateConversationCustomFields($conversationId, [$customField]);
+$client->conversations()->updateCustomFields($conversationId, [$customField]);
 
 // Update tags on a conversation.  Can either use a tag name or a Tag
-$client->updateConversationTags($conversationId, [
+$client->conversations()->updateTags($conversationId, [
     'Annual',
     'self-signup-lead'
 ]);
