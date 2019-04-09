@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Conversations;
 
 use HelpScout\Api\Endpoint;
+use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\PagedCollection;
 use HelpScout\Api\Entity\Patch;
 use HelpScout\Api\Http\Hal\HalPagedResources;
@@ -65,13 +66,25 @@ class ConversationsEndpoint extends Endpoint
      * Updates the tags for a given conversation.
      * Omitted tags are removed.
      *
-     * @param int   $conversationId
-     * @param array $tags
+     * @param int                               $conversationId
+     * @param array|Collection|TagsCollection   $tags
      */
-    public function updateTags(int $conversationId, array $tags): void
+    public function updateTags(int $conversationId, $tags): void
     {
-        $tagsCollection = new TagsCollection();
-        $tagsCollection->setTags($tags);
+        if ($tags instanceof TagsCollection) {
+            $tagsCollection = $tags;
+        } else {
+            if ($tags instanceof Collection) {
+                $tagNames = [];
+                foreach ($tags as $tag) {
+                    $tagNames[] = $tag->getName();
+                }
+                $tags = $tagNames;
+            }
+
+            $tagsCollection = new TagsCollection();
+            $tagsCollection->setTags($tags);
+        }
 
         $this->restClient->updateResource(
             $tagsCollection,
