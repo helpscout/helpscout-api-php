@@ -48,13 +48,21 @@ class ConversationsEndpoint extends Endpoint
     /**
      * Updates the custom field values for a given conversation.  Ommitted fields are removed.
      *
-     * @param int           $conversationId
-     * @param CustomField[] $customFields
+     * @param int                       $conversationId
+     * @param CustomField[]|Collection  $customFields
      */
-    public function updateCustomFields(int $conversationId, array $customFields): void
+    public function updateCustomFields(int $conversationId, $customFields): void
     {
-        $customFieldsCollection = new CustomFieldsCollection();
-        $customFieldsCollection->setCustomFields($customFields);
+        if ($customFields instanceof CustomFieldsCollection) {
+            $customFieldsCollection = $customFields;
+        } else {
+            if ($customFields instanceof Collection) {
+                $customFields = $customFields->toArray();
+            }
+
+            $customFieldsCollection = new CustomFieldsCollection();
+            $customFieldsCollection->setCustomFields($customFields);
+        }
 
         $this->restClient->updateResource(
             $customFieldsCollection,

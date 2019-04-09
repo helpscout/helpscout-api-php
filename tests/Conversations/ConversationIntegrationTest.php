@@ -431,6 +431,31 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         );
     }
 
+    public function testUpdatesCustomFieldsWithEntityCollectionOfCustomFields()
+    {
+        $this->stubResponse(
+            $this->getResponse(204)
+        );
+
+        $customField = new CustomField();
+        $customField->setId(10524);
+        $customField->setValue(new \DateTime('today'));
+
+        $customFields = new Collection([$customField]);
+
+        $this->client->conversations()->updateCustomFields(12, $customFields);
+
+        $fields = new CustomFieldsCollection();
+
+        $fields->setCustomFields($customFields->toArray());
+
+        $this->verifyRequestWithData(
+            'https://api.helpscout.net/v2/conversations/12/fields',
+            'PUT',
+            $fields->extract()
+        );
+    }
+
     public function testUpdatesTagsWithArrayOfTagNames()
     {
         $this->stubResponse(
