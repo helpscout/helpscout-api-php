@@ -334,18 +334,18 @@ class ConversationTest extends TestCase
             'assignTo' => null,
         ], $conversation->extract());
     }
-    
+
     /**
-     * See https://github.com/helpscout/helpscout-api-php/issues/111
+     * See https://github.com/helpscout/helpscout-api-php/issues/111.
      */
     public function testSettingAssigneeAlsoSetsAssignToId()
     {
         $convo = new Conversation();
-        
+
         $assignee = new User();
         $assignee->setId(41);
         $convo->setAssignee($assignee);
-        
+
         $this->assertSame($user->getId(), $convo->getAssignTo());
     }
 
