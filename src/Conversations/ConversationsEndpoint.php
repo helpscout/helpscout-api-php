@@ -48,8 +48,8 @@ class ConversationsEndpoint extends Endpoint
     /**
      * Updates the custom field values for a given conversation.  Ommitted fields are removed.
      *
-     * @param int                       $conversationId
-     * @param CustomField[]|Collection  $customFields
+     * @param int                                               $conversationId
+     * @param CustomField[]|Collection|CustomFieldsCollection   $customFields
      */
     public function updateCustomFields(int $conversationId, $customFields): void
     {
