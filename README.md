@@ -1,6 +1,6 @@
 # Help Scout API PHP Client
 
-[![Build Status](https://travis-ci.com/helpscout/helpscout-api-php-v2.svg?token=qCN6xBzzwNkXLxmSnTDj&branch=master)](https://travis-ci.com/helpscout/helpscout-api-php-v2)
+[![Build Status](https://travis-ci.org/helpscout/helpscout-api-php.svg?branch=master)](https://travis-ci.com/helpscout/helpscout-api-php)
 [![Maintainability](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/maintainability)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/73d6bfd2fddd8483f8c8/test_coverage)](https://codeclimate.com/repos/5c19426f34451a02c4000cab/test_coverage)
 
