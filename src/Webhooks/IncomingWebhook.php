@@ -55,7 +55,7 @@ class IncomingWebhook
     public static function makeFromGlobals(string $secret): self
     {
         $headers = [];
-        foreach($_SERVER as $key => $value) {
+        foreach ($_SERVER as $key => $value) {
             if (stripos($key, 'HTTP_') === 0) {
                 $headers[$key] = $value;
             }

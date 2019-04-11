@@ -47,7 +47,7 @@ class IncomingWebhookTest extends TestCase
         $this->assertSame(strtoupper($_SERVER['REQUEST_METHOD']), $request->getMethod());
         $this->assertSame($_SERVER['REQUEST_URI'], (string) $request->getUri());
         $this->assertSame([
-            $signature
+            $signature,
         ], $request->getHeader('HTTP_X_HELPSCOUT_SIGNATURE'));
         $this->assertSame('', $request->getBody()->getContents());
     }
