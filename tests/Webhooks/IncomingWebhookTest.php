@@ -32,6 +32,26 @@ class IncomingWebhookTest extends TestCase
         );
     }
 
+    public function testMakesWebhookFromGlobals()
+    {
+        $secret = uniqid();
+        $body = @file_get_contents('php://input');
+        $signature = $this->generateSignature($body, $secret);
+        $_SERVER['REQUEST_METHOD'] = uniqid();
+        $_SERVER['REQUEST_URI'] = uniqid();
+        $_SERVER['HTTP_X_HELPSCOUT_SIGNATURE'] = $signature;
+
+        $webhook = IncomingWebhook::makeFromGlobals($secret);
+        $request = $webhook->getRequest();
+
+        $this->assertSame(strtoupper($_SERVER['REQUEST_METHOD']), $request->getMethod());
+        $this->assertSame($_SERVER['REQUEST_URI'], (string) $request->getUri());
+        $this->assertSame([
+            $signature,
+        ], $request->getHeader('HTTP_X_HELPSCOUT_SIGNATURE'));
+        $this->assertSame('', $request->getBody()->getContents());
+    }
+
     public function testCreateIncomingConvoWebhook()
     {
         $body = ConversationPayloads::getConversation(123);

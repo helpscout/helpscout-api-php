@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Webhooks;
 
+use GuzzleHttp\Psr7\Request;
 use HelpScout\Api\Conversations\Conversation;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Exception\InvalidSignatureException;
@@ -49,6 +50,25 @@ class IncomingWebhook
         $this->secret = $secret;
 
         $this->validateSignature();
+    }
+
+    public static function makeFromGlobals(string $secret): self
+    {
+        $headers = [];
+        foreach ($_SERVER as $key => $value) {
+            if (stripos($key, 'HTTP_') === 0) {
+                $headers[$key] = $value;
+            }
+        }
+
+        $request = new Request(
+            $_SERVER['REQUEST_METHOD'],
+            $_SERVER['REQUEST_URI'],
+            $headers,
+            @file_get_contents('php://input')
+        );
+
+        return new IncomingWebhook($request, $secret);
     }
 
     /**
@@ -208,5 +228,10 @@ class IncomingWebhook
         );
 
         return $resource->getEntity();
+    }
+
+    public function getRequest(): RequestInterface
+    {
+        return $this->request;
     }
 }

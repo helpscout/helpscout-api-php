@@ -15,6 +15,8 @@ $headers = [
 ];
 
 $request = new Request('POST', 'www.blah.blah', $headers, $body);
+
+// You can use IncomingWebhook::makeFromGlobals($secret) instead of building your own request
 $webhook = new IncomingWebhook($request, $secret);
 
 $eventType = $webhook->getEventType();
