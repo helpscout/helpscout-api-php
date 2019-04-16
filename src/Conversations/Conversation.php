@@ -169,7 +169,23 @@ class Conversation implements Extractable, Hydratable
             $this->setId((int) $data['id']);
         }
 
-        $this->setThreadCount($data['threads'] ?? null);
+        if (isset($data['threadCount'])) {
+            $this->setThreadCount($data['threadCount'] ?? null);
+        }
+
+        if (isset($data['threads'])) {
+            // On some API calls these value is used to pass the thread count
+            if (is_numeric($data['threads'])) {
+                $this->setThreadCount($data['threads']);
+            } else if(is_array($data['threads'])) {
+                $this->threadse = new Collection();
+                foreach ($data['threads'] as $threadData) {
+                    $thread = new Thread();
+                    $thread->hydrate($threadData);
+                    $this->threads->append($thread);
+                }
+            }
+        }
         $this->setNumber($data['number'] ?? null);
         $this->setType($data['type'] ?? null);
         $this->setFolderId($data['folderId'] ?? null);
@@ -178,6 +194,14 @@ class Conversation implements Extractable, Hydratable
         $this->setSubject($data['subject'] ?? null);
         $this->setPreview($data['preview'] ?? null);
         $this->setMailboxId($data['mailboxId'] ?? null);
+
+        // Hydrating a Conversation from a webhook it'll have a Mailbox
+        if (isset($data['mailbox'])) {
+            $mailbox = new Mailbox();
+            $mailbox->hydrate($data['mailbox']);
+            $this->setMailbox($mailbox);
+            $this->setMailboxId($mailbox->getId());
+        }
 
         if (isset($data['assignee'])) {
             $assignee = new User();
