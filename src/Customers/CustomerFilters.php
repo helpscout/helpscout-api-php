@@ -155,6 +155,7 @@ class CustomerFilters
 
     /**
      * @param string $query
+     * @see https://developer.helpscout.com/mailbox-api/endpoints/customers/list/#query
      *
      * @return self
      */

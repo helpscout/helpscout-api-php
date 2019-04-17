@@ -31,7 +31,8 @@ $filters = (new ConversationFilters())
     ->withNumber(42)
     ->withSortField('createdAt')
     ->withSortOrder('asc')
-    ->withQuery('query')
+    // See https://developer.helpscout.com/mailbox-api/endpoints/conversations/list/#query for details on what you can do with query
+    ->withQuery('(email:"john@appleseed.com")')
     ->withCustomFieldById(123, 'blue');
 
 $conversations = $client->conversations()->list($filters);

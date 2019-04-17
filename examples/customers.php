@@ -34,7 +34,8 @@ $filters = (new CustomerFilters())
     ->withLastName('Smith')
     ->withMailbox('12')
     ->withModifiedSince(new DateTime('last month'))
-    ->withQuery('query')
+    // See https://developer.helpscout.com/mailbox-api/endpoints/customers/list/#query for details on what you can do with query
+    ->withQuery('(email:"john@appleseed.com")')
     ->withSortField('createdAt')
     ->withSortOrder('asc');
 
