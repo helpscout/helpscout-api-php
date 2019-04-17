@@ -200,7 +200,6 @@ class Conversation implements Extractable, Hydratable
             $mailbox = new Mailbox();
             $mailbox->hydrate($data['mailbox']);
             $this->setMailbox($mailbox);
-            
             // Sometimes in the API we only get the id, so we also have a getMailboxId().  To avoid confusion as to why that
             // method isn't returning the Mailbox id we'll also set that id here.
             $this->setMailboxId($mailbox->getId());
