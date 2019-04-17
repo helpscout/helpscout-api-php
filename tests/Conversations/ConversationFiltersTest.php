@@ -45,7 +45,7 @@ class ConversationFiltersTest extends TestCase
             'sortOrder' => 'asc',
             'query' => 'query',
             'tag' => 'testing',
-            'customFieldIds' => '123:blue',
+            'customFieldsByIds' => '123:blue',
         ], $filters->getParams());
     }
 
@@ -59,7 +59,7 @@ class ConversationFiltersTest extends TestCase
                 '11:none-more-black',
             ]);
         $this->assertSame([
-            'customFieldIds' => '123:blue,456:yellow,789:red,11:none-more-black',
+            'customFieldsByIds' => '123:blue,456:yellow,789:red,11:none-more-black',
         ], $filters->getParams());
     }
 

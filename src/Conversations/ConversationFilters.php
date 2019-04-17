@@ -87,7 +87,7 @@ class ConversationFilters
         }
 
         if (\is_array($this->customFieldIds)) {
-            $params['customFieldIds'] = implode(',', $this->customFieldIds);
+            $params['customFieldsByIds'] = implode(',', $this->customFieldIds);
         }
 
         // Filter out null values
