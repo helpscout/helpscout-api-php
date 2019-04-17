@@ -290,6 +290,7 @@ class ConversationFilters
 
     /**
      * @param string $query
+     *
      * @see https://developer.helpscout.com/mailbox-api/endpoints/conversations/list/#query
      *
      * @return self
