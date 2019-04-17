@@ -119,6 +119,20 @@ $client->setAccessToken('asdfasdf');
 ```
 The access token will always be used if available, regardless of whether you have other credentials set or not.
 
+### Refreshing Expired Tokens
+
+While making API calls, if your token comes back expired you can refresh the token by:
+
+```
+$client->getAuthenticator()->fetchAccessAndRefreshToken();
+```
+
+To persist the updated token you can use the authenticator that is returned:
+
+```
+$client->getAuthenticator()->fetchAccessAndRefreshToken()->getTokens(); // array
+```
+
 ### Authorization Code Flow
 
 Because the [authorization code](https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow) is only good for a single use, you'll need to exchange the code for and access token and refresh token prior to making additional api calls.  You'll also need to persist the tokens for reuse later.

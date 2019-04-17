@@ -4,8 +4,10 @@ require '_credentials.php';
 
 use HelpScout\Api\ApiClientFactory;
 
-
-// See https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow
+/**
+ * Using Authorization Code flow
+ * @see https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow
+ */
 $appId = '';
 $appSecret = '';
 $authorizationCode = '';
@@ -22,3 +24,14 @@ var_dump($client->getAuthenticator()->getTokens());
 // Additional requests after exchanging the code use the access/refresh tokens
 $users = $client->users()->list();
 print_r($users->getFirstPage()->toArray());
+
+/**
+ * Refreshing an expired token
+ */
+$refreshToken = '';
+$client->useRefreshToken(
+    $appId,
+    $appSecret,
+    $refreshToken
+);
+$newTokens = $client->getAuthenticator()->fetchAccessAndRefreshToken()->getTokens();
