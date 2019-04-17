@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace HelpScout\Api\Mailboxes;
 
 use DateTime;
-use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Hydratable;
 use HelpScout\Api\Mailboxes\Entry\Field;
