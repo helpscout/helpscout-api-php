@@ -29,7 +29,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
  * [Pagination](#pagination)
  * [Testing](#testing)
 
-## Usage
+## Installation
 
 The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
 
@@ -42,7 +42,7 @@ composer require helpscout/api php-http/guzzle6-adapter
 
 This will install the API client and [Guzzle](http://docs.guzzlephp.org/en/latest/index.html), which is our preferred HTTP adapter.
 
-### Installation
+### Usage
 
 You should always use Composer's autoloader in your application to autoload classes. All examples below assume you've already included this in your code:
 
