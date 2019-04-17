@@ -178,7 +178,7 @@ class Conversation implements Extractable, Hydratable
             if (is_numeric($data['threads'])) {
                 $this->setThreadCount($data['threads']);
             } elseif (is_array($data['threads'])) {
-                $this->threadse = new Collection();
+                $this->threads = new Collection();
                 foreach ($data['threads'] as $threadData) {
                     $thread = new Thread();
                     $thread->hydrate($threadData);
