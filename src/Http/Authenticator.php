@@ -197,7 +197,7 @@ class Authenticator
         }
     }
 
-    public function fetchAccessAndRefreshToken(): void
+    public function fetchAccessAndRefreshToken(): self
     {
         $tokens = $this->requestAuthTokens(
             $this->auth->getPayload(),
@@ -207,6 +207,8 @@ class Authenticator
         $this->accessToken = $tokens['access_token'];
         $this->ttl = $tokens['expires_in'];
         $this->refreshToken = $tokens['refresh_token'] ?? null;
+
+        return $this;
     }
 
     /**
