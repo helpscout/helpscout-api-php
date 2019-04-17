@@ -12,7 +12,7 @@ class HasCustomerTest extends TestCase
 {
     use HasCustomer;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

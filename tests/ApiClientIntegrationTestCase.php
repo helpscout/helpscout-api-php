@@ -40,7 +40,7 @@ abstract class ApiClientIntegrationTestCase extends TestCase
      */
     protected $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->history = [];
         $this->mockHandler = new MockHandler();

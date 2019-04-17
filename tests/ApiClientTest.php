@@ -38,7 +38,7 @@ class ApiClientTest extends TestCase
      */
     private $guzzle;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->authenticator = Mockery::mock(Authenticator::class);
         $this->guzzle = Mockery::mock(Client::class);

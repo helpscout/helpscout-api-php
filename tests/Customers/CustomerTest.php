@@ -280,9 +280,9 @@ class CustomerTest extends TestCase
 
         $customer->addEmail($email);
 
-        $this->assertArraySubset([
-            'email' => 'tester@mysite.com',
-        ], $customer->extract());
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('email', $extracted);
+        $this->assertEquals('tester@mysite.com', $extracted['email']);
     }
 
     public function testExtractNewEntity()

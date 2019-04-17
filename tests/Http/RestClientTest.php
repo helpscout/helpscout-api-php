@@ -28,7 +28,7 @@ class RestClientTest extends TestCase
     public $methodsClient;
     public $authenticator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->methodsClient = \Mockery::mock(Client::class);
         $this->authenticator = \Mockery::mock(Authenticator::class);

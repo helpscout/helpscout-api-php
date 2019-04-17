@@ -7,3 +7,4 @@ vendor
 ./examples/_credentials.php
 build
 .DS_Store
+.phpunit.result.cache
