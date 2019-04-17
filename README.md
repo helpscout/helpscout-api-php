@@ -9,7 +9,6 @@ This is the official Help Scout PHP client. This client contains methods for eas
 ## Requirements
 
 * PHP >= 7.1
-* A [HTTPlug](http://httplug.io/) adapter
 
 ## Table of Contents
 
@@ -33,16 +32,11 @@ This is the official Help Scout PHP client. This client contains methods for eas
 
 The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
 
-The client is not coupled to any particular PHP HTTP client library, e.g. Guzzle. Instead it uses an abstraction called [HTTPlug](http://docs.php-http.org/en/latest/httplug/users.html).
-This gives you the flexibility to choose which PSR-7 implementation and HTTP client to use. If you want to get started quickly you should run the following command:
-
 ```bash
-composer require helpscout/api php-http/guzzle6-adapter
+composer require helpscout/api
 ```
 
-This will install the API client and [Guzzle](http://docs.guzzlephp.org/en/latest/index.html), which is our preferred HTTP adapter.
-
-### Usage
+## Usage
 
 You should always use Composer's autoloader in your application to autoload classes. All examples below assume you've already included this in your code:
 
