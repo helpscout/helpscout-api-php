@@ -42,7 +42,7 @@ composer require helpscout/api php-http/guzzle6-adapter
 
 This will install the API client and [Guzzle](http://docs.guzzlephp.org/en/latest/index.html), which is our preferred HTTP adapter.
 
-## Usage
+### Installation
 
 You should always use Composer's autoloader in your application to autoload classes. All examples below assume you've already included this in your code:
 
@@ -157,7 +157,7 @@ $client->users()->list();
 Get a customer.  Whenever getting a customer, all it's entities (email addresses, phone numbers, social profiles, etc.) come preloaded in the same request.
 
 ```php
-$customer = $client->getCustomer($customerId);
+$customer = $client->customers()->get($customerId);
 ```
 
 Get customers.
