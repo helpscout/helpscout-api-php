@@ -526,7 +526,7 @@ EOF;
         $this->assertSame(14932, $conversation->getFolderId());
         $this->assertSame(Status::ACTIVE, $conversation->getStatus());
         $this->assertSame('Re: Following up on your Demo Request', $conversation->getSubject());
-        $this->assertSame("Are you still interested in a demo?", $conversation->getPreview());
+        $this->assertSame('Are you still interested in a demo?', $conversation->getPreview());
         $this->assertSame(12334, $conversation->getMailboxId());
         $this->assertSame(12334, $conversation->getMailbox()->getId());
 
@@ -548,5 +548,4 @@ EOF;
         $tag = $conversation->getTags()[0];
         $this->assertSame('new-customer', $tag->getName());
     }
-
 }

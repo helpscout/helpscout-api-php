@@ -177,7 +177,7 @@ class Conversation implements Extractable, Hydratable
             // On some API calls these value is used to pass the thread count
             if (is_numeric($data['threads'])) {
                 $this->setThreadCount($data['threads']);
-            } else if(is_array($data['threads'])) {
+            } elseif (is_array($data['threads'])) {
                 $this->threadse = new Collection();
                 foreach ($data['threads'] as $threadData) {
                     $thread = new Thread();
