@@ -169,7 +169,23 @@ class Conversation implements Extractable, Hydratable
             $this->setId((int) $data['id']);
         }
 
-        $this->setThreadCount($data['threads'] ?? null);
+        if (isset($data['threadCount'])) {
+            $this->setThreadCount($data['threadCount'] ?? null);
+        }
+
+        if (isset($data['threads'])) {
+            // On some API calls these value is used to pass the thread count
+            if (is_numeric($data['threads'])) {
+                $this->setThreadCount($data['threads']);
+            } elseif (is_array($data['threads'])) {
+                $this->threads = new Collection();
+                foreach ($data['threads'] as $threadData) {
+                    $thread = new Thread();
+                    $thread->hydrate($threadData);
+                    $this->threads->append($thread);
+                }
+            }
+        }
         $this->setNumber($data['number'] ?? null);
         $this->setType($data['type'] ?? null);
         $this->setFolderId($data['folderId'] ?? null);
@@ -178,6 +194,16 @@ class Conversation implements Extractable, Hydratable
         $this->setSubject($data['subject'] ?? null);
         $this->setPreview($data['preview'] ?? null);
         $this->setMailboxId($data['mailboxId'] ?? null);
+
+        // Webhook responses contain a full Mailbox object, not just the ID
+        if (isset($data['mailbox'])) {
+            $mailbox = new Mailbox();
+            $mailbox->hydrate($data['mailbox']);
+            $this->setMailbox($mailbox);
+            // Sometimes in the API we only get the id, so we also have a getMailboxId().  To avoid confusion as to why that
+            // method isn't returning the Mailbox id we'll also set that id here.
+            $this->setMailboxId($mailbox->getId());
+        }
 
         if (isset($data['assignee'])) {
             $assignee = new User();
@@ -215,7 +241,13 @@ class Conversation implements Extractable, Hydratable
             $this->tags = new Collection();
             foreach ($data['tags'] as $tagData) {
                 $tag = new Tag();
-                $tag->hydrate($tagData);
+
+                // Webhooks only return the tag name itself, not all the tag attributes
+                if (is_array($tagData)) {
+                    $tag->hydrate($tagData);
+                } else {
+                    $tag->setName($tagData);
+                }
                 $this->tags->append($tag);
             }
         }

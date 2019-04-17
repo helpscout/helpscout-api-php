@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace HelpScout\Api\Mailboxes;
 
 use DateTime;
-use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Hydratable;
 use HelpScout\Api\Mailboxes\Entry\Field;
@@ -81,12 +80,10 @@ class Mailbox implements Hydratable
     }
 
     /**
-     * @param int $id
+     * @param int|null $id
      */
-    public function setId(int $id)
+    public function setId($id)
     {
-        Assert::greaterThan($id, 0);
-
         $this->id = $id;
     }
 
@@ -159,11 +156,11 @@ class Mailbox implements Hydratable
     }
 
     /**
-     * @param string $slug
+     * @param string|null $slug
      *
      * @return Mailbox
      */
-    public function setSlug(string $slug): Mailbox
+    public function setSlug($slug): Mailbox
     {
         $this->slug = $slug;
 
@@ -179,11 +176,11 @@ class Mailbox implements Hydratable
     }
 
     /**
-     * @param string $email
+     * @param string|null $email
      *
      * @return Mailbox
      */
-    public function setEmail(string $email): Mailbox
+    public function setEmail($email): Mailbox
     {
         $this->email = $email;
 

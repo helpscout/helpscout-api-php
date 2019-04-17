@@ -12,6 +12,7 @@ use HelpScout\Api\Conversations\CustomerWaitingSince;
 use HelpScout\Api\Conversations\CustomField;
 use HelpScout\Api\Conversations\EmailConversation;
 use HelpScout\Api\Conversations\PhoneConversation;
+use HelpScout\Api\Conversations\Status;
 use HelpScout\Api\Conversations\Threads\ChatThread;
 use HelpScout\Api\Conversations\Threads\Thread;
 use HelpScout\Api\Customers\Customer;
@@ -94,7 +95,7 @@ class ConversationTest extends TestCase
         $this->assertSame(15473, $conversation->getNumber());
         $this->assertSame('email', $conversation->getType());
         $this->assertSame(493, $conversation->getFolderId());
-        $this->assertSame('closed', $conversation->getStatus());
+        $this->assertSame(Status::CLOSED, $conversation->getStatus());
         $this->assertSame('published', $conversation->getState());
         $this->assertSame('Need Help', $conversation->getSubject());
         $this->assertSame("I'm having a hard time resolving this", $conversation->getPreview());
@@ -423,5 +424,128 @@ class ConversationTest extends TestCase
         $this->assertEmpty($convo->getThreads()->toArray());
         $convo->addThread($thread);
         $this->assertSame($thread, $convo->getThreads()->toArray()[0]);
+    }
+
+    public function testHydratesConversationFromWebhookRequest()
+    {
+        $json = <<<EOF
+{
+    "number": 123,
+    "id": 4934923493,
+    "folderId": 14932,
+    "type": "email",
+    "isDraft": false,
+    "owner": null,
+    "mailbox": {
+        "id": 12334,
+        "name": "Sales"
+    },
+    "customer": {
+        "id": 179783313,
+        "firstName": "John",
+        "lastName": "Smith",
+        "email": "john@ourcompany.com",
+        "type": "customer"
+    },
+    "threadCount": 3,
+    "status": "active",
+    "subject": "Re: Following up on your Demo Request",
+    "preview": "Are you still interested in a demo?",
+    "createdBy": {
+        "id": 179783313,
+        "firstName": "John",
+        "lastName": "Smith",
+        "email": "john@ourcompany.com",
+        "type": "customer"
+    },
+    "createdAt": "2019-02-28T15:41:12Z",
+    "modifiedAt": "2019-04-15T20:15:32Z",
+    "closedAt": null,
+    "closedBy": null,
+    "source": {
+        "type": "email",
+        "via": "customer"
+    },
+    "cc": [
+        "customer-address@gmail.com"
+    ],
+    "bcc": null,
+    "tags": [
+        "new-customer"
+    ],
+    "threads": [
+    {
+        "id": 2198262392,
+        "assignedTo": null,
+        "status": "active",
+        "createdAt": "2019-02-28T15:48:20Z",
+        "createdBy": {
+            "id": 179783313,
+            "firstName": "John",
+            "lastName": "Smith",
+            "email": "john@ourcompany.com",
+            "type": "customer"
+        },
+        "source": {
+            "type": "email",
+            "via": "customer"
+        },
+        "actionType": null,
+        "actionSourceId": 0,
+        "fromMailbox": null,
+        "type": "customer",
+        "state": "published",
+        "customer": {
+            "id": 179783313,
+            "firstName": "Casey",
+            "lastName": "Lockwood",
+            "email": "casey@helpscout.com",
+            "type": "customer"
+        },
+        "body": "Are you still interested in a demo?",
+        "to": [
+            "customer-address@gmail.com"
+        ],
+        "cc": null,
+        "bcc": null,
+        "attachments": null
+    }
+    ],
+    "customFields": []
+}
+EOF;
+
+        $json = json_decode($json, true);
+        $conversation = new Conversation();
+        $conversation->hydrate($json);
+
+        $this->assertSame(4934923493, $conversation->getId());
+        $this->assertSame(3, $conversation->getThreadCount());
+        $this->assertSame(123, $conversation->getNumber());
+        $this->assertSame('email', $conversation->getType());
+        $this->assertSame(14932, $conversation->getFolderId());
+        $this->assertSame(Status::ACTIVE, $conversation->getStatus());
+        $this->assertSame('Re: Following up on your Demo Request', $conversation->getSubject());
+        $this->assertSame('Are you still interested in a demo?', $conversation->getPreview());
+        $this->assertSame(12334, $conversation->getMailboxId());
+        $this->assertSame(12334, $conversation->getMailbox()->getId());
+
+        $customer = $conversation->getCreatedByCustomer();
+        $this->assertSame(179783313, $customer->getId());
+
+        $this->assertSame('email', $conversation->getSourceType());
+        $this->assertSame('customer', $conversation->getSourceVia());
+
+        $this->assertSame([
+            'customer-address@gmail.com',
+        ], $conversation->getCC());
+
+        $this->assertSame(179783313, $conversation->getCustomer()->getId());
+
+        $thread = $conversation->getThreads()[0];
+        $this->assertSame(2198262392, $thread->getId());
+
+        $tag = $conversation->getTags()[0];
+        $this->assertSame('new-customer', $tag->getName());
     }
 }
