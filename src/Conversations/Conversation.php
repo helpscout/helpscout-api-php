@@ -195,11 +195,14 @@ class Conversation implements Extractable, Hydratable
         $this->setPreview($data['preview'] ?? null);
         $this->setMailboxId($data['mailboxId'] ?? null);
 
-        // Hydrating a Conversation from a webhook it'll have a Mailbox
+        // Webhook responses contain a full Mailbox object, not just the ID
         if (isset($data['mailbox'])) {
             $mailbox = new Mailbox();
             $mailbox->hydrate($data['mailbox']);
             $this->setMailbox($mailbox);
+            
+            // Sometimes in the API we only get the id, so we also have a getMailboxId().  To avoid confusion as to why that
+            // method isn't returning the Mailbox id we'll also set that id here.
             $this->setMailboxId($mailbox->getId());
         }
 
