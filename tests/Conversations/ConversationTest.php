@@ -470,7 +470,9 @@ class ConversationTest extends TestCase
         "customer-address@gmail.com"
     ],
     "bcc": null,
-    "tags": [],
+    "tags": [
+        "new-customer"
+    ],
     "threads": [
     {
         "id": 2198262392,
@@ -542,6 +544,9 @@ EOF;
 
         $thread = $conversation->getThreads()[0];
         $this->assertSame(2198262392, $thread->getId());
+
+        $tag = $conversation->getTags()[0];
+        $this->assertSame('new-customer', $tag->getName());
     }
 
 }

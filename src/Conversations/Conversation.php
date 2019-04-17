@@ -239,7 +239,13 @@ class Conversation implements Extractable, Hydratable
             $this->tags = new Collection();
             foreach ($data['tags'] as $tagData) {
                 $tag = new Tag();
-                $tag->hydrate($tagData);
+
+                // Webhooks only return the tag name itself, not all the tag attributes
+                if (is_array($tagData)) {
+                    $tag->hydrate($tagData);
+                } else {
+                    $tag->setName($tagData);
+                }
                 $this->tags->append($tag);
             }
         }
