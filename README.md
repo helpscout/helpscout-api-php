@@ -29,7 +29,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
  * [Pagination](#pagination)
  * [Testing](#testing)
 
-## Installation
+## Usage
 
 The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
 
