@@ -32,6 +32,10 @@ This is the official Help Scout PHP client. This client contains methods for eas
 
 The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
 
+```bash
+composer require helpscout/api
+```
+
 ## Usage
 
 You should always use Composer's autoloader in your application to autoload classes. All examples below assume you've already included this in your code:
@@ -161,7 +165,7 @@ $client->users()->list();
 Get a customer.  Whenever getting a customer, all it's entities (email addresses, phone numbers, social profiles, etc.) come preloaded in the same request.
 
 ```php
-$customer = $client->getCustomer($customerId);
+$customer = $client->customers()->get($customerId);
 ```
 
 Get customers.
