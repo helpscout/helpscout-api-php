@@ -15,6 +15,7 @@ use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
 use HelpScout\Api\Mailboxes\Mailbox;
+use HelpScout\Api\Support\ExtractsData;
 use HelpScout\Api\Support\HydratesData;
 use HelpScout\Api\Tags\Tag;
 use HelpScout\Api\Users\User;
@@ -22,6 +23,7 @@ use HelpScout\Api\Users\User;
 class Conversation implements Extractable, Hydratable
 {
     use HydratesData,
+        ExtractsData,
         HasPartiesToBeNotified,
         IncludesThreadDetails,
         HasCustomer;
@@ -348,15 +350,15 @@ class Conversation implements Extractable, Hydratable
         }
 
         if ($this->getCreatedAt() != null) {
-            $data['createdAt'] = $this->getCreatedAt()->format('c');
+            $data['createdAt'] = $this->to8601Utc($this->getCreatedAt());
         }
 
         if ($this->getClosedAt() != null) {
-            $data['closedAt'] = $this->getClosedAt()->format('c');
+            $data['closedAt'] = $this->to8601Utc($this->getClosedAt());
         }
 
         if ($this->getUserUpdatedAt() != null) {
-            $data['userUpdatedAt'] = $this->getUserUpdatedAt()->format('c');
+            $data['userUpdatedAt'] = $this->to8601Utc($this->getUserUpdatedAt());
         }
 
         if ($this->wasCreatedByCustomer()) {

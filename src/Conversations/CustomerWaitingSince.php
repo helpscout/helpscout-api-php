@@ -7,11 +7,13 @@ namespace HelpScout\Api\Conversations;
 use DateTime;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
+use HelpScout\Api\Support\ExtractsData;
 use HelpScout\Api\Support\HydratesData;
 
 class CustomerWaitingSince implements Extractable, Hydratable
 {
-    use HydratesData;
+    use HydratesData,
+        ExtractsData;
 
     /**
      * @var DateTime
@@ -47,7 +49,7 @@ class CustomerWaitingSince implements Extractable, Hydratable
         ];
 
         if ($this->getTime() instanceof DateTime) {
-            $fields['time'] = $this->getTime()->format('c');
+            $fields['time'] = $this->to8601Utc($this->getTime());
         }
 
         return $fields;

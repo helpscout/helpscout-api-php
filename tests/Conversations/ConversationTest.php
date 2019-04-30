@@ -257,10 +257,10 @@ class ConversationTest extends TestCase
                 'id' => 12,
                 'type' => 'customer',
             ],
-            'createdAt' => '2017-04-21T14:39:56+00:00',
-            'closedAt' => '2017-04-21T12:23:06+00:00',
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'closedAt' => '2017-04-21T12:23:06Z',
             'closedBy' => 14,
-            'userUpdatedAt' => '2017-04-21T03:12:06+00:00',
+            'userUpdatedAt' => '2017-04-21T03:12:06Z',
             'source' => [
                 'type' => 'email',
                 'via' => 'customer',
@@ -276,7 +276,7 @@ class ConversationTest extends TestCase
                 'email' => 'mycustomer@domain.com',
             ],
             'customerWaitingSince' => [
-                'time' => '2012-07-24T20:18:33+00:00',
+                'time' => '2012-07-24T20:18:33Z',
                 'friendly' => '20 hours ago',
                 'latestReplyFrom' => 'customer',
             ],

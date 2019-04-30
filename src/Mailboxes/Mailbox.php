@@ -140,7 +140,7 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setName(string $name): Mailbox
+    public function setName($name): Mailbox
     {
         $this->name = $name;
 

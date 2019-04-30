@@ -12,11 +12,13 @@ use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
 use HelpScout\Api\Exception\RuntimeException;
+use HelpScout\Api\Support\ExtractsData;
 use HelpScout\Api\Support\HydratesData;
 
 class Thread implements Extractable, Hydratable
 {
     use HydratesData,
+        ExtractsData,
         HasPartiesToBeNotified,
         IncludesThreadDetails;
 
@@ -200,11 +202,11 @@ class Thread implements Extractable, Hydratable
         $data['bcc'] = $this->getBCC();
 
         if ($this->getCreatedAt() != null) {
-            $data['createdAt'] = $this->getCreatedAt()->format('c');
+            $data['createdAt'] = $this->to8601Utc($this->getCreatedAt());
         }
 
         if ($this->getOpenedAt() != null) {
-            $data['openedAt'] = $this->getOpenedAt()->format('c');
+            $data['openedAt'] = $this->to8601Utc($this->getOpenedAt());
         }
 
         if ($this->isImported()) {
