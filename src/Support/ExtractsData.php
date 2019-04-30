@@ -19,7 +19,7 @@ trait ExtractsData
         // Convert to UTC if we can
         if ($dateTime instanceof DateTime) {
             $dateTime->setTimezone(new \DateTimeZone('UTC'));
-        } else if ($dateTime instanceof \DateTimeImmutable && $dateTime->getOffset() > 0) {
+        } elseif ($dateTime instanceof \DateTimeImmutable && $dateTime->getOffset() > 0) {
             // Some implementations will be wrong since we're effectively dropping the offset from the datetime format
             // and this interface doesn't allow us to make modifications so we reject the timestamp altogether to ensure
             // only correct timestamps make it through.
