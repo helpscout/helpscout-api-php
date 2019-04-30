@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Support;
 
 use DateTime;
-use DateTimeZone;
 use DateTimeImmutable;
+use DateTimeZone;
 use HelpScout\Api\Exception\InvalidArgumentException;
 use HelpScout\Api\Support\ExtractsData;
 use PHPUnit\Framework\TestCase;
