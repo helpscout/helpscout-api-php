@@ -32,7 +32,7 @@ class CustomerWaitingSinceTest extends TestCase
         $waitingSince->setLatestReplyFrom('customer');
 
         $this->assertSame([
-            'time' => '2017-07-24T20:18:33+00:00',
+            'time' => '2017-07-24T20:18:33Z',
             'friendly' => '20 hours ago',
             'latestReplyFrom' => 'customer',
         ], $waitingSince->extract());

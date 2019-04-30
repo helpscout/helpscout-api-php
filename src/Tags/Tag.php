@@ -6,11 +6,13 @@ namespace HelpScout\Api\Tags;
 
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
+use HelpScout\Api\Support\ExtractsData;
 use HelpScout\Api\Support\HydratesData;
 
 class Tag implements Extractable, Hydratable
 {
-    use HydratesData;
+    use HydratesData,
+        ExtractsData;
 
     /**
      * @var string|null
@@ -82,11 +84,11 @@ class Tag implements Extractable, Hydratable
         ];
 
         if ($this->getCreatedAt() !== null) {
-            $data['createdAt'] = $this->getCreatedAt()->format(Extractable::DATETIME_FORMAT);
+            $data['createdAt'] = $this->to8601Utc($this->getCreatedAt());
         }
 
         if ($this->getUpdatedAt() !== null) {
-            $data['updatedAt'] = $this->getUpdatedAt()->format(Extractable::DATETIME_FORMAT);
+            $data['updatedAt'] = $this->to8601Utc($this->getUpdatedAt());
         }
 
         return $data;

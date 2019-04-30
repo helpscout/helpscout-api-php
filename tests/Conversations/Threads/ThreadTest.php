@@ -236,8 +236,8 @@ class ThreadTest extends TestCase
             'bcc' => [
                 'bear@secret.com',
             ],
-            'createdAt' => '2017-04-21T14:39:56+00:00',
-            'openedAt' => '2017-04-21T14:12:56+00:00',
+            'createdAt' => '2017-04-21T14:39:56Z',
+            'openedAt' => '2017-04-21T14:12:56Z',
             'imported' => true,
         ], $thread->extract());
     }

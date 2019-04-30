@@ -7,11 +7,13 @@ namespace HelpScout\Api\Workflows;
 use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
+use HelpScout\Api\Support\ExtractsData;
 use HelpScout\Api\Support\HydratesData;
 
 class Workflow implements Hydratable, Extractable
 {
-    use HydratesData;
+    use HydratesData,
+        ExtractsData;
 
     public const TYPE_MANUAL = 'manual';
     public const TYPE_AUTOMATIC = 'automatic';
@@ -91,11 +93,11 @@ class Workflow implements Hydratable, Extractable
         ];
 
         if ($this->getCreatedAt() !== null) {
-            $data['createdAt'] = $this->getCreatedAt()->format(Extractable::DATETIME_FORMAT);
+            $data['createdAt'] = $this->to8601Utc($this->getCreatedAt());
         }
 
         if ($this->getModifiedAt() !== null) {
-            $data['modifiedAt'] = $this->getModifiedAt()->format(Extractable::DATETIME_FORMAT);
+            $data['modifiedAt'] = $this->to8601Utc($this->getModifiedAt());
         }
 
         return $data;
