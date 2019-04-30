@@ -210,12 +210,6 @@ $customer->setFirstName('Bob');
 $client->customers()->update($customer);
 ```
 
-Delete a customer.
-
-```php
-$client->customers()->delete($customerId);
-```
-
 #### Address
 
 Create a customer address.
