@@ -25,9 +25,14 @@ $customer = $client->customers()->get(161694345);
 
 // List customers
 $customers = $client->customers()
-    ->list()
-    ->getFirstPage()
-    ->toArray();
+    ->list();
+
+echo 'There are '.$customers->getTotalPageCount().' page(s) of results'.PHP_EOL;
+
+// show the first name of the customers on the first page of results
+foreach($customers->getFirstPage() as $customer) {
+    echo $customer->getFirstName().PHP_EOL;
+}
 
 $filters = (new CustomerFilters())
     ->withFirstName('John')

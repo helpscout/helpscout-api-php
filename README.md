@@ -856,6 +856,11 @@ $lastUsers = $users->getLastPage();
 
 // Load a specific page
 $otherUsers = $users->getPage(12);
+
+// Paged results are accessible as normal arrays, so you can simply iterate over them
+foreach ($otherUsers as $user) {
+    echo $user->getFirstName();
+}
 ```
 
 ## Testing
