@@ -837,7 +837,7 @@ When fetching a collection of entities the client will return an instance of `He
 $users = $client->users()->list();
 
 // Iterate over the first page of results
-foreach ($otherUsers as $user) {
+foreach ($users as $user) {
     echo $users->getFirstName();
 }
 
