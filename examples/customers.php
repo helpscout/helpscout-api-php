@@ -30,7 +30,7 @@ $customers = $client->customers()
 echo 'There are '.$customers->getTotalPageCount().' page(s) of results'.PHP_EOL;
 
 // show the first name of the customers on the first page of results
-foreach($customers->getFirstPage() as $customer) {
+foreach($customers as $customer) {
     echo $customer->getFirstName().PHP_EOL;
 }
 

@@ -9,15 +9,15 @@ use HelpScout\Api\Conversations\Status;
 $client = ApiClientFactory::createClient();
 $client = $client->useClientCredentials($appId, $appSecret);
 
-// GET mailbox
-$mailbox = $client->mailboxes()->get(4938);
+//// GET mailbox
+//$mailbox = $client->mailboxes()->get(4938);
 
 // List mailboxes
 $mailboxes = $client->mailboxes()
     ->list();
 
 // show the name of the mailboxes on the first page of results
-foreach($mailboxes->getFirstPage() as $mailbox) {
+foreach($mailboxes as $mailbox) {
 
     // Find out how many active conversations we have for each mailbox
     $filters = (new ConversationFilters())

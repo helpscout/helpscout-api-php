@@ -836,6 +836,11 @@ When fetching a collection of entities the client will return an instance of `He
 /** @var PagedCollection $users */
 $users = $client->users()->list();
 
+// Iterate over the first page of results
+foreach ($otherUsers as $user) {
+    echo $users->getFirstName();
+}
+
 // The current page number
 $users->getPageNumber();
 
