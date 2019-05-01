@@ -182,7 +182,7 @@ provides a simple interface to set filter values. For example:
 ```php
 use HelpScout\Api\Customers\CustomerFilters;
 
-$filter = new (CustomerFilters)
+$filter = (new CustomerFilters())
     ->withFirstName('Tom')
     ->withLastName('Graham');
 
@@ -830,6 +830,11 @@ When fetching a collection of entities the client will return an instance of `He
 /** @var PagedCollection $users */
 $users = $client->users()->list();
 
+// Iterate over the first page of results
+foreach ($users as $user) {
+    echo $users->getFirstName();
+}
+
 // The current page number
 $users->getPageNumber();
 
@@ -850,6 +855,11 @@ $lastUsers = $users->getLastPage();
 
 // Load a specific page
 $otherUsers = $users->getPage(12);
+
+// Paged results are accessible as normal arrays, so you can simply iterate over them
+foreach ($otherUsers as $user) {
+    echo $user->getFirstName();
+}
 ```
 
 ## Testing
