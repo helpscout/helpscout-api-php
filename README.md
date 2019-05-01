@@ -182,7 +182,7 @@ provides a simple interface to set filter values. For example:
 ```php
 use HelpScout\Api\Customers\CustomerFilters;
 
-$filter = new (CustomerFilters)
+$filter = (new CustomerFilters())
     ->withFirstName('Tom')
     ->withLastName('Graham');
 
