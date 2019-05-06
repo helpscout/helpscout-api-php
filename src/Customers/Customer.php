@@ -212,7 +212,12 @@ class Customer implements Extractable, Hydratable
             'photoUrl' => $this->getPhotoUrl(),
             'background' => $this->getBackground(),
             'age' => $this->getAge(),
-            'email' => $this->getFirstEmail(),
+            'emails' => $this->emails->extract(),
+            'phones' => $this->phones->extract(),
+            'address' => $this->address->extract(),
+            'chats' => $this->chats->extract(),
+            'socialProfiles' => $this->socialProfiles->extract(),
+            'websites' => $this->websites->extract()
         ]);
     }
 

@@ -6,7 +6,7 @@ namespace HelpScout\Api\Entity;
 
 use ArrayObject;
 
-class Collection extends ArrayObject
+class Collection extends ArrayObject implements Extractable
 {
     public function __construct(array $items = [])
     {
@@ -20,4 +20,17 @@ class Collection extends ArrayObject
     {
         return $this->getArrayCopy();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function extract(): array
+    {
+        $a_result = array();
+        foreach ($this as $o_entry) {
+            $a_result[] = $o_entry->extract();
+        }
+        return $a_result;
+    }
 }
+
