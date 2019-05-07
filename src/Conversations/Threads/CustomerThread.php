@@ -11,8 +11,8 @@ class CustomerThread extends Thread
 {
     public const TYPE = 'customer';
 
-    use HasCustomer,
-        HasPartiesToBeNotified;
+    use HasCustomer;
+    use HasPartiesToBeNotified;
 
     public static function resourceUrl(int $conversationId): string
     {

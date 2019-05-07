@@ -17,10 +17,10 @@ use HelpScout\Api\Support\HydratesData;
 
 class Thread implements Extractable, Hydratable
 {
-    use HydratesData,
-        ExtractsData,
-        HasPartiesToBeNotified,
-        IncludesThreadDetails;
+    use HydratesData;
+    use ExtractsData;
+    use HasPartiesToBeNotified;
+    use IncludesThreadDetails;
 
     /**
      * @var int

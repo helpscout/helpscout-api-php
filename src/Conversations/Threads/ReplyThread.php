@@ -12,9 +12,9 @@ class ReplyThread extends Thread
 {
     public const TYPE = 'reply';
 
-    use HasUser,
-        HasCustomer,
-        HasPartiesToBeNotified;
+    use HasUser;
+    use HasCustomer;
+    use HasPartiesToBeNotified;
 
     public static function resourceUrl(int $conversationId): string
     {
