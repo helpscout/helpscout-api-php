@@ -218,7 +218,7 @@ class Customer implements Extractable, Hydratable
             // of what's already in "emails"
             'email' => $this->getFirstEmail(),
 
-            'address' => $this->getAddress() !== null ? $this->address->extract() : null,
+            'address' => $this->getAddress() !== null ? $this->getAddress()->extract() : null,
 
             'emails' => $this->getEmails()->extract(),
             'phones' => $this->getPhones()->extract(),
