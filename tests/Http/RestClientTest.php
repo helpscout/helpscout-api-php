@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use HelpScout\Api\ApiClient;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
@@ -32,6 +33,26 @@ class RestClientTest extends TestCase
     {
         $this->methodsClient = \Mockery::mock(Client::class);
         $this->authenticator = \Mockery::mock(Authenticator::class);
+    }
+
+    public function testDefaultHeaders()
+    {
+        $this->authenticator->shouldReceive('getAuthHeader')->andReturn([
+            'Authorization' => 'Bearer 123abc',
+        ]);
+
+        $restClient = new RestClient($this->methodsClient, $this->authenticator);
+
+        $headers = $restClient->getDefaultHeaders();
+
+        $this->assertArrayHasKey('Content-Type', $headers);
+        $this->assertEquals(RestClient::CONTENT_TYPE, $headers['Content-Type']);
+
+        $this->assertArrayHasKey('User-Agent', $headers);
+        $this->assertEquals('Help Scout PHP API Client/'.ApiClient::CLIENT_VERSION.' (PHP '.phpversion().')', $headers['User-Agent']);
+
+        $this->assertArrayHasKey('Authorization', $headers);
+        $this->assertEquals('Bearer 123abc', $headers['Authorization']);
     }
 
     public function testRunReport()

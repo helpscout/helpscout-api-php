@@ -6,6 +6,7 @@ namespace HelpScout\Api\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use HelpScout\Api\ApiClient;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Http\Hal\HalDeserializer;
 use HelpScout\Api\Http\Hal\HalResource;
@@ -58,10 +59,13 @@ class RestClient
     /**
      * @return array
      */
-    protected function getDefaultHeaders(): array
+    public function getDefaultHeaders(): array
     {
         return array_merge(
-            ['Content-Type' => self::CONTENT_TYPE],
+            [
+                'Content-Type' => self::CONTENT_TYPE,
+                'User-Agent' => sprintf(self::CLIENT_USER_AGENT, ApiClient::CLIENT_VERSION, phpversion()),
+            ],
             $this->getAuthHeader()
         );
     }
