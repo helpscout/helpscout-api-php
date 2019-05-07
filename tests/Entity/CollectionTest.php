@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Entity;
 
+use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
+use HelpScout\Api\Exception\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
@@ -50,5 +52,28 @@ class CollectionTest extends TestCase
         $collection = new Collection($items);
 
         $this->assertCount(3, $collection);
+    }
+
+    public function testExtractable()
+    {
+        $items = [
+            (new Customer())->setId(123),
+        ];
+        $collection = new Collection($items);
+        $extracted = $collection->extract();
+
+        $this->assertSame(123, $extracted[0]['id']);
+    }
+
+    public function testFailsExtractionWhenNotExtractable()
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Entity is not extractable');
+
+        $items = [
+            new \stdClass(),
+        ];
+        $collection = new Collection($items);
+        $collection->extract();
     }
 }
