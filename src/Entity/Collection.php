@@ -40,4 +40,3 @@ class Collection extends ArrayObject implements Extractable
         return $extracted;
     }
 }
-

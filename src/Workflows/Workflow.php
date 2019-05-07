@@ -12,8 +12,8 @@ use HelpScout\Api\Support\HydratesData;
 
 class Workflow implements Hydratable, Extractable
 {
-    use HydratesData,
-        ExtractsData;
+    use HydratesData;
+    use ExtractsData;
 
     public const TYPE_MANUAL = 'manual';
     public const TYPE_AUTOMATIC = 'automatic';
