@@ -6,6 +6,7 @@ namespace HelpScout\Api\Tests\Customers;
 
 use DateTime;
 use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Customers\Entry\Address;
 use HelpScout\Api\Customers\Entry\ChatHandle;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
@@ -280,9 +281,9 @@ class CustomerTest extends TestCase
 
         $customer->addEmail($email);
 
-        $this->assertArraySubset([
-            'email' => 'tester@mysite.com',
-        ], $customer->extract());
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('email', $extracted);
+        $this->assertEquals('tester@mysite.com', $extracted['email']);
     }
 
     public function testExtractNewEntity()
@@ -290,6 +291,18 @@ class CustomerTest extends TestCase
         $customer = new Customer();
 
         $this->assertSame([], $customer->extract());
+    }
+
+    public function testExtractAddress()
+    {
+        $customer = new Customer();
+        $address = new Address();
+        $address->setPostalCode('42301');
+        $customer->setAddress($address);
+
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('address', $extracted);
+        $this->assertSame('42301', $extracted['address']['postalCode']);
     }
 
     public function testAddChat()
@@ -302,6 +315,18 @@ class CustomerTest extends TestCase
         $this->assertSame($chat, $customer->getChatHandles()->toArray()[0]);
     }
 
+    public function testExtractChatHandles()
+    {
+        $customer = new Customer();
+        $chatHandle = new ChatHandle();
+        $chatHandle->setValue('jsmith');
+        $customer->addChatHandle($chatHandle);
+
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('chats', $extracted);
+        $this->assertSame('jsmith', $extracted['chats'][0]['value']);
+    }
+
     public function testAddEmail()
     {
         $customer = new Customer();
@@ -310,6 +335,18 @@ class CustomerTest extends TestCase
         $email = new Email();
         $customer->addEmail($email);
         $this->assertSame($email, $customer->getEmails()->toArray()[0]);
+    }
+
+    public function testExtractEmails()
+    {
+        $customer = new Customer();
+        $email = new Email();
+        $email->setValue('customer@email.com');
+        $customer->addEmail($email);
+
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('emails', $extracted);
+        $this->assertSame('customer@email.com', $extracted['emails'][0]['value']);
     }
 
     public function testAddPhone()
@@ -322,6 +359,18 @@ class CustomerTest extends TestCase
         $this->assertSame($phone, $customer->getPhones()->toArray()[0]);
     }
 
+    public function testExtractPhones()
+    {
+        $customer = new Customer();
+        $phone = new Phone();
+        $phone->setValue('45551234321');
+        $customer->addPhone($phone);
+
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('phones', $extracted);
+        $this->assertSame('45551234321', $extracted['phones'][0]['value']);
+    }
+
     public function testAddSocialProfiles()
     {
         $customer = new Customer();
@@ -332,6 +381,18 @@ class CustomerTest extends TestCase
         $this->assertSame($profile, $customer->getSocialProfiles()->toArray()[0]);
     }
 
+    public function testExtractSocialProfiles()
+    {
+        $customer = new Customer();
+        $socialProfile = new SocialProfile();
+        $socialProfile->setValue('miwjelde');
+        $customer->addSocialProfile($socialProfile);
+
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('socialProfiles', $extracted);
+        $this->assertSame('miwjelde', $extracted['socialProfiles'][0]['value']);
+    }
+
     public function testAddWebsites()
     {
         $customer = new Customer();
@@ -340,5 +401,17 @@ class CustomerTest extends TestCase
         $website = new Website();
         $customer->addWebsite($website);
         $this->assertSame($website, $customer->getWebsites()->toArray()[0]);
+    }
+
+    public function testExtractWebsites()
+    {
+        $customer = new Customer();
+        $website = new Website();
+        $website->setValue('http://google.com');
+        $customer->addWebsite($website);
+
+        $extracted = $customer->extract();
+        $this->assertArrayHasKey('websites', $extracted);
+        $this->assertSame('http://google.com', $extracted['websites'][0]['value']);
     }
 }
