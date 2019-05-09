@@ -11,8 +11,8 @@ use HelpScout\Api\Support\HydratesData;
 
 class Tag implements Extractable, Hydratable
 {
-    use HydratesData;
-    use ExtractsData;
+    use HydratesData,
+        ExtractsData;
 
     /**
      * @var string|null
