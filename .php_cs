@@ -11,6 +11,7 @@ return PhpCsFixer\Config::create()
         'declare_strict_types' => true,
         'ordered_imports' => true,
         'no_unused_imports' => true,
+        'single_trait_insert_per_statement' => false,
         'array_syntax' => ['syntax' => 'short'],
         'yoda_style' => false,
     ]);
