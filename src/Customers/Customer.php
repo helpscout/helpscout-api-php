@@ -212,7 +212,19 @@ class Customer implements Extractable, Hydratable
             'photoUrl' => $this->getPhotoUrl(),
             'background' => $this->getBackground(),
             'age' => $this->getAge(),
+
+            // In some cases a single email is required for a Customer, so we have to include
+            // the individual email separately, but the first email will always be a duplicate
+            // of what's already in "emails"
             'email' => $this->getFirstEmail(),
+
+            'address' => $this->getAddress() !== null ? $this->getAddress()->extract() : null,
+
+            'emails' => $this->getEmails()->extract(),
+            'phones' => $this->getPhones()->extract(),
+            'chats' => $this->getChatHandles()->extract(),
+            'socialProfiles' => $this->getSocialProfiles()->extract(),
+            'websites' => $this->getWebsites()->extract(),
         ]);
     }
 

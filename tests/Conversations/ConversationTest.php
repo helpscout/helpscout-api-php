@@ -234,7 +234,7 @@ class ConversationTest extends TestCase
         $customerWaitingSince->setLatestReplyFrom('customer');
         $conversation->setCustomerWaitingSince($customerWaitingSince);
 
-        $this->assertEquals([
+        $this->assertArraySubset([
             'id' => 12,
             'number' => 3526,
             'threadCount' => 2,

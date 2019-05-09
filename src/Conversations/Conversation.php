@@ -374,19 +374,11 @@ class Conversation implements Extractable, Hydratable
         }
 
         if (count($this->getCustomFields()) > 0) {
-            $customFields = [];
-            foreach ($this->getCustomFields() as $customField) {
-                $customFields[] = $customField->extract();
-            }
-            $data['fields'] = $customFields;
+            $data['fields'] = $this->getCustomFields()->extract();
         }
 
         if (count($this->getThreads()) > 0) {
-            $threads = [];
-            foreach ($this->getThreads() as $thread) {
-                $threads[] = $thread->extract();
-            }
-            $data['threads'] = $threads;
+            $data['threads'] = $this->getThreads()->extract();
         }
 
         return $data;
