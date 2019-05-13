@@ -25,6 +25,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
    * [Webhooks](#webhooks)
    * [Workflows](#workflows)
  * [Error Handling](#error-handling)
+   * [Validation](#validation)
  * [Pagination](#pagination)
  * [Testing](#testing)
 
@@ -821,6 +822,29 @@ $client->workflows()->updateStatus($id, 'active');
 ## Error handling
 
 Any exception thrown by the client directly will implement `HelpScout\Api\Exception` and HTTP errors will result in `Http\Client\Exception\RequestException` being thrown.
+
+### Validation
+
+You'll encounter a `ValidationErrorException` if there are any validation errors with the request you submitted to the API.  Here's a quick example on how to use that exception:
+
+```php
+try {
+    // do something
+} catch (\HelpScout\Api\Exception\ValidationErrorException $e) {
+    $error = $e->getError();
+
+    var_dump(
+        // A reference id for that request.  Including this anytime you contact Help Scout support will enable
+        // us to help you much more quickly
+        $error->getLogRef(),
+
+        // Details about the invalid fields in the request
+        $error->getErrors()
+    );
+    exit;
+}
+```
+
 
 ## Pagination
 

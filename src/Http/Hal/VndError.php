@@ -47,6 +47,9 @@ class VndError
     }
 
     /**
+     * If populated, include this in any support requests you submit to HelpScout which will help us identify
+     * any issues you encounter.
+     *
      * @return string|null
      */
     public function getLogRef()
