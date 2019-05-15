@@ -8,7 +8,7 @@ abstract class Report
 {
     public const ENDPOINT = '/v2/reports';
     public const QUERY_FIELDS = [];
-    public const DATE_FORMAT = 'Y-m-d\Th:m:s\Z';
+    public const DATE_FORMAT = 'Y-m-d\TH:m:s\Z';
 
     /**
      * @var ParameterBag
