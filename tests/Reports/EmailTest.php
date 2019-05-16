@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Reports\Conversations;
 
-use HelpScout\Api\Reports\Conversations\BusyTimes;
-use HelpScout\Api\Reports\Conversations\VolumesByChannel;
 use HelpScout\Api\Reports\Email;
 use PHPUnit\Framework\TestCase;
 
