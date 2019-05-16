@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HelpScout\Api\Tests\Reports\Conversations;
+namespace HelpScout\Api\Tests\Reports;
 
 use HelpScout\Api\Reports\Email;
 use PHPUnit\Framework\TestCase;
