@@ -7,6 +7,7 @@ use HelpScout\Api\Conversations\Conversation;
 use HelpScout\Api\Conversations\ConversationFilters;
 use HelpScout\Api\Conversations\CustomField;
 use HelpScout\Api\Conversations\Threads\ChatThread;
+use HelpScout\Api\Tags\Tag;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
 
@@ -43,6 +44,8 @@ $noteCustomer->setId(163315601);
 $thread = new ChatThread();
 $thread->setCustomer($noteCustomer);
 $thread->setText('Test');
+$tag = new Tag();
+$tag->setName('testing')
 
 $conversation = new Conversation();
 $conversation->setSubject('Testing the PHP SDK v2');
@@ -54,8 +57,9 @@ $conversation->setCustomer($noteCustomer);
 $conversation->setThreads(new Collection([
     $thread,
 ]));
+$conversation->addTag($tag);
 
-$client->conversations()->create($conversation);
+$conversationId = $client->conversations()->create($conversation);
 
 // Update conversation
 $conversationId = 12;
