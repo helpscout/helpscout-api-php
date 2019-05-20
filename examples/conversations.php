@@ -45,7 +45,7 @@ $thread = new ChatThread();
 $thread->setCustomer($noteCustomer);
 $thread->setText('Test');
 $tag = new Tag();
-$tag->setName('testing')
+$tag->setName('testing');
 
 $conversation = new Conversation();
 $conversation->setSubject('Testing the PHP SDK v2');
