@@ -663,7 +663,7 @@ use HelpScout\Api\Conversations\Threads\Attachments\AttachmentFactory;
 use HelpScout\Api\Support\Filesystem;
 
 $attachmentFactory = new AttachmentFactory(new Filesystem());
-$attachment = $attachmentFactory->make('path/to/profile.jpg);
+$attachment = $attachmentFactory->make('path/to/profile.jpg');
 
 $attachment->getMimeType(); // image/jpeg
 $attachment->getFilename(); // profile.jpg
