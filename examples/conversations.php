@@ -5,6 +5,7 @@ require '_credentials.php';
 use HelpScout\Api\ApiClientFactory;
 use HelpScout\Api\Conversations\Conversation;
 use HelpScout\Api\Conversations\ConversationFilters;
+use HelpScout\Api\Conversations\ConversationRequest;
 use HelpScout\Api\Conversations\CustomField;
 use HelpScout\Api\Conversations\Threads\ChatThread;
 use HelpScout\Api\Tags\Tag;
@@ -16,6 +17,11 @@ $client = $client->useClientCredentials($appId, $appSecret);
 
 // GET conversation
 $conversation = $client->conversations()->get(12);
+
+// GET conversation with the threads
+$conversationRequest = new ConversationRequest();
+$conversationRequest->withThreads();
+$conversation = $client->conversations()->get(12, $conversationRequest);
 
 // List conversations
 $conversations = $client->conversations()
