@@ -13,7 +13,7 @@ $client = ApiClientFactory::createClient();
 $client->useClientCredentials($appId, $appSecret);
 
 $conversationId = 0;
-$threads = $client->getThreads($conversationId);
+$threads = $client->threads()->list($conversationId);
 
 print_r($threads->getFirstPage()->toArray());
 

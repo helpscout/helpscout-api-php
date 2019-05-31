@@ -768,6 +768,10 @@ class Conversation implements Extractable, Hydratable
     }
 
     /**
+     * Obtain the threads that were eagerly loaded when this conversation was obtained.
+     *
+     * @see ConversationRequest
+     *
      * @return Thread[]|Collection
      */
     public function getThreads(): Collection
