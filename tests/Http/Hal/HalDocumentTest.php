@@ -140,7 +140,6 @@ class HalDocumentTest extends TestCase
 
         $this->assertFalse($documentWithoutLinks->hasLinks());
 
-
         $documentWithLinks = new HalDocument(
             [],
             new HalLinks([
