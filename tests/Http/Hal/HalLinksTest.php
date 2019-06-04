@@ -21,10 +21,10 @@ class HalLinksTest extends TestCase
 
     public function testCountsCollectionSize()
     {
-        $this->assertFalse((new HalLinks())->size());
+        $this->assertEquals(0, (new HalLinks())->size());
 
         $links = new HalLinks();
         $links->add(new HalLink('rel', 'href', false));
-        $this->assertFalse($links->size());
+        $this->assertEquals(1, $links->size());
     }
 }
