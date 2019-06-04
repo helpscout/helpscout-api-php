@@ -12,6 +12,8 @@ use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
 use HelpScout\Api\Exception\RuntimeException;
+use HelpScout\Api\Http\Hal\HalDeserializer;
+use HelpScout\Api\Http\Hal\HalLinks;
 use HelpScout\Api\Support\ExtractsData;
 use HelpScout\Api\Support\HydratesData;
 
@@ -312,6 +314,11 @@ class Thread implements Extractable, Hydratable
     public function getAttachments(): Collection
     {
         return $this->attachments;
+    }
+
+    public function hasAttachments(): bool
+    {
+        return $this->attachments->count() > 0;
     }
 
     public function setImported(bool $imported): Thread
