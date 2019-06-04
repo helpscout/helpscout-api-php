@@ -7,6 +7,8 @@ namespace HelpScout\Api\Conversations\Threads\Attachments;
 use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
+use HelpScout\Api\Http\Hal\HalDeserializer;
+use HelpScout\Api\Http\Hal\HalLinks;
 
 class Attachment implements Extractable, Hydratable
 {
@@ -44,6 +46,11 @@ class Attachment implements Extractable, Hydratable
      * @var int
      */
     private $size;
+
+    /**
+     * @var string
+     */
+    private $webUrl;
 
     /**
      * @return array
@@ -93,6 +100,16 @@ class Attachment implements Extractable, Hydratable
 
         if (isset($data['size']) && is_numeric($data['size'])) {
             $this->setSize((int) $data['size']);
+        }
+
+        // The web accessible link for this file is pulled in via links
+        if (isset($data[HalDeserializer::LINKS])) {
+            /** @var HalLinks $links */
+            $links = $data[HalDeserializer::LINKS];
+
+            if ($links->has('web')) {
+                $this->setWebUrl($links->getHref('web'));
+            }
         }
     }
 
@@ -193,6 +210,23 @@ class Attachment implements Extractable, Hydratable
     public function setSize(int $size): Attachment
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * Get a web accessible URL for this attachment.
+     *
+     * @example https://secure.helpscout.net/file/[attachmentId]/[file-hash]/[filename].[extension]
+     */
+    public function getWebUrl(): ?string
+    {
+        return $this->webUrl;
+    }
+
+    protected function setWebUrl(string $webUrl): Attachment
+    {
+        $this->webUrl = $webUrl;
 
         return $this;
     }
