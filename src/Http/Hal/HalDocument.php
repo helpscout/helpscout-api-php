@@ -40,6 +40,11 @@ class HalDocument
         return $this->links;
     }
 
+    public function hasLinks(): bool
+    {
+        return $this->links->size() > 0;
+    }
+
     public function getEmbedded(string $rel): array
     {
         if (!$this->hasEmbedded($rel)) {
@@ -53,6 +58,11 @@ class HalDocument
      * Nested embedded entities is possible (e.g. Threads always are provided with their Attachments).  Rather than
      * providing an array of HalDocuments we'll convert them to arrays of data.  This helps keep HalDocument handling
      * from being scattered throughout the SDK.
+     *
+     * Links was a bit of an afterthought in this context so there's a bit of extra logic here to handle appending
+     * links to the data that is passed to the hydrate method.  Part of the reason this approach was used is to prevent
+     * breaking changes to the hydrate() signature of entities so it can continue to accept an array rather than an
+     * object.
      */
     public function getEmbeddedEntities(): array
     {
@@ -61,11 +71,21 @@ class HalDocument
         // Convert HalDocument|HalDocument[] to nested arrays
         foreach ($this->embedded as $embeddedType => $embeddedItems) {
             if (is_array($embeddedItems)) {
+                /** @var HalDocument $embeddedItemData */
                 foreach ($embeddedItems as $embeddedItemData) {
-                    $embeddedData[$embeddedType][] = $embeddedItemData->getData();
+                    $data = $embeddedItemData->getData();
+                    if ($embeddedItemData->hasLinks()) {
+                        $data[HalDeserializer::LINKS] = $embeddedItemData->getLinks();
+                    }
+                    $embeddedData[$embeddedType][] = $data;
                 }
             } else {
-                $embeddedData[$embeddedType] = $embeddedItems->getData();
+                /** @var HalDocument $embeddedItems */
+                $data = $embeddedItems->getData();
+                if ($embeddedItems->hasLinks()) {
+                    $data[HalDeserializer::LINKS] = $embeddedItems->getLinks();
+                }
+                $embeddedData[$embeddedType] = $data;
             }
         }
 
