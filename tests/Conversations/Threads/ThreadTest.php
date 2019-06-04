@@ -293,10 +293,12 @@ class ThreadTest extends TestCase
     {
         $thread = new Thread();
 
+        $this->assertFalse($thread->hasAttachments());
         $this->assertEmpty($thread->getAttachments());
 
         $attachment = new Attachment();
         $thread->addAttachment($attachment);
+        $this->assertTrue($thread->hasAttachments());
         $this->assertSame($attachment, $thread->getAttachments()->toArray()[0]);
     }
 }

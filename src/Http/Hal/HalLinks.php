@@ -23,11 +23,6 @@ class HalLinks
         }
     }
 
-    /**
-     * @param string $rel
-     *
-     * @return HalLink
-     */
     public function get(string $rel): HalLink
     {
         if (!$this->has($rel)) {
@@ -37,42 +32,28 @@ class HalLinks
         return $this->links[$rel];
     }
 
-    /**
-     * @param string $rel
-     *
-     * @return string
-     */
     public function getHref(string $rel): string
     {
         return $this->get($rel)->getHref();
     }
 
-    /**
-     * @param string $rel
-     * @param array  $params
-     *
-     * @return string
-     */
     public function expand(string $rel, array $params): string
     {
         return $this->get($rel)->expand($params);
     }
 
-    /**
-     * @param string $rel
-     *
-     * @return bool
-     */
     public function has(string $rel): bool
     {
         return array_key_exists($rel, $this->links);
     }
 
-    /**
-     * @param HalLink $link
-     */
     public function add(HalLink $link)
     {
         $this->links[$link->getRel()] = $link;
+    }
+
+    public function size(): int
+    {
+        return count($this->links);
     }
 }

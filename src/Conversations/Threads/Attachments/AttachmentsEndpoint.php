@@ -16,12 +16,12 @@ class AttachmentsEndpoint extends Endpoint
      */
     public function get(int $conversationId, int $attachmentId): Attachment
     {
-        $conversationResource = $this->restClient->getResource(
+        $attachmentResource = $this->restClient->getResource(
             Attachment::class,
             sprintf('/v2/conversations/%d/attachments/%d/data', $conversationId, $attachmentId)
         );
 
-        return $conversationResource->getEntity();
+        return $attachmentResource->getEntity();
     }
 
     /**

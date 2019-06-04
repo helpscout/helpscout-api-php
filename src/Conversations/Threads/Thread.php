@@ -314,6 +314,11 @@ class Thread implements Extractable, Hydratable
         return $this->attachments;
     }
 
+    public function hasAttachments(): bool
+    {
+        return $this->attachments->count() > 0;
+    }
+
     public function setImported(bool $imported): Thread
     {
         $this->imported = $imported;
