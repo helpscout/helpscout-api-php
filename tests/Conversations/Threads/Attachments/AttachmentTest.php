@@ -74,6 +74,7 @@ class AttachmentTest extends TestCase
             'width' => 132,
             'height' => 144,
             'size' => 401230,
+            'webUrl' => null,
         ], $attachment->extract());
     }
 
@@ -87,6 +88,7 @@ class AttachmentTest extends TestCase
             'width' => null,
             'height' => null,
             'size' => null,
+            'webUrl' => null,
         ], (new Attachment())->extract());
     }
 }
