@@ -66,6 +66,7 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertSame(12, $thread->getId());
+        $this->assertSame('customer', $thread->getType());
         $this->assertSame('active', $thread->getStatus());
         $this->assertSame('published', $thread->getState());
         $this->assertSame('manual-workflow', $thread->getActionType());
@@ -163,6 +164,7 @@ class ThreadTest extends TestCase
         $thread = new Thread();
         $thread->hydrate([
             'id' => 12,
+            'type' => 'customer',
             'status' => 'active',
             'state' => 'published',
             'action' => [
@@ -204,6 +206,7 @@ class ThreadTest extends TestCase
 
         $this->assertEquals([
             'id' => 12,
+            'type' => 'customer',
             'status' => 'active',
             'state' => 'published',
             'action' => [
@@ -265,6 +268,7 @@ class ThreadTest extends TestCase
 
         $this->assertSame([
             'id' => null,
+            'type' => null,
             'status' => null,
             'state' => null,
             'action' => null,
