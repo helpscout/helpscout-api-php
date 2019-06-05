@@ -9,7 +9,7 @@ use HelpScout\Api\Conversations\ConversationFilters;
 use HelpScout\Api\Conversations\ConversationRequest;
 use HelpScout\Api\Conversations\CustomField;
 use HelpScout\Api\Conversations\CustomFieldsCollection;
-use HelpScout\Api\Conversations\Threads\Thread;
+use HelpScout\Api\Conversations\Threads\CustomerThread;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Mailboxes\Mailbox;
@@ -221,7 +221,8 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         $threads = $conversation->getThreads();
 
         $this->assertInstanceOf(Collection::class, $threads);
-        $this->assertInstanceOf(Thread::class, $threads[0]);
+
+        $this->assertInstanceOf(CustomerThread::class, $threads[0]);
 
         $this->verifyMultipleRequests([
             ['GET', 'https://api.helpscout.net/v2/conversations/1'],

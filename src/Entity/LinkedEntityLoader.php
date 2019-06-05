@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Entity;
 
+use Closure;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Http\RestClient;
 
@@ -44,12 +45,12 @@ abstract class LinkedEntityLoader
     }
 
     /**
-     * @param string $entityClass
-     * @param string $rel
+     * @param Closure|string $entityClass
+     * @param string         $rel
      *
      * @return mixed
      */
-    protected function loadResource(string $entityClass, string $rel)
+    protected function loadResource($entityClass, string $rel)
     {
         $uri = $this->resource->getLinks()->getHref($rel);
 
@@ -57,12 +58,12 @@ abstract class LinkedEntityLoader
     }
 
     /**
-     * @param string $entityClass
-     * @param string $rel
+     * @param Closure|string $entityClass
+     * @param string         $rel
      *
      * @return Collection
      */
-    protected function loadResources(string $entityClass, string $rel): Collection
+    protected function loadResources($entityClass, string $rel): Collection
     {
         $uri = $this->resource->getLinks()->getHref($rel);
         $resources = $this->restClient->getResources($entityClass, $rel, $uri);

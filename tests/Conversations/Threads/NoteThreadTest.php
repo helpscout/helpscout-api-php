@@ -14,6 +14,7 @@ class NoteThreadTest extends TestCase
     public function testHasExpectedType()
     {
         $this->assertEquals('note', NoteThread::TYPE);
+        $this->assertEquals('note', (new NoteThread())->getType());
     }
 
     public function testExtractsType()

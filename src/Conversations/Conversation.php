@@ -10,6 +10,7 @@ use HelpScout\Api\Conversations\Threads\IncludesThreadDetails;
 use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
 use HelpScout\Api\Conversations\Threads\Thread;
+use HelpScout\Api\Conversations\Threads\ThreadFactory;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Extractable;
@@ -181,9 +182,9 @@ class Conversation implements Extractable, Hydratable
                 $this->setThreadCount($data['threads']);
             } elseif (is_array($data['threads'])) {
                 $this->threads = new Collection();
+                $threadFactory = new ThreadFactory();
                 foreach ($data['threads'] as $threadData) {
-                    $thread = new Thread();
-                    $thread->hydrate($threadData);
+                    $thread = $threadFactory->make($threadData['type'], $threadData);
                     $this->threads->append($thread);
                 }
             }
@@ -769,6 +770,11 @@ class Conversation implements Extractable, Hydratable
 
     /**
      * Obtain the threads that were eagerly loaded when this conversation was obtained.
+     *
+     * We will attempt to map the incoming Thread to a typed class.  The only threads
+     * we type are threads that can be created through the API (e.g. CustomerThread,
+     * NoteThread, etc.).  We do not type any kind of system threads such as a notice
+     * that a Workflow has run on a Conversation.
      *
      * @see ConversationRequest
      *

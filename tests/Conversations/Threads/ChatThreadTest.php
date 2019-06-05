@@ -14,6 +14,7 @@ class ChatThreadTest extends TestCase
     public function testHasExpectedType()
     {
         $this->assertEquals('chat', ChatThread::TYPE);
+        $this->assertEquals('chat', (new ChatThread())->getType());
     }
 
     public function testExtractsType()

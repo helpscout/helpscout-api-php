@@ -15,6 +15,7 @@ class CustomerThreadTest extends TestCase
     public function testHasExpectedType()
     {
         $this->assertEquals('customer', CustomerThread::TYPE);
+        $this->assertEquals('customer', (new CustomerThread())->getType());
     }
 
     public function testExtractsType()

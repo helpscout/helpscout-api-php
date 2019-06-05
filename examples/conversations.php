@@ -20,7 +20,7 @@ $conversation = $client->conversations()->get(12);
 
 // GET conversation with the threads
 $conversationRequest = new ConversationRequest();
-$conversationRequest->withThreads();
+$conversationRequest = $conversationRequest->withThreads();
 $conversation = $client->conversations()->get(12, $conversationRequest);
 
 // List conversations

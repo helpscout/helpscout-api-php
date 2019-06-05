@@ -19,6 +19,11 @@ class CustomerThread extends Thread
         return sprintf('/v2/conversations/%d/customer', $conversationId);
     }
 
+    public function getType(): ?string
+    {
+        return self::TYPE;
+    }
+
     public function hydrate(array $data, array $embedded = [])
     {
         parent::hydrate($data, $embedded);

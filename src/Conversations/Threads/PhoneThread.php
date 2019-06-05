@@ -12,6 +12,16 @@ class PhoneThread extends Thread
 
     use HasCustomer;
 
+    public static function resourceUrl(int $conversationId): string
+    {
+        return sprintf('/v2/conversations/%d/phones', $conversationId);
+    }
+
+    public function getType(): ?string
+    {
+        return self::TYPE;
+    }
+
     public function hydrate(array $data, array $embedded = [])
     {
         parent::hydrate($data, $embedded);
@@ -19,11 +29,6 @@ class PhoneThread extends Thread
         if (isset($data['customer']) && is_array($data['customer'])) {
             $this->hydrateCustomer($data['customer']);
         }
-    }
-
-    public static function resourceUrl(int $conversationId): string
-    {
-        return sprintf('/v2/conversations/%d/phones', $conversationId);
     }
 
     public function extract(): array

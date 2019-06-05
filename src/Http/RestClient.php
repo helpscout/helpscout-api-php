@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http;
 
+use Closure;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use HelpScout\Api\ApiClient;
@@ -30,35 +31,22 @@ class RestClient
      */
     private $authenticator;
 
-    /**
-     * @param Client        $client
-     * @param Authenticator $authenticator
-     */
     public function __construct(Client $client, Authenticator $authenticator)
     {
         $this->client = $client;
         $this->authenticator = $authenticator;
     }
 
-    /**
-     * @return Authenticator
-     */
     public function getAuthenticator(): Authenticator
     {
         return $this->authenticator;
     }
 
-    /**
-     * @return array
-     */
     public function getAuthHeader(): array
     {
         return $this->authenticator->getAuthHeader();
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultHeaders(): array
     {
         return array_merge(
@@ -70,12 +58,6 @@ class RestClient
         );
     }
 
-    /**
-     * @param Extractable $entity
-     * @param string      $uri
-     *
-     * @return int|null
-     */
     public function createResource(Extractable $entity, string $uri): ?int
     {
         $request = new Request(
@@ -92,10 +74,6 @@ class RestClient
             : null;
     }
 
-    /**
-     * @param Extractable $entity
-     * @param string      $uri
-     */
     public function updateResource(Extractable $entity, string $uri): void
     {
         $request = new Request(
@@ -107,10 +85,6 @@ class RestClient
         $this->send($request);
     }
 
-    /**
-     * @param Extractable $entity
-     * @param string      $uri
-     */
     public function patchResource(Extractable $entity, string $uri): void
     {
         $request = new Request(
@@ -122,9 +96,6 @@ class RestClient
         $this->send($request);
     }
 
-    /**
-     * @param string $uri
-     */
     public function deleteResource(string $uri): void
     {
         $request = new Request(
@@ -136,8 +107,8 @@ class RestClient
     }
 
     /**
-     * @param \Closure|string $entityClass
-     * @param string          $uri
+     * @param Closure|string $entityClass
+     * @param string         $uri
      *
      * @return HalResource
      */
@@ -154,11 +125,6 @@ class RestClient
         return HalDeserializer::deserializeResource($entityClass, $halDocument);
     }
 
-    /**
-     * @param Report $report
-     *
-     * @return array
-     */
     public function getReport(Report $report): array
     {
         $uri = $report->getUriPath();
@@ -174,9 +140,9 @@ class RestClient
     }
 
     /**
-     * @param \Closure|string $entityClass
-     * @param string          $rel
-     * @param string          $uri
+     * @param Closure|string $entityClass
+     * @param string         $rel
+     * @param string         $uri
      *
      * @return HalResources
      */
@@ -193,11 +159,6 @@ class RestClient
         return HalDeserializer::deserializeResources($entityClass, $rel, $halDocument);
     }
 
-    /**
-     * @param Extractable $entity
-     *
-     * @return string
-     */
     private function encodeEntity(Extractable $entity): string
     {
         return json_encode($entity->extract());
