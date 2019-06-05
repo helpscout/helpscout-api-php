@@ -31,7 +31,7 @@ class Thread implements Extractable, Hydratable
      * @var string|null
      */
     private $type;
-    
+
     /**
      * @var string|null
      */

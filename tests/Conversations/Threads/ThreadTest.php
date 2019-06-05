@@ -19,7 +19,7 @@ class ThreadTest extends TestCase
     {
         $thread = new Thread();
         $thread->hydrate([
-            'id' => 12, 
+            'id' => 12,
             'type' => 'customer',
             'status' => 'active',
             'state' => 'published',
