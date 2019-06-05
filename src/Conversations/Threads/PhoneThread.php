@@ -17,7 +17,7 @@ class PhoneThread extends Thread
         return sprintf('/v2/conversations/%d/phones', $conversationId);
     }
 
-    public function getType(): string
+    public function getType(): ?string
     {
         return self::TYPE;
     }

@@ -17,7 +17,7 @@ class NoteThread extends Thread
         return sprintf('/v2/conversations/%d/notes', $conversationId);
     }
 
-    public function getType(): string
+    public function getType(): ?string
     {
         return self::TYPE;
     }
