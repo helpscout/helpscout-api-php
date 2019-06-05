@@ -74,7 +74,7 @@ class AttachmentTest extends TestCase
             'width' => 132,
             'height' => 144,
             'size' => 401230,
-            'webUrl' => null
+            'webUrl' => null,
         ], $attachment->extract());
     }
 
