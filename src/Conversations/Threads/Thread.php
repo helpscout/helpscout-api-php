@@ -30,6 +30,11 @@ class Thread implements Extractable, Hydratable
     /**
      * @var string|null
      */
+    private $type;
+    
+    /**
+     * @var string|null
+     */
     private $status;
 
     /**
@@ -98,6 +103,7 @@ class Thread implements Extractable, Hydratable
             $this->setId((int) $data['id']);
         }
 
+        $this->type = $data['type'] ?? null;
         $this->status = $data['status'] ?? null;
         $this->state = $data['state'] ?? null;
 
@@ -166,6 +172,7 @@ class Thread implements Extractable, Hydratable
     {
         $data = [
             'id' => $this->getId(),
+            'type' => $this->getType(),
             'status' => $this->getStatus(),
             'state' => $this->getState(),
             'action' => null,
@@ -236,6 +243,11 @@ class Thread implements Extractable, Hydratable
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
     }
 
     public function getStatus(): ?string
