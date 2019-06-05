@@ -14,6 +14,7 @@ use HelpScout\Api\Conversations\EmailConversation;
 use HelpScout\Api\Conversations\PhoneConversation;
 use HelpScout\Api\Conversations\Status;
 use HelpScout\Api\Conversations\Threads\ChatThread;
+use HelpScout\Api\Conversations\Threads\CustomerThread;
 use HelpScout\Api\Conversations\Threads\Thread;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Customers\Entry\Email;
@@ -543,6 +544,7 @@ EOF;
         $this->assertSame(179783313, $conversation->getCustomer()->getId());
 
         $thread = $conversation->getThreads()[0];
+        $this->assertInstanceOf(CustomerThread::class, $thread);
         $this->assertSame(2198262392, $thread->getId());
 
         $tag = $conversation->getTags()[0];

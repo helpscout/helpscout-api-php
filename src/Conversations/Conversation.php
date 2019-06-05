@@ -10,6 +10,7 @@ use HelpScout\Api\Conversations\Threads\IncludesThreadDetails;
 use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
 use HelpScout\Api\Conversations\Threads\Thread;
+use HelpScout\Api\Conversations\Threads\ThreadFactory;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Extractable;
@@ -181,9 +182,9 @@ class Conversation implements Extractable, Hydratable
                 $this->setThreadCount($data['threads']);
             } elseif (is_array($data['threads'])) {
                 $this->threads = new Collection();
+                $threadFactory = new ThreadFactory();
                 foreach ($data['threads'] as $threadData) {
-                    $thread = new Thread();
-                    $thread->hydrate($threadData);
+                    $thread = $threadFactory->make($threadData['type'], $threadData);
                     $this->threads->append($thread);
                 }
             }
