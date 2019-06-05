@@ -15,6 +15,11 @@ class ThreadFactory
         '_default' => Thread::class,
     ];
 
+    /**
+     * Attempt to map the incoming Thread to a typed class.  The only threads we type
+     * are threads that can be created through the API.  We do not type any kind of
+     * system threads such as a notice that a Workflow has run on a Conversation.
+     */
     public function make(string $type, array $data): Thread
     {
         /** @var Thread $thread */

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Conversations;
 
-use HelpScout\Api\Conversations\Threads\Thread;
+use HelpScout\Api\Conversations\Threads\ThreadFactory;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\LinkedEntityLoader;
 use HelpScout\Api\Mailboxes\Mailbox;
@@ -43,7 +43,11 @@ class ConversationLoader extends LinkedEntityLoader
         }
 
         if ($this->shouldLoadResource(ConversationLinks::THREADS)) {
-            $threads = $this->loadResources(Thread::class, ConversationLinks::THREADS);
+            $threadFactory = new ThreadFactory();
+            $threads = $this->loadResources(function (array $data) use ($threadFactory) {
+                return $threadFactory->make($data['type'], $data);
+            }, ConversationLinks::THREADS);
+
             $conversation->setThreads($threads);
         }
 

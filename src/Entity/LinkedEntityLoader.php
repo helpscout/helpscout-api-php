@@ -48,6 +48,8 @@ abstract class LinkedEntityLoader
      * @param string $rel
      *
      * @return mixed
+     * @throws \HelpScout\Api\Exception\JsonException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function loadResource(string $entityClass, string $rel)
     {
@@ -57,12 +59,14 @@ abstract class LinkedEntityLoader
     }
 
     /**
-     * @param string $entityClass
+     * @param \Closure|string $entityClass
      * @param string $rel
      *
      * @return Collection
+     * @throws \HelpScout\Api\Exception\JsonException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    protected function loadResources(string $entityClass, string $rel): Collection
+    protected function loadResources($entityClass, string $rel): Collection
     {
         $uri = $this->resource->getLinks()->getHref($rel);
         $resources = $this->restClient->getResources($entityClass, $rel, $uri);

@@ -771,6 +771,11 @@ class Conversation implements Extractable, Hydratable
     /**
      * Obtain the threads that were eagerly loaded when this conversation was obtained.
      *
+     * We will attempt to map the incoming Thread to a typed class.  The only threads
+     * we type are threads that can be created through the API (e.g. CustomerThread,
+     * NoteThread, etc.).  We do not type any kind of system threads such as a notice
+     * that a Workflow has run on a Conversation.
+     *
      * @see ConversationRequest
      *
      * @return Thread[]|Collection
