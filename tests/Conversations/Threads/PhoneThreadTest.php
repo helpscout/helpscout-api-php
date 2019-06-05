@@ -14,6 +14,7 @@ class PhoneThreadTest extends TestCase
     public function testHasExpectedType()
     {
         $this->assertEquals('phone', PhoneThread::TYPE);
+        $this->assertEquals('phone', (new PhoneThread())->getType());
     }
 
     public function testExtractsType()

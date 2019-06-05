@@ -13,6 +13,7 @@ class ReplyThreadTest extends TestCase
     public function testHasExpectedType()
     {
         $this->assertEquals('reply', ReplyThread::TYPE);
+        $this->assertEquals('reply', (new ReplyThread())->getType());
     }
 
     public function testExtractsType()
