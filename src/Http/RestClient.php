@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http;
 
+use Closure;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\Entity\Extractable;
+use HelpScout\Api\Exception\JsonException;
 use HelpScout\Api\Http\Hal\HalDeserializer;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Http\Hal\HalResources;
@@ -75,7 +78,8 @@ class RestClient
      * @param string $uri
      *
      * @return int|null
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws GuzzleException
      */
     public function createResource(Extractable $entity, string $uri): ?int
     {
@@ -96,7 +100,8 @@ class RestClient
     /**
      * @param Extractable $entity
      * @param string $uri
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws GuzzleException
      */
     public function updateResource(Extractable $entity, string $uri): void
     {
@@ -112,7 +117,8 @@ class RestClient
     /**
      * @param Extractable $entity
      * @param string $uri
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws GuzzleException
      */
     public function patchResource(Extractable $entity, string $uri): void
     {
@@ -127,7 +133,8 @@ class RestClient
 
     /**
      * @param string $uri
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws GuzzleException
      */
     public function deleteResource(string $uri): void
     {
@@ -140,12 +147,13 @@ class RestClient
     }
 
     /**
-     * @param \Closure|string $entityClass
+     * @param Closure|string $entityClass
      * @param string $uri
      *
      * @return HalResource
-     * @throws \HelpScout\Api\Exception\JsonException
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     *
+     * @throws JsonException
+     * @throws GuzzleException
      */
     public function getResource($entityClass, string $uri): HalResource
     {
@@ -164,8 +172,9 @@ class RestClient
      * @param Report $report
      *
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \HelpScout\Api\Exception\JsonException
+     *
+     * @throws GuzzleException
+     * @throws JsonException
      */
     public function getReport(Report $report): array
     {
@@ -182,13 +191,13 @@ class RestClient
     }
 
     /**
-     * @param \Closure|string $entityClass
+     * @param Closure|string $entityClass
      * @param string $rel
      * @param string $uri
      *
      * @return HalResources
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \HelpScout\Api\Exception\JsonException
+     * @throws GuzzleException
+     * @throws JsonException
      */
     public function getResources($entityClass, string $rel, string $uri): HalResources
     {
@@ -217,7 +226,7 @@ class RestClient
      * @param Request $request
      *
      * @return mixed|ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     private function send(Request $request)
     {
