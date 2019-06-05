@@ -65,7 +65,6 @@ class AttachmentTest extends TestCase
         $attachment->setWidth(132);
         $attachment->setHeight(144);
         $attachment->setSize(401230);
-        $attachment->setWebUrl('https://secure.helpscout.com/something.jpg');
 
         $this->assertSame([
             'id' => 12,
@@ -75,7 +74,7 @@ class AttachmentTest extends TestCase
             'width' => 132,
             'height' => 144,
             'size' => 401230,
-            'webUrl' => 'https://secure.helpscout.com/something.jpg',
+            'webUrl' => null
         ], $attachment->extract());
     }
 
