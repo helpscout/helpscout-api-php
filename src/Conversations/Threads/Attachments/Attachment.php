@@ -65,6 +65,7 @@ class Attachment implements Extractable, Hydratable
             'width' => $this->width,
             'height' => $this->height,
             'size' => $this->size,
+            'webUrl' => $this->webUrl,
         ];
     }
 
