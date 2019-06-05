@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace HelpScout\Api\Entity;
 
 use Closure;
-use GuzzleHttp\Exception\GuzzleException;
-use HelpScout\Api\Exception\JsonException;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Http\RestClient;
 
@@ -28,9 +26,9 @@ abstract class LinkedEntityLoader
     private $links;
 
     /**
-     * @param RestClient    $restClient
-     * @param HalResource   $resource
-     * @param array         $links
+     * @param RestClient  $restClient
+     * @param HalResource $resource
+     * @param array       $links
      */
     public function __construct(RestClient $restClient, HalResource $resource, array $links)
     {
@@ -47,15 +45,12 @@ abstract class LinkedEntityLoader
     }
 
     /**
-     * @param Closure|string    $entityClass
-     * @param string            $rel
+     * @param Closure|string $entityClass
+     * @param string         $rel
      *
      * @return mixed
-     *
-     * @throws JsonException
-     * @throws GuzzleException
      */
-    protected function loadResource(string $entityClass, string $rel)
+    protected function loadResource($entityClass, string $rel)
     {
         $uri = $this->resource->getLinks()->getHref($rel);
 
@@ -63,13 +58,10 @@ abstract class LinkedEntityLoader
     }
 
     /**
-     * @param Closure|string    $entityClass
-     * @param string            $rel
+     * @param Closure|string $entityClass
+     * @param string         $rel
      *
      * @return Collection
-     *
-     * @throws JsonException
-     * @throws GuzzleException
      */
     protected function loadResources($entityClass, string $rel): Collection
     {
