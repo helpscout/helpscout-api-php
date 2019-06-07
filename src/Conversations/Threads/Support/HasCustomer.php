@@ -34,8 +34,7 @@ trait HasCustomer
         if (isset($data['email'])) {
             $email = new Email();
             $email->setValue($data['email']);
-            $emails = new Collection([$email]);
-            $customer->setEmails($emails);
+            $customer->addEmail($email);
             unset($data['email']);
         }
 
