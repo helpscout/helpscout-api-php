@@ -93,7 +93,7 @@ class ReplyThreadTest extends TestCase
 
         $customer = $thread->getCustomer();
         $this->assertEquals(132489, $customer->getId());
-        $this->assertEquals('customer@mydomain.com', $customer->getEmails()->toArray()[0]);
+        $this->assertEquals('customer@mydomain.com', $customer->getEmails()->extract()[0]['value']);
     }
 
     public function testCanExtractCustomer()

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Conversations\Threads\Support;
 
 use HelpScout\Api\Customers\Customer;
-use HelpScout\Api\Entity\Collection;
+use HelpScout\Api\Customers\Entry\Email;
 
 trait HasCustomer
 {
@@ -31,8 +31,9 @@ trait HasCustomer
         // For a Conversation the API returns a single email address along
         // with a Customer.
         if (isset($data['email'])) {
-            $emails = new Collection([$data['email']]);
-            $customer->setEmails($emails);
+            $email = new Email();
+            $email->setValue($data['email']);
+            $customer->addEmail($email);
             unset($data['email']);
         }
 
