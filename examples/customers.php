@@ -14,10 +14,7 @@ $client = $client->useClientCredentials($appId, $appSecret);
 $customer = new Customer();
 $customer->setFirstName('John');
 $customer->setLastName('Smith');
-$customer->addEmail(new Email([
-    'email' => "my-customer@their-business.com",
-    'type' => 'work',
-]));
+$customer->addEmail("my-customer@their-busines2s.com", 'work');
 $client->customers()->create($customer);
 
 // GET customers
