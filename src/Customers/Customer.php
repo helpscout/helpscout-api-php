@@ -604,8 +604,21 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    public function addEmail(Email $email): Customer
+    /**
+     * @param Email|string $email
+     * @param string       $type
+     */
+    public function addEmail($email, string $type = null): Customer
     {
+        if (is_string($email)) {
+            $newEmail = new Email();
+            $newEmail->hydrate([
+                'value' => $email,
+                'type' => $type,
+            ]);
+            $email = $newEmail;
+        }
+
         $this->getEmails()->append($email);
 
         return $this;

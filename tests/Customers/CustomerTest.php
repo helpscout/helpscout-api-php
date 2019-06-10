@@ -122,6 +122,18 @@ class CustomerTest extends TestCase
         $this->assertSame(798, $emails[1]->getId());
     }
 
+    public function testAddEmailShortSyntax()
+    {
+        $customer = new Customer();
+        $customer->addEmail('test@test.com', 'work');
+
+        $emails = $customer->getEmails();
+
+        $this->assertInstanceOf(Email::class, $emails[0]);
+        $this->assertSame('test@test.com', $emails[0]->getValue());
+        $this->assertSame('work', $emails[0]->getType());
+    }
+
     public function testHydratesManySocialProfiles()
     {
         $customer = new Customer();
