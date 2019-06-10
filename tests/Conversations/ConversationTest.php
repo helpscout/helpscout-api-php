@@ -161,6 +161,10 @@ class ConversationTest extends TestCase
             'id' => 9865,
             'type' => 'user',
         ], $extracted['createdBy']);
+
+        // Used by the api when creating new conversations
+        $this->assertArrayHasKey('user', $extracted);
+        $this->assertEquals(9865, $extracted['user']);
     }
 
     public function testExtract()
