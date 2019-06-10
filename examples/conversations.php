@@ -8,6 +8,7 @@ use HelpScout\Api\Conversations\ConversationFilters;
 use HelpScout\Api\Conversations\ConversationRequest;
 use HelpScout\Api\Conversations\CustomField;
 use HelpScout\Api\Conversations\Threads\ChatThread;
+use HelpScout\Api\Conversations\Threads\PhoneThread;
 use HelpScout\Api\Tags\Tag;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
@@ -44,26 +45,53 @@ $filters = (new ConversationFilters())
 
 $conversations = $client->conversations()->list($filters);
 
-// Create conversation
+/**
+ * Create Conversation: Chat thread, initiated by the Customer
+ */
 $noteCustomer = new Customer();
 $noteCustomer->setId(163315601);
 $thread = new ChatThread();
 $thread->setCustomer($noteCustomer);
 $thread->setText('Test');
-$tag = new Tag();
-$tag->setName('testing');
-
 $conversation = new Conversation();
-$conversation->setSubject('Testing the PHP SDK v2');
+$conversation->setSubject('Testing the PHP SDK v2: Chat Thread');
 $conversation->setStatus('active');
-$conversation->setType('email');
+$conversation->setType('chat');
 $conversation->setAssignTo(271315);
 $conversation->setMailboxId(138367);
 $conversation->setCustomer($noteCustomer);
 $conversation->setThreads(new Collection([
     $thread,
 ]));
+
+// Also adding a tag to this conversation
+$tag = new Tag();
+$tag->setName('testing');
 $conversation->addTag($tag);
+
+$conversationId = $client->conversations()->create($conversation);
+
+/**
+ * Create Conversation: Phone thread, initiated by a Help Scout user
+ */
+$user = $client->users()->get(64235);
+$noteCustomer = new Customer();
+$noteCustomer->setId(193338443); // Customer
+$thread = new PhoneThread();
+$thread->setCustomer($noteCustomer);
+$thread->setCreatedByUser($user);
+$thread->setText('Test');
+
+$conversation = new Conversation();
+$conversation->setSubject('Testing the PHP SDK v2: Phone Thread');
+$conversation->setStatus('active');
+$conversation->setType('phone');
+$conversation->setMailboxId(80261);
+$conversation->setCustomer($noteCustomer);
+$conversation->setCreatedByUser($user);
+$conversation->setThreads(new Collection([
+    $thread,
+]));
 
 $conversationId = $client->conversations()->create($conversation);
 

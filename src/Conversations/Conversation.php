@@ -368,10 +368,13 @@ class Conversation implements Extractable, Hydratable
                 'type' => 'customer',
             ];
         } elseif ($this->wasCreatedByUser()) {
+            // Maintaining consistency with hydrate() so we don't incur data loss during the extract/hydrate chain
             $data['createdBy'] = [
                 'id' => $this->getCreatedByUser()->getId(),
                 'type' => 'user',
             ];
+            // Api wants this to be the user id when creating conversations
+            $data['user'] = $this->getCreatedByUser()->getId();
         }
 
         if (count($this->getCustomFields()) > 0) {
