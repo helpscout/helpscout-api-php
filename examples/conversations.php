@@ -46,54 +46,29 @@ $filters = (new ConversationFilters())
 $conversations = $client->conversations()->list($filters);
 
 /**
- * Create Conversation: Chat thread, initiated by the Customer
+ * Create Conversation: Customer thread - as if the customer emailed in
  */
-$noteCustomer = new Customer();
-$noteCustomer->setId(163315601);
-$thread = new ChatThread();
-$thread->setCustomer($noteCustomer);
-$thread->setText('Test');
-$conversation = new Conversation();
-$conversation->setSubject('Testing the PHP SDK v2: Chat Thread');
-$conversation->setStatus('active');
-$conversation->setType('chat');
-$conversation->setAssignTo(271315);
-$conversation->setMailboxId(138367);
-$conversation->setCustomer($noteCustomer);
-$conversation->setThreads(new Collection([
-    $thread,
-]));
+$customer = new Customer();
+$customer->addEmail('my-customer@company.com');
 
-// Also adding a tag to this conversation
-$tag = new Tag();
-$tag->setName('testing');
-$conversation->addTag($tag);
-
-$conversationId = $client->conversations()->create($conversation);
-
-/**
- * Create Conversation: Phone thread, initiated by a Help Scout user
- */
-$user = $client->users()->get(64235);
-$noteCustomer = new Customer();
-$noteCustomer->setId(193338443); // Customer
-$thread = new PhoneThread();
-$thread->setCustomer($noteCustomer);
-$thread->setCreatedByUser($user);
+$thread = new \HelpScout\Api\Conversations\Threads\CustomerThread();
+$thread->setCustomer($customer);
 $thread->setText('Test');
 
 $conversation = new Conversation();
 $conversation->setSubject('Testing the PHP SDK v2: Phone Thread');
 $conversation->setStatus('active');
-$conversation->setType('phone');
+$conversation->setType('email');
 $conversation->setMailboxId(80261);
-$conversation->setCustomer($noteCustomer);
-$conversation->setCreatedByUser($user);
+$conversation->setCustomer($customer);
 $conversation->setThreads(new Collection([
     $thread,
 ]));
-
-$conversationId = $client->conversations()->create($conversation);
+try {
+    $conversationId = $client->conversations()->create($conversation);
+} catch (\HelpScout\Api\Exception\ValidationErrorException $e) {
+    var_dump($e->getError()->getErrors());
+}
 
 // Update conversation
 $conversationId = 12;

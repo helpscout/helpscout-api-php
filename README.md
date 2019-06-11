@@ -14,11 +14,18 @@ This is the official Help Scout PHP client. This client contains methods for eas
 
  * [Installation](#installation)
  * [Usage](#usage)
+   * [Examples](#examples)
    * [Customers](#customers)
+     * [Email](#email)
+     * [Address](#address)
+     * [Phone Number](#phone-number)
+     * [Social Profile](#social-profile)
+     * [Chat Handles](#chat-handles)
+     * [Website](#websites)
    * [Mailboxes](#mailboxes)
    * [Conversations](#conversations)
-    * [Threads](#threads)
-     * [Attachments](#attachments)
+     * [Threads](#threads)
+       * [Attachments](#attachments)
    * [Tags](#tags)
    * [Users](#users)
    * [Reports](#reports)
@@ -28,6 +35,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
    * [Validation](#validation)
  * [Pagination](#pagination)
  * [Testing](#testing)
+ * [Getting Support](#getting-support)
 
 ## Installation
 
@@ -161,7 +169,11 @@ $client = $client->swapAuthorizationCodeForReusableTokens(
 $client->users()->list();
 ```
 
-### Customers
+## Examples
+
+This README contains a lot of examples, but there are more examples for you to experiment with in [`./examples`](https://github.com/helpscout/helpscout-api-php/tree/master/examples).
+
+## Customers
 
 Get a customer.  Whenever getting a customer, all it's entities (email addresses, phone numbers, social profiles, etc.) come preloaded in the same request.
 
@@ -211,66 +223,7 @@ $customer->setFirstName('Bob');
 $client->customers()->update($customer);
 ```
 
-#### Address
-
-Create a customer address.
-
-```php
-use HelpScout\Api\Customers\Entry\Address;
-
-$address = new Address();
-$address->setCity('Boston');
-// ...
-
-$client->customerEntry()->createAddress($customerId, $address);
-```
-
-Update a customer address.
-
-```php
-// ...
-$address->setCity('Boston');
-
-$client->customerEntry()->updateAddress($customerId, $address);
-```
-
-Delete a customer address.
-
-```php
-$client->customerEntry()->deleteAddress($customerId);
-```
-
-#### Chat
-
-Create a customer chat.
-
-```php
-use HelpScout\Api\Customers\Entry\Chat;
-
-$chat = new Chat();
-$chat->setValue('Hi, can you help me?');
-$chat->setType('facebook');
-// ...
-
-$client->customerEntry()->createChat($customerId, $chat);
-```
-
-Update a customer chat.
-
-```php
-// ...
-$chat->setType('facebook');
-
-$client->customerEntry()->updateChat($customerId, $chat);
-```
-
-Delete a customer chat.
-
-```php
-$client->customerEntry()->deleteChat($customerId, $chatId);
-```
-
-#### Email
+### Email
 
 Create a customer email.
 
@@ -300,7 +253,36 @@ Delete a customer email.
 $client->customerEntry()->deleteEmail($customerId, $emailId);
 ```
 
-#### Phone number
+### Address
+
+Create a customer address.
+
+```php
+use HelpScout\Api\Customers\Entry\Address;
+
+$address = new Address();
+$address->setCity('Boston');
+// ...
+
+$client->customerEntry()->createAddress($customerId, $address);
+```
+
+Update a customer address.
+
+```php
+// ...
+$address->setCity('Boston');
+
+$client->customerEntry()->updateAddress($customerId, $address);
+```
+
+Delete a customer address.
+
+```php
+$client->customerEntry()->deleteAddress($customerId);
+```
+
+### Phone number
 
 Create a customer phone.
 
@@ -330,7 +312,37 @@ Delete a customer phone.
 $client->customerEntry()->deletePhone($customerId, $phoneId);
 ```
 
-#### Social profile
+### Chat Handles
+
+Create a customer chat.
+
+```php
+use HelpScout\Api\Customers\Entry\ChatHandle;
+
+$chat = new ChatHandle();
+$chat->setValue('1239134812348');
+$chat->setType('icq');
+// ...
+
+$client->customerEntry()->createChat($customerId, $chat);
+```
+
+Update a customer chat.
+
+```php
+// ...
+$chat->setValue('1230148584583');
+
+$client->customerEntry()->updateChat($customerId, $chat);
+```
+
+Delete a customer chat.
+
+```php
+$client->customerEntry()->deleteChat($customerId, $chatId);
+```
+
+### Social profile
 
 Create a customer social profile.
 
@@ -360,7 +372,7 @@ Delete a customer social profile.
 $client->customerEntry()->deleteSocialProfile($customerId, $socialProfileId);
 ```
 
-#### Website
+### Website
 
 Create a customer website.
 
@@ -389,7 +401,7 @@ Delete a customer website.
 $client->customerEntry()->deleteWebsite($customerId, $websiteId);
 ```
 
-### Mailboxes
+## Mailboxes
 
 Get a mailbox.
 
@@ -438,7 +450,7 @@ $request = (new MailboxRequest)
 $mailboxes = $client->mailboxes()->list($request);
 ```
 
-### Conversations
+## Conversations
 
 Get a conversation.
 
@@ -488,7 +500,8 @@ $request = (new ConversationRequest)
 
 $conversations = $client->conversations()->list(null, $request);
 ```
-Get filtered conversations
+
+Narrow down the list of Conversations based on a set of filters.
 
 ```php
 use HelpScout\Api\Conversations\ConversationFilters;
@@ -537,6 +550,97 @@ $customField->setValue(new DateTime('today'));
 $client->conversations()->updateCustomFields($conversationId, [$customField]);
 ```
 
+Create a new conversation, as if the customer sent an email to your mailbox.
+
+```php
+
+// We can specify either the id or email for the Customer
+$customer = new Customer();
+$customer->addEmail('my-customer@company.com');
+
+$thread = new CustomerThread();
+$thread->setCustomer($customer);
+$thread->setText('Test');
+
+$conversation = new Conversation();
+$conversation->setSubject('Testing the PHP SDK v2: Phone Thread');
+$conversation->setStatus('active');
+$conversation->setType('email');
+$conversation->setMailboxId(80261);
+$conversation->setCustomer($customer);
+$conversation->setThreads(new Collection([
+    $thread,
+]));
+
+// You can optionally add tags
+$tag = new Tag();
+$tag->setName('testing');
+$conversation->addTag($tag);
+
+try {
+    $conversationId = $client->conversations()->create($conversation);
+} catch (ValidationErrorException $e) {
+    var_dump($e->getError()->getErrors());
+}
+```
+
+Here's some other example scenarios where you might create conversations:
+
+<details>
+  <summary>Phone conversation, initiated by a Help Scout user</summary>
+
+```
+$user = $client->users()->get(31231);
+
+$customer = new Customer();
+$customer->setId(193338443);
+
+$thread = new PhoneThread();
+$thread->setCustomer($customer);
+$thread->setCreatedByUser($user);
+$thread->setText('Test');
+
+$conversation = new Conversation();
+$conversation->setSubject('Testing the PHP SDK v2: Phone Thread');
+$conversation->setStatus('active');
+$conversation->setType('phone');
+$conversation->setMailboxId(80261);
+$conversation->setCustomer($noteCustomer);
+$conversation->setCreatedByUser($user);
+$conversation->setThreads(new Collection([
+    $thread,
+]));
+```
+</details>
+<details>
+  <summary>Chat conversation, initiated by the Customer</summary>
+
+```
+$noteCustomer = new Customer();
+$noteCustomer->setId(163315601);
+$thread = new ChatThread();
+$thread->setCustomer($noteCustomer);
+$thread->setText('Test');
+$conversation = new Conversation();
+$conversation->setSubject('Testing the PHP SDK v2: Chat Thread');
+$conversation->setStatus('active');
+$conversation->setType('chat');
+$conversation->setAssignTo(271315);
+$conversation->setMailboxId(138367);
+$conversation->setCustomer($noteCustomer);
+$conversation->setThreads(new Collection([
+    $thread,
+]));
+
+// Also adding a tag to this conversation
+$tag = new Tag();
+$tag->setName('testing');
+$conversation->addTag($tag);
+
+$conversationId = $client->conversations()->create($conversation);
+```
+</details>
+
 Delete a conversation:
 
 ```php
@@ -555,9 +659,9 @@ $client->conversations()->assign($conversationId, 127);
 $client->conversations()->unassign($conversationId);
 ```
 
-#### Threads
+### Threads
 
-##### Chat Threads
+#### Chat Threads
 
 Create new Chat threads for a conversation.
 
@@ -575,7 +679,7 @@ $thread->setText('Thanks for reaching out to us!');
 $client->threads()->create($conversationId, $thread);
 ```
 
-##### Customer Threads
+#### Customer Threads
 
 Create new Customer threads for a conversation.
 
@@ -593,7 +697,7 @@ $thread->setText('Please help me figure this out');
 $client->threads()->create($conversationId, $thread);
 ```
 
-##### Note Threads
+#### Note Threads
 
 Create new Note threads for a conversation.
 
@@ -605,7 +709,7 @@ $thread->setText('We are still looking into this');
 $client->threads()->create($conversationId, $thread);
 ```
 
-##### Phone Threads
+#### Phone Threads
 
 Create new Phone threads for a conversation.
 
@@ -623,7 +727,7 @@ $thread->setText('This customer called and spoke with us directly about the dela
 $client->threads()->create($conversationId, $thread);
 ```
 
-##### Reply Threads
+#### Reply Threads
 
 Create new Reply threads for a conversation.
 
@@ -647,7 +751,7 @@ Get threads for a conversation.
 $threads = $client->threads()->list($conversationId);
 ```
 
-##### Attachments
+#### Attachments
 
 Get an attachment.
 
@@ -678,7 +782,7 @@ Delete an attachment:
 $client->attachments()->delete($conversationId, $attachmentId);
 ```
 
-### Tags
+## Tags
 
 List the tags
 
@@ -686,7 +790,7 @@ List the tags
 $tags = $client->tags()->list();
 ```
 
-### Users
+## Users
 
 Get a user.
 
@@ -700,7 +804,7 @@ Get users.
 $users = $client->users()->list();
 ```
 
-### Reports
+## Reports
 
 When running reports using the SDK, refer to the [developer docs](https://developer.helpscout.com/mailbox-api/) for the exact endpoint, parameters, and response formats. While most of the endpoints in this SDK are little more than pass-through methods to call the API, there are a few conveniences.
 
@@ -734,7 +838,7 @@ $params = [
 $report = $client->runReport(Company\Overall::class, $params);
 ```
 
-### Webhooks
+## Webhooks
 
 Get a webhook.
 
@@ -782,7 +886,7 @@ Delete a webhook.
 $client->webhooks()->delete($webhookId);
 ```
 
-#### Processing an incoming webhook
+### Processing an incoming webhook
 You can also use the SDK to easily process an incoming webhook.  Signature validation will happen when creating the new object, so no need to check if it is valid or not. If the signatures do not match, the constructor of the `IncomingWebhook` object will throw an `InvalidSignatureException` to let you know something is wrong.
 
 ```php
@@ -798,7 +902,7 @@ $incoming = IncomingWebhook::makeFromGlobals($secret);
 
 Once you have the incoming webhook object, you can check the type of payload (customer, conversation, or test) as well as retrieve the data ([see example](https://github.com/helpscout/helpscout-api-php/blob/master/examples/incoming_webhook.php)). If a customer or conversation, you can retrieve the model associated. Otherwise, you can get the payload as either an associative array or standard class object.
 
-### Workflows
+## Workflows
 
 Fetch a paginated list of all workflows.
 ```php
@@ -819,11 +923,11 @@ Change a workflow status to either "active" or "inactive"
 $client->workflows()->updateStatus($id, 'active');
 ```
 
-## Error handling
+# Error handling
 
 Any exception thrown by the client directly will implement `HelpScout\Api\Exception` and HTTP errors will result in `Http\Client\Exception\RequestException` being thrown.
 
-### Validation
+## Validation
 
 You'll encounter a `ValidationErrorException` if there are any validation errors with the request you submitted to the API.  Here's a quick example on how to use that exception:
 
@@ -846,7 +950,7 @@ try {
 ```
 
 
-## Pagination
+# Pagination
 
 When fetching a collection of entities the client will return an instance of `HelpScout\Api\Entity\Collection`. If the end point supports pagination then it will return an instance of `HelpScout\Api\Entity\PagedCollection`.
 
@@ -886,7 +990,7 @@ foreach ($otherUsers as $user) {
 }
 ```
 
-## Testing
+# Testing
 
 The SDK comes with a handy `mock` method on the `ApiClient` class. To use this, pass in the name of the endpoint you want to mock. You'll get a `\Mockery\MockInterface` object back. Once you set the mock, any subsequent calls to that endpoint will return the mocked object.
 
@@ -908,3 +1012,7 @@ public function testMockReturnsProperMock()
 ```
 
 Once you've mocked an endpoint, you may want to clear it later on. To do this, you can use the `clearMock($endpoint)` method on the `ApiClient`.
+
+# Getting Support
+
+Please open an issue for any [SDK related problems or feature requests](https://github.com/helpscout/helpscout-api-php/issues).  For any issues that may involve sensitive customer or account data, please reach out to us via email at [help@helpscout.com](mailto:help@helpscout.com).
