@@ -339,7 +339,6 @@ class CustomerTest extends TestCase
         $this->assertSame('aim', $chatHandles[0]->getType());
     }
 
-
     public function testExtractChatHandles()
     {
         $customer = new Customer();
