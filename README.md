@@ -812,7 +812,7 @@ First, for the `start`, `end`, `previousStart`, and `previousEnd` parameters, yo
 
 For those parameters that accept multiple values (`mailboxes`, `tags`, `types,` and `folders`), you may pass an array of values and let the client convert them to the proper format. You may also pass a single value (or a comma-separated list of values) if you like.
 
-To run the report, use the `runReport` method available on the `ApiClient` instance. Pass the name of the report class you'd like to use as the first argument and the array of report parameters as the second argument. Be sure the keys in the parameter array match the URL params specified in the docs. The client will convert the JSON response returned by the API into an array.
+To run the report, use the `runReport` method available on the `ApiClient` instance. Pass the class path of the [report class](https://github.com/helpscout/helpscout-api-php/tree/master/src/Reports) you'd like to use as the first argument and the array of report parameters as the second argument. Be sure the keys in the parameter array match the URL params specified in the docs. The client will convert the JSON response returned by the API into an array.
 
 ```php
 // Example of running the Company Overall Report
