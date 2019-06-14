@@ -698,8 +698,8 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @param Phone|string $phone
-     * @param string       $type
+     * @param SocialProfile|string $phone
+     * @param string               $type
      */
     public function addSocialProfile($profile, string $type = null): Customer
     {
