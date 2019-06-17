@@ -327,6 +327,18 @@ class CustomerTest extends TestCase
         $this->assertSame($chat, $customer->getChatHandles()->toArray()[0]);
     }
 
+    public function testAddChatHandleShortSyntax()
+    {
+        $customer = new Customer();
+        $customer->addChatHandle('helpscout', 'aim');
+
+        $chatHandles = $customer->getChatHandles();
+
+        $this->assertInstanceOf(ChatHandle::class, $chatHandles[0]);
+        $this->assertSame('helpscout', $chatHandles[0]->getValue());
+        $this->assertSame('aim', $chatHandles[0]->getType());
+    }
+
     public function testExtractChatHandles()
     {
         $customer = new Customer();
@@ -371,6 +383,17 @@ class CustomerTest extends TestCase
         $this->assertSame($phone, $customer->getPhones()->toArray()[0]);
     }
 
+    public function testAddPhoneShortSyntax()
+    {
+        $customer = new Customer();
+        $customer->addPhone('14235554837');
+
+        $phones = $customer->getPhones();
+
+        $this->assertInstanceOf(Phone::class, $phones[0]);
+        $this->assertSame('14235554837', $phones[0]->getValue());
+    }
+
     public function testExtractPhones()
     {
         $customer = new Customer();
@@ -393,6 +416,18 @@ class CustomerTest extends TestCase
         $this->assertSame($profile, $customer->getSocialProfiles()->toArray()[0]);
     }
 
+    public function testAddSocialProfileShortSyntax()
+    {
+        $customer = new Customer();
+        $customer->addSocialProfile('helpscout', 'twitter');
+
+        $socialProfiles = $customer->getSocialProfiles();
+
+        $this->assertInstanceOf(SocialProfile::class, $socialProfiles[0]);
+        $this->assertSame('helpscout', $socialProfiles[0]->getValue());
+        $this->assertSame('twitter', $socialProfiles[0]->getType());
+    }
+
     public function testExtractSocialProfiles()
     {
         $customer = new Customer();
@@ -413,6 +448,17 @@ class CustomerTest extends TestCase
         $website = new Website();
         $customer->addWebsite($website);
         $this->assertSame($website, $customer->getWebsites()->toArray()[0]);
+    }
+
+    public function testAddWebsiteShortSyntax()
+    {
+        $customer = new Customer();
+        $customer->addWebsite('http://helpscout.com');
+
+        $website = $customer->getWebsites();
+
+        $this->assertInstanceOf(Website::class, $website[0]);
+        $this->assertSame('http://helpscout.com', $website[0]->getValue());
     }
 
     public function testExtractWebsites()

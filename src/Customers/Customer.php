@@ -530,8 +530,21 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    public function addChatHandle(ChatHandle $chat): Customer
+    /**
+     * @param ChatHandle|string $chat
+     * @param string            $type
+     */
+    public function addChatHandle($chat, string $type = null): Customer
     {
+        if (is_string($chat)) {
+            $newChatHandle = new ChatHandle();
+            $newChatHandle->hydrate([
+                'value' => $chat,
+                'type' => $type,
+            ]);
+            $chat = $newChatHandle;
+        }
+
         $this->getChatHandles()->append($chat);
 
         return $this;
@@ -644,8 +657,21 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    public function addPhone(Phone $phone): Customer
+    /**
+     * @param Phone|string $phone
+     * @param string       $type
+     */
+    public function addPhone($phone, string $type = null): Customer
     {
+        if (is_string($phone)) {
+            $newPhone = new Phone();
+            $newPhone->hydrate([
+                'value' => $phone,
+                'type' => $type,
+            ]);
+            $phone = $newPhone;
+        }
+
         $this->getPhones()->append($phone);
 
         return $this;
@@ -671,8 +697,21 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    public function addSocialProfile(SocialProfile $profile): Customer
+    /**
+     * @param SocialProfile|string $profile
+     * @param string               $type
+     */
+    public function addSocialProfile($profile, string $type = null): Customer
     {
+        if (is_string($profile)) {
+            $newProfile = new SocialProfile();
+            $newProfile->hydrate([
+                'value' => $profile,
+                'type' => $type,
+            ]);
+            $profile = $newProfile;
+        }
+
         $this->getSocialProfiles()->append($profile);
 
         return $this;
@@ -698,8 +737,19 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    public function addWebsite(Website $website): Customer
+    /**
+     * @param Website|string $website
+     */
+    public function addWebsite($website): Customer
     {
+        if (is_string($website)) {
+            $newWebsite = new Website();
+            $newWebsite->hydrate([
+                'value' => $website,
+            ]);
+            $website = $newWebsite;
+        }
+
         $this->getWebsites()->append($website);
 
         return $this;
