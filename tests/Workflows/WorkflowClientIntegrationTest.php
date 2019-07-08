@@ -120,14 +120,14 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
         $this->verifyMultipleRequestsWithData([
             [
                 'POST',
-                'https://api.helpscout.net/v2/workflows/123/run', 
+                'https://api.helpscout.net/v2/workflows/123/run',
                 [
                     'conversationIds' => $chunk1,
                 ],
             ],
             [
                 'POST',
-                'https://api.helpscout.net/v2/workflows/123/run', 
+                'https://api.helpscout.net/v2/workflows/123/run',
                 [
                     'conversationIds' => $chunk2,
                 ],
@@ -160,4 +160,3 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
         );
     }
 }
-
