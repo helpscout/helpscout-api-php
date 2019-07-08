@@ -99,7 +99,9 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
         $this->verifyRequestWithData(
             'https://api.helpscout.net/v2/workflows/123/run',
             'POST',
-            $convoIds
+            [
+                'conversationIds' => $convoIds,
+            ]
         );
     }
 
@@ -116,8 +118,20 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
         [$chunk1, $chunk2] = array_chunk($convoIds, RunWorkflowRequest::MAX_BATCH_SIZE);
 
         $this->verifyMultipleRequestsWithData([
-            ['POST', 'https://api.helpscout.net/v2/workflows/123/run', $chunk1],
-            ['POST', 'https://api.helpscout.net/v2/workflows/123/run', $chunk2],
+            [
+                'POST',
+                'https://api.helpscout.net/v2/workflows/123/run',
+                [
+                    'conversationIds' => $chunk1,
+                ],
+            ],
+            [
+                'POST',
+                'https://api.helpscout.net/v2/workflows/123/run',
+                [
+                    'conversationIds' => $chunk2,
+                ],
+            ],
         ]);
     }
 
