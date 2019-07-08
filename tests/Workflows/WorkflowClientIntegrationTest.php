@@ -123,14 +123,14 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
                 'https://api.helpscout.net/v2/workflows/123/run', 
                 [
                     'conversationIds' => $chunk1,
-                ]
+                ],
             ],
             [
                 'POST',
                 'https://api.helpscout.net/v2/workflows/123/run', 
                 [
                     'conversationIds' => $chunk2,
-                ]
+                ],
             ],
         ]);
     }
