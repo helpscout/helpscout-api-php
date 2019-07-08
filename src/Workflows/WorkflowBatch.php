@@ -29,7 +29,7 @@ class WorkflowBatch implements Extractable
     public function extract(): array
     {
         return [
-            'conversationIds' => $this->conversations
+            'conversationIds' => $this->conversations,
         ];
     }
 }
