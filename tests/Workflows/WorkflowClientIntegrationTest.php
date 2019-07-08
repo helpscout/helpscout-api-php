@@ -160,3 +160,4 @@ class WorkflowClientIntegrationTest extends ApiClientIntegrationTestCase
         );
     }
 }
+
