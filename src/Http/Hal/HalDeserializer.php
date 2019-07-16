@@ -57,9 +57,13 @@ class HalDeserializer
     public static function deserializeResources($entityClass, string $rel, HalDocument $halDocument): HalResources
     {
         if ($halDocument->hasEmbedded($rel)) {
+            $embedded = $halDocument->getEmbedded($rel);
+            if (!is_array($embedded)) {
+                $embedded = [$embedded];
+            }
             $resources = array_map(function (HalDocument $embeddedDocument) use ($entityClass) {
                 return self::deserializeResource($entityClass, $embeddedDocument);
-            }, $halDocument->getEmbedded($rel));
+            }, $embedded);
         } else {
             $resources = [];
         }
