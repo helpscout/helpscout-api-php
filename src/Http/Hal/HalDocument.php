@@ -46,7 +46,8 @@ class HalDocument
     }
 
     /**
-     * @param  string  $rel
+     * @param string $rel
+     *
      * @return HalDocument|HalDocument[]
      */
     public function getEmbedded(string $rel)
