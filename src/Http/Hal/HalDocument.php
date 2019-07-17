@@ -51,7 +51,12 @@ class HalDocument
             throw new InvalidArgumentException(sprintf('The embedded resource "%s" was not found', $rel));
         }
 
-        return $this->embedded[$rel];
+        $embedded = $this->embedded[$rel];
+
+        if (!is_array($embedded)) {
+            $embedded = [$embedded];
+        }
+        return $embedded;
     }
 
     /**
