@@ -150,4 +150,23 @@ class HalDocumentTest extends TestCase
 
         $this->assertTrue($documentWithLinks->hasLinks());
     }
+
+    public function testGetEmbeddedAlwaysReturnsArray()
+    {
+        $document = new HalDocument(
+            [],
+            new HalLinks([]),
+            [
+                'customers' => new HalDocument(
+                    [
+                    ],
+                    new HalLinks([
+                    ]),
+                    []
+                ),
+            ]
+        );
+        $embedded = $document->getEmbedded('customers');
+        $this->assertTrue(is_array($embedded));
+    }
 }
