@@ -36,6 +36,7 @@ class HalDeserializerTest extends TestCase
 
         $this->assertInstanceOf(HalDocument::class, $halDocument);
         $this->assertTrue($halDocument->hasEmbedded('address'));
+        $this->assertInstanceOf(HalDocument::class, $halDocument->getEmbedded('address'));
     }
 
     public function testDeserializeDocumentWithEmptyCollection()
