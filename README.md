@@ -938,9 +938,9 @@ try {
     $error = $e->getError();
 
     var_dump(
-        // A reference id for that request.  Including this anytime you contact Help Scout support will enable
-        // us to help you much more quickly
-        $error->getLogRef(),
+        // A reference id for that request.  Including this anytime you contact Help Scout will
+        // empower us to dig right to the heart of the issue
+        $error->getCorrelationId(),
 
         // Details about the invalid fields in the request
         $error->getErrors()

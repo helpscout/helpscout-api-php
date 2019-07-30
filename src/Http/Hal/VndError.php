@@ -58,6 +58,17 @@ class VndError
     }
 
     /**
+     * Alias of getLogRef.  Internally we use the term correlationId so using this in the SDK will help developers
+     * understand what we're asking for when we ask for this.
+     *
+     * @return string|null
+     */
+    public function getCorrelationId()
+    {
+        return $this->getLogRef();
+    }
+
+    /**
      * @return string|null
      */
     public function getPath()
