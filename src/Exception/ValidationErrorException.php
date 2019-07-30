@@ -30,6 +30,9 @@ class ValidationErrorException extends RequestException implements Exception
         ResponseInterface $response,
         \Exception $previous = null
     ) {
+        // Append some details on what steps to take to see the underlying validation problems are.
+        $message = $message.' - use getError() to see the underlying validation issues';
+
         parent::__construct($message, $request, $response, $previous);
 
         $this->error = $error;

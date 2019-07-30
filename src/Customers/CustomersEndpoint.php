@@ -6,6 +6,7 @@ namespace HelpScout\Api\Customers;
 
 use HelpScout\Api\Endpoint;
 use HelpScout\Api\Entity\PagedCollection;
+use HelpScout\Api\Exception\ValidationErrorException;
 use HelpScout\Api\Http\Hal\HalPagedResources;
 use HelpScout\Api\Http\Hal\HalResource;
 
@@ -13,6 +14,8 @@ class CustomersEndpoint extends Endpoint
 {
     /**
      * @param Customer $customer
+     *
+     * @throws ValidationErrorException
      *
      * @return int|null
      */
@@ -26,6 +29,8 @@ class CustomersEndpoint extends Endpoint
 
     /**
      * @param Customer $customer
+     *
+     * @throws ValidationErrorException
      */
     public function update(Customer $customer): void
     {
