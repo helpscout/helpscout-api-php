@@ -150,4 +150,35 @@ class HalDocumentTest extends TestCase
 
         $this->assertTrue($documentWithLinks->hasLinks());
     }
+
+    public function testContainsEmbeddedWhenContainsContent()
+    {
+        $customer = new HalDocument([
+            'name' => 'Clark',
+        ], new HalLinks(), []);
+
+        $conversation = new HalDocument([
+            'id' => 1458,
+        ], new HalLinks(), []);
+
+        $documentWithoutLinks = new HalDocument([], new HalLinks([]), [
+            'customer' => $customer,
+            'conversations' => [
+                $conversation,
+            ],
+        ]);
+
+        $this->assertTrue($documentWithoutLinks->hasEmbedded('customer'));
+        $this->assertTrue($documentWithoutLinks->hasEmbedded('conversations'));
+    }
+
+    public function testDoesntContainEmbeddedWhenContentsAreEmpty()
+    {
+        $documentWithoutLinks = new HalDocument([], new HalLinks([]), [
+            'customers' => [],
+        ]);
+
+        $this->assertFalse($documentWithoutLinks->hasEmbedded('conversations'));
+        $this->assertFalse($documentWithoutLinks->hasEmbedded('customers'));
+    }
 }

@@ -46,8 +46,6 @@ class HalDocument
     }
 
     /**
-     * @param string $rel
-     *
      * @return HalDocument|HalDocument[]
      */
     public function getEmbedded(string $rel)
@@ -99,6 +97,13 @@ class HalDocument
 
     public function hasEmbedded(string $rel): bool
     {
-        return array_key_exists($rel, $this->embedded);
+        // The embedded array key may be present, but we also need to verify that it has contents, since it may not
+        return array_key_exists($rel, $this->embedded) && (
+            // An embedded entity may be a single item
+            $this->embedded[$rel] instanceof HalDocument ||
+
+            // It also may be a collection of HalDocuments
+            (is_array($this->embedded[$rel]) && count($this->embedded[$rel]) > 0)
+        );
     }
 }
