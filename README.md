@@ -211,7 +211,11 @@ $customer = new Customer();
 $customer->setFirstName('Bob');
 // ...
 
-$client->customers()->create($customer);
+try {
+    $customerId = $client->customers()->create($customer);
+} catch (\HelpScout\Api\Exception\ValidationErrorException $e) {
+    var_dump($e->getError()->getErrors());
+}
 ```
 
 Update a customer.
