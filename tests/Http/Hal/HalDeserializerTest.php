@@ -64,7 +64,9 @@ class HalDeserializerTest extends TestCase
 
         $this->assertInstanceOf(VndError::class, $error);
         $this->assertSame('Validation error', $error->getMessage());
-        $this->assertSame('cb73aad3-9a81-44fd-bf70-48250ea256ff#12', $error->getLogRef());
+        $correlationId = 'cb73aad3-9a81-44fd-bf70-48250ea256ff#12';
+        $this->assertSame($correlationId, $error->getLogRef());
+        $this->assertSame($correlationId, $error->getCorrelationId());
         $this->assertNull($error->getPath());
 
         $errors = $error->getErrors();
@@ -82,7 +84,9 @@ class HalDeserializerTest extends TestCase
 
         $this->assertInstanceOf(VndError::class, $error);
         $this->assertSame('Internal error', $error->getMessage());
-        $this->assertSame('cb73aad3-9a81-44fd-bf70-48250ea256ff#12', $error->getLogRef());
+        $correlationId = 'cb73aad3-9a81-44fd-bf70-48250ea256ff#12';
+        $this->assertSame($correlationId, $error->getLogRef());
+        $this->assertSame($correlationId, $error->getCorrelationId());
         $this->assertNull($error->getPath());
         $this->assertCount(0, $error->getErrors());
     }
