@@ -21,7 +21,7 @@ use HelpScout\Api\Workflows\WorkflowsEndpoint;
 
 class ApiClient
 {
-    public const CLIENT_VERSION = '2.3.7';
+    public const CLIENT_VERSION = '2.3.8';
 
     public const AVAILABLE_ENDPOINTS = [
         'hs.workflows' => WorkflowsEndpoint::class,
