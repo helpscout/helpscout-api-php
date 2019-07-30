@@ -8,6 +8,7 @@ use HelpScout\Api\Endpoint;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\PagedCollection;
 use HelpScout\Api\Entity\Patch;
+use HelpScout\Api\Exception\ValidationErrorException;
 use HelpScout\Api\Http\Hal\HalPagedResources;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Tags\TagsCollection;
@@ -38,6 +39,8 @@ class ConversationsEndpoint extends Endpoint
     /**
      * @param Conversation $conversation
      *
+     * @throws ValidationErrorException
+     *
      * @return int|null
      */
     public function create(Conversation $conversation): ?int
@@ -50,6 +53,8 @@ class ConversationsEndpoint extends Endpoint
      *
      * @param int                                                   $conversationId
      * @param CustomField[]|array|Collection|CustomFieldsCollection $customFields
+     *
+     * @throws ValidationErrorException
      */
     public function updateCustomFields(int $conversationId, $customFields): void
     {
@@ -76,6 +81,8 @@ class ConversationsEndpoint extends Endpoint
      *
      * @param int                             $conversationId
      * @param array|Collection|TagsCollection $tags
+     *
+     * @throws ValidationErrorException
      */
     public function updateTags(int $conversationId, $tags): void
     {
@@ -181,6 +188,8 @@ class ConversationsEndpoint extends Endpoint
      *
      * @param int    $conversationId
      * @param string $subject
+     *
+     * @throws ValidationErrorException
      */
     public function updateSubject(int $conversationId, string $subject): void
     {
@@ -193,6 +202,8 @@ class ConversationsEndpoint extends Endpoint
      *
      * @param int $conversationId
      * @param int $newCustomerId
+     *
+     * @throws ValidationErrorException
      */
     public function updateCustomer(int $conversationId, int $newCustomerId): void
     {
@@ -212,6 +223,8 @@ class ConversationsEndpoint extends Endpoint
     /**
      * @param int    $conversationId
      * @param string $status
+     *
+     * @throws ValidationErrorException
      */
     public function updateStatus(int $conversationId, string $status): void
     {
