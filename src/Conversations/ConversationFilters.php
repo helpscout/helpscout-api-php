@@ -76,7 +76,7 @@ class ConversationFilters
             'status' => $this->status,
             'assigned_to' => $this->assignedTo,
             'number' => $this->number,
-            'modifiedSince' => $this->modifiedSince !== null ? $this->modifiedSince->format('c') : null,
+            'modifiedSince' => $this->modifiedSince !== null ? $this->modifiedSince->format('Y-m-d\TH:i:s\Z') : null,
             'sortField' => $this->sortField,
             'sortOrder' => $this->sortOrder,
             'query' => $this->query,
