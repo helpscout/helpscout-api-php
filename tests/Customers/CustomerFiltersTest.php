@@ -33,7 +33,7 @@ class CustomerFiltersTest extends TestCase
             'mailbox' => 1,
             'firstName' => 'Tom',
             'lastName' => 'Graham',
-            'modifiedSince' => '2017-05-06T04:04:23+00:00',
+            'modifiedSince' => '2017-05-06T04:04:23Z',
             'sortField' => 'firstName',
             'sortOrder' => 'asc',
             'query' => 'query',
