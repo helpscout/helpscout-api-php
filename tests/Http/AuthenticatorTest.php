@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class AuthenticatorTest extends TestCase
 {
-    /** @var MockInterface */
+    /** @var MockInterface|Mockery\LegacyMockInterface */
     public $client;
 
     public function setUp()

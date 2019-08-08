@@ -13,16 +13,12 @@ use HelpScout\Api\Http\Authenticator;
 use HelpScout\Api\Tests\ApiClientIntegrationTestCase;
 use HelpScout\Api\Tests\Payloads\CustomerPayloads;
 use Mockery;
-use Mockery\MockInterface;
 
 /**
  * @group integration
  */
 class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
 {
-    /**
-     * @var Client|MockInterface
-     */
     protected $guzzle;
 
     public function setUp()

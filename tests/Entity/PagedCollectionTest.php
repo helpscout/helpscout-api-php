@@ -10,7 +10,7 @@ use HelpScout\Api\Http\Hal\HalLinks;
 use HelpScout\Api\Http\Hal\HalPageMetadata;
 use Mockery;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 
 class PagedCollectionTest extends TestCase
@@ -18,7 +18,7 @@ class PagedCollectionTest extends TestCase
     use MockeryPHPUnitIntegration;
 
     /**
-     * @var PagedCollection|MockInterface
+     * @var PagedCollection|LegacyMockInterface
      */
     private $loadedCollection;
 

@@ -13,13 +13,13 @@ use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Webhooks\WebhooksEndpoint;
 use HelpScout\Api\Workflows\WorkflowsEndpoint;
 use Mockery;
-use Mockery\MockInterface;
+use Mockery\LegacyMockInterface;
 use PHPUnit\Framework\TestCase;
 
 class ApiClientTest extends TestCase
 {
     /**
-     * @var MockInterface|Authenticator
+     * @var LegacyMockInterface|Authenticator
      */
     private $authenticator;
 
@@ -34,7 +34,7 @@ class ApiClientTest extends TestCase
     private $client;
 
     /**
-     * @var MockInterface|Client
+     * @var LegacyMockInterface|Client
      */
     private $guzzle;
 
@@ -97,7 +97,7 @@ class ApiClientTest extends TestCase
         $mockedWorkflows = $this->client->mock('workflows');
 
         $this->assertInstanceOf(WorkflowsEndpoint::class, $mockedWorkflows);
-        $this->assertInstanceOf(MockInterface::class, $mockedWorkflows);
+        $this->assertInstanceOf(LegacyMockInterface::class, $mockedWorkflows);
 
         $this->assertSame(
             $mockedWorkflows,
@@ -109,16 +109,16 @@ class ApiClientTest extends TestCase
 
         $workflows = $this->client->workflows();
         $this->assertInstanceOf(WorkflowsEndpoint::class, $workflows);
-        $this->assertFalse($workflows instanceof MockInterface);
+        $this->assertFalse($workflows instanceof LegacyMockInterface);
 
         $webhookMock = $this->client->webhooks();
-        $this->assertInstanceOf(MockInterface::class, $webhookMock);
+        $this->assertInstanceOf(LegacyMockInterface::class, $webhookMock);
 
         $this->client->clearContainer();
 
         $webhooks = $this->client->webhooks();
         $this->assertInstanceOf(WebhooksEndpoint::class, $webhooks);
-        $this->assertFalse($webhooks instanceof MockInterface);
+        $this->assertFalse($webhooks instanceof LegacyMockInterface);
     }
 
     public function testGetAuthenticator()

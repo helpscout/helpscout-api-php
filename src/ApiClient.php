@@ -18,6 +18,7 @@ use HelpScout\Api\Tags\TagsEndpoint;
 use HelpScout\Api\Users\UsersEndpoint;
 use HelpScout\Api\Webhooks\WebhooksEndpoint;
 use HelpScout\Api\Workflows\WorkflowsEndpoint;
+use Mockery\LegacyMockInterface;
 
 class ApiClient
 {
@@ -57,9 +58,9 @@ class ApiClient
     /**
      * @param string $endpointName
      *
-     * @return \Mockery\MockInterface
+     * @return LegacyMockInterface
      */
-    public function mock(string $endpointName): \Mockery\MockInterface
+    public function mock(string $endpointName): LegacyMockInterface
     {
         $endpointName = 'hs.'.$endpointName;
         $mock = \Mockery::mock(self::AVAILABLE_ENDPOINTS[$endpointName]);
