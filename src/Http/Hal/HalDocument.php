@@ -46,15 +46,21 @@ class HalDocument
     }
 
     /**
-     * @return HalDocument|HalDocument[]
+     * @return HalDocument[]
      */
-    public function getEmbedded(string $rel)
+    public function getEmbedded(string $rel): array
     {
         if (!$this->hasEmbedded($rel)) {
             throw new InvalidArgumentException(sprintf('The embedded resource "%s" was not found', $rel));
         }
 
-        return $this->embedded[$rel];
+        if (is_array($this->embedded[$rel])) {
+            return $this->embedded[$rel];
+        }
+
+        return [
+            $this->embedded[$rel],
+        ];
     }
 
     /**
