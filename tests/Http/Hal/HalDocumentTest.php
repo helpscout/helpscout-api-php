@@ -174,10 +174,16 @@ class HalDocumentTest extends TestCase
 
     public function testDoesntContainEmbeddedWhenContentsAreEmpty()
     {
+        // When fetching a list of entities if there are zero results this will still be a HalDocument
+        $documentWithoutLinks = new HalDocument([], new HalLinks([]), [
+            'customers' => new HalDocument([], new HalLinks([]), []),
+        ]);
+        $this->assertFalse($documentWithoutLinks->hasEmbedded('conversations'));
+        $this->assertFalse($documentWithoutLinks->hasEmbedded('customers'));
+
         $documentWithoutLinks = new HalDocument([], new HalLinks([]), [
             'customers' => [],
         ]);
-
         $this->assertFalse($documentWithoutLinks->hasEmbedded('conversations'));
         $this->assertFalse($documentWithoutLinks->hasEmbedded('customers'));
     }
