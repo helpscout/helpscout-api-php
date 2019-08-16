@@ -101,7 +101,7 @@ class HalDocument
             return false;
         }
 
-        // It may be a single entity, which means we should see if there's any data
+        // Make sure we actually have data within this embedded entity and it's not empty
         if ($this->embedded[$rel] instanceof HalDocument && count($this->embedded[$rel]->getData()) > 0) {
             return true;
         }
