@@ -97,13 +97,20 @@ class HalDocument
 
     public function hasEmbedded(string $rel): bool
     {
-        // The embedded array key may be present, but we also need to verify that it has contents, since it may not
-        return array_key_exists($rel, $this->embedded) && (
-            // An embedded entity may be a single item
-            $this->embedded[$rel] instanceof HalDocument ||
+        if (!array_key_exists($rel, $this->embedded)) {
+            return false;
+        }
 
-            // It also may be a collection of HalDocuments
-            (is_array($this->embedded[$rel]) && count($this->embedded[$rel]) > 0)
-        );
+        // It may be a single entity, which means we should see if there's any data
+        if ($this->embedded[$rel] instanceof HalDocument && count($this->embedded[$rel]->getData()) > 0) {
+            return true;
+        }
+
+        // It also may be a collection of HalDocuments
+        if (is_array($this->embedded[$rel]) && count($this->embedded[$rel]) > 0) {
+            return true;
+        }
+
+        return false;
     }
 }
