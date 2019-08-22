@@ -797,10 +797,16 @@ $tags = $client->tags()->list();
 
 ## Teams
 
-List the tags
+List the teams
 
 ```php
 $teams = $client->teams()->list();
+```
+
+List the members of a team
+
+```php
+$users = $client->teams()->members($teamId);
 ```
 
 ## Users
