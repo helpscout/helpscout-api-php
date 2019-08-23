@@ -15,6 +15,8 @@ class TeamsEndpoint extends Endpoint
     public const RESOURCE_KEY = 'teams';
 
     /**
+     * Get a list of teams.
+     *
      * @return Team[]|PagedCollection
      */
     public function list(): PagedCollection
@@ -27,7 +29,7 @@ class TeamsEndpoint extends Endpoint
     }
 
     /**
-     * Get the members of a team
+     * Get the members of a team.
      *
      * @param int $teamId
      *
