@@ -217,6 +217,7 @@ class Customer implements Extractable, Hydratable
             // the individual email separately, but the first email will always be a duplicate
             // of what's already in "emails"
             'email' => $this->getFirstEmail(),
+            'phone' => $this->getFirstPhone(),
 
             'address' => $this->getAddress() !== null ? $this->getAddress()->extract() : null,
 
@@ -635,6 +636,19 @@ class Customer implements Extractable, Hydratable
         $this->getEmails()->append($email);
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstPhone(): ?string
+    {
+        $phones = $this->phones->toArray();
+        $phone = array_shift($phones);
+
+        return $phone instanceof Phone
+            ? $phone->getValue()
+            : null;
     }
 
     /**

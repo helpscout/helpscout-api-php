@@ -357,8 +357,14 @@ class CustomerTest extends TestCase
         $this->assertEmpty($customer->getEmails());
 
         $email = new Email();
+        $emailAddress = 'test@test.com';
+        $email->setValue($emailAddress);
         $customer->addEmail($email);
         $this->assertSame($email, $customer->getEmails()->toArray()[0]);
+
+        $this->assertSame($emailAddress, $customer->getFirstEmail());
+
+        $this->assertEquals($emailAddress, $customer->extract()['email']);
     }
 
     public function testExtractEmails()
@@ -379,8 +385,14 @@ class CustomerTest extends TestCase
         $this->assertEmpty($customer->getPhones());
 
         $phone = new Phone();
+        $phoneNumber = '12357373';
+        $phone->setValue($phoneNumber);
         $customer->addPhone($phone);
         $this->assertSame($phone, $customer->getPhones()->toArray()[0]);
+
+        $this->assertEquals($phoneNumber, $customer->getFirstPhone());
+
+        $this->assertEquals($phoneNumber, $customer->extract()['phone']);
     }
 
     public function testAddPhoneShortSyntax()
