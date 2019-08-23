@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HelpScout\Api\Tests\Users;
+namespace HelpScout\Api\Tests\Teams;
 
 use HelpScout\Api\Teams\Team;
 use HelpScout\Api\Tests\ApiClientIntegrationTestCase;
