@@ -46,6 +46,13 @@ class ReplyThread extends Thread
         return $this->draft;
     }
 
+    public function setStatus(?string $status): ReplyThread
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
     public function hydrate(array $data, array $embedded = [])
     {
         parent::hydrate($data, $embedded);

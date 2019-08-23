@@ -35,7 +35,7 @@ class Thread implements Extractable, Hydratable
     /**
      * @var string|null
      */
-    private $status;
+    protected $status;
 
     /**
      * @var string|null

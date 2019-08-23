@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Conversations\Threads;
 
+use HelpScout\Api\Conversations\Conversation;
 use HelpScout\Api\Conversations\Threads\ReplyThread;
 use HelpScout\Api\Customers\Customer;
 use PHPUnit\Framework\TestCase;
@@ -130,5 +131,20 @@ class ReplyThreadTest extends TestCase
         $thread->asDraft();
         $data = $thread->extract();
         $this->assertTrue($data['draft']);
+    }
+
+    public function testDefaultsStatusToNull()
+    {
+        $thread = new ReplyThread();
+        $this->assertNull($thread->getStatus());
+    }
+
+    public function testExtractsStatusWhenSet()
+    {
+        $thread = new ReplyThread();
+        $thread->setStatus(Conversation::STATUS_ACTIVE);
+        $data = $thread->extract();
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals(Conversation::STATUS_ACTIVE, $data['status']);
     }
 }

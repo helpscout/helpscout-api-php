@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Conversations\Threads;
 
+use HelpScout\Api\Conversations\Conversation;
 use HelpScout\Api\Conversations\Threads\NoteThread;
 use HelpScout\Api\Conversations\Threads\Support\HasUser;
 use HelpScout\Api\Users\User;
@@ -67,5 +68,20 @@ class NoteThreadTest extends TestCase
 
         $this->assertArrayHasKey('user', $data);
         $this->assertEquals(94320, $data['user']);
+    }
+
+    public function testDefaultsStatusToNull()
+    {
+        $thread = new NoteThread();
+        $this->assertNull($thread->getStatus());
+    }
+
+    public function testExtractsStatusWhenSet()
+    {
+        $thread = new NoteThread();
+        $thread->setStatus(Conversation::STATUS_ACTIVE);
+        $data = $thread->extract();
+        $this->assertArrayHasKey('status', $data);
+        $this->assertEquals(Conversation::STATUS_ACTIVE, $data['status']);
     }
 }

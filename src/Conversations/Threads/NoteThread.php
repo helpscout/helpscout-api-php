@@ -22,6 +22,13 @@ class NoteThread extends Thread
         return self::TYPE;
     }
 
+    public function setStatus(?string $status): NoteThread
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
     public function extract(): array
     {
         $data = parent::extract();
