@@ -63,6 +63,16 @@ class User implements Hydratable
      */
     private $type;
 
+    /**
+     * @var string|null
+     */
+    private $mention;
+
+    /**
+     * @var string|null
+     */
+    private $initials;
+
     public function hydrate(array $data, array $embedded = [])
     {
         if (isset($data['id'])) {
@@ -90,6 +100,8 @@ class User implements Hydratable
         $this->setTimezone($data['timezone'] ?? null);
         $this->setPhotoUrl($data['photoUrl'] ?? null);
         $this->setType($data['type'] ?? null);
+        $this->setMention($data['mention'] ?? null);
+        $this->setInitials($data['initials'] ?? null);
     }
 
     /**
@@ -290,6 +302,46 @@ class User implements Hydratable
     public function setType($type): User
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMention(): ?string
+    {
+        return $this->mention;
+    }
+
+    /**
+     * @param string|null $mention
+     *
+     * @return User
+     */
+    public function setMention($mention): User
+    {
+        $this->mention = $mention;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInitials(): ?string
+    {
+        return $this->initials;
+    }
+
+    /**
+     * @param string|null $initials
+     *
+     * @return User
+     */
+    public function setInitials($initials): User
+    {
+        $this->initials = $initials;
 
         return $this;
     }

@@ -15,6 +15,7 @@ use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Mailboxes\MailboxesEndpoint;
 use HelpScout\Api\Reports\Report;
 use HelpScout\Api\Tags\TagsEndpoint;
+use HelpScout\Api\Teams\TeamsEndpoint;
 use HelpScout\Api\Users\UsersEndpoint;
 use HelpScout\Api\Webhooks\WebhooksEndpoint;
 use HelpScout\Api\Workflows\WorkflowsEndpoint;
@@ -35,6 +36,7 @@ class ApiClient
         'hs.customerEntry' => CustomerEntryEndpoint::class,
         'hs.conversations' => ConversationsEndpoint::class,
         'hs.attachments' => AttachmentsEndpoint::class,
+        'hs.teams' => TeamsEndpoint::class,
     ];
 
     /**
@@ -286,6 +288,14 @@ class ApiClient
     public function conversations(): ConversationsEndpoint
     {
         return $this->fetchFromContainer('hs.conversations');
+    }
+
+    /**
+     * @return TeamsEndpoint
+     */
+    public function teams(): TeamsEndpoint
+    {
+        return $this->fetchFromContainer('hs.teams');
     }
 
     /**

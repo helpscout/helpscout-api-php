@@ -27,6 +27,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
      * [Threads](#threads)
        * [Attachments](#attachments)
    * [Tags](#tags)
+   * [Teams](#teams)
    * [Users](#users)
    * [Reports](#reports)
    * [Webhooks](#webhooks)
@@ -792,6 +793,20 @@ List the tags
 
 ```php
 $tags = $client->tags()->list();
+```
+
+## Teams
+
+List the teams
+
+```php
+$teams = $client->teams()->list();
+```
+
+List the members of a team
+
+```php
+$users = $client->teams()->members($teamId);
 ```
 
 ## Users

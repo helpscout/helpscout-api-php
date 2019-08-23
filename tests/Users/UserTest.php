@@ -24,6 +24,8 @@ class UserTest extends TestCase
             'timezone' => 'America/New_York',
             'photoUrl' => 'https://helpscout.com/images/avatar.jpg',
             'type' => 'user',
+            'mention' => 'bman',
+            'initials' => 'BB',
         ]);
 
         $this->assertSame(12, $user->getId());
@@ -38,6 +40,8 @@ class UserTest extends TestCase
         $this->assertSame('America/New_York', $user->getTimezone());
         $this->assertSame('https://helpscout.com/images/avatar.jpg', $user->getPhotoUrl());
         $this->assertSame('user', $user->getType());
+        $this->assertSame('bman', $user->getMention());
+        $this->assertSame('BB', $user->getInitials());
     }
 
     public function testHydrateWithoutCreatedAt()
