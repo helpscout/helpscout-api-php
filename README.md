@@ -139,7 +139,7 @@ $client->getAuthenticator()->fetchAccessAndRefreshToken()->getTokens(); // array
 
 ### Authorization Code Flow
 
-Because the [authorization code](https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow) is only good for a single use, you'll need to exchange the code for and access token and refresh token prior to making additional api calls.  You'll also need to persist the tokens for reuse later.
+Because the [authorization code](https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow) is only good for a single use, you'll need to exchange the code for an access token and refresh token prior to making additional api calls.  You'll also need to persist the tokens for reuse later.
 
 ```php
 $client = ApiClientFactory::createClient();
