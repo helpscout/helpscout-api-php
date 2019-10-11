@@ -18,8 +18,6 @@ class ConversationRequest
         foreach ($links as $link) {
             $this->addLink($link);
         }
-
-        return $this;
     }
 
     public function getLinks(): array

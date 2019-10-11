@@ -59,8 +59,6 @@ class Mailbox implements Hydratable
     {
         $this->fields = new Collection();
         $this->folders = new Collection();
-
-        return $this;
     }
 
     public function hydrate(array $data, array $embedded = [])

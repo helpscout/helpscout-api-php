@@ -90,8 +90,6 @@ class Thread implements Extractable, Hydratable
     public function __construct()
     {
         $this->attachments = new Collection();
-
-        return $this;
     }
 
     public static function resourceUrl(int $conversationId): string

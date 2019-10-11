@@ -113,8 +113,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @var Website[]|Collection
-     *
-     * @return Customer
      */
     private $websites;
 
@@ -125,8 +123,6 @@ class Customer implements Extractable, Hydratable
         $this->phones = new Collection();
         $this->socialProfiles = new Collection();
         $this->websites = new Collection();
-
-        return $this;
     }
 
     public function hydrate(array $data, array $embedded = [])

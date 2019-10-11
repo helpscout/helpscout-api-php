@@ -164,8 +164,6 @@ class Conversation implements Extractable, Hydratable
         $this->tags = new Collection();
         $this->customFields = new Collection();
         $this->threads = new Collection();
-
-        return $this;
     }
 
     public function hydrate(array $data, array $embedded = [])
