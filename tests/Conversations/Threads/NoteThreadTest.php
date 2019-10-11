@@ -42,7 +42,7 @@ class NoteThreadTest extends TestCase
     {
         $userId = 4839;
         $thread = new NoteThread();
-        $thread->setUserId($userId);
+        $this->assertInstanceOf(NoteThread::class, $thread->setUserId($userId));
 
         $this->assertEquals($userId, $thread->getUserId());
     }
@@ -54,7 +54,7 @@ class NoteThreadTest extends TestCase
         $user->setId($userId);
 
         $thread = new NoteThread();
-        $thread->setUser($user);
+        $this->assertInstanceOf(NoteThread::class, $thread->setUser($user));
 
         $this->assertEquals($userId, $thread->getUserId());
     }
@@ -62,7 +62,7 @@ class NoteThreadTest extends TestCase
     public function testCanExtractUser()
     {
         $thread = new NoteThread();
-        $thread->setUserId(94320);
+        $this->assertInstanceOf(NoteThread::class, $thread->setUserId(94320));
 
         $data = $thread->extract();
 

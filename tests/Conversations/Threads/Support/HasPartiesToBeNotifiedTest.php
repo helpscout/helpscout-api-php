@@ -29,8 +29,8 @@ class HasPartiesToBeNotifiedTest extends TestCase
             'tester23@43jdf.com',
         ];
 
-        $this->setCC($cc);
-        $this->setBCC($bcc);
+        $this->assertInstanceOf(self::class, $this->setCC($cc));
+        $this->assertInstanceOf(self::class, $this->setBCC($bcc));
 
         $this->assertEquals($cc, $this->getCC());
         $this->assertEquals($bcc, $this->getBCC());

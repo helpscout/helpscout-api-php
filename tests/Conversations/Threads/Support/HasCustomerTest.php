@@ -29,7 +29,7 @@ class HasCustomerTest extends TestCase
         $customer = new Customer();
         $customer->setId(4923);
 
-        $this->setCustomer($customer);
+        $this->assertInstanceOf(self::class, $this->setCustomer($customer));
 
         $this->assertEquals($customer, $this->getCustomer());
     }

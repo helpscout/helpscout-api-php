@@ -40,7 +40,7 @@ class ReplyThreadTest extends TestCase
     public function testCanBeDraft()
     {
         $thread = new ReplyThread();
-        $thread->asDraft();
+        $this->assertInstanceOf(ReplyThread::class, $thread->asDraft());
 
         $this->assertTrue($thread->isDraft());
     }
@@ -48,8 +48,8 @@ class ReplyThreadTest extends TestCase
     public function testCanBePublishedAfterHavingBeenDraft()
     {
         $thread = new ReplyThread();
-        $thread->asDraft();
-        $thread->notAsDraft();
+        $this->assertInstanceOf(ReplyThread::class, $thread->asDraft());
+        $this->assertInstanceOf(ReplyThread::class, $thread->notAsDraft());
 
         $this->assertFalse($thread->isDraft());
     }
@@ -103,7 +103,7 @@ class ReplyThreadTest extends TestCase
         $customer->setId(4923);
 
         $thread = new ReplyThread();
-        $thread->setCustomer($customer);
+        $this->assertInstanceOf(ReplyThread::class, $thread->setCustomer($customer));
 
         $data = $thread->extract();
 
@@ -114,7 +114,7 @@ class ReplyThreadTest extends TestCase
     public function testCanExtractUser()
     {
         $thread = new ReplyThread();
-        $thread->setUserId(94320);
+        $this->assertInstanceOf(ReplyThread::class, $thread->setUserId(94320));
 
         $data = $thread->extract();
 
@@ -128,7 +128,7 @@ class ReplyThreadTest extends TestCase
         $data = $thread->extract();
         $this->assertFalse($data['draft']);
 
-        $thread->asDraft();
+        $this->assertInstanceOf(ReplyThread::class, $thread->asDraft());
         $data = $thread->extract();
         $this->assertTrue($data['draft']);
     }

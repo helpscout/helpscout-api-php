@@ -51,7 +51,7 @@ class CustomerThreadTest extends TestCase
         $customer->setId(4923);
 
         $thread = new CustomerThread();
-        $thread->setCustomer($customer);
+        $this->assertInstanceOf(CustomerThread::class, $thread->setCustomer($customer));
 
         $this->assertEquals($customer, $thread->getCustomer());
     }
@@ -105,7 +105,7 @@ class CustomerThreadTest extends TestCase
         $customer->setId(4923);
 
         $thread = new CustomerThread();
-        $thread->setCustomer($customer);
+        $this->assertInstanceOf(CustomerThread::class, $thread->setCustomer($customer));
 
         $data = $thread->extract();
 

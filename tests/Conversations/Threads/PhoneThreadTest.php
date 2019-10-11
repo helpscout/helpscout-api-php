@@ -44,7 +44,7 @@ class PhoneThreadTest extends TestCase
         $customer->setId(4923);
 
         $thread = new PhoneThread();
-        $thread->setCustomer($customer);
+        $this->assertInstanceOf(PhoneThread::class, $thread->setCustomer($customer));
 
         $this->assertEquals($customer, $thread->getCustomer());
     }
@@ -83,7 +83,7 @@ class PhoneThreadTest extends TestCase
         $customer->setId(4923);
 
         $thread = new PhoneThread();
-        $thread->setCustomer($customer);
+        $this->assertInstanceOf(PhoneThread::class, $thread->setCustomer($customer));
 
         $data = $thread->extract();
 

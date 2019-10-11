@@ -49,7 +49,7 @@ class ChatThreadTest extends TestCase
         $customer->setId(4923);
 
         $thread = new ChatThread();
-        $thread->setCustomer($customer);
+        $this->assertInstanceOf(ChatThread::class, $thread->setCustomer($customer));
 
         $this->assertEquals($customer, $thread->getCustomer());
     }
@@ -88,7 +88,7 @@ class ChatThreadTest extends TestCase
         $customer->setId(4923);
 
         $thread = new ChatThread();
-        $thread->setCustomer($customer);
+        $this->assertInstanceOf(ChatThread::class, $thread->setCustomer($customer));
 
         $data = $thread->extract();
 

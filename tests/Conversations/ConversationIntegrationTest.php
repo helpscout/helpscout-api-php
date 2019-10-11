@@ -417,13 +417,19 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         );
 
         $customField = new CustomField();
-        $customField->setId(10524);
-        $customField->setValue(new \DateTime('today'));
+        $this->assertInstanceOf(CustomField::class, $customField->setId(10524));
+        $this->assertInstanceOf(
+            CustomField::class,
+            $customField->setValue(new \DateTime('today'))
+        );
 
         $this->client->conversations()->updateCustomFields(12, [$customField]);
 
         $fields = new CustomFieldsCollection();
-        $fields->setCustomFields([$customField]);
+        $this->assertInstanceOf(
+            CustomFieldsCollection::class,
+            $fields->setCustomFields([$customField])
+        );
 
         $this->verifyRequestWithData(
             'https://api.helpscout.net/v2/conversations/12/fields',
@@ -439,8 +445,8 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         );
 
         $customField = new CustomField();
-        $customField->setId(10524);
-        $customField->setValue(new \DateTime('today'));
+        $this->assertInstanceOf(CustomField::class, $customField->setId(10524));
+        $this->assertInstanceOf(CustomField::class, $customField->setValue(new \DateTime('today')));
 
         $customFields = new Collection([$customField]);
 
@@ -448,7 +454,10 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
 
         $fields = new CustomFieldsCollection();
 
-        $fields->setCustomFields($customFields->toArray());
+        $this->assertInstanceOf(
+            CustomFieldsCollection::class,
+            $fields->setCustomFields($customFields->toArray())
+        );
 
         $this->verifyRequestWithData(
             'https://api.helpscout.net/v2/conversations/12/fields',
@@ -464,11 +473,17 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         );
 
         $customField = new CustomField();
-        $customField->setId(10524);
-        $customField->setValue(new \DateTime('today'));
+        $this->assertInstanceOf(CustomField::class, $customField->setId(10524));
+        $this->assertInstanceOf(
+            CustomField::class,
+            $customField->setValue(new \DateTime('today'))
+        );
 
         $customFieldsCollection = new CustomFieldsCollection();
-        $customFieldsCollection->setCustomFields([$customField]);
+        $this->assertInstanceOf(
+            CustomFieldsCollection::class,
+            $customFieldsCollection->setCustomFields([$customField])
+        );
 
         $this->client->conversations()->updateCustomFields(14, $customFieldsCollection);
 
@@ -487,7 +502,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         $this->client->conversations()->updateTags(14, ['Support']);
 
         $tags = new TagsCollection();
-        $tags->setTags(['Support']);
+        $this->assertInstanceOf(TagsCollection::class, $tags->setTags(['Support']));
 
         $this->verifyRequestWithData(
             'https://api.helpscout.net/v2/conversations/14/tags',
@@ -503,7 +518,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         );
 
         $tags = new TagsCollection();
-        $tags->setTags(['Support']);
+        $this->assertInstanceOf(TagsCollection::class, $tags->setTags(['Support']));
 
         $this->client->conversations()->updateTags(14, $tags);
 

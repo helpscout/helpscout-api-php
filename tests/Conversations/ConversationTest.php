@@ -186,7 +186,7 @@ class ConversationTest extends TestCase
 
         $customer = new Customer();
         $customer->setId(12);
-        $conversation->setCreatedByCustomer($customer);
+        $this->assertInstanceOf(Conversation::class, $conversation->setCreatedByCustomer($customer));
 
         $conversation->setCreatedAt(new DateTime('2017-04-21T14:39:56Z'));
         $conversation->setClosedAt(new DateTime('2017-04-21T12:23:06Z'));
@@ -194,14 +194,14 @@ class ConversationTest extends TestCase
         $user = new User();
         $user->setId(14);
         $conversation->setClosedBy($user);
-        $conversation->setSourceType('email');
-        $conversation->setSourceVia('customer');
-        $conversation->setCC([
+        $this->assertInstanceOf(Conversation::class, $conversation->setSourceType('email'));
+        $this->assertInstanceOf(Conversation::class, $conversation->setSourceVia('customer'));
+        $this->assertInstanceOf(Conversation::class, $conversation->setCC([
             'bear@normal.com',
-        ]);
-        $conversation->setBCC([
+        ]));
+        $this->assertInstanceOf(Conversation::class, $conversation->setBCC([
             'bear@secret.com',
-        ]);
+        ]));
 
         $email = new Email();
         $email->setValue('mycustomer@domain.com');
@@ -209,7 +209,7 @@ class ConversationTest extends TestCase
         $customer->setId(152);
         $emails = new Collection([$email]);
         $customer->setEmails($emails);
-        $conversation->setCustomer($customer);
+        $this->assertInstanceOf(Conversation::class, $conversation->setCustomer($customer));
 
         $user = new User();
         $user->setId(9865);
@@ -218,15 +218,15 @@ class ConversationTest extends TestCase
         $conversation->setAssignee($user);
 
         $customField = new CustomField();
-        $customField->setId(936);
-        $customField->setName('Account Type');
+        $this->assertInstanceOf(CustomField::class, $customField->setId(936));
+        $this->assertInstanceOf(CustomField::class, $customField->setName('Account Type'));
         $customField->setValue('Administrator');
         $conversation->setCustomFields(new Collection([
             $customField,
         ]));
 
         $tag = new Tag();
-        $tag->setId('936');
+        $this->assertInstanceOf(Tag::class, $tag->setId('936'));
         $tag->setColor('#243513');
         $tag->setName('Productive');
         $conversation->setTags(new Collection([
@@ -234,9 +234,18 @@ class ConversationTest extends TestCase
         ]));
 
         $customerWaitingSince = new CustomerWaitingSince();
-        $customerWaitingSince->setTime(new DateTime('2012-07-24T20:18:33Z'));
-        $customerWaitingSince->setFriendly('20 hours ago');
-        $customerWaitingSince->setLatestReplyFrom('customer');
+        $this->assertInstanceOf(
+            CustomerWaitingSince::class,
+            $customerWaitingSince->setTime(new DateTime('2012-07-24T20:18:33Z'))
+        );
+        $this->assertInstanceOf(
+            CustomerWaitingSince::class,
+            $customerWaitingSince->setFriendly('20 hours ago')
+        );
+        $this->assertInstanceOf(
+            CustomerWaitingSince::class,
+            $customerWaitingSince->setLatestReplyFrom('customer')
+        );
         $conversation->setCustomerWaitingSince($customerWaitingSince);
 
         $this->assertArraySubset([

@@ -15,13 +15,13 @@ class CustomFieldsCollectionTest extends TestCase
         $customFieldsCollection = new CustomFieldsCollection();
 
         $customField = new CustomField();
-        $customField->setId(936);
-        $customField->setName('Account Type');
-        $customField->setValue('Administrator');
+        $this->assertInstanceOf(CustomField::class, $customField->setId(936));
+        $this->assertInstanceOf(CustomField::class, $customField->setName('Account Type'));
+        $this->assertInstanceOf(CustomField::class, $customField->setValue('Administrator'));
 
-        $customFieldsCollection->setCustomFields([
+        $this->assertInstanceOf(CustomFieldsCollection::class, $customFieldsCollection->setCustomFields([
             $customField,
-        ]);
+        ]));
 
         $this->assertEquals([
             'fields' => [

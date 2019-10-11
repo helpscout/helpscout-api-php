@@ -22,7 +22,7 @@ class HasUserTest extends TestCase
     public function testCanSetUserId()
     {
         $userId = 4839;
-        $this->setUserId($userId);
+        $this->assertInstanceOf(self::class, $this->setUserId($userId));
 
         $this->assertEquals($userId, $this->getUserId());
     }
@@ -33,7 +33,7 @@ class HasUserTest extends TestCase
         $user = new User();
         $user->setId($userId);
 
-        $this->setUser($user);
+        $this->assertInstanceOf(self::class, $this->setUser($user));
 
         $this->assertEquals($userId, $this->getUserId());
     }
