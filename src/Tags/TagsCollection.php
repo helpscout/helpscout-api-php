@@ -27,8 +27,10 @@ class TagsCollection implements Extractable
         return $this->tags;
     }
 
-    public function setTags(array $tags): void
+    public function setTags(array $tags): self
     {
         $this->tags = $tags;
+
+        return $this;
     }
 }

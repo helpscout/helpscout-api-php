@@ -24,6 +24,8 @@ trait HasPartiesToBeNotified
     public function setCC(array $cc)
     {
         $this->cc = $cc;
+
+        return $this;
     }
 
     public function getBCC(): ?array
@@ -34,6 +36,8 @@ trait HasPartiesToBeNotified
     public function setBCC(array $bcc)
     {
         $this->bcc = $bcc;
+
+        return $this;
     }
 
     protected function hydrateCC($input)

@@ -10,5 +10,7 @@ class ChatConversation extends Conversation
     {
         parent::__construct();
         $this->setType(static::TYPE_CHAT);
+
+        return $this;
     }
 }

@@ -16,11 +16,15 @@ trait HasUser
     public function setUserId(int $userId)
     {
         $this->userId = $userId;
+
+        return $this;
     }
 
     public function setUser(User $user)
     {
         $this->userId = $user->getId();
+
+        return $this;
     }
 
     public function getUserId(): ?int

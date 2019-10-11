@@ -18,6 +18,8 @@ class ConversationRequest
         foreach ($links as $link) {
             $this->addLink($link);
         }
+
+        return $this;
     }
 
     public function getLinks(): array
@@ -25,7 +27,7 @@ class ConversationRequest
         return $this->links;
     }
 
-    private function addLink(string $link)
+    private function addLink(string $link): self
     {
         Assert::oneOf($link, [
             ConversationLinks::MAILBOX,
@@ -39,6 +41,8 @@ class ConversationRequest
         ]);
 
         $this->links[] = $link;
+
+        return $this;
     }
 
     public function hasLink(string $rel): bool

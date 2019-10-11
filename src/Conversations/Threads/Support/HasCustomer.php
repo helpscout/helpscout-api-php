@@ -22,6 +22,8 @@ trait HasCustomer
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+
+        return $this;
     }
 
     protected function hydrateCustomer(array $data)

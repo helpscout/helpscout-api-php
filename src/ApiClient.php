@@ -55,6 +55,8 @@ class ApiClient
     public function __construct(RestClient $restClient)
     {
         $this->restClient = $restClient;
+
+        return $this;
     }
 
     /**

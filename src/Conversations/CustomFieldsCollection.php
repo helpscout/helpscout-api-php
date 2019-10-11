@@ -32,8 +32,10 @@ class CustomFieldsCollection implements Extractable
         return $this->customFields;
     }
 
-    public function setCustomFields(array $customFields): void
+    public function setCustomFields(array $customFields): self
     {
         $this->customFields = $customFields;
+
+        return $this;
     }
 }

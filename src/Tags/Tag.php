@@ -96,10 +96,14 @@ class Tag implements Extractable, Hydratable
 
     /**
      * @param string|null $id
+     *
+     * @return Tag
      */
-    public function setId($id)
+    public function setId($id): Tag
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getId()

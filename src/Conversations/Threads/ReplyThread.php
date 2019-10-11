@@ -31,14 +31,18 @@ class ReplyThread extends Thread
      */
     private $draft = false;
 
-    public function asDraft()
+    public function asDraft(): ReplyThread
     {
         $this->draft = true;
+
+        return $this;
     }
 
-    public function notAsDraft()
+    public function notAsDraft(): ReplyThread
     {
         $this->draft = false;
+
+        return $this;
     }
 
     public function isDraft(): bool

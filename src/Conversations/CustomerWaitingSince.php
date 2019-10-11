@@ -61,6 +61,8 @@ class CustomerWaitingSince implements Extractable, Hydratable
     public function setTime(DateTime $time = null)
     {
         $this->time = $time;
+
+        return $this;
     }
 
     public function getTime(): ?DateTime
@@ -76,17 +78,21 @@ class CustomerWaitingSince implements Extractable, Hydratable
     /**
      * @param string|null $friendly
      */
-    public function setFriendly($friendly)
+    public function setFriendly($friendly): self
     {
         $this->friendly = $friendly;
+
+        return $this;
     }
 
     /**
      * @param string|null $latestReplyFrom
      */
-    public function setLatestReplyFrom($latestReplyFrom)
+    public function setLatestReplyFrom($latestReplyFrom): self
     {
         $this->latestReplyFrom = $latestReplyFrom;
+
+        return $this;
     }
 
     public function getLatestReplyFrom(): ?string

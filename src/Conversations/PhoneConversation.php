@@ -10,5 +10,7 @@ class PhoneConversation extends Conversation
     {
         parent::__construct();
         $this->setType(static::TYPE_PHONE);
+
+        return $this;
     }
 }
