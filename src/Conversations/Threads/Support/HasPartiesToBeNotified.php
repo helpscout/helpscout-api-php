@@ -21,7 +21,7 @@ trait HasPartiesToBeNotified
         return $this->cc;
     }
 
-    public function setCC(array $cc)
+    public function setCC(array $cc): self
     {
         $this->cc = $cc;
 
@@ -33,7 +33,7 @@ trait HasPartiesToBeNotified
         return $this->bcc;
     }
 
-    public function setBCC(array $bcc)
+    public function setBCC(array $bcc): self
     {
         $this->bcc = $bcc;
 
