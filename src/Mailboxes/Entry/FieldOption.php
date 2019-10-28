@@ -44,7 +44,7 @@ class FieldOption implements Hydratable
      *
      * @return FieldOption
      */
-    public function setId(int $id): FieldOption
+    public function setId(int $id): self
     {
         Assert::greaterThan($id, 0);
 
@@ -66,7 +66,7 @@ class FieldOption implements Hydratable
      *
      * @return FieldOption
      */
-    public function setOrder(int $order): FieldOption
+    public function setOrder(int $order): self
     {
         $this->order = $order;
 
@@ -86,7 +86,7 @@ class FieldOption implements Hydratable
      *
      * @return FieldOption
      */
-    public function setLabel(string $label): FieldOption
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
