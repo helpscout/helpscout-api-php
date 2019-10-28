@@ -16,7 +16,7 @@ class TagsCollectionTest extends TestCase
         ];
 
         $tagsCollection = new TagsCollection();
-        $tagsCollection->setTags($tags);
+        $this->assertInstanceOf(TagsCollection::class, $tagsCollection->setTags($tags));
 
         $this->assertSame($tags, $tagsCollection->getTags());
 

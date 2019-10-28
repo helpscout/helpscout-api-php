@@ -13,14 +13,18 @@ trait HasUser
      */
     private $userId;
 
-    public function setUserId(int $userId)
+    public function setUserId(int $userId): self
     {
         $this->userId = $userId;
+
+        return $this;
     }
 
-    public function setUser(User $user)
+    public function setUser(User $user): self
     {
         $this->userId = $user->getId();
+
+        return $this;
     }
 
     public function getUserId(): ?int

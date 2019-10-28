@@ -44,9 +44,11 @@ trait IncludesThreadDetails
         return $this->sourceType;
     }
 
-    public function setSourceType(?string $sourceType)
+    public function setSourceType(?string $sourceType): self
     {
         $this->sourceType = $sourceType;
+
+        return $this;
     }
 
     public function getSourceVia(): ?string
@@ -54,9 +56,11 @@ trait IncludesThreadDetails
         return $this->sourceVia;
     }
 
-    public function setSourceVia(?string $sourceVia)
+    public function setSourceVia(?string $sourceVia): self
     {
         $this->sourceVia = $sourceVia;
+
+        return $this;
     }
 
     public function wasCreatedByUser(): bool
@@ -64,9 +68,11 @@ trait IncludesThreadDetails
         return $this->createdByUser instanceof User;
     }
 
-    public function setCreatedByUser(User $user)
+    public function setCreatedByUser(User $user): self
     {
         $this->createdByUser = $user;
+
+        return $this;
     }
 
     public function getCreatedByUser(): User
@@ -79,9 +85,11 @@ trait IncludesThreadDetails
         return $this->createdByCustomer instanceof Customer;
     }
 
-    public function setCreatedByCustomer(Customer $customer)
+    public function setCreatedByCustomer(Customer $customer): self
     {
         $this->createdByCustomer = $customer;
+
+        return $this;
     }
 
     public function getCreatedByCustomer(): Customer
@@ -94,9 +102,11 @@ trait IncludesThreadDetails
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?DateTimeInterface $createdAt)
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     protected function hydrateSource(array $input)

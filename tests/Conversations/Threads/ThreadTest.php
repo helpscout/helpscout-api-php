@@ -186,23 +186,23 @@ class ThreadTest extends TestCase
             'imported' => 1,
         ]);
         $thread->setText('Need Help');
-        $thread->setSourceType('email');
-        $thread->setSourceVia('user');
+        $this->assertInstanceOf(Thread::class, $thread->setSourceType('email'));
+        $this->assertInstanceOf(Thread::class, $thread->setSourceVia('user'));
 
         $customer = new Customer();
         $customer->hydrate([
             'id' => 6857,
             'email' => 'bear@acme.com',
         ]);
-        $thread->setCreatedByCustomer($customer);
+        $this->assertInstanceOf(Thread::class, $thread->setCreatedByCustomer($customer));
 
-        $thread->setCreatedAt(new DateTime('2017-04-21T14:39:56Z'));
-        $thread->setCC([
+        $this->assertInstanceOf(Thread::class, $thread->setCreatedAt(new DateTime('2017-04-21T14:39:56Z')));
+        $this->assertInstanceOf(Thread::class, $thread->setCC([
             'bear@normal.com',
-        ]);
-        $thread->setBCC([
+        ]));
+        $this->assertInstanceOf(Thread::class, $thread->setBCC([
             'bear@secret.com',
-        ]);
+        ]));
 
         $this->assertEquals([
             'id' => 12,

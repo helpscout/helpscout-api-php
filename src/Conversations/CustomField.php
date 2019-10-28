@@ -58,11 +58,13 @@ class CustomField implements Extractable, Hydratable
         return $this->id;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): self
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -73,9 +75,11 @@ class CustomField implements Extractable, Hydratable
     /**
      * @param string|null $name
      */
-    public function setName($name)
+    public function setName($name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getValue()
@@ -86,8 +90,10 @@ class CustomField implements Extractable, Hydratable
     /**
      * @param mixed $value
      */
-    public function setValue($value)
+    public function setValue($value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 }

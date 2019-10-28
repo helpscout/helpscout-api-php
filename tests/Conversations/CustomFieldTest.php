@@ -26,9 +26,9 @@ class CustomFieldTest extends TestCase
     public function testExtract()
     {
         $customField = new CustomField();
-        $customField->setId(6688);
-        $customField->setName('Account Type');
-        $customField->setValue('Premium');
+        $this->assertInstanceOf(CustomField::class, $customField->setId(6688));
+        $this->assertInstanceOf(CustomField::class, $customField->setName('Account Type'));
+        $this->assertInstanceOf(CustomField::class, $customField->setValue('Premium'));
 
         $this->assertSame([
             'id' => 6688,

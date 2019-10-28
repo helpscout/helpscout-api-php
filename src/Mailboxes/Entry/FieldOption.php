@@ -31,53 +31,41 @@ class FieldOption implements Hydratable
         $this->setLabel($data['label'] ?? null);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)
+    public function setId(int $id): self
     {
         Assert::greaterThan($id, 0);
 
         $this->id = $id;
+
+        return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getOrder(): int
     {
         return $this->order;
     }
 
-    /**
-     * @param int $order
-     */
-    public function setOrder(int $order)
+    public function setOrder(int $order): self
     {
         $this->order = $order;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @param string $label
-     */
-    public function setLabel(string $label)
+    public function setLabel(string $label): self
     {
         $this->label = $label;
+
+        return $this;
     }
 }
