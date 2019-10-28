@@ -26,12 +26,12 @@ class ExtractsDataTest extends TestCase
     public function testConvertsTimestampToUTC()
     {
         $dateTime = new DateTime('1 hour ago');
-        $dateTime->setTimezone(new DateTimeZone('Europe/Zurich'));
+        $dateTime->setTimezone(new DateTimeZone('Europe/Simferopol'));
 
         $this->assertGreaterThan(0, $dateTime->getOffset());
 
         $expectedUTC = clone $dateTime;
-        $expectedUTC->sub(date_interval_create_from_date_string('2 hours'));
+        $expectedUTC->sub(date_interval_create_from_date_string('3 hours'));
         $this->assertEquals($expectedUTC->format('Y-m-d\TH:i:s\Z'), $this->to8601Utc($dateTime));
     }
 
