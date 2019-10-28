@@ -31,19 +31,11 @@ class FieldOption implements Hydratable
         $this->setLabel($data['label'] ?? null);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return FieldOption
-     */
     public function setId(int $id): self
     {
         Assert::greaterThan($id, 0);
@@ -53,19 +45,11 @@ class FieldOption implements Hydratable
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getOrder(): int
     {
         return $this->order;
     }
 
-    /**
-     * @param int $order
-     *
-     * @return FieldOption
-     */
     public function setOrder(int $order): self
     {
         $this->order = $order;
@@ -73,19 +57,11 @@ class FieldOption implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @param string $label
-     *
-     * @return FieldOption
-     */
     public function setLabel(string $label): self
     {
         $this->label = $label;
