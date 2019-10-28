@@ -84,7 +84,7 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setId($id): Mailbox
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -104,7 +104,7 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setCreatedAt(DateTime $createdAt = null): Mailbox
+    public function setCreatedAt(DateTime $createdAt = null): self
     {
         $this->createdAt = $createdAt;
 
@@ -124,16 +124,13 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setUpdatedAt(DateTime $updatedAt = null): Mailbox
+    public function setUpdatedAt(DateTime $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -144,16 +141,13 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setName($name): Mailbox
+    public function setName($name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;
@@ -164,16 +158,13 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setSlug($slug): Mailbox
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
@@ -184,7 +175,7 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setEmail($email): Mailbox
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -204,14 +195,14 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setFields(Collection $fields): Mailbox
+    public function setFields(Collection $fields): self
     {
         $this->fields = $fields;
 
         return $this;
     }
 
-    public function addField(Field $field): Mailbox
+    public function addField(Field $field): self
     {
         $this->getFields()->append($field);
 
@@ -231,14 +222,14 @@ class Mailbox implements Hydratable
      *
      * @return Mailbox
      */
-    public function setFolders(Collection $folders): Mailbox
+    public function setFolders(Collection $folders): self
     {
         $this->folders = $folders;
 
         return $this;
     }
 
-    public function addFolder(Folder $folder): Mailbox
+    public function addFolder(Folder $folder): self
     {
         $this->getFolders()->append($folder);
 
