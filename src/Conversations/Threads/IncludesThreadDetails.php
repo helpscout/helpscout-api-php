@@ -68,7 +68,7 @@ trait IncludesThreadDetails
         return $this->createdByUser instanceof User;
     }
 
-    public function setCreatedByUser(User $user)
+    public function setCreatedByUser(User $user): self
     {
         $this->createdByUser = $user;
 
@@ -85,7 +85,7 @@ trait IncludesThreadDetails
         return $this->createdByCustomer instanceof Customer;
     }
 
-    public function setCreatedByCustomer(Customer $customer)
+    public function setCreatedByCustomer(Customer $customer): self
     {
         $this->createdByCustomer = $customer;
 
@@ -102,7 +102,7 @@ trait IncludesThreadDetails
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?DateTimeInterface $createdAt)
+    public function setCreatedAt(?DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
