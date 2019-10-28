@@ -40,9 +40,9 @@ class CustomFieldTest extends TestCase
     public function testExtractFormatsDateTime()
     {
         $customField = new CustomField();
-        $this->assertInstanceOf(CustomField::class, $customField->setId(6688));
-        $this->assertInstanceOf(CustomField::class, $customField->setName('Account Type'));
-        $this->assertInstanceOf(CustomField::class, $customField->setValue(new \DateTime('Jan 2 2017')));
+        $customField->setId(6688);
+        $customField->setName('Account Type');
+        $customField->setValue(new \DateTime('Jan 2 2017'));
 
         $this->assertSame([
             'id' => 6688,
