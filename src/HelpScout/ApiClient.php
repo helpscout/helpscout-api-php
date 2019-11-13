@@ -7,7 +7,7 @@ use HelpScout\model\Attachment;
 
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
-	const API_URL    = 'https://api.helpscout.net/v1/';
+    const API_URL    = 'https://api.helpscout.net/v1/';
 	const NAMESPACE_SEPARATOR = '\\';
 
 	private $userAgent = false;
@@ -15,6 +15,8 @@ final class ApiClient {
 	private $isDebug   = false;
 	private $debugDir  = false;
 	private $curl      = false;
+
+	private static $additionalHeaders = array();
 
     private $services = array();
 
@@ -1006,7 +1008,7 @@ final class ApiClient {
 			'method' => 'DELETE'
 		));
 
-		$this->curl->headers = array();
+        $this->curl->headers = self::$additionalHeaders;
 		$this->curl->options = $this->getDefaultCurlOptions();
 		$response = $this->curl->delete(self::API_URL . $url);
 		$response->body = json_decode($response->body, true);
@@ -1033,13 +1035,21 @@ final class ApiClient {
 		}
 	}
 
+    /**
+     * Include additional headers to all requests to the Help Scout API.
+     */
+	public static function setAdditionalHeaders(array $headers)
+    {
+        self::$additionalHeaders = $headers;
+    }
+
 	private function getDefaultCurlHeaders($contentLength = 0)
 	{
-		$headers = array(
+		$headers = array_merge(self::$additionalHeaders, array(
 			'accept'         => 'application/json',
 			'content-type'   => 'application/json',
 			'expect'		 => ''
-		);
+		));
 		if ($contentLength) {
 			$header['content-length'] = $contentLength;
 		}
