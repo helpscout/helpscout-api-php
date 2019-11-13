@@ -7,7 +7,7 @@ use HelpScout\model\Attachment;
 
 final class ApiClient {
 	const USER_AGENT = 'Help Scout API/Php Client v1';
-    const API_URL    = 'https://api.helpscout.net/v1/';
+	const API_URL    = 'https://api.helpscout.net/v1/';
 	const NAMESPACE_SEPARATOR = '\\';
 
 	private $userAgent = false;
