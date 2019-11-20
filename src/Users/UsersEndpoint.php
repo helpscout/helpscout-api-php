@@ -33,12 +33,21 @@ class UsersEndpoint extends Endpoint
     /**
      * @return User[]|PagedCollection
      */
-    public function list(): PagedCollection
-    {
+    public function list(
+        UserFilters $userFilters = null
+    ): PagedCollection {
+        $uri = self::LIST_USERS_URI;
+        if ($userFilters) {
+            $params = $userFilters->getParams();
+            if (!empty($params)) {
+                $uri .= '?'.http_build_query($params);
+            }
+        }
+
         return $this->loadPage(
             User::class,
             self::RESOURCE_KEY,
-            self::LIST_USERS_URI
+            $uri
         );
     }
 }
