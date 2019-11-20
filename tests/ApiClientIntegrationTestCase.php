@@ -62,9 +62,6 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         );
     }
 
-    /**
-     * @param array $responses
-     */
     protected function stubResponses(array $responses): void
     {
         foreach ($responses as $response) {
@@ -72,9 +69,6 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         }
     }
 
-    /**
-     * @param Response $response
-     */
     protected function stubResponse(Response $response): void
     {
         $this->mockHandler->append($response);
@@ -84,8 +78,6 @@ abstract class ApiClientIntegrationTestCase extends TestCase
      * @param int    $status
      * @param string $body
      * @param array  $headers
-     *
-     * @return Response
      */
     protected function getResponse($status = 200, $body = '', $headers = []): Response
     {

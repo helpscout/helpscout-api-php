@@ -28,8 +28,6 @@ class MailboxesEndpoint extends Endpoint
     }
 
     /**
-     * @param MailboxRequest|null $mailboxRequest
-     *
      * @return Mailbox[]|PagedCollection
      */
     public function list(MailboxRequest $mailboxRequest = null): PagedCollection
@@ -41,9 +39,6 @@ class MailboxesEndpoint extends Endpoint
     }
 
     /**
-     * @param string         $uri
-     * @param MailboxRequest $mailboxRequest
-     *
      * @return Mailbox[]|PagedCollection
      */
     private function loadMailboxes(string $uri, MailboxRequest $mailboxRequest): PagedCollection
@@ -64,12 +59,6 @@ class MailboxesEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param HalResource    $mailboxResource
-     * @param MailboxRequest $mailboxRequest
-     *
-     * @return Mailbox
-     */
     private function hydrateMailboxWithSubEntities(
         HalResource $mailboxResource,
         MailboxRequest $mailboxRequest

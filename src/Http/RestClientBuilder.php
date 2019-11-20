@@ -27,17 +27,11 @@ class RestClientBuilder
      */
     private $config;
 
-    /**
-     * @param array $config
-     */
     public function __construct(array $config = [])
     {
         $this->config = $config;
     }
 
-    /**
-     * @return RestClient
-     */
     public function build(): RestClient
     {
         return new RestClient(
@@ -46,9 +40,6 @@ class RestClientBuilder
         );
     }
 
-    /**
-     * @return Client
-     */
     protected function getGuzzleClient(): Client
     {
         $options = $this->getOptions();
@@ -56,9 +47,6 @@ class RestClientBuilder
         return new Client($options);
     }
 
-    /**
-     * @return Authenticator
-     */
     protected function getAuthenticator(): Authenticator
     {
         $authConfig = $this->config['auth'] ?? [];
@@ -69,11 +57,6 @@ class RestClientBuilder
         );
     }
 
-    /**
-     * @param array $authConfig
-     *
-     * @return Auth
-     */
     protected function getAuthClass(array $authConfig = []): Auth
     {
         $type = $authConfig['type'] ?? '';
@@ -100,9 +83,6 @@ class RestClientBuilder
         }
     }
 
-    /**
-     * @return array
-     */
     protected function getOptions(): array
     {
         return [
@@ -111,9 +91,6 @@ class RestClientBuilder
         ];
     }
 
-    /**
-     * @return HandlerStack
-     */
     protected function getHandlerStack(): HandlerStack
     {
         $handler = HandlerStack::create();

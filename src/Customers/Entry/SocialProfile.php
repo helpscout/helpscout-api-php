@@ -46,19 +46,11 @@ class SocialProfile implements Extractable, Hydratable
         ];
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return SocialProfile
-     */
     public function setId(int $id): SocialProfile
     {
         Assert::greaterThan($id, 0);
@@ -68,19 +60,11 @@ class SocialProfile implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @param string|null $value
-     *
-     * @return SocialProfile
-     */
     public function setValue(?string $value): SocialProfile
     {
         $this->value = $value;
@@ -88,19 +72,11 @@ class SocialProfile implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string|null $type
-     *
-     * @return SocialProfile
-     */
     public function setType(?string $type): SocialProfile
     {
         $this->type = $type;

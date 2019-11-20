@@ -15,8 +15,6 @@ class RunWorkflowRequest
 
     /**
      * RunWorkflowRequest constructor.
-     *
-     * @param array $conversations
      */
     public function __construct(array $conversations = [])
     {

@@ -17,8 +17,7 @@ class HalResource
     private $links;
 
     /**
-     * @param mixed    $entity
-     * @param HalLinks $links
+     * @param mixed $entity
      */
     public function __construct($entity, HalLinks $links)
     {
@@ -34,9 +33,6 @@ class HalResource
         return $this->entity;
     }
 
-    /**
-     * @return HalLinks
-     */
     public function getLinks(): HalLinks
     {
         return $this->links;

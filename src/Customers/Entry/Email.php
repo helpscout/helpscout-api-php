@@ -46,19 +46,11 @@ class Email implements Extractable, Hydratable
         ];
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Email
-     */
     public function setId(int $id): Email
     {
         Assert::greaterThan($id, 0);
@@ -68,19 +60,11 @@ class Email implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @param string|null $value
-     *
-     * @return Email
-     */
     public function setValue(?string $value): Email
     {
         $this->value = $value;
@@ -88,19 +72,11 @@ class Email implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * @param string|null $type
-     *
-     * @return Email
-     */
     public function setType(?string $type): Email
     {
         $this->type = $type;

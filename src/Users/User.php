@@ -104,19 +104,11 @@ class User implements Hydratable
         $this->setInitials($data['initials'] ?? null);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     *
-     * @return User
-     */
     public function setId(?int $id): User
     {
         Assert::greaterThan($id, 0);
@@ -126,19 +118,11 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return DateTime|null
-     */
     public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTime|null $createdAt
-     *
-     * @return User
-     */
     public function setCreatedAt(DateTime $createdAt = null): User
     {
         $this->createdAt = $createdAt;
@@ -146,19 +130,11 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return DateTime|null
-     */
     public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param DateTime|null $updatedAt
-     *
-     * @return User
-     */
     public function setUpdatedAt(DateTime $updatedAt = null): User
     {
         $this->updatedAt = $updatedAt;
@@ -166,9 +142,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -176,8 +149,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $firstName
-     *
-     * @return User
      */
     public function setFirstName($firstName): User
     {
@@ -186,9 +157,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLastName(): ?string
     {
         return $this->lastName;
@@ -196,8 +164,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $lastName
-     *
-     * @return User
      */
     public function setLastName($lastName): User
     {
@@ -206,9 +172,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -216,8 +179,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $email
-     *
-     * @return User
      */
     public function setEmail($email): User
     {
@@ -226,9 +187,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getRole(): ?string
     {
         return $this->role;
@@ -236,8 +194,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $role
-     *
-     * @return User
      */
     public function setRole($role): User
     {
@@ -246,9 +202,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTimezone(): ?string
     {
         return $this->timezone;
@@ -256,8 +209,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $timezone
-     *
-     * @return User
      */
     public function setTimezone($timezone): User
     {
@@ -266,9 +217,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPhotoUrl(): ?string
     {
         return $this->photoUrl;
@@ -276,8 +224,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $photoUrl
-     *
-     * @return User
      */
     public function setPhotoUrl($photoUrl): User
     {
@@ -286,9 +232,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getType(): ?string
     {
         return $this->type;
@@ -296,8 +239,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $type
-     *
-     * @return User
      */
     public function setType($type): User
     {
@@ -306,9 +247,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMention(): ?string
     {
         return $this->mention;
@@ -316,8 +254,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $mention
-     *
-     * @return User
      */
     public function setMention($mention): User
     {
@@ -326,9 +262,6 @@ class User implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getInitials(): ?string
     {
         return $this->initials;
@@ -336,8 +269,6 @@ class User implements Hydratable
 
     /**
      * @param string|null $initials
-     *
-     * @return User
      */
     public function setInitials($initials): User
     {

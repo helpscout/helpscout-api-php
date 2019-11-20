@@ -46,9 +46,6 @@ class CustomerFilters
      */
     private $query;
 
-    /**
-     * @return array
-     */
     public function getParams(): array
     {
         $params = [
@@ -68,8 +65,6 @@ class CustomerFilters
     }
 
     /**
-     * @param int $mailbox
-     *
      * @return self
      */
     public function withMailbox(int $mailbox)
@@ -83,8 +78,6 @@ class CustomerFilters
     }
 
     /**
-     * @param string $firstName
-     *
      * @return self
      */
     public function withFirstName(string $firstName)
@@ -96,8 +89,6 @@ class CustomerFilters
     }
 
     /**
-     * @param string $lastName
-     *
      * @return self
      */
     public function withLastName(string $lastName)
@@ -109,8 +100,6 @@ class CustomerFilters
     }
 
     /**
-     * @param DateTime $modifiedSince
-     *
      * @return self
      */
     public function withModifiedSince(DateTime $modifiedSince)
@@ -124,8 +113,6 @@ class CustomerFilters
     }
 
     /**
-     * @param string $sortField
-     *
      * @return self
      */
     public function withSortField(string $sortField)
@@ -139,8 +126,6 @@ class CustomerFilters
     }
 
     /**
-     * @param string $sortOrder
-     *
      * @return self
      */
     public function withSortOrder(string $sortOrder)
@@ -155,8 +140,6 @@ class CustomerFilters
     }
 
     /**
-     * @param string $query
-     *
      * @see https://developer.helpscout.com/mailbox-api/endpoints/customers/list/#query
      *
      * @return self

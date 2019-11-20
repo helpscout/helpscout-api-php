@@ -17,25 +17,17 @@ abstract class Report
 
     /**
      * Report constructor.
-     *
-     * @param ParameterBag $params
      */
     public function __construct(ParameterBag $params)
     {
         $this->params = $params;
     }
 
-    /**
-     * @return string
-     */
     public function getQuery(): string
     {
         return \http_build_query($this->params->getParams());
     }
 
-    /**
-     * @return string
-     */
     public function getUriPath(): string
     {
         return sprintf(
@@ -45,11 +37,6 @@ abstract class Report
         );
     }
 
-    /**
-     * @param array $params
-     *
-     * @return Report
-     */
     public static function getInstance(array $params): Report
     {
         $fields = static::QUERY_FIELDS;

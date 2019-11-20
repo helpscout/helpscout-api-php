@@ -6,22 +6,11 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class CustomerPayloads
 {
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
     public static function getCustomer(int $id): string
     {
         return json_encode(static::customer($id));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getCustomers(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -71,11 +60,6 @@ class CustomerPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function customer(int $id): array
     {
         return [
@@ -118,11 +102,6 @@ class CustomerPayloads
         ];
     }
 
-    /**
-     * @param int $customerId
-     *
-     * @return string
-     */
     public static function getAddress(int $customerId): string
     {
         return json_encode([
@@ -139,11 +118,6 @@ class CustomerPayloads
         ]);
     }
 
-    /**
-     * @param int $customerId
-     *
-     * @return string
-     */
     public static function getChats(int $customerId): string
     {
         return json_encode([
@@ -169,11 +143,6 @@ class CustomerPayloads
         ]);
     }
 
-    /**
-     * @param int $customerId
-     *
-     * @return string
-     */
     public static function getEmails(int $customerId): string
     {
         return json_encode([
@@ -199,11 +168,6 @@ class CustomerPayloads
         ]);
     }
 
-    /**
-     * @param int $customerId
-     *
-     * @return string
-     */
     public static function getPhones(int $customerId): string
     {
         return json_encode([
@@ -229,11 +193,6 @@ class CustomerPayloads
         ]);
     }
 
-    /**
-     * @param int $customerId
-     *
-     * @return string
-     */
     public static function getSocialProfiles(int $customerId): string
     {
         return json_encode([
@@ -259,11 +218,6 @@ class CustomerPayloads
         ]);
     }
 
-    /**
-     * @param int $customerId
-     *
-     * @return string
-     */
     public static function getWebsites(int $customerId): string
     {
         return json_encode([

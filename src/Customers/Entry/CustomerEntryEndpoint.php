@@ -20,12 +20,6 @@ class CustomerEntryEndpoint extends Endpoint
     public const CREATE_CUSTOMER_WEBSITE = '/v2/customers/%d/websites';
     public const CUSTOMER_WEBSITE = '/v2/customers/%d/websites/%d';
 
-    /**
-     * @param int     $customerId
-     * @param Address $address
-     *
-     * @return int|null
-     */
     public function createAddress(int $customerId, Address $address): ?int
     {
         return $this->restClient->createResource(
@@ -34,10 +28,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int     $customerId
-     * @param Address $address
-     */
     public function updateAddress(int $customerId, Address $address): void
     {
         $this->restClient->updateResource(
@@ -45,9 +35,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $customerId
-     */
     public function deleteAddress(int $customerId): void
     {
         $this->restClient->deleteResource(
@@ -55,12 +42,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int        $customerId
-     * @param ChatHandle $chat
-     *
-     * @return int|null
-     */
     public function createChat(int $customerId, ChatHandle $chat): ?int
     {
         return $this->restClient->createResource(
@@ -69,10 +50,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int        $customerId
-     * @param ChatHandle $chat
-     */
     public function updateChat(int $customerId, ChatHandle $chat): void
     {
         $this->restClient->updateResource(
@@ -81,10 +58,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $customerId
-     * @param int $chatId
-     */
     public function deleteChat(int $customerId, int $chatId): void
     {
         $this->restClient->deleteResource(
@@ -92,12 +65,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int   $customerId
-     * @param Email $email
-     *
-     * @return int|null
-     */
     public function createEmail(int $customerId, Email $email): ?int
     {
         return $this->restClient->createResource(
@@ -106,10 +73,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int   $customerId
-     * @param Email $email
-     */
     public function updateEmail(int $customerId, Email $email): void
     {
         $this->restClient->updateResource(
@@ -118,10 +81,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $customerId
-     * @param int $emailId
-     */
     public function deleteEmail(int $customerId, int $emailId): void
     {
         $this->restClient->deleteResource(
@@ -129,12 +88,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int   $customerId
-     * @param Phone $phone
-     *
-     * @return int|null
-     */
     public function createPhone(int $customerId, Phone $phone): ?int
     {
         return $this->restClient->createResource(
@@ -143,10 +96,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int   $customerId
-     * @param Phone $phone
-     */
     public function updatePhone(int $customerId, Phone $phone): void
     {
         $this->restClient->updateResource(
@@ -155,10 +104,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $customerId
-     * @param int $phoneId
-     */
     public function deletePhone(int $customerId, int $phoneId): void
     {
         $this->restClient->deleteResource(
@@ -166,12 +111,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int           $customerId
-     * @param SocialProfile $socialProfile
-     *
-     * @return int|null
-     */
     public function createSocialProfile(int $customerId, SocialProfile $socialProfile): ?int
     {
         return $this->restClient->createResource(
@@ -180,10 +119,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int           $customerId
-     * @param SocialProfile $socialProfile
-     */
     public function updateSocialProfile(int $customerId, SocialProfile $socialProfile): void
     {
         $this->restClient->updateResource(
@@ -192,10 +127,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $customerId
-     * @param int $socialProfileId
-     */
     public function deleteSocialProfile(int $customerId, int $socialProfileId): void
     {
         $this->restClient->deleteResource(
@@ -203,12 +134,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int     $customerId
-     * @param Website $website
-     *
-     * @return int|null
-     */
     public function createWebsite(int $customerId, Website $website): ?int
     {
         return $this->restClient->createResource(
@@ -217,10 +142,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int     $customerId
-     * @param Website $website
-     */
     public function updateWebsite(int $customerId, Website $website): void
     {
         $this->restClient->updateResource(
@@ -229,10 +150,6 @@ class CustomerEntryEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $customerId
-     * @param int $websiteId
-     */
     public function deleteWebsite(int $customerId, int $websiteId): void
     {
         $this->restClient->deleteResource(

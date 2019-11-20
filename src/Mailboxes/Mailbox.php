@@ -71,9 +71,6 @@ class Mailbox implements Hydratable
         $this->setEmail($data['email'] ?? null);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
@@ -100,8 +97,6 @@ class Mailbox implements Hydratable
     }
 
     /**
-     * @param DateTime|null $createdAt
-     *
      * @return Mailbox
      */
     public function setCreatedAt(DateTime $createdAt = null): self
@@ -120,8 +115,6 @@ class Mailbox implements Hydratable
     }
 
     /**
-     * @param DateTime|null $updatedAt
-     *
      * @return Mailbox
      */
     public function setUpdatedAt(DateTime $updatedAt = null): self

@@ -43,8 +43,7 @@ class Authenticator
     private $ttl;
 
     /**
-     * @param Client $client
-     * @param Auth   $auth
+     * @param Auth $auth
      */
     public function __construct(Client $client, Auth $auth = null)
     {
@@ -52,9 +51,6 @@ class Authenticator
         $this->auth = $auth ?? new NullCredentials();
     }
 
-    /**
-     * @return array
-     */
     public function getTokens(): array
     {
         return [
@@ -65,11 +61,6 @@ class Authenticator
         ];
     }
 
-    /**
-     * @param string $accessToken
-     *
-     * @return Authenticator
-     */
     public function setAccessToken(string $accessToken): Authenticator
     {
         $this->accessToken = $accessToken;
@@ -85,11 +76,6 @@ class Authenticator
         return $this->accessToken;
     }
 
-    /**
-     * @param string $refreshToken
-     *
-     * @return Authenticator
-     */
     public function setRefreshToken(string $refreshToken): Authenticator
     {
         $this->refreshToken = $refreshToken;
@@ -105,11 +91,6 @@ class Authenticator
         return $this->refreshToken;
     }
 
-    /**
-     * @param Client $client
-     *
-     * @return Authenticator
-     */
     public function setClient(Client $client): Authenticator
     {
         $this->client = $client;
@@ -117,9 +98,6 @@ class Authenticator
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getAuthHeader(): array
     {
         if ($this->accessToken === null) {
@@ -131,18 +109,11 @@ class Authenticator
         ];
     }
 
-    /**
-     * @return Auth
-     */
     public function getAuthCredentials(): Auth
     {
         return $this->auth;
     }
 
-    /**
-     * @param string $appId
-     * @param string $appSecret
-     */
     public function useClientCredentials(string $appId, string $appSecret): void
     {
         $this->auth = new ClientCredentials($appId, $appSecret);
@@ -155,28 +126,17 @@ class Authenticator
      * and we will remove it from the SDK.
      *
      * @deprecated
-     *
-     * @param string $clientId
-     * @param string $apiKey
      */
     public function useLegacyToken(string $clientId, string $apiKey): void
     {
         $this->auth = new LegacyCredentials($clientId, $apiKey);
     }
 
-    /**
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $refreshToken
-     */
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): void
     {
         $this->auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
     }
 
-    /**
-     * @param Auth $auth
-     */
     public function setAuth(Auth $auth): void
     {
         $this->auth = $auth;
@@ -231,12 +191,6 @@ class Authenticator
         $this->ttl = $tokens['expiresIn'];
     }
 
-    /**
-     * @param array  $payload
-     * @param string $url
-     *
-     * @return array
-     */
     private function requestAuthTokens(array $payload, string $url): array
     {
         $headers = [

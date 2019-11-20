@@ -18,8 +18,6 @@ abstract class Endpoint
 
     /**
      * Endpoint constructor.
-     *
-     * @param RestClient $restClient
      */
     public function __construct(RestClient $restClient)
     {
@@ -27,9 +25,6 @@ abstract class Endpoint
     }
 
     /**
-     * @param string $entityClass
-     * @param string $url
-     *
      * @return mixed
      */
     protected function loadResource(string $entityClass, string $url)
@@ -39,13 +34,6 @@ abstract class Endpoint
         return $resource->getEntity();
     }
 
-    /**
-     * @param string $entityClass
-     * @param string $rel
-     * @param string $uri
-     *
-     * @return PagedCollection
-     */
     protected function loadPage(
         string $entityClass,
         string $rel,

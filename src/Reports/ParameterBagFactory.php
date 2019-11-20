@@ -23,9 +23,6 @@ class ParameterBagFactory
 
     /**
      * ParameterBagFactory constructor.
-     *
-     * @param array $fields
-     * @param array $params
      */
     public function __construct(array $fields, array $params)
     {
@@ -34,9 +31,6 @@ class ParameterBagFactory
         $this->prepareFields();
     }
 
-    /**
-     * @return ParameterBag
-     */
     public function build(): ParameterBag
     {
         return new ParameterBag($this->params);
@@ -53,8 +47,7 @@ class ParameterBagFactory
     }
 
     /**
-     * @param string $field
-     * @param mixed  $value
+     * @param mixed $value
      */
     private function prepareField(string $field, $value): void
     {
@@ -82,8 +75,7 @@ class ParameterBagFactory
     }
 
     /**
-     * @param string $field
-     * @param mixed  $date
+     * @param mixed $date
      */
     private function formatDateInterval(string $field, $date): void
     {
@@ -95,8 +87,7 @@ class ParameterBagFactory
     }
 
     /**
-     * @param string $field
-     * @param mixed  $values
+     * @param mixed $values
      */
     private function formatArray(string $field, $values): void
     {

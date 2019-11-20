@@ -64,19 +64,11 @@ class Field implements Hydratable
         }
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Field
-     */
     public function setId(int $id): Field
     {
         Assert::greaterThan($id, 0);
@@ -94,11 +86,6 @@ class Field implements Hydratable
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Field
-     */
     public function setName(string $name): Field
     {
         $this->name = $name;
@@ -106,19 +93,11 @@ class Field implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     *
-     * @return Field
-     */
     public function setType(string $type): Field
     {
         $this->type = $type;
@@ -126,19 +105,11 @@ class Field implements Hydratable
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getOrder(): int
     {
         return $this->order;
     }
 
-    /**
-     * @param int $order
-     *
-     * @return Field
-     */
     public function setOrder(int $order): Field
     {
         $this->order = $order;
@@ -146,19 +117,11 @@ class Field implements Hydratable
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isRequired(): bool
     {
         return $this->required;
     }
 
-    /**
-     * @param bool $required
-     *
-     * @return Field
-     */
     public function setRequired(bool $required): Field
     {
         $this->required = $required;

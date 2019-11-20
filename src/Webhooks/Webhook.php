@@ -58,10 +58,6 @@ class Webhook implements Hydratable, Extractable
      */
     private $secret;
 
-    /**
-     * @param array $data
-     * @param array $embedded
-     */
     public function hydrate(array $data, array $embedded = []): void
     {
         $this->setId($data['id'] ?? null);
@@ -71,9 +67,6 @@ class Webhook implements Hydratable, Extractable
         $this->setSecret($data['secret'] ?? null);
     }
 
-    /**
-     * @return array
-     */
     public function extract(): array
     {
         return [
@@ -85,19 +78,11 @@ class Webhook implements Hydratable, Extractable
         ];
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     *
-     * @return Webhook
-     */
     public function setId(?int $id): Webhook
     {
         $this->id = $id;
@@ -113,11 +98,6 @@ class Webhook implements Hydratable, Extractable
         return $this->state;
     }
 
-    /**
-     * @param string|null $state
-     *
-     * @return Webhook
-     */
     public function setState(?string $state): Webhook
     {
         if (null !== $state) {
@@ -129,19 +109,11 @@ class Webhook implements Hydratable, Extractable
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getEvents(): array
     {
         return $this->events;
     }
 
-    /**
-     * @param array $events
-     *
-     * @return Webhook
-     */
     public function setEvents(array $events = []): Webhook
     {
         $validEvents = array_values(
@@ -165,8 +137,6 @@ class Webhook implements Hydratable, Extractable
 
     /**
      * @param string $url
-     *
-     * @return Webhook
      */
     public function setUrl(?string $url): Webhook
     {
@@ -185,8 +155,6 @@ class Webhook implements Hydratable, Extractable
 
     /**
      * @param string $secret
-     *
-     * @return Webhook
      */
     public function setSecret(?string $secret): Webhook
     {

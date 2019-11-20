@@ -13,17 +13,12 @@ class ParameterBag
 
     /**
      * ParameterBag constructor.
-     *
-     * @param array $params
      */
     public function __construct(array $params)
     {
         $this->params = $params;
     }
 
-    /**
-     * @return array
-     */
     public function getParams(): array
     {
         return $this->params;

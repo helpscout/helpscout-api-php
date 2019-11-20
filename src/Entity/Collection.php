@@ -14,9 +14,6 @@ class Collection extends ArrayObject implements Extractable
         parent::__construct($items);
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return $this->getArrayCopy();

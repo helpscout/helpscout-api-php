@@ -26,11 +26,6 @@ class VndError
      */
     private $errors = [];
 
-    /**
-     * @param string      $message
-     * @param string|null $logRef
-     * @param string|null $path
-     */
     public function __construct(string $message, string $logRef = null, string $path = null)
     {
         $this->message = $message;
@@ -38,9 +33,6 @@ class VndError
         $this->path = $path;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;
@@ -95,9 +87,6 @@ class VndError
         }
     }
 
-    /**
-     * @param self $error
-     */
     public function addError(self $error)
     {
         $this->errors[] = $error;

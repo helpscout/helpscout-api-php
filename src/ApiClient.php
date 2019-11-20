@@ -49,19 +49,11 @@ class ApiClient
      */
     private $container = [];
 
-    /**
-     * @param RestClient $restClient
-     */
     public function __construct(RestClient $restClient)
     {
         $this->restClient = $restClient;
     }
 
-    /**
-     * @param string $endpointName
-     *
-     * @return LegacyMockInterface
-     */
     public function mock(string $endpointName): LegacyMockInterface
     {
         $endpointName = 'hs.'.$endpointName;
@@ -72,9 +64,6 @@ class ApiClient
         return $mock;
     }
 
-    /**
-     * @param string $endpointName
-     */
     public function clearMock(string $endpointName): void
     {
         $endpointName = 'hs.'.$endpointName;
@@ -86,19 +75,11 @@ class ApiClient
         $this->container = [];
     }
 
-    /**
-     * @return Authenticator
-     */
     public function getAuthenticator(): Authenticator
     {
         return $this->restClient->getAuthenticator();
     }
 
-    /**
-     * @param string $accessToken
-     *
-     * @return ApiClient
-     */
     public function setAccessToken(string $accessToken): ApiClient
     {
         $this->getAuthenticator()
@@ -107,21 +88,12 @@ class ApiClient
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getTokens(): array
     {
         return $this->getAuthenticator()
             ->getTokens();
     }
 
-    /**
-     * @param string $appId
-     * @param string $appSecret
-     *
-     * @return ApiClient
-     */
     public function useClientCredentials(string $appId, string $appSecret): ApiClient
     {
         $this->getAuthenticator()
@@ -136,11 +108,6 @@ class ApiClient
      * sunset v1 of the API. At that time, this method will no longer function
      * and we will remove it from the SDK.
      *
-     * @param string $clientId
-     * @param string $apiKey
-     *
-     * @return ApiClient
-     *
      * @deprecated
      */
     public function useLegacyToken(string $clientId, string $apiKey): ApiClient
@@ -151,13 +118,6 @@ class ApiClient
         return $this;
     }
 
-    /**
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $refreshToken
-     *
-     * @return ApiClient
-     */
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): ApiClient
     {
         $this->getAuthenticator()
@@ -168,12 +128,6 @@ class ApiClient
 
     /**
      * Takes an authorization code and exchanges it for an access/refresh token pair.
-     *
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $authorizationCode
-     *
-     * @return ApiClient
      */
     public function swapAuthorizationCodeForReusableTokens(
         string $appId,
@@ -190,12 +144,6 @@ class ApiClient
         return $this;
     }
 
-    /**
-     * @param string $reportName
-     * @param array  $params
-     *
-     * @return array
-     */
     public function runReport(string $reportName, array $params = []): array
     {
         if (!\class_exists($reportName)) {
@@ -209,8 +157,6 @@ class ApiClient
     }
 
     /**
-     * @param string $key
-     *
      * @return mixed
      */
     protected function fetchFromContainer(string $key)
@@ -226,89 +172,56 @@ class ApiClient
         }
     }
 
-    /**
-     * @return WorkflowsEndpoint
-     */
     public function workflows(): WorkflowsEndpoint
     {
         return $this->fetchFromContainer('hs.workflows');
     }
 
-    /**
-     * @return WebhooksEndpoint
-     */
     public function webhooks(): WebhooksEndpoint
     {
         return $this->fetchFromContainer('hs.webhooks');
     }
 
-    /**
-     * @return UsersEndpoint
-     */
     public function users(): UsersEndpoint
     {
         return $this->fetchFromContainer('hs.users');
     }
 
-    /**
-     * @return TagsEndpoint
-     */
     public function tags(): TagsEndpoint
     {
         return $this->fetchFromContainer('hs.tags');
     }
 
-    /**
-     * @return MailboxesEndpoint
-     */
     public function mailboxes(): MailboxesEndpoint
     {
         return $this->fetchFromContainer('hs.mailboxes');
     }
 
-    /**
-     * @return CustomersEndpoint
-     */
     public function customers(): CustomersEndpoint
     {
         return $this->fetchFromContainer('hs.customers');
     }
 
-    /**
-     * @return CustomerEntryEndpoint
-     */
     public function customerEntry(): CustomerEntryEndpoint
     {
         return $this->fetchFromContainer('hs.customerEntry');
     }
 
-    /**
-     * @return ConversationsEndpoint
-     */
     public function conversations(): ConversationsEndpoint
     {
         return $this->fetchFromContainer('hs.conversations');
     }
 
-    /**
-     * @return TeamsEndpoint
-     */
     public function teams(): TeamsEndpoint
     {
         return $this->fetchFromContainer('hs.teams');
     }
 
-    /**
-     * @return ThreadsEndpoint
-     */
     public function threads(): ThreadsEndpoint
     {
         return $this->fetchFromContainer('hs.threads');
     }
 
-    /**
-     * @return AttachmentsEndpoint
-     */
     public function attachments(): AttachmentsEndpoint
     {
         return $this->fetchFromContainer('hs.attachments');

@@ -108,9 +108,6 @@ class RestClient
 
     /**
      * @param Closure|string $entityClass
-     * @param string         $uri
-     *
-     * @return HalResource
      */
     public function getResource($entityClass, string $uri): HalResource
     {
@@ -141,10 +138,6 @@ class RestClient
 
     /**
      * @param Closure|string $entityClass
-     * @param string         $rel
-     * @param string         $uri
-     *
-     * @return HalResources
      */
     public function getResources($entityClass, string $rel, string $uri): HalResources
     {
@@ -165,8 +158,6 @@ class RestClient
     }
 
     /**
-     * @param Request $request
-     *
      * @return mixed|ResponseInterface
      */
     private function send(Request $request)

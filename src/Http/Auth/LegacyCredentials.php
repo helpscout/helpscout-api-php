@@ -25,9 +25,6 @@ class LegacyCredentials implements Auth
 
     /**
      * ClientCredentials constructor.
-     *
-     * @param string $clientId
-     * @param string $apiKey
      */
     public function __construct(string $clientId, string $apiKey)
     {
@@ -35,33 +32,21 @@ class LegacyCredentials implements Auth
         $this->apiKey = $apiKey;
     }
 
-    /**
-     * @return string
-     */
     public function getClientId(): string
     {
         return $this->clientId;
     }
 
-    /**
-     * @return string
-     */
     public function getApiKey(): string
     {
         return $this->apiKey;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return self::TYPE;
     }
 
-    /**
-     * @return array
-     */
     public function getPayload(): array
     {
         return [

@@ -25,11 +25,6 @@ abstract class LinkedEntityLoader
      */
     private $links;
 
-    /**
-     * @param RestClient  $restClient
-     * @param HalResource $resource
-     * @param array       $links
-     */
     public function __construct(RestClient $restClient, HalResource $resource, array $links)
     {
         $this->restClient = $restClient;
@@ -46,7 +41,6 @@ abstract class LinkedEntityLoader
 
     /**
      * @param Closure|string $entityClass
-     * @param string         $rel
      *
      * @return mixed
      */
@@ -59,9 +53,6 @@ abstract class LinkedEntityLoader
 
     /**
      * @param Closure|string $entityClass
-     * @param string         $rel
-     *
-     * @return Collection
      */
     protected function loadResources($entityClass, string $rel): Collection
     {
