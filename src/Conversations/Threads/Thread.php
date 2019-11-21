@@ -236,7 +236,7 @@ class Thread implements Extractable, Hydratable
         return $this->id;
     }
 
-    public function setId(int $id): Thread
+    public function setId(int $id): self
     {
         Assert::greaterThan($id, 0);
 
@@ -280,7 +280,7 @@ class Thread implements Extractable, Hydratable
         return $this->text;
     }
 
-    public function setText(?string $text): Thread
+    public function setText(?string $text): self
     {
         $this->text = $text;
 
@@ -307,14 +307,14 @@ class Thread implements Extractable, Hydratable
         return $this->openedAt;
     }
 
-    public function setAttachments(Collection $attachments): Thread
+    public function setAttachments(Collection $attachments): self
     {
         $this->attachments = $attachments;
 
         return $this;
     }
 
-    public function addAttachment(Attachment $attachment): Thread
+    public function addAttachment(Attachment $attachment): self
     {
         $this->getAttachments()->append($attachment);
 
@@ -331,7 +331,7 @@ class Thread implements Extractable, Hydratable
         return $this->attachments->count() > 0;
     }
 
-    public function setImported(bool $imported): Thread
+    public function setImported(bool $imported): self
     {
         $this->imported = $imported;
 

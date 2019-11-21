@@ -20,9 +20,6 @@ class ClientCredentials implements Auth
 
     /**
      * ClientCredentials constructor.
-     *
-     * @param string $appId
-     * @param string $appSecret
      */
     public function __construct(string $appId, string $appSecret)
     {
@@ -30,33 +27,21 @@ class ClientCredentials implements Auth
         $this->appSecret = $appSecret;
     }
 
-    /**
-     * @return string
-     */
     public function getAppId(): string
     {
         return $this->appId;
     }
 
-    /**
-     * @return string
-     */
     public function getAppSecret(): string
     {
         return $this->appSecret;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return self::TYPE;
     }
 
-    /**
-     * @return array
-     */
     public function getPayload(): array
     {
         return [

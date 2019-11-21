@@ -6,22 +6,11 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class TeamPayloads
 {
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
     public static function getTeam(int $id): string
     {
         return json_encode(static::team($id));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getTeams(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -71,11 +60,6 @@ class TeamPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function team(int $id): array
     {
         return [

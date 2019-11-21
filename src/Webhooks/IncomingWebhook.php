@@ -40,9 +40,6 @@ class IncomingWebhook
 
     /**
      * IncomingWebhook constructor.
-     *
-     * @param RequestInterface $request
-     * @param string           $secret
      */
     public function __construct(RequestInterface $request, string $secret)
     {
@@ -84,9 +81,6 @@ class IncomingWebhook
         }
     }
 
-    /**
-     * @return string
-     */
     protected function generateSignature(): string
     {
         $body = $this->getJson();
@@ -101,11 +95,6 @@ class IncomingWebhook
         );
     }
 
-    /**
-     * @param array $headers
-     *
-     * @return string
-     */
     protected function findHeader(array $headers): string
     {
         $signature = '';
@@ -123,35 +112,21 @@ class IncomingWebhook
         return $signature;
     }
 
-    /**
-     * @return bool
-     */
     public function isTestEvent(): bool
     {
         return $this->findHeader(self::EVENT_HEADERS) === self::TEST_EVENT;
     }
 
-    /**
-     * @return bool
-     */
     public function isConversationEvent(): bool
     {
         return $this->isEventTypeOf('convo');
     }
 
-    /**
-     * @return bool
-     */
     public function isCustomerEvent(): bool
     {
         return $this->isEventTypeOf('customer');
     }
 
-    /**
-     * @param string $eventType
-     *
-     * @return bool
-     */
     protected function isEventTypeOf(string $eventType): bool
     {
         $header = $this->getEventType();
@@ -159,17 +134,11 @@ class IncomingWebhook
         return strpos($header, $eventType) === 0;
     }
 
-    /**
-     * @return string
-     */
     public function getEventType(): string
     {
         return $this->findHeader(self::EVENT_HEADERS);
     }
 
-    /**
-     * @return array
-     */
     public function getDataArray(): array
     {
         return \json_decode(
@@ -178,9 +147,6 @@ class IncomingWebhook
         );
     }
 
-    /**
-     * @return \stdClass
-     */
     public function getDataObject(): \stdClass
     {
         return \json_decode(
@@ -188,17 +154,12 @@ class IncomingWebhook
         );
     }
 
-    /**
-     * @return string
-     */
     public function getJson(): string
     {
         return (string) $this->request->getBody();
     }
 
     /**
-     * @return Conversation
-     *
      * @throws JsonException
      */
     public function getConversation(): Conversation
@@ -214,8 +175,6 @@ class IncomingWebhook
     }
 
     /**
-     * @return Customer
-     *
      * @throws JsonException
      */
     public function getCustomer(): Customer

@@ -29,11 +29,6 @@ class ValidationHandler
         };
     }
 
-    /**
-     * @param ResponseInterface $response
-     *
-     * @return bool
-     */
     private static function isVndErrorResponse(ResponseInterface $response): bool
     {
         if (!$response->hasHeader('Content-Type')) {

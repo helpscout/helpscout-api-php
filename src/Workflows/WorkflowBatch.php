@@ -15,17 +15,12 @@ class WorkflowBatch implements Extractable
 
     /**
      * WorkflowBatch constructor.
-     *
-     * @param array $conversations
      */
     public function __construct(array $conversations = [])
     {
         $this->conversations = $conversations;
     }
 
-    /**
-     * @return array
-     */
     public function extract(): array
     {
         return [

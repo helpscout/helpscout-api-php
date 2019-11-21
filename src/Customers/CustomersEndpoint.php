@@ -13,11 +13,7 @@ use HelpScout\Api\Http\Hal\HalResource;
 class CustomersEndpoint extends Endpoint
 {
     /**
-     * @param Customer $customer
-     *
      * @throws ValidationErrorException
-     *
-     * @return int|null
      */
     public function create(Customer $customer): ?int
     {
@@ -28,8 +24,6 @@ class CustomersEndpoint extends Endpoint
     }
 
     /**
-     * @param Customer $customer
-     *
      * @throws ValidationErrorException
      */
     public function update(Customer $customer): void
@@ -40,12 +34,6 @@ class CustomersEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int                  $id
-     * @param CustomerRequest|null $customerRequest
-     *
-     * @return Customer
-     */
     public function get(int $id, CustomerRequest $customerRequest = null): Customer
     {
         $customerResource = $this->restClient->getResource(
@@ -60,9 +48,6 @@ class CustomersEndpoint extends Endpoint
     }
 
     /**
-     * @param CustomerFilters|null $customerFilters
-     * @param CustomerRequest|null $customerRequest
-     *
      * @return Customer[]|PagedCollection
      */
     public function list(
@@ -84,9 +69,6 @@ class CustomersEndpoint extends Endpoint
     }
 
     /**
-     * @param string          $uri
-     * @param CustomerRequest $customerRequest
-     *
      * @return Customer[]|PagedCollection
      */
     private function loadCustomers(
@@ -115,12 +97,6 @@ class CustomersEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param HalResource     $customerResource
-     * @param CustomerRequest $customerRequest
-     *
-     * @return Customer
-     */
     private function hydrateCustomerWithSubEntities(
         HalResource $customerResource,
         CustomerRequest $customerRequest

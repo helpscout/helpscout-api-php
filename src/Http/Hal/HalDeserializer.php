@@ -12,11 +12,6 @@ class HalDeserializer
     const LINKS = '_links';
     const EMBEDDED = '_embedded';
 
-    /**
-     * @param string $json
-     *
-     * @return HalDocument
-     */
     public static function deserializeDocument(string $json): HalDocument
     {
         $data = json_decode($json, true);
@@ -29,9 +24,6 @@ class HalDeserializer
 
     /**
      * @param \Closure|string $entityClass
-     * @param HalDocument     $halDocument
-     *
-     * @return HalResource
      */
     public static function deserializeResource($entityClass, HalDocument $halDocument): HalResource
     {
@@ -49,10 +41,6 @@ class HalDeserializer
 
     /**
      * @param \Closure|string $entityClass
-     * @param string          $rel
-     * @param HalDocument     $halDocument
-     *
-     * @return HalResources
      */
     public static function deserializeResources($entityClass, string $rel, HalDocument $halDocument): HalResources
     {
@@ -77,11 +65,6 @@ class HalDeserializer
         return new HalResources($resources, $halDocument->getLinks());
     }
 
-    /**
-     * @param HalDocument $halDocument
-     *
-     * @return VndError
-     */
     public static function deserializeError(HalDocument $halDocument): VndError
     {
         $data = $halDocument->getData();
@@ -96,11 +79,6 @@ class HalDeserializer
         return $error;
     }
 
-    /**
-     * @param array $data
-     *
-     * @return HalDocument
-     */
     private static function createDocument(array $data): HalDocument
     {
         $links = new HalLinks();

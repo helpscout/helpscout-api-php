@@ -18,7 +18,6 @@ class HalResources
 
     /**
      * @param HalResource[] $resources
-     * @param HalLinks      $links
      */
     public function __construct(array $resources, HalLinks $links)
     {
@@ -26,19 +25,11 @@ class HalResources
         $this->links = $links;
     }
 
-    /**
-     * @param callable $callable
-     *
-     * @return array
-     */
     public function map(callable $callable): array
     {
         return array_map($callable, $this->resources);
     }
 
-    /**
-     * @return HalLinks
-     */
     public function getLinks(): HalLinks
     {
         return $this->links;

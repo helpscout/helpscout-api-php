@@ -96,10 +96,14 @@ class Tag implements Extractable, Hydratable
 
     /**
      * @param string|null $id
+     *
+     * @return Tag
      */
-    public function setId($id)
+    public function setId($id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getId()
@@ -117,7 +121,7 @@ class Tag implements Extractable, Hydratable
      *
      * @return Tag
      */
-    public function setColor($color): Tag
+    public function setColor($color): self
     {
         $this->color = $color;
 
@@ -129,7 +133,7 @@ class Tag implements Extractable, Hydratable
      *
      * @return Tag
      */
-    public function setName($name): Tag
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -146,7 +150,7 @@ class Tag implements Extractable, Hydratable
      *
      * @return Tag
      */
-    public function setSlug($slug): Tag
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
 
@@ -158,9 +162,6 @@ class Tag implements Extractable, Hydratable
         return $this->slug;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
@@ -171,16 +172,13 @@ class Tag implements Extractable, Hydratable
      *
      * @return Tag
      */
-    public function setCreatedAt($createdAt): Tag
+    public function setCreatedAt($createdAt): self
     {
         $this->createdAt = $this->transformDateTime($createdAt);
 
         return $this;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
@@ -191,27 +189,22 @@ class Tag implements Extractable, Hydratable
      *
      * @return Tag
      */
-    public function setUpdatedAt($updatedAt): Tag
+    public function setUpdatedAt($updatedAt): self
     {
         $this->updatedAt = $this->transformDateTime($updatedAt);
 
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getTicketCount(): ?int
     {
         return $this->ticketCount;
     }
 
     /**
-     * @param int|null $ticketCount
-     *
      * @return Tag
      */
-    public function setTicketCount(?int $ticketCount): Tag
+    public function setTicketCount(?int $ticketCount): self
     {
         $this->ticketCount = $ticketCount;
 

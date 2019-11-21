@@ -17,11 +17,7 @@ class ValidationErrorException extends RequestException implements Exception
     private $error;
 
     /**
-     * @param string            $message
-     * @param VndError          $error
-     * @param RequestInterface  $request
-     * @param ResponseInterface $response
-     * @param \Exception|null   $previous
+     * @param string $message
      */
     public function __construct(
         $message,
@@ -38,9 +34,6 @@ class ValidationErrorException extends RequestException implements Exception
         $this->error = $error;
     }
 
-    /**
-     * @return VndError
-     */
     public function getError(): VndError
     {
         return $this->error;

@@ -31,8 +31,6 @@ class TeamsEndpoint extends Endpoint
     /**
      * Get the members of a team.
      *
-     * @param int $teamId
-     *
      * @return User[]|PagedCollection
      */
     public function members(int $teamId): PagedCollection

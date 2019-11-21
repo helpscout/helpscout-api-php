@@ -57,9 +57,6 @@ class Address implements Extractable, Hydratable
         ];
     }
 
-    /**
-     * @return string|null
-     */
     public function getCity(): ?string
     {
         return $this->city;
@@ -67,8 +64,6 @@ class Address implements Extractable, Hydratable
 
     /**
      * @param string|null $city
-     *
-     * @return Address
      */
     public function setCity($city): Address
     {
@@ -85,11 +80,6 @@ class Address implements Extractable, Hydratable
         return $this->lines;
     }
 
-    /**
-     * @param array $lines
-     *
-     * @return Address
-     */
     public function setLines(array $lines): Address
     {
         $this->lines = $lines;
@@ -97,9 +87,6 @@ class Address implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getState(): ?string
     {
         return $this->state;
@@ -107,8 +94,6 @@ class Address implements Extractable, Hydratable
 
     /**
      * @param string|null $state
-     *
-     * @return Address
      */
     public function setState($state): Address
     {
@@ -117,9 +102,6 @@ class Address implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPostalCode(): ?string
     {
         return $this->postalCode;
@@ -127,8 +109,6 @@ class Address implements Extractable, Hydratable
 
     /**
      * @param string|null $postalCode
-     *
-     * @return Address
      */
     public function setPostalCode($postalCode): Address
     {
@@ -137,9 +117,6 @@ class Address implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCountry(): ?string
     {
         return $this->country;
@@ -147,8 +124,6 @@ class Address implements Extractable, Hydratable
 
     /**
      * @param string|null $country
-     *
-     * @return Address
      */
     public function setCountry($country): Address
     {

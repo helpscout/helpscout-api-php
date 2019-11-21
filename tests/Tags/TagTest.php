@@ -38,7 +38,7 @@ class TagTest extends TestCase
     public function testExtract()
     {
         $tag = new Tag();
-        $tag->setId('9150');
+        $this->assertInstanceOf(Tag::class, $tag->setId('9150'));
         $tag->setColor('#929499');
         $tag->setName('a vip');
         $tag->setSlug('a-vip');

@@ -27,9 +27,18 @@ class CustomerWaitingSinceTest extends TestCase
     public function testExtract()
     {
         $waitingSince = new CustomerWaitingSince();
-        $waitingSince->setTime(new DateTime('2017-07-24T20:18:33Z'));
-        $waitingSince->setFriendly('20 hours ago');
-        $waitingSince->setLatestReplyFrom('customer');
+        $this->assertInstanceOf(
+            CustomerWaitingSince::class,
+            $waitingSince->setTime(new DateTime('2017-07-24T20:18:33Z'))
+        );
+        $this->assertInstanceOf(
+            CustomerWaitingSince::class,
+            $waitingSince->setFriendly('20 hours ago')
+        );
+        $this->assertInstanceOf(
+            CustomerWaitingSince::class,
+            $waitingSince->setLatestReplyFrom('customer')
+        );
 
         $this->assertSame([
             'time' => '2017-07-24T20:18:33Z',

@@ -6,22 +6,11 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class WorkflowPayloads
 {
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
     public static function getWebhook(int $id): string
     {
         return json_encode(static::workflow($id));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getWorkflows(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -71,11 +60,6 @@ class WorkflowPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function workflow(int $id): array
     {
         return [

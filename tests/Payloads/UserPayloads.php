@@ -6,22 +6,11 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class UserPayloads
 {
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
     public static function getUser(int $id): string
     {
         return json_encode(static::user($id));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getUsers(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -71,11 +60,6 @@ class UserPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function user(int $id): array
     {
         return [

@@ -6,20 +6,11 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class TagPayloads
 {
-    /**
-     * @return string
-     */
     public static function getTag(): string
     {
         return json_encode(static::tag(1));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getTags(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -69,11 +60,6 @@ class TagPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function tag(int $id): array
     {
         return [

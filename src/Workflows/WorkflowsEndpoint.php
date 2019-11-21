@@ -22,9 +22,6 @@ class WorkflowsEndpoint extends Endpoint
 
     /**
      * Run a manual workflow on a list of conversations.
-     *
-     * @param int   $workflowId
-     * @param array $convos
      */
     public function runWorkflow(int $workflowId, array $convos): void
     {
@@ -56,9 +53,6 @@ class WorkflowsEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @return PagedCollection
-     */
     public function list(): PagedCollection
     {
         return $this->loadPage(

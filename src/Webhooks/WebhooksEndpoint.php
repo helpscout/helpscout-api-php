@@ -16,11 +16,6 @@ class WebhooksEndpoint extends Endpoint
     public const DELETE_WEBHOOK_URI = '/v2/webhooks/%d';
     public const RESOURCE_KEY = 'webhooks';
 
-    /**
-     * @param Webhook $webhook
-     *
-     * @return int
-     */
     public function create(Webhook $webhook): int
     {
         return $this->restClient->createResource(
@@ -29,11 +24,6 @@ class WebhooksEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Webhook
-     */
     public function get(int $id): Webhook
     {
         return $this->loadResource(
@@ -54,9 +44,6 @@ class WebhooksEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param Webhook $webhook
-     */
     public function update(Webhook $webhook): void
     {
         $this->restClient
@@ -66,9 +53,6 @@ class WebhooksEndpoint extends Endpoint
             );
     }
 
-    /**
-     * @param int $webhookId
-     */
     public function delete(int $webhookId): void
     {
         $this->restClient->deleteResource(

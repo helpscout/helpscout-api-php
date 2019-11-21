@@ -11,11 +11,6 @@ class HalPagedResources extends HalResources
      */
     private $pageMetadata;
 
-    /**
-     * @param array           $resources
-     * @param HalLinks        $links
-     * @param HalPageMetadata $pageMetadata
-     */
     public function __construct(array $resources, HalLinks $links, HalPageMetadata $pageMetadata)
     {
         parent::__construct($resources, $links);
@@ -23,9 +18,6 @@ class HalPagedResources extends HalResources
         $this->pageMetadata = $pageMetadata;
     }
 
-    /**
-     * @return HalPageMetadata
-     */
     public function getPageMetadata(): HalPageMetadata
     {
         return $this->pageMetadata;

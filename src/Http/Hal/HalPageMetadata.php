@@ -26,12 +26,6 @@ class HalPageMetadata
      */
     private $totalPageCount;
 
-    /**
-     * @param int $pageNumber
-     * @param int $pageSize
-     * @param int $totalElementCount
-     * @param int $totalPageCount
-     */
     public function __construct(int $pageNumber, int $pageSize, int $totalElementCount, int $totalPageCount)
     {
         $this->pageNumber = $pageNumber;
@@ -40,33 +34,21 @@ class HalPageMetadata
         $this->totalPageCount = $totalPageCount;
     }
 
-    /**
-     * @return int
-     */
     public function getPageNumber(): int
     {
         return $this->pageNumber;
     }
 
-    /**
-     * @return int
-     */
     public function getPageSize(): int
     {
         return $this->pageSize;
     }
 
-    /**
-     * @return int
-     */
     public function getTotalElementCount(): int
     {
         return $this->totalElementCount;
     }
 
-    /**
-     * @return int
-     */
     public function getTotalPageCount(): int
     {
         return $this->totalPageCount;

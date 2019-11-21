@@ -31,14 +31,18 @@ class ReplyThread extends Thread
      */
     private $draft = false;
 
-    public function asDraft()
+    public function asDraft(): self
     {
         $this->draft = true;
+
+        return $this;
     }
 
-    public function notAsDraft()
+    public function notAsDraft(): self
     {
         $this->draft = false;
+
+        return $this;
     }
 
     public function isDraft(): bool
@@ -46,7 +50,7 @@ class ReplyThread extends Thread
         return $this->draft;
     }
 
-    public function setStatus(?string $status): ReplyThread
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
 

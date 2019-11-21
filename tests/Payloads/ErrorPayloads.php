@@ -6,9 +6,6 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class ErrorPayloads
 {
-    /**
-     * @return string
-     */
     public static function validationErrors(): string
     {
         return json_encode([
@@ -37,9 +34,6 @@ class ErrorPayloads
         ]);
     }
 
-    /**
-     * @return string
-     */
     public static function internalServerError(): string
     {
         return json_encode([
@@ -54,9 +48,6 @@ class ErrorPayloads
         ]);
     }
 
-    /**
-     * @return string
-     */
     public static function rateLimitExceededError(): string
     {
         return json_encode([

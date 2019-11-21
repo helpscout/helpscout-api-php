@@ -6,22 +6,11 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class ThreadPayloads
 {
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
     public static function getThread(int $id): string
     {
         return json_encode(static::thread($id));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getThreads(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -71,11 +60,6 @@ class ThreadPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function thread(int $id): array
     {
         return [
