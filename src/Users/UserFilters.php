@@ -25,10 +25,8 @@ class UserFilters
             'email' => $this->email,
         ];
 
-        // Filter out null values
-        return array_filter($params, function ($param) {
-            return $param !== null;
-        });
+        // Filter out null values & empty strings
+        return array_filter($params);
     }
 
     /**
