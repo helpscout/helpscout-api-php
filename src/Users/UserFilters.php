@@ -49,15 +49,6 @@ class UserFilters
      */
     public function withEmail(string $email)
     {
-        Assert::oneOf($email, [
-            Status::ANY,
-            Status::ACTIVE,
-            Status::OPEN,
-            Status::CLOSED,
-            Status::PENDING,
-            Status::SPAM,
-        ]);
-
         $filters = clone $this;
         $filters->email = $email;
 
