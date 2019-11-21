@@ -727,8 +727,6 @@ class Conversation implements Extractable, Hydratable
 
     /**
      * @param Tag[]|Collection $tags
-     *
-     * @return Conversation
      */
     public function setTags(Collection $tags): Conversation
     {
@@ -754,8 +752,6 @@ class Conversation implements Extractable, Hydratable
 
     /**
      * @param CustomField[]|Collection $customFields
-     *
-     * @return Conversation
      */
     public function setCustomFields(Collection $customFields): Conversation
     {
@@ -790,8 +786,6 @@ class Conversation implements Extractable, Hydratable
 
     /**
      * @param Thread[]|Collection $threads
-     *
-     * @return Conversation
      */
     public function setThreads(Collection $threads): Conversation
     {

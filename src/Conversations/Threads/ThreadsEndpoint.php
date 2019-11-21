@@ -12,22 +12,11 @@ use HelpScout\Api\Http\Hal\HalResource;
 
 class ThreadsEndpoint extends Endpoint
 {
-    /**
-     * @param int $conversationId
-     *
-     * @return PagedCollection
-     */
     public function list(int $conversationId): PagedCollection
     {
         return $this->loadThreads(sprintf('/v2/conversations/%d/threads', $conversationId));
     }
 
-    /**
-     * @param int    $conversationId
-     * @param Thread $thread
-     *
-     * @return int|null
-     */
     public function create(int $conversationId, Thread $thread): ?int
     {
         return $this->restClient->createResource(
@@ -36,11 +25,6 @@ class ThreadsEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int    $conversationId
-     * @param int    $threadId
-     * @param string $newText
-     */
     public function updateText(int $conversationId, int $threadId, string $newText): void
     {
         $patch = Patch::replace('text', $newText);
@@ -51,8 +35,6 @@ class ThreadsEndpoint extends Endpoint
     }
 
     /**
-     * @param string $uri
-     *
      * @return Thread[]|PagedCollection
      */
     private function loadThreads(string $uri): PagedCollection

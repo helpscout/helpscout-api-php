@@ -39,19 +39,11 @@ class Website implements Extractable, Hydratable
         ];
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Website
-     */
     public function setId(int $id): Website
     {
         Assert::greaterThan($id, 0);
@@ -61,9 +53,6 @@ class Website implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getValue(): ?string
     {
         return $this->value;
@@ -71,8 +60,6 @@ class Website implements Extractable, Hydratable
 
     /**
      * @param string|null $value
-     *
-     * @return Website
      */
     public function setValue($value): Website
     {

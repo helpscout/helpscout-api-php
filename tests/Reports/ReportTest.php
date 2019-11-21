@@ -44,8 +44,6 @@ class ReportTest extends TestCase
 
     /**
      * @dataProvider reportTypeProvider
-     *
-     * @param string $reportName
      */
     public function testGetInstances(string $reportName)
     {

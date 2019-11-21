@@ -8,22 +8,11 @@ use HelpScout\Api\Mailboxes\Entry\Field;
 
 class MailboxPayloads
 {
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
     public static function getMailbox(int $id): string
     {
         return json_encode(static::mailbox($id));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getMailboxes(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -73,11 +62,6 @@ class MailboxPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function mailbox(int $id): array
     {
         return [
@@ -101,11 +85,6 @@ class MailboxPayloads
         ];
     }
 
-    /**
-     * @param int $mailboxId
-     *
-     * @return string
-     */
     public static function getFields(int $mailboxId): string
     {
         return json_encode([
@@ -145,11 +124,6 @@ class MailboxPayloads
         ]);
     }
 
-    /**
-     * @param int $mailboxId
-     *
-     * @return string
-     */
     public static function getFolders(int $mailboxId): string
     {
         return json_encode([

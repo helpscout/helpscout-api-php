@@ -162,9 +162,6 @@ class Tag implements Extractable, Hydratable
         return $this->slug;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
@@ -182,9 +179,6 @@ class Tag implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
@@ -202,17 +196,12 @@ class Tag implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getTicketCount(): ?int
     {
         return $this->ticketCount;
     }
 
     /**
-     * @param int|null $ticketCount
-     *
      * @return Tag
      */
     public function setTicketCount(?int $ticketCount): self

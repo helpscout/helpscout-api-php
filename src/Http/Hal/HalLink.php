@@ -49,11 +49,6 @@ class HalLink
      */
     private $templated;
 
-    /**
-     * @param string $rel
-     * @param string $href
-     * @param bool   $templated
-     */
     public function __construct(string $rel, string $href, bool $templated)
     {
         $this->rel = $rel;
@@ -61,35 +56,21 @@ class HalLink
         $this->templated = $templated;
     }
 
-    /**
-     * @return string
-     */
     public function getRel(): string
     {
         return $this->rel;
     }
 
-    /**
-     * @return string
-     */
     public function getHref(): string
     {
         return $this->href;
     }
 
-    /**
-     * @return bool
-     */
     public function isTemplated(): bool
     {
         return $this->templated;
     }
 
-    /**
-     * @param array $params
-     *
-     * @return string
-     */
     public function expand(array $params): string
     {
         if (!$this->isTemplated()) {

@@ -25,10 +25,6 @@ class RefreshCredentials implements Auth
 
     /**
      * ClientCredentials constructor.
-     *
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $refreshToken
      */
     public function __construct(string $appId, string $appSecret, string $refreshToken)
     {
@@ -37,17 +33,11 @@ class RefreshCredentials implements Auth
         $this->refreshToken = $refreshToken;
     }
 
-    /**
-     * @return string
-     */
     public function getAppId(): string
     {
         return $this->appId;
     }
 
-    /**
-     * @return string
-     */
     public function getAppSecret(): string
     {
         return $this->appSecret;
@@ -58,17 +48,11 @@ class RefreshCredentials implements Auth
         return $this->refreshToken;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return self::TYPE;
     }
 
-    /**
-     * @return array
-     */
     public function getPayload(): array
     {
         return [

@@ -66,9 +66,6 @@ class ConversationFilters
      */
     private $query;
 
-    /**
-     * @return array
-     */
     public function getParams(): array
     {
         $params = [
@@ -98,10 +95,7 @@ class ConversationFilters
     }
 
     /**
-     * @param int   $id
      * @param mixed $value
-     *
-     * @return ConversationFilters
      */
     public function withCustomFieldById(int $id, $value): ConversationFilters
     {
@@ -114,11 +108,6 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @param array $fields
-     *
-     * @return ConversationFilters
-     */
     public function withCustomFieldsById(array $fields): ConversationFilters
     {
         $filters = clone $this;
@@ -128,8 +117,6 @@ class ConversationFilters
     }
 
     /**
-     * @param int $mailbox
-     *
      * @return self
      */
     public function withMailbox(int $mailbox)
@@ -143,8 +130,6 @@ class ConversationFilters
     }
 
     /**
-     * @param int $folderId
-     *
      * @return self
      */
     public function withFolder(int $folderId)
@@ -156,8 +141,6 @@ class ConversationFilters
     }
 
     /**
-     * @param string $status
-     *
      * @return self
      */
     public function withStatus(string $status)
@@ -193,8 +176,6 @@ class ConversationFilters
     }
 
     /**
-     * @param array $tags
-     *
      * @return self
      */
     public function withTags(array $tags)
@@ -206,8 +187,6 @@ class ConversationFilters
     }
 
     /**
-     * @param int $assigneeId
-     *
      * @return self
      */
     public function withAssignedTo(int $assigneeId)
@@ -219,8 +198,6 @@ class ConversationFilters
     }
 
     /**
-     * @param DateTime $modifiedSince
-     *
      * @return self
      */
     public function withModifiedSince(DateTime $modifiedSince)
@@ -234,8 +211,6 @@ class ConversationFilters
     }
 
     /**
-     * @param int $number
-     *
      * @return self
      */
     public function withNumber(int $number)
@@ -247,8 +222,6 @@ class ConversationFilters
     }
 
     /**
-     * @param string $sortField
-     *
      * @return self
      */
     public function withSortField(string $sortField)
@@ -271,8 +244,6 @@ class ConversationFilters
     }
 
     /**
-     * @param string $sortOrder
-     *
      * @return self
      */
     public function withSortOrder(string $sortOrder)
@@ -290,8 +261,6 @@ class ConversationFilters
     }
 
     /**
-     * @param string $query
-     *
      * @see https://developer.helpscout.com/mailbox-api/endpoints/conversations/list/#query
      *
      * @return self

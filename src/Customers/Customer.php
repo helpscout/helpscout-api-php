@@ -229,19 +229,11 @@ class Customer implements Extractable, Hydratable
         ]);
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Customer
-     */
     public function setId(int $id): Customer
     {
         Assert::greaterThan($id, 0);
@@ -251,19 +243,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return DateTime|null
-     */
     public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTime|null $createdAt
-     *
-     * @return Customer
-     */
     public function setCreatedAt(DateTime $createdAt = null): Customer
     {
         $this->createdAt = $createdAt;
@@ -271,19 +255,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return DateTime|null
-     */
     public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param DateTime|null $updatedAt
-     *
-     * @return Customer
-     */
     public function setUpdatedAt(DateTime $updatedAt = null): Customer
     {
         $this->updatedAt = $updatedAt;
@@ -291,19 +267,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    /**
-     * @param string|null $firstName
-     *
-     * @return Customer
-     */
     public function setFirstName(?string $firstName): Customer
     {
         $this->firstName = $firstName;
@@ -311,19 +279,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    /**
-     * @param string|null $lastName
-     *
-     * @return Customer
-     */
     public function setLastName(?string $lastName): Customer
     {
         $this->lastName = $lastName;
@@ -331,19 +291,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getGender(): ?string
     {
         return $this->gender;
     }
 
-    /**
-     * @param string|null $gender
-     *
-     * @return Customer
-     */
     public function setGender(?string $gender): Customer
     {
         $this->gender = $gender;
@@ -351,19 +303,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getJobTitle(): ?string
     {
         return $this->jobTitle;
     }
 
-    /**
-     * @param string|null $jobTitle
-     *
-     * @return Customer
-     */
     public function setJobTitle(?string $jobTitle): Customer
     {
         $this->jobTitle = $jobTitle;
@@ -371,19 +315,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLocation(): ?string
     {
         return $this->location;
     }
 
-    /**
-     * @param string|null $location
-     *
-     * @return Customer
-     */
     public function setLocation(?string $location): Customer
     {
         $this->location = $location;
@@ -391,19 +327,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getOrganization(): ?string
     {
         return $this->organization;
     }
 
-    /**
-     * @param string|null $organization
-     *
-     * @return Customer
-     */
     public function setOrganization(?string $organization): Customer
     {
         $this->organization = $organization;
@@ -411,19 +339,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPhotoType(): ?string
     {
         return $this->photoType;
     }
 
-    /**
-     * @param string|null $photoType
-     *
-     * @return Customer
-     */
     public function setPhotoType(?string $photoType): Customer
     {
         $this->photoType = $photoType;
@@ -431,19 +351,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPhotoUrl(): ?string
     {
         return $this->photoUrl;
     }
 
-    /**
-     * @param string|null $photoUrl
-     *
-     * @return Customer
-     */
     public function setPhotoUrl(?string $photoUrl): Customer
     {
         $this->photoUrl = $photoUrl;
@@ -451,19 +363,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getBackground(): ?string
     {
         return $this->background;
     }
 
-    /**
-     * @param string|null $background
-     *
-     * @return Customer
-     */
     public function setBackground(?string $background): Customer
     {
         $this->background = $background;
@@ -471,19 +375,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getAge(): ?string
     {
         return $this->age;
     }
 
-    /**
-     * @param string|null $age
-     *
-     * @return Customer
-     */
     public function setAge(?string $age): Customer
     {
         $this->age = $age;
@@ -491,19 +387,11 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return Address|null
-     */
     public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    /**
-     * @param Address|null $address
-     *
-     * @return Customer
-     */
     public function setAddress(?Address $address): Customer
     {
         $this->address = $address;
@@ -521,8 +409,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param ChatHandle[]|Collection $chats
-     *
-     * @return Customer
      */
     public function setChatHandles(Collection $chats): Customer
     {
@@ -565,8 +451,6 @@ class Customer implements Extractable, Hydratable
      * @deprecated
      *
      * @param ChatHandle[]|Collection $chats
-     *
-     * @return Customer
      */
     public function setChats(Collection $chats): Customer
     {
@@ -593,9 +477,6 @@ class Customer implements Extractable, Hydratable
         return $this->emails;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFirstEmail(): ?string
     {
         $emails = $this->emails->toArray();
@@ -608,8 +489,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Email[]|Collection $emails
-     *
-     * @return Customer
      */
     public function setEmails(Collection $emails): Customer
     {
@@ -638,9 +517,6 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFirstPhone(): ?string
     {
         $phones = $this->phones->toArray();
@@ -661,8 +537,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Phone[]|Collection $phones
-     *
-     * @return Customer
      */
     public function setPhones(Collection $phones): Customer
     {
@@ -701,8 +575,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param SocialProfile[]|Collection $socialProfiles
-     *
-     * @return Customer
      */
     public function setSocialProfiles(Collection $socialProfiles): Customer
     {
@@ -741,8 +613,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Website[]|Collection $websites
-     *
-     * @return Customer
      */
     public function setWebsites(Collection $websites): Customer
     {

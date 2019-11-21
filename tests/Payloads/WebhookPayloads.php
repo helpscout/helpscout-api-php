@@ -6,22 +6,11 @@ namespace HelpScout\Api\Tests\Payloads;
 
 class WebhookPayloads
 {
-    /**
-     * @param int $id
-     *
-     * @return string
-     */
     public static function getWebhook(int $id): string
     {
         return json_encode(static::webhook($id));
     }
 
-    /**
-     * @param int $pageNumber
-     * @param int $totalElements
-     *
-     * @return string
-     */
     public static function getWebhooks(int $pageNumber, int $totalElements): string
     {
         $pageSize = 10;
@@ -71,11 +60,6 @@ class WebhookPayloads
         return json_encode($data);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return array
-     */
     private static function webhook(int $id): array
     {
         return [

@@ -25,10 +25,6 @@ class CodeCredentials implements Auth
 
     /**
      * CodeCredentials constructor.
-     *
-     * @param string $appId
-     * @param string $appSecret
-     * @param string $code
      */
     public function __construct(string $appId, string $appSecret, string $code)
     {
@@ -37,17 +33,11 @@ class CodeCredentials implements Auth
         $this->code = $code;
     }
 
-    /**
-     * @return string
-     */
     public function getAppId(): string
     {
         return $this->appId;
     }
 
-    /**
-     * @return string
-     */
     public function getAppSecret(): string
     {
         return $this->appSecret;
@@ -58,17 +48,11 @@ class CodeCredentials implements Auth
         return $this->code;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return self::TYPE;
     }
 
-    /**
-     * @return array
-     */
     public function getPayload(): array
     {
         return [

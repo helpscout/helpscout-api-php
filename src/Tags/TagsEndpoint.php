@@ -12,9 +12,6 @@ class TagsEndpoint extends Endpoint
     public const LIST_TAGS_URI = '/v2/tags';
     public const RESOURCE_KEY = 'tags';
 
-    /**
-     * @return PagedCollection
-     */
     public function list(): PagedCollection
     {
         return $this->loadPage(

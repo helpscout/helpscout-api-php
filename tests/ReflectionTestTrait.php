@@ -7,9 +7,7 @@ namespace HelpScout\Api\Tests;
 trait ReflectionTestTrait
 {
     /**
-     * @param mixed  $object
-     * @param string $method
-     * @param array  $parameters
+     * @param mixed $object
      *
      * @return mixed
      *
@@ -27,8 +25,7 @@ trait ReflectionTestTrait
     }
 
     /**
-     * @param mixed  $object
-     * @param string $attributeName
+     * @param mixed $object
      *
      * @return mixed
      *
@@ -44,9 +41,8 @@ trait ReflectionTestTrait
     }
 
     /**
-     * @param mixed  $object
-     * @param string $attributeName
-     * @param mixed  $value
+     * @param mixed $object
+     * @param mixed $value
      *
      * @throws \ReflectionException
      */
@@ -61,8 +57,6 @@ trait ReflectionTestTrait
 
     /**
      * @param mixed $object
-     *
-     * @return string
      */
     protected function getClassName(&$object): string
     {
@@ -76,8 +70,6 @@ trait ReflectionTestTrait
     /**
      * getFullMock.
      *
-     * @param string $name
-     *
      * @return mixed
      */
     public function getFullMock(string $name)
@@ -89,9 +81,6 @@ trait ReflectionTestTrait
 
     /**
      * getPartialMock.
-     *
-     * @param string $name
-     * @param array  $methods
      *
      * @return mixed
      */

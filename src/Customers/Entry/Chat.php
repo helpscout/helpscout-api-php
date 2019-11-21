@@ -52,19 +52,11 @@ class Chat implements Extractable, Hydratable
         ];
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Chat
-     */
     public function setId(int $id): Chat
     {
         Assert::greaterThan($id, 0);
@@ -74,9 +66,6 @@ class Chat implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getValue(): ?string
     {
         return $this->value;
@@ -84,8 +73,6 @@ class Chat implements Extractable, Hydratable
 
     /**
      * @param string|null $value
-     *
-     * @return Chat
      */
     public function setValue($value): Chat
     {
@@ -94,9 +81,6 @@ class Chat implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getType(): ?string
     {
         return $this->type;
@@ -104,8 +88,6 @@ class Chat implements Extractable, Hydratable
 
     /**
      * @param string|null $type
-     *
-     * @return Chat
      */
     public function setType($type): Chat
     {

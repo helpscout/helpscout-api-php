@@ -67,19 +67,11 @@ class Team implements Hydratable
         $this->setInitials($data['initials'] ?? null);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     *
-     * @return Team
-     */
     public function setId(?int $id): Team
     {
         $this->id = $id;
@@ -87,9 +79,6 @@ class Team implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -97,8 +86,6 @@ class Team implements Hydratable
 
     /**
      * @param string|null $name
-     *
-     * @return Team
      */
     public function setName($name): Team
     {
@@ -107,9 +94,6 @@ class Team implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTimezone(): ?string
     {
         return $this->timezone;
@@ -117,8 +101,6 @@ class Team implements Hydratable
 
     /**
      * @param string|null $timezone
-     *
-     * @return Team
      */
     public function setTimezone($timezone): Team
     {
@@ -127,9 +109,6 @@ class Team implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPhotoUrl(): ?string
     {
         return $this->photoUrl;
@@ -137,8 +116,6 @@ class Team implements Hydratable
 
     /**
      * @param string|null $photoUrl
-     *
-     * @return Team
      */
     public function setPhotoUrl($photoUrl): Team
     {
@@ -147,9 +124,6 @@ class Team implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMention(): ?string
     {
         return $this->mention;
@@ -157,8 +131,6 @@ class Team implements Hydratable
 
     /**
      * @param string|null $mention
-     *
-     * @return Team
      */
     public function setMention($mention): Team
     {
@@ -167,9 +139,6 @@ class Team implements Hydratable
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getInitials(): ?string
     {
         return $this->initials;
@@ -177,8 +146,6 @@ class Team implements Hydratable
 
     /**
      * @param string|null $initials
-     *
-     * @return Team
      */
     public function setInitials($initials): Team
     {
@@ -187,19 +154,11 @@ class Team implements Hydratable
         return $this;
     }
 
-    /**
-     * @return DateTime|null
-     */
     public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTime|null $createdAt
-     *
-     * @return Team
-     */
     public function setCreatedAt(DateTime $createdAt = null): Team
     {
         $this->createdAt = $createdAt;
@@ -207,19 +166,11 @@ class Team implements Hydratable
         return $this;
     }
 
-    /**
-     * @return DateTime|null
-     */
     public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param DateTime|null $updatedAt
-     *
-     * @return Team
-     */
     public function setUpdatedAt(DateTime $updatedAt = null): Team
     {
         $this->updatedAt = $updatedAt;

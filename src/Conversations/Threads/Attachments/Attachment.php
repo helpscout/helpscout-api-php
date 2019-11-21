@@ -52,9 +52,6 @@ class Attachment implements Extractable, Hydratable
      */
     private $webUrl;
 
-    /**
-     * @return array
-     */
     public function extract(): array
     {
         return [
@@ -135,8 +132,6 @@ class Attachment implements Extractable, Hydratable
 
     /**
      * @param string|null $filename
-     *
-     * @return Attachment
      */
     public function setFilename($filename): Attachment
     {
@@ -152,8 +147,6 @@ class Attachment implements Extractable, Hydratable
 
     /**
      * @param string|null $mimeType
-     *
-     * @return Attachment
      */
     public function setMimeType($mimeType): Attachment
     {
@@ -169,8 +162,6 @@ class Attachment implements Extractable, Hydratable
 
     /**
      * @param string|null $data
-     *
-     * @return Attachment
      */
     public function setData($data): Attachment
     {

@@ -15,12 +15,6 @@ use HelpScout\Api\Tags\TagsCollection;
 
 class ConversationsEndpoint extends Endpoint
 {
-    /**
-     * @param int                      $id
-     * @param ConversationRequest|null $conversationRequest
-     *
-     * @return Conversation
-     */
     public function get(int $id, ConversationRequest $conversationRequest = null): Conversation
     {
         $conversationResource = $this->restClient->getResource(Conversation::class, sprintf('/v2/conversations/%d', $id));
@@ -28,20 +22,13 @@ class ConversationsEndpoint extends Endpoint
         return $this->hydrateConversationWithSubEntities($conversationResource, $conversationRequest ?: new ConversationRequest());
     }
 
-    /**
-     * @param int $conversationId
-     */
     public function delete(int $conversationId): void
     {
         $this->restClient->deleteResource(sprintf('/v2/conversations/%d', $conversationId));
     }
 
     /**
-     * @param Conversation $conversation
-     *
      * @throws ValidationErrorException
-     *
-     * @return int|null
      */
     public function create(Conversation $conversation): ?int
     {
@@ -51,7 +38,6 @@ class ConversationsEndpoint extends Endpoint
     /**
      * Updates the custom field values for a given conversation.  Ommitted fields are removed.
      *
-     * @param int                                                   $conversationId
      * @param CustomField[]|array|Collection|CustomFieldsCollection $customFields
      *
      * @throws ValidationErrorException
@@ -79,7 +65,6 @@ class ConversationsEndpoint extends Endpoint
      * Updates the tags for a given conversation.
      * Omitted tags are removed.
      *
-     * @param int                             $conversationId
      * @param array|Collection|TagsCollection $tags
      *
      * @throws ValidationErrorException
@@ -108,9 +93,6 @@ class ConversationsEndpoint extends Endpoint
     }
 
     /**
-     * @param ConversationFilters|null $conversationFilters
-     * @param ConversationRequest|null $conversationRequest
-     *
      * @return Conversation[]|PagedCollection
      */
     public function list(
@@ -132,9 +114,6 @@ class ConversationsEndpoint extends Endpoint
     }
 
     /**
-     * @param string              $uri
-     * @param ConversationRequest $conversationRequest
-     *
      * @return Conversation[]|PagedCollection
      */
     private function loadConversations(string $uri, ConversationRequest $conversationRequest): PagedCollection
@@ -155,12 +134,6 @@ class ConversationsEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param HalResource         $conversationResource
-     * @param ConversationRequest $conversationRequest
-     *
-     * @return Conversation
-     */
     private function hydrateConversationWithSubEntities(
         HalResource $conversationResource,
         ConversationRequest $conversationRequest
@@ -173,9 +146,6 @@ class ConversationsEndpoint extends Endpoint
 
     /**
      * Move a conversation to a given mailbox.
-     *
-     * @param int $conversationId
-     * @param int $toMailboxId
      */
     public function move(int $conversationId, int $toMailboxId): void
     {
@@ -185,9 +155,6 @@ class ConversationsEndpoint extends Endpoint
 
     /**
      * Update the subject of a conversation.
-     *
-     * @param int    $conversationId
-     * @param string $subject
      *
      * @throws ValidationErrorException
      */
@@ -200,9 +167,6 @@ class ConversationsEndpoint extends Endpoint
     /**
      * Change the customer associated with a conversation.
      *
-     * @param int $conversationId
-     * @param int $newCustomerId
-     *
      * @throws ValidationErrorException
      */
     public function updateCustomer(int $conversationId, int $newCustomerId): void
@@ -211,9 +175,6 @@ class ConversationsEndpoint extends Endpoint
         $this->patchConversation($conversationId, $patch);
     }
 
-    /**
-     * @param int $conversationId
-     */
     public function publishDraft(int $conversationId): void
     {
         $patch = Patch::replace('draft', true);
@@ -221,9 +182,6 @@ class ConversationsEndpoint extends Endpoint
     }
 
     /**
-     * @param int    $conversationId
-     * @param string $status
-     *
      * @throws ValidationErrorException
      */
     public function updateStatus(int $conversationId, string $status): void
@@ -232,29 +190,18 @@ class ConversationsEndpoint extends Endpoint
         $this->patchConversation($conversationId, $patch);
     }
 
-    /**
-     * @param int $conversationId
-     * @param int $assigneeId
-     */
     public function assign(int $conversationId, int $assigneeId): void
     {
         $patch = Patch::replace('assignTo', $assigneeId);
         $this->patchConversation($conversationId, $patch);
     }
 
-    /**
-     * @param int $conversationId
-     */
     public function unassign(int $conversationId): void
     {
         $patch = Patch::remove('assignTo');
         $this->patchConversation($conversationId, $patch);
     }
 
-    /**
-     * @param int   $conversationId
-     * @param Patch $patch
-     */
     private function patchConversation(int $conversationId, Patch $patch): void
     {
         $this->restClient->patchResource($patch, sprintf('/v2/conversations/%d', $conversationId));

@@ -10,8 +10,6 @@ namespace HelpScout\Api\Support;
 class Filesystem
 {
     /**
-     * @param string $path
-     *
      * @return bool|string
      */
     public function contents(string $path)
@@ -20,8 +18,6 @@ class Filesystem
     }
 
     /**
-     * @param string $path
-     *
      * @return bool|string
      */
     public function mimeType(string $path)

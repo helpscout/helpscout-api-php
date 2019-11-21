@@ -8,12 +8,6 @@ use HelpScout\Api\Endpoint;
 
 class AttachmentsEndpoint extends Endpoint
 {
-    /**
-     * @param int $conversationId
-     * @param int $attachmentId
-     *
-     * @return Attachment
-     */
     public function get(int $conversationId, int $attachmentId): Attachment
     {
         $attachmentResource = $this->restClient->getResource(
@@ -24,13 +18,6 @@ class AttachmentsEndpoint extends Endpoint
         return $attachmentResource->getEntity();
     }
 
-    /**
-     * @param int        $conversationId
-     * @param int        $threadId
-     * @param Attachment $attachment
-     *
-     * @return int|null
-     */
     public function create(int $conversationId, int $threadId, Attachment $attachment): ?int
     {
         return $this->restClient->createResource(
@@ -39,10 +26,6 @@ class AttachmentsEndpoint extends Endpoint
         );
     }
 
-    /**
-     * @param int $conversationId
-     * @param int $attachmentId
-     */
     public function delete(int $conversationId, int $attachmentId): void
     {
         $this->restClient->deleteResource(
