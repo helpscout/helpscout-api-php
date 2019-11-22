@@ -24,7 +24,7 @@ class UserFiltersTest extends TestCase
 
         $this->assertSame([
             'mailbox' => 1,
-            'folder' => 'tester@test.com',
+            'email' => 'tester@test.com',
         ], $filters->getParams());
     }
 }
