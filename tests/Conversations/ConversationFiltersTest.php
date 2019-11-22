@@ -32,7 +32,8 @@ class ConversationFiltersTest extends TestCase
             ->withSortField('createdAt')
             ->withSortOrder('asc')
             ->withQuery('query')
-            ->withCustomFieldById(123, 'blue');
+            ->withCustomFieldById(123, 'blue')
+            ->withEmbed('threads');
 
         $this->assertSame([
             'mailbox' => 1,
@@ -44,6 +45,7 @@ class ConversationFiltersTest extends TestCase
             'sortField' => 'createdAt',
             'sortOrder' => 'asc',
             'query' => 'query',
+            'embed' => 'threads',
             'tag' => 'testing',
             'customFieldsByIds' => '123:blue',
         ], $filters->getParams());
@@ -149,5 +151,13 @@ class ConversationFiltersTest extends TestCase
 
         $filters = (new ConversationFilters())
             ->withSortOrder('invalid');
+    }
+
+    public function testWithInvalidEmbed()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $filters = (new ConversationFilters())
+            ->withEmbed('invalid');
     }
 }

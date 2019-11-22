@@ -66,6 +66,11 @@ class ConversationFilters
      */
     private $query;
 
+    /**
+     * @var string
+     */
+    private $embed;
+
     public function getParams(): array
     {
         $params = [
@@ -78,6 +83,7 @@ class ConversationFilters
             'sortField' => $this->sortField,
             'sortOrder' => $this->sortOrder,
             'query' => $this->query,
+            'embed' => $this->embed,
         ];
 
         if (\is_array($this->tag)) {
@@ -269,6 +275,23 @@ class ConversationFilters
     {
         $filters = clone $this;
         $filters->query = $query;
+
+        return $filters;
+    }
+
+    /**
+     * @see https://developer.helpscout.com/mailbox-api/endpoints/conversations/list/#url-parameters
+     *
+     * @return self
+     */
+    public function withEmbed(string $embed)
+    {
+        Assert::oneOf($embed, [
+            'threads',
+        ]);
+
+        $filters = clone $this;
+        $filters->embed = $embed;
 
         return $filters;
     }

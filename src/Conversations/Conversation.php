@@ -176,19 +176,19 @@ class Conversation implements Extractable, Hydratable
             $this->setThreadCount($data['threadCount'] ?? null);
         }
 
+        if (isset($embedded['threads'])) {
+            $this->hydrateThreads($embedded['threads']);
+        }
+
         if (isset($data['threads'])) {
             // On some API calls these value is used to pass the thread count
             if (is_numeric($data['threads'])) {
                 $this->setThreadCount($data['threads']);
             } elseif (is_array($data['threads'])) {
-                $this->threads = new Collection();
-                $threadFactory = new ThreadFactory();
-                foreach ($data['threads'] as $threadData) {
-                    $thread = $threadFactory->make($threadData['type'], $threadData);
-                    $this->threads->append($thread);
-                }
+                $this->hydrateThreads($data['threads']);
             }
         }
+
         $this->setNumber($data['number'] ?? null);
         $this->setType($data['type'] ?? null);
         $this->setFolderId($data['folderId'] ?? null);
@@ -278,6 +278,16 @@ class Conversation implements Extractable, Hydratable
                 $customField->hydrate($customFieldData);
                 $this->customFields->append($customField);
             }
+        }
+    }
+
+    protected function hydrateThreads(array $threads): void
+    {
+        $this->threads = new Collection();
+        $threadFactory = new ThreadFactory();
+        foreach ($threads as $threadData) {
+            $thread = $threadFactory->make($threadData['type'], $threadData);
+            $this->threads->append($thread);
         }
     }
 

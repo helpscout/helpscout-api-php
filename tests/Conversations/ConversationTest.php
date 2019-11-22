@@ -146,6 +146,58 @@ class ConversationTest extends TestCase
         $this->assertSame('33077', $customField->getValue());
     }
 
+    public function testHydrateEmbedded()
+    {
+        $conversation = new Conversation();
+        $embeddedFixation = [
+            'threads' => [
+                [
+                    'id' => 2198262392,
+                    'assignedTo' => null,
+                    'status' => 'active',
+                    'createdAt' => '2019-02-28T15:48:20Z',
+                    'createdBy' => [
+                        'id' => 179783313,
+                        'firstName' => 'John',
+                        'lastName' => 'Smith',
+                        'email' => 'john@ourcompany.com',
+                        'type' => 'customer',
+                    ],
+                    'source' => [
+                        'type' => 'email',
+                        'via' => 'customer',
+                    ],
+                    'actionType' => null,
+                    'actionSourceId' => 0,
+                    'fromMailbox' => null,
+                    'type' => 'customer',
+                    'state' => 'published',
+                    'customer' => [
+                        'id' => 179783313,
+                        'firstName' => 'Casey',
+                        'lastName' => 'Lockwood',
+                        'email' => 'casey@helpscout.com',
+                        'type' => 'customer',
+                    ],
+                    'body' => 'Are you still interested in a demo?',
+                    'to' => [
+                        'customer-address@gmail.com',
+                    ],
+                    'cc' => null,
+                    'bcc' => null,
+                    'attachments' => null,
+                ],
+            ],
+        ];
+        $conversation->hydrate(['threads' => 1], $embeddedFixation);
+
+        $this->assertSame(1, $conversation->getThreadCount());
+
+        $thread = $conversation->getThreads()[0];
+        $this->assertInstanceOf(CustomerThread::class, $thread);
+        $this->assertSame(2198262392, $thread->getId());
+    }
+
     public function testExtractsCreatedByUser()
     {
         $conversation = new Conversation();
