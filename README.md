@@ -823,6 +823,18 @@ Get users.
 $users = $client->users()->list();
 ```
 
+Narrow down the list of Users based on a set of filters.
+
+```php
+use HelpScout\Api\Users\UserFilters;
+
+$filters = (new UserFilters())
+    ->withMailbox(1)
+    ->withEmail('tester@test.com');
+
+$users = $client->users()->list($filters);
+```
+
 ## Reports
 
 When running reports using the SDK, refer to the [developer docs](https://developer.helpscout.com/mailbox-api/) for the exact endpoint, parameters, and response formats. While most of the endpoints in this SDK are little more than pass-through methods to call the API, there are a few conveniences.

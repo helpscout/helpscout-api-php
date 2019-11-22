@@ -7,6 +7,7 @@ namespace HelpScout\Api\Tests\Users;
 use HelpScout\Api\Tests\ApiClientIntegrationTestCase;
 use HelpScout\Api\Tests\Payloads\UserPayloads;
 use HelpScout\Api\Users\User;
+use HelpScout\Api\Users\UserFilters;
 
 /**
  * @group integration
@@ -107,5 +108,24 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
             ['GET', 'https://api.helpscout.net/v2/users'],
             ['GET', 'https://api.helpscout.net/v2/users?page=2'],
         ]);
+    }
+
+    public function testListUsersWithFilters()
+    {
+        $this->stubResponse(
+            $this->getResponse(200, UserPayloads::getUsers(1, 10))
+        );
+
+        $filters = (new UserFilters())
+            ->withMailbox(256);
+
+        $users = $this->client->users()->list($filters);
+
+        $this->assertCount(10, $users);
+        $this->assertInstanceOf(User::class, $users[0]);
+
+        $this->verifySingleRequest(
+            'https://api.helpscout.net/v2/users?mailbox=256'
+        );
     }
 }
