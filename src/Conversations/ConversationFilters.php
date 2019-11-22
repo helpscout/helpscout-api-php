@@ -239,4 +239,5 @@ class ConversationFilters
 
         return $filters;
     }
+
 }
