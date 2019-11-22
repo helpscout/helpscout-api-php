@@ -43,8 +43,6 @@ class UserFilters
     }
 
     /**
-     * @param string $status
-     *
      * @return self
      */
     public function withEmail(string $email)
