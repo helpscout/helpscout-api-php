@@ -23,7 +23,7 @@ use Mockery\LegacyMockInterface;
 
 class ApiClient
 {
-    public const CLIENT_VERSION = '2.4.2';
+    public const CLIENT_VERSION = '2.5.0';
 
     public const AVAILABLE_ENDPOINTS = [
         'hs.workflows' => WorkflowsEndpoint::class,
