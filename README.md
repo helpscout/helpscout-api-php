@@ -559,9 +559,12 @@ Create a new conversation, as if the customer sent an email to your mailbox.
 
 ```php
 
+$email = new Email();
+$email->setValue('my-customer@company.com');
+
 // We can specify either the id or email for the Customer
 $customer = new Customer();
-$customer->addEmail('my-customer@company.com');
+$customer->addEmail($email);
 
 $thread = new CustomerThread();
 $thread->setCustomer($customer);
