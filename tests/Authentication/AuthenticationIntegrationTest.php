@@ -243,7 +243,7 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
         $authenticator->getAuthHeader();
     }
 
-    public function testAuthenticationExceptionThrown()
+    public function testAuthorizationExceptionWhenUnauthorizedStatusCode()
     {
         $this->expectException(AuthenticationException::class);
 
