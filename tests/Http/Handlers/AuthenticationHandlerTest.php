@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace HelpScout\Api\Tests\Exceptions;
+namespace HelpScout\Api\Tests\Http\Handlers;
 
 use HelpScout\Api\Exception\AuthenticationException;
 use HelpScout\Api\Tests\ApiClientIntegrationTestCase;
 
-class AuthenticationExceptionTest extends ApiClientIntegrationTestCase
+class AuthenticationHandlerTest extends ApiClientIntegrationTestCase
 {
     public function testAuthorizationExceptionThrownWhenUnauthorizedStatusCode()
     {
