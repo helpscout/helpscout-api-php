@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http\Handlers;
 
-use GuzzleHttp\Exception\RequestException;
+use HelpScout\Api\Exception\AuthenticationException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class ClientErrorHandler
+class AuthenticationHandler
 {
     public function __invoke(callable $handler)
     {
         return function (RequestInterface $request, array $options = []) use ($handler) {
             return $handler($request, $options)->then(
                 function (ResponseInterface $response) use ($request) {
-                    if ($response->getStatusCode() > 401) {
-                        $e = RequestException::create($request, $response);
-
-                        throw $e;
+                    if ($response->getStatusCode() === 401) {
+                        throw new AuthenticationException(
+                            'Authentication Error',
+                            $request,
+                            $response
+                        );
                     }
 
                     return $response;

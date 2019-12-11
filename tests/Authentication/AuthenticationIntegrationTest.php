@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Authentication;
 
 use GuzzleHttp\Client;
+use HelpScout\Api\Exception\AuthenticationException;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
@@ -240,5 +241,14 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
 
         $authenticator = new Authenticator($this->guzzle);
         $authenticator->getAuthHeader();
+    }
+
+    public function testAuthenticationExceptionThrown()
+    {
+        $this->expectException(AuthenticationException::class);
+
+        $this->stubResponse($this->getResponse(401, json_encode([])));
+
+        $this->client->customers()->get(1);
     }
 }
