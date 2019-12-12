@@ -16,7 +16,7 @@ class AuthenticationHandler
             return $handler($request, $options)->then(
                 function (ResponseInterface $response) use ($request) {
                     if ($response->getStatusCode() === 401) {
-                        throw new AuthenticationException('Authentication Error', $request, $response);
+                        throw new AuthenticationException('Invalid Credentials', $request, $response);
                     }
 
                     return $response;
