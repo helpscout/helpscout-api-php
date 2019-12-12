@@ -17,7 +17,7 @@ class AttachmentFactoryTest extends TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|Filesystem */
     private $filesystem;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
