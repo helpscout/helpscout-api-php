@@ -6,7 +6,6 @@ env:
 language: php
 
 php:
-  - 7.2
   - 7.3
 
 before_script:
