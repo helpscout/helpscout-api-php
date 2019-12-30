@@ -46,9 +46,9 @@ class ClientHandlerTest extends ApiClientIntegrationTestCase
     public function testRequestExceptionNotThrownWhenNotAuthorized()
     {
         $this->mockHandler = new MockHandler();
-        $handler           = HandlerStack::create($this->mockHandler);
+        $handler = HandlerStack::create($this->mockHandler);
 
-        $client              = new Client(['handler' => $handler]);
+        $client = new Client(['handler' => $handler]);
         $this->authenticator = new Authenticator($client);
         $this->authenticator->setAccessToken('abc123');
 
