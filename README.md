@@ -959,6 +959,8 @@ $client->workflows()->updateStatus($id, 'active');
 
 Any exception thrown by the client directly will implement `HelpScout\Api\Exception` and HTTP errors will result in `Http\Client\Exception\RequestException` being thrown.
 
+If an OAuth2 token is not provided or invalid then a `HelpScout\Api\Exception\AuthenticationException` is thrown. 
+
 ## Validation
 
 You'll encounter a `ValidationErrorException` if there are any validation errors with the request you submitted to the API.  Here's a quick example on how to use that exception:
