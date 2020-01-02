@@ -11,7 +11,7 @@ class HasPartiesToBeNotifiedTest extends TestCase
 {
     use HasPartiesToBeNotified;
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         parent::tearDown();
 

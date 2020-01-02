@@ -32,7 +32,7 @@ class PagedCollectionTest extends TestCase
      */
     private $collection;
 
-    public function setUp(): void
+    public function setUp()
     {
         $this->loadedCollection = Mockery::mock(PagedCollection::class);
         $this->pageLoader = new PageLoaderStub($this->loadedCollection);
