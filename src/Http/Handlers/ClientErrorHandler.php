@@ -15,7 +15,7 @@ class ClientErrorHandler
         return function (RequestInterface $request, array $options = []) use ($handler) {
             return $handler($request, $options)->then(
                 function (ResponseInterface $response) use ($request) {
-                    if ($response->getStatusCode() >= 400 && $response->getStatusCode() !== 401) {
+                    if ($response->getStatusCode() >= 400) {
                         $e = RequestException::create($request, $response);
 
                         throw $e;
