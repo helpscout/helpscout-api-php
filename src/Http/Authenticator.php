@@ -7,7 +7,6 @@ namespace HelpScout\Api\Http;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
-use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
 
@@ -117,19 +116,6 @@ class Authenticator
     public function useClientCredentials(string $appId, string $appSecret): void
     {
         $this->auth = new ClientCredentials($appId, $appSecret);
-    }
-
-    /**
-     * The Legacy Token auth scheme is provided as a developer convenience
-     * while transitioning from v1 to v2 of the API. On June 6, 2019, we will
-     * sunset v1 of the API. At that time, this method will no longer function
-     * and we will remove it from the SDK.
-     *
-     * @deprecated
-     */
-    public function useLegacyToken(string $clientId, string $apiKey): void
-    {
-        $this->auth = new LegacyCredentials($clientId, $apiKey);
     }
 
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): void

@@ -6,7 +6,6 @@ namespace HelpScout\Api\Tests\Authentication;
 
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\ClientCredentials;
-use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
 use HelpScout\Api\Http\Authenticator;
@@ -66,22 +65,6 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
         $this->authenticator->useClientCredentials($appId, $appSecret);
         $auth = $this->authenticator->getAuthCredentials();
         $this->assertInstanceOf(ClientCredentials::class, $auth);
-        $this->assertSame($expectedPayload, $auth->getPayload());
-    }
-
-    public function testLegacyCredentialsSetsAuth()
-    {
-        $clientId = '123abc';
-        $apiKey = 'fdafda';
-        $expectedPayload = [
-            'clientId' => $clientId,
-            'apiKey' => $apiKey,
-        ];
-
-        $this->authenticator->useLegacyToken($clientId, $apiKey);
-        $auth = $this->authenticator->getAuthCredentials();
-        $this->assertSame(LegacyCredentials::TYPE, $auth->getType());
-        $this->assertInstanceOf(LegacyCredentials::class, $auth);
         $this->assertSame($expectedPayload, $auth->getPayload());
     }
 

@@ -102,22 +102,6 @@ class ApiClient
         return $this;
     }
 
-    /**
-     * The Legacy Token auth scheme is provided as a developer convenience
-     * while transitioning from v1 to v2 of the API. On June 6, 2019, we will
-     * sunset v1 of the API. At that time, this method will no longer function
-     * and we will remove it from the SDK.
-     *
-     * @deprecated
-     */
-    public function useLegacyToken(string $clientId, string $apiKey): ApiClient
-    {
-        $this->getAuthenticator()
-            ->useLegacyToken($clientId, $apiKey);
-
-        return $this;
-    }
-
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): ApiClient
     {
         $this->getAuthenticator()

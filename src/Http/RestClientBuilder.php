@@ -13,7 +13,6 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
-use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
 use HelpScout\Api\Http\Handlers\AuthenticationHandler;
@@ -67,11 +66,6 @@ class RestClientBuilder
                 return new ClientCredentials(
                     $authConfig['appId'],
                     $authConfig['appSecret']
-                );
-            case LegacyCredentials::TYPE:
-                return new LegacyCredentials(
-                    $authConfig['clientId'],
-                    $authConfig['apiKey']
                 );
             case RefreshCredentials::TYPE:
                 return new RefreshCredentials(
