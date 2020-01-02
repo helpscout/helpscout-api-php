@@ -18,7 +18,7 @@ class ThreadFactoryTest extends TestCase
     /** @var ThreadFactory */
     private $factory;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

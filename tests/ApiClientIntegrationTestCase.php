@@ -41,7 +41,7 @@ abstract class ApiClientIntegrationTestCase extends TestCase
      */
     protected $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->history = [];
         $this->mockHandler = new MockHandler();
@@ -76,12 +76,7 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         $this->mockHandler->append($response);
     }
 
-    /**
-     * @param int    $status
-     * @param string $body
-     * @param array  $headers
-     */
-    protected function getResponse($status = 200, $body = '', $headers = []): Response
+    protected function getResponse(int $status = 200, string $body = '', array $headers = []): Response
     {
         return new Response($status, $headers, $body);
     }

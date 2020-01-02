@@ -248,7 +248,9 @@ class ConversationTest extends TestCase
         );
         $conversation->setCustomerWaitingSince($customerWaitingSince);
 
-        $this->assertArraySubset([
+        $extractedConversation = $conversation->extract();
+
+        $firstLevelValues = [
             'id' => 12,
             'number' => 3526,
             'threadCount' => 2,
@@ -262,49 +264,77 @@ class ConversationTest extends TestCase
             'subject' => 'Help',
             'preview' => 'Preview',
             'mailboxId' => 13,
-            'assignee' => [
-                'id' => 9865,
-                'firstName' => 'Mr',
-                'lastName' => 'Robot',
-            ],
-            'createdBy' => [
-                'id' => 12,
-                'type' => 'customer',
-            ],
             'createdAt' => '2017-04-21T14:39:56Z',
             'closedAt' => '2017-04-21T12:23:06Z',
             'closedBy' => 14,
             'userUpdatedAt' => '2017-04-21T03:12:06Z',
-            'source' => [
+        ];
+
+        $this->assertEquals(
+            $firstLevelValues,
+            array_intersect_assoc($extractedConversation, $firstLevelValues)
+        );
+
+        $this->assertEquals(
+            [
+                'id' => 9865,
+                'firstName' => 'Mr',
+                'lastName' => 'Robot',
+            ],
+            $extractedConversation['assignee']
+        );
+
+        $this->assertEquals(
+            [
+                'id' => 12,
+                'type' => 'customer',
+            ],
+            $extractedConversation['createdBy']
+        );
+
+        $this->assertEquals(
+            [
                 'type' => 'email',
                 'via' => 'customer',
             ],
-            'cc' => [
-                'bear@normal.com',
-            ],
-            'bcc' => [
-                'bear@secret.com',
-            ],
-            'customer' => [
-                'id' => 152,
-                'email' => 'mycustomer@domain.com',
-            ],
-            'customerWaitingSince' => [
+            $extractedConversation['source']
+        );
+
+        $this->assertEquals(
+            ['bear@normal.com'],
+            $extractedConversation['cc']
+        );
+
+        $this->assertEquals(
+            ['bear@secret.com'],
+            $extractedConversation['bcc']
+        );
+
+        $this->assertEquals(152, $extractedConversation['customer']['id']);
+        $this->assertEquals(
+            'mycustomer@domain.com',
+            $extractedConversation['customer']['email']
+        );
+
+        $this->assertEquals(
+            [
                 'time' => '2012-07-24T20:18:33Z',
                 'friendly' => '20 hours ago',
                 'latestReplyFrom' => 'customer',
             ],
-            'tags' => [
-                'Productive',
-            ],
-            'fields' => [
-                [
-                    'id' => 936,
-                    'name' => 'Account Type',
-                    'value' => 'Administrator',
-                ],
-            ],
-        ], $conversation->extract());
+            $extractedConversation['customerWaitingSince']
+        );
+
+        $this->assertEquals(['Productive'], $extractedConversation['tags']);
+
+        $this->assertEquals(
+            [[
+                'id' => 936,
+                'name' => 'Account Type',
+                'value' => 'Administrator',
+            ]],
+            $extractedConversation['fields']
+        );
     }
 
     public function testExtractsThreads()
