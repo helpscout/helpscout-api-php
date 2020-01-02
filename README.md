@@ -44,7 +44,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
 The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
 
 ```bash
-composer require helpscout/api
+composer require helpscout/api "^2.0"
 ```
 
 ## Usage
