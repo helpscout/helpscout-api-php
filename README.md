@@ -8,7 +8,8 @@ This is the official Help Scout PHP client. This client contains methods for eas
 
 ## Requirements
 
-* PHP >= 7.1
+ * `master` (soon to be v3) requires PHP >= 7.3
+ * v2 requires PHP >= 7.1 (see [v2 documentation](https://github.com/helpscout/helpscout-api-php/tree/v2))
 
 ## Table of Contents
 
