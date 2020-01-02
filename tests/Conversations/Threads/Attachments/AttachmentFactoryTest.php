@@ -7,6 +7,7 @@ namespace HelpScout\Api\Tests\Conversations\Threads\Attachments;
 use HelpScout\Api\Conversations\Threads\Attachments\AttachmentFactory;
 use HelpScout\Api\Exception\RuntimeException;
 use HelpScout\Api\Support\Filesystem;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AttachmentFactoryTest extends TestCase
@@ -14,10 +15,10 @@ class AttachmentFactoryTest extends TestCase
     /** @var AttachmentFactory */
     private $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject|Filesystem */
+    /** @var MockObject */
     private $filesystem;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

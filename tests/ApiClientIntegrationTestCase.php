@@ -11,6 +11,7 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\Http\Authenticator;
+use HelpScout\Api\Http\Handlers\AuthenticationHandler;
 use HelpScout\Api\Http\Handlers\ClientErrorHandler;
 use HelpScout\Api\Http\Handlers\RateLimitHandler;
 use HelpScout\Api\Http\Handlers\ValidationHandler;
@@ -40,7 +41,7 @@ abstract class ApiClientIntegrationTestCase extends TestCase
      */
     protected $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->history = [];
         $this->mockHandler = new MockHandler();
@@ -48,6 +49,7 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         $handler = HandlerStack::create($this->mockHandler);
 
         $handler->push(Middleware::history($this->history));
+        $handler->push(new AuthenticationHandler());
         $handler->push(new ClientErrorHandler());
         $handler->push(new RateLimitHandler());
         $handler->push(new ValidationHandler());
@@ -74,12 +76,7 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         $this->mockHandler->append($response);
     }
 
-    /**
-     * @param int    $status
-     * @param string $body
-     * @param array  $headers
-     */
-    protected function getResponse($status = 200, $body = '', $headers = []): Response
+    protected function getResponse(int $status = 200, string $body = '', array $headers = []): Response
     {
         return new Response($status, $headers, $body);
     }

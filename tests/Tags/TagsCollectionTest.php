@@ -22,6 +22,6 @@ class TagsCollectionTest extends TestCase
 
         $extracted = $tagsCollection->extract();
         $this->assertArrayHasKey('tags', $extracted);
-        $this->assertContains('Support', $extracted['tags'][0]);
+        $this->assertStringContainsStringIgnoringCase('Support', $extracted['tags'][0]);
     }
 }

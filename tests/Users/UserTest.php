@@ -82,8 +82,8 @@ class UserTest extends TestCase
         $user->hydrate([
             'jobTitle' => 'Developer',
             'phone' => '555-555-6666',
-            'alternativeEmails' => [
-                'alternative@email.com'
+            'alternateEmails' => [
+                'alternative@email.com',
             ],
         ]);
 

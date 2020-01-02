@@ -4,6 +4,6 @@ composer.lock
 coverage
 vendor
 .idea
-./examples/_credentials.php
+examples/_credentials.php
 build
 .DS_Store
