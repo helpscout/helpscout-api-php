@@ -21,7 +21,7 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
 {
     protected $guzzle;
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

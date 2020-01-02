@@ -3,3 +3,4 @@ parameters:
         # Ignore type errors for passing a Mock
         - '#.*MockObject given.*#'
         - '#.*MockInterface given.*#'
+        - '#.*does not accept PHPUnit\\Framework\\MockObject\\MockObject.*#'
