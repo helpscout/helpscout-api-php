@@ -73,6 +73,21 @@ class User implements Hydratable
      */
     private $initials;
 
+    /**
+     * @var string|null
+     */
+    private $jobTitle;
+
+    /**
+     * @var string|null
+     */
+    private $phone;
+
+    /**
+     * @var array|null
+     */
+    private $alternateEmails;
+
     public function hydrate(array $data, array $embedded = [])
     {
         if (isset($data['id'])) {
@@ -102,6 +117,9 @@ class User implements Hydratable
         $this->setType($data['type'] ?? null);
         $this->setMention($data['mention'] ?? null);
         $this->setInitials($data['initials'] ?? null);
+        $this->setJobTitle($data['jobTitle'] ?? null);
+        $this->setPhone($data['phone'] ?? null);
+        $this->setAlternateEmails($data['alternateEmails'] ?? null);
     }
 
     public function getId(): int
@@ -273,6 +291,51 @@ class User implements Hydratable
     public function setInitials($initials): User
     {
         $this->initials = $initials;
+
+        return $this;
+    }
+
+    public function getJobTitle(): ?string
+    {
+        return $this->jobTitle;
+    }
+
+    /**
+     * @param string|null $jobTitle
+     */
+    public function setJobTitle($jobTitle): User
+    {
+        $this->jobTitle = $jobTitle;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string|null $phone
+     */
+    public function setPhone($phone): User
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getalternateEmails(): ?array
+    {
+        return $this->alternateEmails;
+    }
+
+    /**
+     * @param array|null $alternateEmails
+     */
+    public function setAlternateEmails($alternateEmails): User
+    {
+        $this->alternateEmails = $alternateEmails;
 
         return $this;
     }
