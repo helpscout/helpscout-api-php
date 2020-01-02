@@ -16,7 +16,7 @@ class AuthenticatorTest extends TestCase
     /** @var MockInterface|Mockery\LegacyMockInterface */
     public $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = Mockery::mock(Client::class);
     }
