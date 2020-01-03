@@ -75,4 +75,23 @@ class UserTest extends TestCase
         $this->assertSame('John', $user->getFirstName());
         $this->assertSame('Smith', $user->getLastName());
     }
+
+    public function testHydrateWithAdditionalFields()
+    {
+        $user = new User();
+        $user->hydrate([
+            'jobTitle' => 'Developer',
+            'phone' => '555-555-6666',
+            'alternateEmails' => [
+                'alternative@email.com',
+            ],
+        ]);
+
+        $this->assertSame('Developer', $user->getJobTitle());
+        $this->assertSame('555-555-6666', $user->getPhone());
+        $this->assertSame(
+            ['alternative@email.com'],
+            $user->getAlternateEmails()
+        );
+    }
 }
