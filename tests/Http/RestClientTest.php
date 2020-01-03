@@ -11,7 +11,6 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\Http\Auth\ClientCredentials;
-use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
 use HelpScout\Api\Http\Authenticator;
@@ -111,24 +110,6 @@ class RestClientTest extends TestCase
 
         $this->assertInstanceOf(
             RefreshCredentials::class,
-            $client->getAuthenticator()->getAuthCredentials()
-        );
-    }
-
-    public function testRestClientBuilderHandlesLegacyCredentialsAuth()
-    {
-        $config = [
-            'auth' => [
-                'type' => LegacyCredentials::TYPE,
-                'clientId' => '123abc',
-                'apiKey' => 'cba321',
-            ],
-        ];
-        $builder = new RestClientBuilder($config);
-        $client = $builder->build();
-
-        $this->assertInstanceOf(
-            LegacyCredentials::class,
             $client->getAuthenticator()->getAuthCredentials()
         );
     }
