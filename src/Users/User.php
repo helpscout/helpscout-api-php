@@ -147,7 +147,10 @@ class User implements Hydratable
         return $this->firstName;
     }
 
-    public function setFirstName(?string $firstName): User
+    /**
+     * @param string|null $firstName
+     */
+    public function setFirstName($firstName): User
     {
         $this->firstName = $firstName;
 
@@ -159,7 +162,10 @@ class User implements Hydratable
         return $this->lastName;
     }
 
-    public function setLastName(?string $lastName): User
+    /**
+     * @param string|null $lastName
+     */
+    public function setLastName($lastName): User
     {
         $this->lastName = $lastName;
 
@@ -171,7 +177,10 @@ class User implements Hydratable
         return $this->email;
     }
 
-    public function setEmail(?string $email): User
+    /**
+     * @param string|null $email
+     */
+    public function setEmail($email): User
     {
         $this->email = $email;
 
@@ -183,7 +192,10 @@ class User implements Hydratable
         return $this->role;
     }
 
-    public function setRole(?string $role): User
+    /**
+     * @param string|null $role
+     */
+    public function setRole($role): User
     {
         $this->role = $role;
 
@@ -195,7 +207,10 @@ class User implements Hydratable
         return $this->timezone;
     }
 
-    public function setTimezone(?string $timezone): User
+    /**
+     * @param string|null $timezone
+     */
+    public function setTimezone($timezone): User
     {
         $this->timezone = $timezone;
 
@@ -207,7 +222,10 @@ class User implements Hydratable
         return $this->photoUrl;
     }
 
-    public function setPhotoUrl(?string $photoUrl): User
+    /**
+     * @param string|null $photoUrl
+     */
+    public function setPhotoUrl($photoUrl): User
     {
         $this->photoUrl = $photoUrl;
 
@@ -219,7 +237,10 @@ class User implements Hydratable
         return $this->type;
     }
 
-    public function setType(?string $type): User
+    /**
+     * @param string|null $type
+     */
+    public function setType($type): User
     {
         $this->type = $type;
 
@@ -231,7 +252,10 @@ class User implements Hydratable
         return $this->mention;
     }
 
-    public function setMention(?string $mention): User
+    /**
+     * @param string|null $mention
+     */
+    public function setMention($mention): User
     {
         $this->mention = $mention;
 
@@ -243,7 +267,10 @@ class User implements Hydratable
         return $this->initials;
     }
 
-    public function setInitials(?string $initials): User
+    /**
+     * @param string|null $initials
+     */
+    public function setInitials($initials): User
     {
         $this->initials = $initials;
 
