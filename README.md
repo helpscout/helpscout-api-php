@@ -509,7 +509,7 @@ $filters = (new ConversationFilters())
     ->sortField('createdAt')
     ->sortOrder('asc')
     ->withQuery('query')
-    ->withCustomFieldById(123, 'blue');
+    ->byCustomField(123, 'blue');
 
 $conversations = $client->conversations()->list($filters);
 
@@ -528,7 +528,7 @@ $request = (new ConversationRequest)
 $filters = (new ConversationFilters())
     ->inMailbox(1)
     ->inFolder(13)
-    ->withCustomFieldById(123, 'blue');
+    ->byCustomField(123, 'blue');
     
 $conversations = $client->conversations()->list($filters, $request);
 ```

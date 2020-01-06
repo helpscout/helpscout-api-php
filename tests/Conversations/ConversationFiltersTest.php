@@ -32,7 +32,7 @@ class ConversationFiltersTest extends TestCase
             ->sortField('createdAt')
             ->sortOrder('asc')
             ->withQuery('query')
-            ->withCustomFieldById(123, 'blue');
+            ->byCustomField(123, 'blue');
 
         $this->assertSame([
             'mailbox' => 1,
@@ -52,7 +52,7 @@ class ConversationFiltersTest extends TestCase
     public function testMultipleCustomFields()
     {
         $filters = (new ConversationFilters())
-            ->withCustomFieldsById([
+            ->byCustomFields([
                 '123:blue',
                 '456:yellow',
                 '789:red',

@@ -94,7 +94,7 @@ class ConversationFilters
         });
     }
 
-    public function withCustomFieldById(int $id, $value): ConversationFilters
+    public function byCustomField(int $id, $value): ConversationFilters
     {
         $filters = clone $this;
         if ($this->customFieldIds === null) {
@@ -105,7 +105,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withCustomFieldsById(array $fields): ConversationFilters
+    public function byCustomFields(array $fields): ConversationFilters
     {
         $filters = clone $this;
         $filters->customFieldIds = $fields;
