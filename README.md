@@ -816,8 +816,8 @@ Narrow down the list of Users based on a set of filters.
 use HelpScout\Api\Users\UserFilters;
 
 $filters = (new UserFilters())
-    ->withMailbox(1)
-    ->withEmail('tester@test.com');
+    ->inMailbox(1)
+    ->byEmail('tester@test.com');
 
 $users = $client->users()->list($filters);
 ```
