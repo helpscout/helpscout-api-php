@@ -94,9 +94,6 @@ class ConversationFilters
         });
     }
 
-    /**
-     * @param mixed $value
-     */
     public function withCustomFieldById(int $id, $value): ConversationFilters
     {
         $filters = clone $this;
@@ -116,10 +113,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withMailbox(int $mailbox)
+    public function withMailbox(int $mailbox): ConversationFilters
     {
         Assert::greaterThan($mailbox, 0);
 
@@ -129,10 +123,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withFolder(int $folderId)
+    public function withFolder(int $folderId): ConversationFilters
     {
         $filters = clone $this;
         $filters->folderId = $folderId;
@@ -140,10 +131,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withStatus(string $status)
+    public function withStatus(string $status): ConversationFilters
     {
         Assert::oneOf($status, [
             Status::ANY,
@@ -160,12 +148,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @param string $tag Either a tag name or slug
-     *
-     * @return self
-     */
-    public function withTag(string $tag)
+    public function withTag(string $tag): ConversationFilters
     {
         $filters = clone $this;
         $filters->tag = [
@@ -175,10 +158,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withTags(array $tags)
+    public function withTags(array $tags): ConversationFilters
     {
         $filters = clone $this;
         $filters->tag = $tags;
@@ -186,10 +166,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withAssignedTo(int $assigneeId)
+    public function withAssignedTo(int $assigneeId): ConversationFilters
     {
         $filters = clone $this;
         $filters->assignedTo = $assigneeId;
@@ -197,10 +174,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withModifiedSince(DateTime $modifiedSince)
+    public function withModifiedSince(DateTime $modifiedSince): ConversationFilters
     {
         $modifiedSince->setTimezone(new DateTimeZone('UTC'));
 
@@ -210,10 +184,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withNumber(int $number)
+    public function withNumber(int $number): ConversationFilters
     {
         $filters = clone $this;
         $filters->number = $number;
@@ -221,10 +192,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withSortField(string $sortField)
+    public function withSortField(string $sortField): ConversationFilters
     {
         Assert::oneOf($sortField, [
             'createdAt',
@@ -243,10 +211,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withSortOrder(string $sortOrder)
+    public function withSortOrder(string $sortOrder): ConversationFilters
     {
         $sortOrder = strtolower($sortOrder);
         Assert::oneOf($sortOrder, [
@@ -265,7 +230,7 @@ class ConversationFilters
      *
      * @return self
      */
-    public function withQuery(string $query)
+    public function withQuery(string $query): ConversationFilters
     {
         $filters = clone $this;
         $filters->query = $query;
