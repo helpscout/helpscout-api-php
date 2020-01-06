@@ -9,7 +9,7 @@ use HelpScout\Api\Assert\Assert;
 class UserFilters
 {
     /**
-     * @var integer
+     * @var int
      */
     private $mailbox;
 
