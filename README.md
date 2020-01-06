@@ -184,8 +184,8 @@ provides a simple interface to set filter values. For example:
 use HelpScout\Api\Customers\CustomerFilters;
 
 $filter = (new CustomerFilters())
-    ->withFirstName('Tom')
-    ->withLastName('Graham');
+    ->byFirstName('Tom')
+    ->byLastName('Graham');
 
 $customers = $client->customers()->list($filter);
 ```
