@@ -32,13 +32,13 @@ foreach($customers as $customer) {
 }
 
 $filters = (new CustomerFilters())
-    ->withFirstName('John')
-    ->withLastName('Smith')
-    ->withMailbox('12')
-    ->withModifiedSince(new DateTime('last month'))
+    ->byFirstName('John')
+    ->byLastName('Smith')
+    ->inMailbox('12')
+    ->modifiedSince(new DateTime('last month'))
     // See https://developer.helpscout.com/mailbox-api/endpoints/customers/list/#query for details on what you can do with query
     ->withQuery('email:"alan@easycrypto.nz"')
-    ->withSortField('createdAt')
-    ->withSortOrder('asc');
+    ->sortField('createdAt')
+    ->sortOrder('asc');
 
 $customers = $client->customers()->list($filters);

@@ -64,10 +64,7 @@ class CustomerFilters
         });
     }
 
-    /**
-     * @return self
-     */
-    public function withMailbox(int $mailbox)
+    public function inMailbox(int $mailbox): CustomerFilters
     {
         Assert::greaterThan($mailbox, 0);
 
@@ -77,10 +74,7 @@ class CustomerFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withFirstName(string $firstName)
+    public function byFirstName(string $firstName): CustomerFilters
     {
         $filters = clone $this;
         $filters->firstName = $firstName;
@@ -88,10 +82,7 @@ class CustomerFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withLastName(string $lastName)
+    public function byLastName(string $lastName): CustomerFilters
     {
         $filters = clone $this;
         $filters->lastName = $lastName;
@@ -99,10 +90,7 @@ class CustomerFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withModifiedSince(DateTime $modifiedSince)
+    public function modifiedSince(DateTime $modifiedSince): CustomerFilters
     {
         $modifiedSince->setTimezone(new DateTimeZone('UTC'));
 
@@ -112,10 +100,7 @@ class CustomerFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withSortField(string $sortField)
+    public function sortField(string $sortField): CustomerFilters
     {
         Assert::oneOf($sortField, ['score', 'firstName', 'lastName', 'modifiedAt']);
 
@@ -125,10 +110,7 @@ class CustomerFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withSortOrder(string $sortOrder)
+    public function sortOrder(string $sortOrder): CustomerFilters
     {
         $sortOrder = strtolower($sortOrder);
         Assert::oneOf($sortOrder, ['asc', 'desc']);
@@ -141,10 +123,8 @@ class CustomerFilters
 
     /**
      * @see https://developer.helpscout.com/mailbox-api/endpoints/customers/list/#query
-     *
-     * @return self
      */
-    public function withQuery(string $query)
+    public function withQuery(string $query): CustomerFilters
     {
         $filters = clone $this;
         $filters->query = $query;

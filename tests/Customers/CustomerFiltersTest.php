@@ -21,12 +21,12 @@ class CustomerFiltersTest extends TestCase
     public function testGetParams()
     {
         $filters = (new CustomerFilters())
-            ->withMailbox(1)
-            ->withFirstName('Tom')
-            ->withLastName('Graham')
-            ->withModifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
-            ->withSortField('firstName')
-            ->withSortOrder('asc')
+            ->inMailbox(1)
+            ->byFirstName('Tom')
+            ->byLastName('Graham')
+            ->modifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
+            ->sortField('firstName')
+            ->sortOrder('asc')
             ->withQuery('query');
 
         $this->assertSame([
@@ -44,8 +44,7 @@ class CustomerFiltersTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $filters = (new CustomerFilters())
-            ->withMailbox(0);
+        (new CustomerFilters())->inMailbox(0);
     }
 
     /**
@@ -54,7 +53,7 @@ class CustomerFiltersTest extends TestCase
     public function testWithValidSortField($sortField)
     {
         $filters = (new CustomerFilters())
-            ->withSortField($sortField);
+            ->sortField($sortField);
 
         $this->assertSame([
             'sortField' => $sortField,
@@ -75,8 +74,7 @@ class CustomerFiltersTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $filters = (new CustomerFilters())
-            ->withSortField('invalid');
+        (new CustomerFilters())->sortField('invalid');
     }
 
     /**
@@ -85,7 +83,7 @@ class CustomerFiltersTest extends TestCase
     public function testWithValidSortOrder($sortOrder, $sortOrderParam)
     {
         $filters = (new CustomerFilters())
-            ->withSortOrder($sortOrder);
+            ->sortOrder($sortOrder);
 
         $this->assertSame([
             'sortOrder' => $sortOrderParam,
@@ -106,7 +104,6 @@ class CustomerFiltersTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $filters = (new CustomerFilters())
-            ->withSortOrder('invalid');
+        (new CustomerFilters())->sortOrder('invalid');
     }
 }
