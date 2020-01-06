@@ -12,7 +12,7 @@ $client->useClientCredentials($appId, $appSecret);
 $users = $client->users()->list();
 
 $filters = (new UserFilters())
-    ->withMailbox(197271);
+    ->inMailbox(197271);
 
 $users = $client->users()->list($filters);
 

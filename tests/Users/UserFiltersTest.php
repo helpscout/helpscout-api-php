@@ -19,8 +19,8 @@ class UserFiltersTest extends TestCase
     public function testGetParams()
     {
         $filters = (new UserFilters())
-            ->withMailbox(1)
-            ->withEmail('tester@test.com');
+            ->inMailbox(1)
+            ->byEmail('tester@test.com');
 
         $this->assertSame([
             'mailbox' => 1,
