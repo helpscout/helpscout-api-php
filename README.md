@@ -499,15 +499,15 @@ Narrow down the list of Conversations based on a set of filters.
 use HelpScout\Api\Conversations\ConversationFilters;
 
 $filters = (new ConversationFilters())
-    ->withMailbox(1)
-    ->withFolder(13)
-    ->withStatus('all')
+    ->inMailbox(1)
+    ->inFolder(13)
+    ->inStatus('all')
     ->withTag('testing')
-    ->withAssignedTo(1771)
-    ->withModifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
-    ->withNumber(42)
-    ->withSortField('createdAt')
-    ->withSortOrder('asc')
+    ->assignedTo(1771)
+    ->modifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
+    ->byNumber(42)
+    ->sortField('createdAt')
+    ->sortOrder('asc')
     ->withQuery('query')
     ->withCustomFieldById(123, 'blue');
 
@@ -526,8 +526,8 @@ $request = (new ConversationRequest)
     ->withThreads();
     
 $filters = (new ConversationFilters())
-    ->withMailbox(1)
-    ->withFolder(13)
+    ->inMailbox(1)
+    ->inFolder(13)
     ->withCustomFieldById(123, 'blue');
     
 $conversations = $client->conversations()->list($filters, $request);

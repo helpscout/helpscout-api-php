@@ -81,8 +81,7 @@ class ConversationFiltersTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $filters = (new ConversationFilters())
-            ->inMailbox(0);
+        (new ConversationFilters())->inMailbox(0);
     }
 
     /**
@@ -116,8 +115,7 @@ class ConversationFiltersTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $filters = (new ConversationFilters())
-            ->sortField('invalid');
+        (new ConversationFilters())->sortField('invalid');
     }
 
     /**
