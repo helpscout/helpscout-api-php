@@ -25,7 +25,7 @@ class ConversationFiltersTest extends TestCase
             ->inMailbox(1)
             ->inFolder(13)
             ->inStatus(Status::ANY)
-            ->withTag('testing')
+            ->hasTag('testing')
             ->assignedTo(1771)
             ->modifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
             ->byNumber(42)
@@ -66,7 +66,7 @@ class ConversationFiltersTest extends TestCase
     public function testMultipleTags()
     {
         $filters = (new ConversationFilters())
-            ->withTags([
+            ->hasTags([
                 'testing',
                 'multiple',
                 'tags',

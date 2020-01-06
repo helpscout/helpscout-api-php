@@ -148,7 +148,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withTag(string $tag): ConversationFilters
+    public function hasTag(string $tag): ConversationFilters
     {
         $filters = clone $this;
         $filters->tag = [
@@ -158,7 +158,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withTags(array $tags): ConversationFilters
+    public function hasTags(array $tags): ConversationFilters
     {
         $filters = clone $this;
         $filters->tag = $tags;
