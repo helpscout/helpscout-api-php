@@ -22,9 +22,9 @@ class ConversationFiltersTest extends TestCase
     public function testGetParams()
     {
         $filters = (new ConversationFilters())
-            ->withMailbox(1)
-            ->withFolder(13)
-            ->withStatus(Status::ANY)
+            ->inMailbox(1)
+            ->inFolder(13)
+            ->inStatus(Status::ANY)
             ->withTag('testing')
             ->withAssignedTo(1771)
             ->withModifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
@@ -82,7 +82,7 @@ class ConversationFiltersTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $filters = (new ConversationFilters())
-            ->withMailbox(0);
+            ->inMailbox(0);
     }
 
     /**

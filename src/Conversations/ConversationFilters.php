@@ -113,7 +113,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withMailbox(int $mailbox): ConversationFilters
+    public function inMailbox(int $mailbox): ConversationFilters
     {
         Assert::greaterThan($mailbox, 0);
 
@@ -123,7 +123,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withFolder(int $folderId): ConversationFilters
+    public function inFolder(int $folderId): ConversationFilters
     {
         $filters = clone $this;
         $filters->folderId = $folderId;
@@ -131,7 +131,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withStatus(string $status): ConversationFilters
+    public function inStatus(string $status): ConversationFilters
     {
         Assert::oneOf($status, [
             Status::ANY,
