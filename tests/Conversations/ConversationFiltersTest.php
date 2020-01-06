@@ -26,11 +26,11 @@ class ConversationFiltersTest extends TestCase
             ->inFolder(13)
             ->inStatus(Status::ANY)
             ->withTag('testing')
-            ->withAssignedTo(1771)
-            ->withModifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
-            ->withNumber(42)
-            ->withSortField('createdAt')
-            ->withSortOrder('asc')
+            ->assignedTo(1771)
+            ->modifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
+            ->byNumber(42)
+            ->sortField('createdAt')
+            ->sortOrder('asc')
             ->withQuery('query')
             ->withCustomFieldById(123, 'blue');
 
@@ -91,7 +91,7 @@ class ConversationFiltersTest extends TestCase
     public function testWithValidSortField($sortField)
     {
         $filters = (new ConversationFilters())
-            ->withSortField($sortField);
+            ->sortField($sortField);
 
         $this->assertSame([
             'sortField' => $sortField,
@@ -117,7 +117,7 @@ class ConversationFiltersTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $filters = (new ConversationFilters())
-            ->withSortField('invalid');
+            ->sortField('invalid');
     }
 
     /**
@@ -126,7 +126,7 @@ class ConversationFiltersTest extends TestCase
     public function testWithValidSortOrder($sortOrder, $sortOrderParam)
     {
         $filters = (new ConversationFilters())
-            ->withSortOrder($sortOrder);
+            ->sortOrder($sortOrder);
 
         $this->assertSame([
             'sortOrder' => $sortOrderParam,
@@ -147,7 +147,6 @@ class ConversationFiltersTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $filters = (new ConversationFilters())
-            ->withSortOrder('invalid');
+        (new ConversationFilters())->sortOrder('invalid');
     }
 }

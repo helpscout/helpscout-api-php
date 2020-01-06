@@ -253,7 +253,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         );
 
         $filters = (new ConversationFilters())
-            ->withAssignedTo(256);
+            ->assignedTo(256);
 
         $conversations = $this->client->conversations()->list($filters);
 

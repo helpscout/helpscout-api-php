@@ -166,7 +166,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withAssignedTo(int $assigneeId): ConversationFilters
+    public function assignedTo(int $assigneeId): ConversationFilters
     {
         $filters = clone $this;
         $filters->assignedTo = $assigneeId;
@@ -174,7 +174,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withModifiedSince(DateTime $modifiedSince): ConversationFilters
+    public function modifiedSince(DateTime $modifiedSince): ConversationFilters
     {
         $modifiedSince->setTimezone(new DateTimeZone('UTC'));
 
@@ -184,7 +184,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withNumber(int $number): ConversationFilters
+    public function byNumber(int $number): ConversationFilters
     {
         $filters = clone $this;
         $filters->number = $number;
@@ -192,7 +192,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withSortField(string $sortField): ConversationFilters
+    public function sortField(string $sortField): ConversationFilters
     {
         Assert::oneOf($sortField, [
             'createdAt',
@@ -211,7 +211,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withSortOrder(string $sortOrder): ConversationFilters
+    public function sortOrder(string $sortOrder): ConversationFilters
     {
         $sortOrder = strtolower($sortOrder);
         Assert::oneOf($sortOrder, [
