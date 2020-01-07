@@ -6,10 +6,10 @@
 
 This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout Mailbox API](http://developer.helpscout.net/help-desk-api-v2/).
 
-| SDK Version | PHP Version | Branch                                                             |
-|-------------|-------------|--------------------------------------------------------------------|
-| `3.*`       | >= 7.3      | [`master`](https://github.com/helpscout/helpscout-api-php/tree/master) |
-| `2.*`       | >= 7.1      | [`v2`](https://github.com/helpscout/helpscout-api-php/tree/v2)     |
+| SDK Version | PHP Version | Branch   | Documentation                                                         |
+|-------------|-------------|----------|-----------------------------------------------------------------------|
+| `3.*`       | >= 7.3      | `master` | This page                                                             |
+| `2.*`       | >= 7.1      | `v2`     | [`v2` branch](https://github.com/helpscout/helpscout-api-php/tree/v2) |
 
 ## Table of Contents
 
