@@ -287,6 +287,11 @@ class Thread implements Extractable, Hydratable
         return $this;
     }
 
+    public function isAssigned(): bool
+    {
+        return $this->assignedTo !== null && !empty($this->assignedTo);
+    }
+
     public function getAssignedTo(): ?array
     {
         return $this->assignedTo;
