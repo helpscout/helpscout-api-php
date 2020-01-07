@@ -106,7 +106,7 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
             ->withChats();
 
         $customer = $this->client->customers()->get(1, $request);
-        $chats = $customer->getChats();
+        $chats = $customer->getChatHandles();
 
         $this->assertCount(1, $chats);
 
