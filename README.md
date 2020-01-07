@@ -6,10 +6,10 @@
 
 This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout Mailbox API](http://developer.helpscout.net/help-desk-api-v2/).
 
-## Requirements
-
- * `master` (soon to be v3) requires PHP >= 7.3
- * v2 requires PHP >= 7.1 (see [v2 documentation](https://github.com/helpscout/helpscout-api-php/tree/v2))
+| SDK Version | PHP Version | Branch                                                             |
+|-------------|-------------|--------------------------------------------------------------------|
+| `3.*`       | >= 7.3      | [`master`](https://github.com/helpscout/helpscout-api-php/tree/master) |
+| `2.*`       | >= 7.1      | [`v2`](https://github.com/helpscout/helpscout-api-php/tree/v2)     |
 
 ## Table of Contents
 
@@ -44,7 +44,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
 The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
 
 ```bash
-composer require helpscout/api "^2.0"
+composer require helpscout/api "^3.0"
 ```
 
 ## Usage
