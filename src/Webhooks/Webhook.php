@@ -30,6 +30,7 @@ class Webhook implements Hydratable, Extractable
         'convo.status',
         'convo.tags',
         'customer.created',
+        'customer.updated',
         'satisfaction.ratings',
     ];
 
