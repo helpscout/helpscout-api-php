@@ -94,10 +94,7 @@ class ConversationFilters
         });
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function withCustomFieldById(int $id, $value): ConversationFilters
+    public function byCustomField(int $id, $value): ConversationFilters
     {
         $filters = clone $this;
         if ($this->customFieldIds === null) {
@@ -108,7 +105,7 @@ class ConversationFilters
         return $filters;
     }
 
-    public function withCustomFieldsById(array $fields): ConversationFilters
+    public function byCustomFields(array $fields): ConversationFilters
     {
         $filters = clone $this;
         $filters->customFieldIds = $fields;
@@ -116,10 +113,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withMailbox(int $mailbox)
+    public function inMailbox(int $mailbox): ConversationFilters
     {
         Assert::greaterThan($mailbox, 0);
 
@@ -129,10 +123,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withFolder(int $folderId)
+    public function inFolder(int $folderId): ConversationFilters
     {
         $filters = clone $this;
         $filters->folderId = $folderId;
@@ -140,10 +131,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withStatus(string $status)
+    public function inStatus(string $status): ConversationFilters
     {
         Assert::oneOf($status, [
             Status::ANY,
@@ -160,12 +148,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @param string $tag Either a tag name or slug
-     *
-     * @return self
-     */
-    public function withTag(string $tag)
+    public function hasTag(string $tag): ConversationFilters
     {
         $filters = clone $this;
         $filters->tag = [
@@ -175,10 +158,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withTags(array $tags)
+    public function hasTags(array $tags): ConversationFilters
     {
         $filters = clone $this;
         $filters->tag = $tags;
@@ -186,10 +166,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withAssignedTo(int $assigneeId)
+    public function assignedTo(int $assigneeId): ConversationFilters
     {
         $filters = clone $this;
         $filters->assignedTo = $assigneeId;
@@ -197,10 +174,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withModifiedSince(DateTime $modifiedSince)
+    public function modifiedSince(DateTime $modifiedSince): ConversationFilters
     {
         $modifiedSince->setTimezone(new DateTimeZone('UTC'));
 
@@ -210,10 +184,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withNumber(int $number)
+    public function byNumber(int $number): ConversationFilters
     {
         $filters = clone $this;
         $filters->number = $number;
@@ -221,10 +192,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withSortField(string $sortField)
+    public function sortField(string $sortField): ConversationFilters
     {
         Assert::oneOf($sortField, [
             'createdAt',
@@ -243,10 +211,7 @@ class ConversationFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withSortOrder(string $sortOrder)
+    public function sortOrder(string $sortOrder): ConversationFilters
     {
         $sortOrder = strtolower($sortOrder);
         Assert::oneOf($sortOrder, [
@@ -265,7 +230,7 @@ class ConversationFilters
      *
      * @return self
      */
-    public function withQuery(string $query)
+    public function withQuery(string $query): ConversationFilters
     {
         $filters = clone $this;
         $filters->query = $query;

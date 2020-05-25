@@ -305,4 +305,33 @@ class ThreadTest extends TestCase
         $this->assertTrue($thread->hasAttachments());
         $this->assertSame($attachment, $thread->getAttachments()->toArray()[0]);
     }
+
+    public function testIsAssignedReturnsFalseByDefault()
+    {
+        $this->assertFalse((new Thread())->isAssigned());
+    }
+
+    public function testIsAssignedReturnsFalseIfEmptyArray()
+    {
+        $thread = new Thread();
+        $thread->hydrate(['assignedTo' => []]);
+
+        $this->assertFalse($thread->isAssigned());
+    }
+
+    public function testIsAssigned()
+    {
+        $thread = new Thread();
+        $thread->hydrate([
+            'assignedTo' => [
+                'id' => 1234,
+                'type' => 'team',
+                'first' => 'Jack',
+                'last' => 'Sprout',
+                'email' => 'bear@acme.com',
+            ],
+        ]);
+
+        $this->assertTrue($thread->isAssigned());
+    }
 }

@@ -21,8 +21,8 @@ foreach($mailboxes as $mailbox) {
 
     // Find out how many active conversations we have for each mailbox
     $filters = (new ConversationFilters())
-        ->withMailbox($mailbox->getId())
-        ->withStatus(Status::ACTIVE);
+        ->inMailbox($mailbox->getId())
+        ->inStatus(Status::ACTIVE);
     $conversations = $client->conversations()->list($filters);
 
     echo $mailbox->getName().' ('.number_format($conversations->getTotalElementCount()).') '.PHP_EOL;

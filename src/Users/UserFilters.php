@@ -29,10 +29,7 @@ class UserFilters
         return array_filter($params);
     }
 
-    /**
-     * @return self
-     */
-    public function withMailbox(int $mailbox)
+    public function inMailbox(int $mailbox): UserFilters
     {
         Assert::greaterThan($mailbox, 0);
 
@@ -42,10 +39,7 @@ class UserFilters
         return $filters;
     }
 
-    /**
-     * @return self
-     */
-    public function withEmail(string $email)
+    public function byEmail(string $email): UserFilters
     {
         $filters = clone $this;
         $filters->email = $email;

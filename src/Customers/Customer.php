@@ -438,38 +438,6 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @deprecated
-     *
-     * @return ChatHandle[]|Collection
-     */
-    public function getChats(): Collection
-    {
-        return $this->chats;
-    }
-
-    /**
-     * @deprecated
-     *
-     * @param ChatHandle[]|Collection $chats
-     */
-    public function setChats(Collection $chats): Customer
-    {
-        $this->chats = $chats;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function addChat(ChatHandle $chat): Customer
-    {
-        $this->getChats()->append($chat);
-
-        return $this;
-    }
-
-    /**
      * @return Email[]|Collection
      */
     public function getEmails(): Collection

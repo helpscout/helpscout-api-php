@@ -23,7 +23,7 @@ use Mockery\LegacyMockInterface;
 
 class ApiClient
 {
-    public const CLIENT_VERSION = '2.5.0';
+    public const CLIENT_VERSION = '3.0.0';
 
     public const AVAILABLE_ENDPOINTS = [
         'hs.workflows' => WorkflowsEndpoint::class,
@@ -98,22 +98,6 @@ class ApiClient
     {
         $this->getAuthenticator()
             ->useClientCredentials($appId, $appSecret);
-
-        return $this;
-    }
-
-    /**
-     * The Legacy Token auth scheme is provided as a developer convenience
-     * while transitioning from v1 to v2 of the API. On June 6, 2019, we will
-     * sunset v1 of the API. At that time, this method will no longer function
-     * and we will remove it from the SDK.
-     *
-     * @deprecated
-     */
-    public function useLegacyToken(string $clientId, string $apiKey): ApiClient
-    {
-        $this->getAuthenticator()
-            ->useLegacyToken($clientId, $apiKey);
 
         return $this;
     }

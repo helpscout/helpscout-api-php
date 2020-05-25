@@ -168,21 +168,6 @@ class ApiClientTest extends TestCase
         );
     }
 
-    public function testUseLegacyCredentials()
-    {
-        $clientId = 'abc123';
-        $apiKey = '321cba';
-
-        $this->authenticator->shouldReceive('useLegacyToken')
-            ->once()
-            ->with($clientId, $apiKey);
-        $result = $this->client->useLegacyToken($clientId, $apiKey);
-        $this->assertSame(
-            $result,
-            $this->client
-        );
-    }
-
     public function testUseRefreshToken()
     {
         $appId = 'abc123';

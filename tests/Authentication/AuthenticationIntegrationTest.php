@@ -6,7 +6,6 @@ namespace HelpScout\Api\Tests\Authentication;
 
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\ClientCredentials;
-use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
 use HelpScout\Api\Http\Authenticator;
@@ -69,22 +68,6 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
         $this->assertSame($expectedPayload, $auth->getPayload());
     }
 
-    public function testLegacyCredentialsSetsAuth()
-    {
-        $clientId = '123abc';
-        $apiKey = 'fdafda';
-        $expectedPayload = [
-            'clientId' => $clientId,
-            'apiKey' => $apiKey,
-        ];
-
-        $this->authenticator->useLegacyToken($clientId, $apiKey);
-        $auth = $this->authenticator->getAuthCredentials();
-        $this->assertSame(LegacyCredentials::TYPE, $auth->getType());
-        $this->assertInstanceOf(LegacyCredentials::class, $auth);
-        $this->assertSame($expectedPayload, $auth->getPayload());
-    }
-
     public function testUseRefreshTokenCredentials()
     {
         $appId = '123abc';
@@ -101,44 +84,6 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
         $auth = $this->authenticator->getAuthCredentials();
         $this->assertInstanceOf(RefreshCredentials::class, $auth);
         $this->assertSame($expectedPayload, $auth->getPayload());
-    }
-
-    public function testAuthenticatorFetchesTokensWithLegacyCredentials()
-    {
-        $clientId = '123abc';
-        $apiKey = 'fdafda';
-        $auth = new LegacyCredentials($clientId, $apiKey);
-        $expectedPayload = [
-            'clientId' => $clientId,
-            'apiKey' => $apiKey,
-        ];
-
-        $expectedOptions = [
-            'headers' => [
-                'Content-Type' => 'application/json;charset=UTF-8',
-            ],
-            'json' => $expectedPayload,
-        ];
-
-        $tokenResponse = [
-            'accessToken' => 'fdsafdas',
-            'refreshToken' => 'asdfasdf',
-            'expiresIn' => 7200,
-        ];
-        $expectedResponse = $this->getResponse(200, json_encode($tokenResponse));
-
-        $this->guzzle->shouldReceive('request')
-            ->with('POST', Authenticator::TRANSITION_URL, $expectedOptions)
-            ->andReturn($expectedResponse);
-
-        $expectedResult = [
-            'Authorization' => 'Bearer fdsafdas',
-        ];
-
-        $authenticator = new Authenticator(new Client(), $auth);
-        $authenticator->setClient($this->guzzle);
-        $result = $authenticator->getAuthHeader();
-        $this->assertSame($expectedResult, $result);
     }
 
     public function testAuthenticatorFetchesTokensWithClientCredentials()

@@ -7,7 +7,6 @@ namespace HelpScout\Api\Http;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
-use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
 
@@ -119,19 +118,6 @@ class Authenticator
         $this->auth = new ClientCredentials($appId, $appSecret);
     }
 
-    /**
-     * The Legacy Token auth scheme is provided as a developer convenience
-     * while transitioning from v1 to v2 of the API. On June 6, 2019, we will
-     * sunset v1 of the API. At that time, this method will no longer function
-     * and we will remove it from the SDK.
-     *
-     * @deprecated
-     */
-    public function useLegacyToken(string $clientId, string $apiKey): void
-    {
-        $this->auth = new LegacyCredentials($clientId, $apiKey);
-    }
-
     public function useRefreshToken(string $appId, string $appSecret, string $refreshToken): void
     {
         $this->auth = new RefreshCredentials($appId, $appSecret, $refreshToken);
@@ -145,9 +131,6 @@ class Authenticator
     protected function fetchTokens(): void
     {
         switch ($this->auth->getType()) {
-            case LegacyCredentials::TYPE:
-                $this->convertLegacyToken();
-                break;
             case ClientCredentials::TYPE:
             case RefreshCredentials::TYPE:
                 $this->fetchAccessAndRefreshToken();
@@ -169,26 +152,6 @@ class Authenticator
         $this->refreshToken = $tokens['refresh_token'] ?? null;
 
         return $this;
-    }
-
-    /**
-     * This conversion helper is provided as a developer convenience while
-     * transitioning from v1 to v2 of the API. On June 6, 2019, we will sunset
-     * v1 of the API. At that time, this method will no longer function and we
-     * will remove it from the SDK.
-     *
-     * @deprecated
-     */
-    public function convertLegacyToken(): void
-    {
-        $tokens = $this->requestAuthTokens(
-            $this->auth->getPayload(),
-            self::TRANSITION_URL
-        );
-
-        $this->accessToken = $tokens['accessToken'];
-        $this->refreshToken = $tokens['refreshToken'];
-        $this->ttl = $tokens['expiresIn'];
     }
 
     private function requestAuthTokens(array $payload, string $url): array

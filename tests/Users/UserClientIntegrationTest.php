@@ -117,7 +117,7 @@ class UserClientIntegrationTest extends ApiClientIntegrationTestCase
         );
 
         $filters = (new UserFilters())
-            ->withMailbox(256);
+            ->inMailbox(256);
 
         $users = $this->client->users()->list($filters);
 

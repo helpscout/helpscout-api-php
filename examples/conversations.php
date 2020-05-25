@@ -31,17 +31,17 @@ $conversations = $client->conversations()
     ->toArray();
 
 $filters = (new ConversationFilters())
-    ->withMailbox(1)
-    ->withFolder(13)
-    ->withStatus('all')
-    ->withTag('testing')
-    ->withAssignedTo(1771)
-    ->withNumber(42)
-    ->withSortField('createdAt')
-    ->withSortOrder('asc')
+    ->inMailbox(1)
+    ->inFolder(13)
+    ->inStatus('all')
+    ->hasTag('testing')
+    ->assignedTo(1771)
+    ->byNumber(42)
+    ->sortField('createdAt')
+    ->sortOrder('asc')
     // See https://developer.helpscout.com/mailbox-api/endpoints/conversations/list/#query for details on what you can do with query
     ->withQuery('email:"john@appleseed.com"')
-    ->withCustomFieldById(123, 'blue');
+    ->byCustomField(123, 'blue');
 
 $conversations = $client->conversations()->list($filters);
 

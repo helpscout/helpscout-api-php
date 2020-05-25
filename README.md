@@ -6,10 +6,10 @@
 
 This is the official Help Scout PHP client. This client contains methods for easily interacting with the [Help Scout Mailbox API](http://developer.helpscout.net/help-desk-api-v2/).
 
-## Requirements
-
- * `master` (soon to be v3) requires PHP >= 7.3
- * v2 requires PHP >= 7.1 (see [v2 documentation](https://github.com/helpscout/helpscout-api-php/tree/v2))
+| SDK Version | PHP Version | Branch   | Documentation                                                         |
+|-------------|-------------|----------|-----------------------------------------------------------------------|
+| `3.*`       | >= 7.3      | `master` | This page                                                             |
+| `2.*`       | >= 7.1      | `v2`     | [`v2` branch](https://github.com/helpscout/helpscout-api-php/tree/v2) |
 
 ## Table of Contents
 
@@ -44,7 +44,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
 The recommended way to install the client is by using [Composer](https://getcomposer.org/doc/00-intro.md).
 
 ```bash
-composer require helpscout/api "^2.0"
+composer require helpscout/api "^3.0"
 ```
 
 ## Usage
@@ -70,15 +70,9 @@ $client->setAccessToken('abc123');
 // Set Client credentials if using that grant type
 $client->useClientCredentials($appId, $appSecret);
 
-// Use legacy clientId and apiKey
-$client->useLegacyToken($clientId, $apiKey);
-
 // Use a refresh token to get a new access token
 $client->useRefreshToken($appId, $appSecret, $refreshToken);
 ```
-
-**Note**
-The `legacy_credentials` auth method is provided for developer convenience while both v1 and v2 of the API are active. When v1 of the API sunsets on June 6th, 2019, this auth scheme will no longer be active. 
 
 **Note**
 
@@ -163,8 +157,8 @@ provides a simple interface to set filter values. For example:
 use HelpScout\Api\Customers\CustomerFilters;
 
 $filter = (new CustomerFilters())
-    ->withFirstName('Tom')
-    ->withLastName('Graham');
+    ->byFirstName('Tom')
+    ->byLastName('Graham');
 
 $customers = $client->customers()->list($filter);
 ```
@@ -478,17 +472,17 @@ Narrow down the list of Conversations based on a set of filters.
 use HelpScout\Api\Conversations\ConversationFilters;
 
 $filters = (new ConversationFilters())
-    ->withMailbox(1)
-    ->withFolder(13)
-    ->withStatus('all')
-    ->withTag('testing')
-    ->withAssignedTo(1771)
-    ->withModifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
-    ->withNumber(42)
-    ->withSortField('createdAt')
-    ->withSortOrder('asc')
+    ->inMailbox(1)
+    ->inFolder(13)
+    ->inStatus('all')
+    ->hasTag('testing')
+    ->assignedTo(1771)
+    ->modifiedSince(new DateTime('2017-05-06T09:04:23+05:00'))
+    ->byNumber(42)
+    ->sortField('createdAt')
+    ->sortOrder('asc')
     ->withQuery('query')
-    ->withCustomFieldById(123, 'blue');
+    ->byCustomField(123, 'blue');
 
 $conversations = $client->conversations()->list($filters);
 
@@ -505,9 +499,9 @@ $request = (new ConversationRequest)
     ->withThreads();
     
 $filters = (new ConversationFilters())
-    ->withMailbox(1)
-    ->withFolder(13)
-    ->withCustomFieldById(123, 'blue');
+    ->inMailbox(1)
+    ->inFolder(13)
+    ->byCustomField(123, 'blue');
     
 $conversations = $client->conversations()->list($filters, $request);
 ```
@@ -795,8 +789,8 @@ Narrow down the list of Users based on a set of filters.
 use HelpScout\Api\Users\UserFilters;
 
 $filters = (new UserFilters())
-    ->withMailbox(1)
-    ->withEmail('tester@test.com');
+    ->inMailbox(1)
+    ->byEmail('tester@test.com');
 
 $users = $client->users()->list($filters);
 ```
@@ -887,14 +881,16 @@ $client->webhooks()->delete($webhookId);
 You can also use the SDK to easily process an incoming webhook.  Signature validation will happen when creating the new object, so no need to check if it is valid or not. If the signatures do not match, the constructor of the `IncomingWebhook` object will throw an `InvalidSignatureException` to let you know something is wrong.
 
 ```php
-// Build using a request object that satisfies the PSR-7 RequestInterface
+// Build it from globals
+$incoming = IncomingWebhook::makeFromGlobals($secret);
+```
+
+```php
+// or build using a request object that satisfies the PSR-7 RequestInterface
 /** @var RequestInterface $request */
 $request = new Request(...);
 $secret = 'superSekretKey';
 $incoming = new IncomingWebhook($request, $secret);
-
-// Or build it from globals
-$incoming = IncomingWebhook::makeFromGlobals($secret);
 ```
 
 Once you have the incoming webhook object, you can check the type of payload (customer, conversation, or test) as well as retrieve the data ([see example](https://github.com/helpscout/helpscout-api-php/blob/master/examples/incoming_webhook.php)). If a customer or conversation, you can retrieve the model associated. Otherwise, you can get the payload as either an associative array or standard class object.
