@@ -5,6 +5,18 @@ require '_credentials.php';
 use HelpScout\Api\ApiClientFactory;
 
 /**
+ * ----------------------------------------------------------------------------------------------------
+ * Using Client Credentials flow (id & secret directly)
+ * @see https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow
+ */
+$client = ApiClientFactory::createClient();
+$client = $client->useClientCredentials($appId, $appSecret);
+
+$users = $client->users()->list();
+print_r($users->getFirstPage()->toArray());
+
+/**
+ * ----------------------------------------------------------------------------------------------------
  * Using Authorization Code flow
  * @see https://developer.helpscout.com/mailbox-api/overview/authentication/#authorization-code-flow
  */

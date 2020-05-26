@@ -76,33 +76,6 @@ $client->useRefreshToken($appId, $appSecret, $refreshToken);
 
 **Note**
 
-You can also pass auth credentials when you create the client.
-
-```php
-// client credentials grant
-$config = [
-    'auth' => [
-        'type' => 'client_credentials',
-        'appId' => 'asdf1234',
-        'appSecret' => 'fdas4321'
-    ]
-];
-$client = ApiClientFactory::createClient($config);
-
-// Using a refresh token
-$config = [
-    'auth' => [
-        'type' => 'refresh_token',
-        'appId' => 'asdf1234',
-        'appSecret' => 'fdas4321',
-        'refreshToken' => 'asdfasdf'
-    ]
-];
-$client = ApiClientFactory::createClient($config);
-```
-
-**Note**
-
 All credential types will trigger a pre-flight request to get an access token (HTTP 'POST' request). To avoid this, set the access token on the client before making a request using the `setAccessToken` method on the client.
 ```php
 $client = ApiClientFactory::createClient();
