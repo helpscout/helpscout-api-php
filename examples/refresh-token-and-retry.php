@@ -11,11 +11,11 @@ $client = $client->useClientCredentials($appId, $appSecret);
 /**
  * This example shows how to catch an Auth exception, refresh the token and retry the same work again.
  */
-function autoRefreshToken(ApiClient $client, Closure $closure) {
+function autoRefreshToken(ApiClient $client, Closure $workToRetry) {
     $attempts = 0;
     do {
         try {
-            return $closure($client);
+            return $workToRetry($client);
         } catch (\HelpScout\Api\Exception\AuthenticationException $e) {
             $client->getAuthenticator()->fetchAccessAndRefreshToken();
         }
