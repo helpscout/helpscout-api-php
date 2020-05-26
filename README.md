@@ -64,11 +64,12 @@ use HelpScout\Api\ApiClientFactory;
 
 $client = ApiClientFactory::createClient();
 
-// Set Auth token directly if you have it
-$client->setAccessToken('abc123');
-
-// Set Client credentials if using that grant type
+// Set Client credentials if using that grant type.  Using this approach will lazily fetch an access token on-demand
+// when needed.  
 $client->useClientCredentials($appId, $appSecret);
+
+// Set Access token directly if you have it
+$client->setAccessToken('abc123');
 
 // Use a refresh token to get a new access token
 $client->useRefreshToken($appId, $appSecret, $refreshToken);
@@ -94,7 +95,7 @@ $client->getAuthenticator()->fetchAccessAndRefreshToken();
 To persist the updated token you can use the authenticator that is returned:
 
 ```
-$client->getAuthenticator()->fetchAccessAndRefreshToken()->getTokens(); // array
+$client->getAuthenticator()->fetchAccessAndRefreshToken()->accessToken();
 ```
 
 ### Authorization Code Flow
