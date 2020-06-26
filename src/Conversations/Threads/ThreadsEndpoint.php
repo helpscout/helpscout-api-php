@@ -34,6 +34,17 @@ class ThreadsEndpoint extends Endpoint
         );
     }
 
+    public function getSource(int $conversationId, int $threadId): Source
+    {
+        return $this->loadResource(
+            Source::class,
+            sprintf('/v2/conversations/%d/threads/%d/original-source', $conversationId, $threadId),
+            [
+                'Accept' => 'application/json',
+            ]
+        );
+    }
+
     /**
      * @return Thread[]|PagedCollection
      */

@@ -109,12 +109,15 @@ class RestClient
     /**
      * @param Closure|string $entityClass
      */
-    public function getResource($entityClass, string $uri): HalResource
-    {
+    public function getResource(
+        $entityClass,
+        string $uri,
+        array $headers = []
+    ): HalResource {
         $request = new Request(
             'GET',
             $uri,
-            $this->getDefaultHeaders()
+            array_merge($this->getDefaultHeaders(), $headers)
         );
         $response = $this->send($request);
         $halDocument = HalDeserializer::deserializeDocument((string) $response->getBody());
