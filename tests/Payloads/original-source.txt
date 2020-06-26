@@ -1,0 +1,56 @@
+Correlation-Id: f8d4c6c8-bd1c-44df-ad4a-513aa17674f9
+X-Hs-Spam-Score: -4.463879
+X-Spam-Checks: {"ARC_NA":{"score":0},"R_DKIM_ALLOW":{"score":-0.2,"options":["helpscout.com:s=google"]},"RWL_MAILSPIKE_POSSIBLE":{"score":0,"options":["54.221.85.209.rep.mailspike.net : 127.0.0.17"]},"FROM_HAS_DN":{"score":0},"R_SPF_ALLOW":{"score":-0.2,"options":["+ip4:209.85.128.0\/17"]},"MIME_GOOD":{"score":-0.1,"options":["multipart\/alternative","text\/plain"]},"PREVIOUSLY_DELIVERED":{"score":0,"options":["my-sdk-mailbox@helpscout.net"]},"TO_DN_NONE":{"score":0},"RCPT_COUNT_ONE":{"score":0,"options":["1"]},"DKIM_TRACE":{"score":0,"options":["helpscout.com:+"]},"DMARC_POLICY_ALLOW":{"score":-0.5,"options":["helpscout.com","none"]},"RCVD_IN_DNSWL_NONE":{"score":0,"options":["54.221.85.209.list.dnswl.org : 127.0.5.0"]},"NEURAL_HAM":{"score":-0,"options":["-1.000","0"]},"FROM_EQ_ENVFROM":{"score":0},"MIME_TRACE":{"score":0,"options":["0:+","1:+","2:~"]},"IP_SCORE":{"score":-3.463879,"options":["ip: (-9.05), ipnet: 209.85.128.0\/17(-4.55), asn: 15169(-3.64), country: US(-0.09)"]},"ASN":{"score":0,"options":["asn:15169, ipnet:209.85.128.0\/17, country:US"]},"HFILTER_HOSTNAME_UNKNOWN":{"score":0},"RCVD_TLS_ALL":{"score":0},"RCVD_COUNT_TWO":{"score":0,"options":["2"]}}
+X-Incoming-Source: email
+Return-path: <customer-a@helpscout-customer.com>
+Envelope-to: my-sdk-mailbox@helpscout.net
+Delivery-date: Tue, 09 Jun 2020 13:26:55 +0000
+Received: from mail-wr1-f54.google.com ([209.85.221.54])
+	by mx1-1d.helpscout.net with esmtps (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82)
+	(envelope-from <customer-a@helpscout-customer.com>)
+	id 1jieHH-0006c3-6I
+	for my-sdk-mailbox@helpscout.net; Tue, 09 Jun 2020 13:26:55 +0000
+Received: by mail-wr1-f54.google.com with SMTP id x6so21248147wrm.13
+        for <my-sdk-mailbox@helpscout.net>; Tue, 09 Jun 2020 06:26:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=helpscout.com; s=google;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=6Z7hq0L6aBpZwdkU1h+vKuK04L9HZukkazoBEn3amIE=;
+        b=WpvlC+d2vjMABkSxaupG4QpOHuMG52tZPAylx1V1ixe0GJRs14FdW7ZHkL9/MHiTNR
+         B+U8lAoI7l8G/Q4kXtt7lHVNNyes2Y3vjZ1GG6+N3rJILmQSPiqNnZTx4517Y4qwXY6c
+         QhDeYFBg6BMsJQBMKVi9jgo90NWH7zYXM6Y0I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=6Z7hq0L6aBpZwdkU1h+vKuK04L9HZukkazoBEn3amIE=;
+        b=rPcVBNWjf2s/NRHyHQGli2FAX8CzkeFEeJuPsLBSamHHnFQur1pgomPAVNNQ7HhQOh
+         E/Gj1Mqz58Tkwr+3EQL9ZltRls+pYOw5p8jE0cRxjXaBiYRQ61XBinQKvTfdM7pCAV1U
+         gKMd0lfSxmp01SZb8/yzfjd90OtmlDJDw8GvkUAfrxW28Ztt1VEIPSXHqI4L1YTlQ6YG
+         tSL8C+SUmJ9JjNFiJH5PQ+Xuw8g0nnKtbrvzffoR9lAXWzcKl8MvHy+YWa2YOv6DZ9gw
+         hmNBDDcdJSKdz3mt3HGMLLLykuIwQa5W99zPNp16gPHXjf6Tz4og4u19Q3SWZmUCxn1B
+         5xDg==
+X-Gm-Message-State: AOAM5322pI+asDDh0bhopd5OvnY+UTrXuhuwke8ufO1lK/Pd7w779xgN
+	oMGCoSmXSBVh4oqDy1vbe4VqegnWx+EF44tm78j51xuiovY=
+X-Google-Smtp-Source: ABdhPJxDRtJa5jCAWmHe3aWcSZEQi4Cg100t3mt4unaRwbjKbznbs+ZB9cVMq7O/tnEocZpyloL0wUx4wwlahOaREzU=
+X-Received: by 2002:adf:df03:: with SMTP id y3mr4279506wrl.376.1591709214305;
+ Tue, 09 Jun 2020 06:26:54 -0700 (PDT)
+MIME-Version: 1.0
+From: Customer A <customer-a@helpscout-customer.com>
+Date: Tue, 9 Jun 2020 09:26:43 -0400
+Message-ID: <CAOED0cxvvDSHOV6v2nYKKD_SovaSZ6G5xYDY77KWaxoRj+9mnA@mail.gmail.com>
+Subject: Pizza is awesome
+To: my-sdk-mailbox@helpscout.net
+Content-Type: multipart/alternative; boundary="0000000000004e123105a7a6ae81"
+
+--0000000000004e123105a7a6ae81
+Content-Type: text/plain; charset="UTF-8"
+
+I love pizza parties
+
+--0000000000004e123105a7a6ae81
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="ltr"><span style="color:rgb(37,53,64);font-family:&quot;Aktiv Grotesk&quot;,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-size:14px">I love pizza parties</span><br></div>
+
+--0000000000004e123105a7a6ae81--
