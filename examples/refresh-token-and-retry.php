@@ -2,31 +2,21 @@
 require __DIR__ . '/../vendor/autoload.php';
 require '_credentials.php';
 
-use HelpScout\Api\ApiClient;
 use HelpScout\Api\ApiClientFactory;
-
-$client = ApiClientFactory::createClient();
-$client = $client->useClientCredentials($appId, $appSecret);
+use HelpScout\Api\Http\Authenticator;
 
 /**
- * This example shows how to catch an Auth exception, refresh the token and retry the same work again.
+ * The ApiClient can automatically refresh an expired token for you upon a failed request.
+ * When building the client a callback can be provided that will be executed immediately after
+ * the new token is issued.
  */
-function autoRefreshToken(ApiClient $client, Closure $workToRetry) {
-    $attempts = 0;
-    do {
-        try {
-            return $workToRetry($client);
-        } catch (\HelpScout\Api\Exception\AuthenticationException $e) {
-            $client->getAuthenticator()->fetchAccessAndRefreshToken();
-        }
-        $attempts++;
-    } while($attempts < 1);
-
-    throw new RuntimeException('Authentication failure loop encountered');
-}
-
-$users = autoRefreshToken($client, function (ApiClient $client) {
-    return $client->users()->list();
+$client = ApiClientFactory::createClient([], function (Authenticator $authenticator) {
+    echo 'New token: '.$authenticator->accessToken().PHP_EOL;
 });
 
-print_r($users->getFirstPage()->toArray());
+$expiredRefreshToken = '';
+$client = $client->useRefreshToken($appId, $appSecret, $expiredRefreshToken);
+
+// Try to obtain a customer
+$customer = $client->customers()->get(347089737);
+var_dump($customer->getFirstEmail());
