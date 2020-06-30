@@ -7,9 +7,10 @@ namespace HelpScout\Api\Http;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
+use HelpScout\Api\Http\Auth\CodeCredentials;
+use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
-use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
 
 class Authenticator
 {
@@ -64,6 +65,11 @@ class Authenticator
             'access_token' => $this->accessToken,
             'expires_in' => $this->ttl,
         ];
+    }
+
+    public function tokenExpiresIn(): ?int
+    {
+        return $this->ttl;
     }
 
     public function setAccessToken(string $accessToken): Authenticator
@@ -158,7 +164,8 @@ class Authenticator
     {
         return in_array($this->auth->getType(), [
             ClientCredentials::TYPE,
-            RefreshCredentials::TYPE
+            RefreshCredentials::TYPE,
+            CodeCredentials::TYPE,
         ]) && $this->tokenRefreshedCallback !== null;
     }
 

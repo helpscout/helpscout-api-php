@@ -169,8 +169,7 @@ class RestClient
         ];
 
         try {
-            throw new AuthenticationException('', $request);
-            //$response = $this->client->send($request, $options);
+            $response = $this->client->send($request, $options);
         } catch (AuthenticationException $e) {
             // If the request fails due to an authentication error, retry again after refreshing the token.
             // This allows for token expirations to avoid impacting
