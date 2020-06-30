@@ -98,4 +98,12 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
             'value' => 'This is new text',
         ]);
     }
+
+    public function testCanGetThreadSource()
+    {
+        $this->stubResponse($this->getResponse(200, json_encode(ThreadPayloads::getThreadSource())));
+        $this->client->threads()->getSource(1, 1432);
+
+        $this->verifySingleRequest('https://api.helpscout.net/v2/conversations/1/threads/1432/original-source');
+    }
 }

@@ -104,4 +104,11 @@ class ThreadPayloads
             'createdAt' => '2017-04-21T14:39:56Z',
         ];
     }
+
+    public static function getThreadSource(): array
+    {
+        return [
+            'original' => file_get_contents(__DIR__.'/original-source.txt'),
+        ];
+    }
 }
