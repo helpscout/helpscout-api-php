@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Http;
 
+use Closure;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
@@ -131,17 +132,18 @@ class AuthenticatorTest extends TestCase
         $this->client->shouldReceive('request')
             ->andReturn($response);
 
-        $callback = new class implements HandlesTokenRefreshes {
+        $callback = new class() implements HandlesTokenRefreshes {
             public $executed = false;
             public $accessToken;
             public $expiresIn;
             public $refreshToken;
+
             public function whenTokenRefreshed(Authenticator $authenticator)
             {
                 $this->executed = true;
 
-                $this->accessToken  = $authenticator->accessToken();
-                $this->expiresIn    = $authenticator->tokenExpiresIn();
+                $this->accessToken = $authenticator->accessToken();
+                $this->expiresIn = $authenticator->tokenExpiresIn();
                 $this->refreshToken = $authenticator->refreshToken();
             }
         };
@@ -162,9 +164,14 @@ class AuthenticatorTest extends TestCase
      */
     public function testIdentifiesWhenToAutoRefreshToken(array $args)
     {
-        /**
+        // setting default values to keep phpstan happy
+        $tokenType = null;
+        $tokenCallback = function () {};
+        $shouldAutoRefreshAccessToken = null;
+
+        /*
          * @var string $tokenType
-         * @var null|\Closure $tokenCallback
+         * @var null|Closure $tokenCallback
          * @var bool $shouldAutoRefreshAccessToken
          */
         extract($args);
@@ -190,23 +197,23 @@ class AuthenticatorTest extends TestCase
         ];
         foreach ($typesThatCanRefreshTokens as $type) {
             yield ['Should not refresh because there is no callback' => [
-                'tokenType'                     => $type,
-                'tokenCallback'                 => null,
-                'shouldAutoRefreshAccessToken'  => false,
+                'tokenType' => $type,
+                'tokenCallback' => null,
+                'shouldAutoRefreshAccessToken' => false,
             ]];
             yield ['Should refresh when callback and correct auth type' => [
-                'tokenType'                     => $type,
-                'tokenCallback'                 => function () {
+                'tokenType' => $type,
+                'tokenCallback' => function () {
                     return true;
                 },
-                'shouldAutoRefreshAccessToken'  => true,
+                'shouldAutoRefreshAccessToken' => true,
             ]];
             yield [[
-                'tokenType'                     => $type,
-                'tokenCallback'                 => function () {
+                'tokenType' => $type,
+                'tokenCallback' => function () {
                     return true;
                 },
-                'shouldAutoRefreshAccessToken'  => true,
+                'shouldAutoRefreshAccessToken' => true,
             ]];
         }
 
@@ -215,16 +222,16 @@ class AuthenticatorTest extends TestCase
         ];
         foreach ($typesThatCannnotRefreshTokens as $type) {
             yield ['Should not refresh because there is no callback' => [
-                'tokenType'                     => $type,
-                'tokenCallback'                 => null,
-                'shouldAutoRefreshAccessToken'  => false,
+                'tokenType' => $type,
+                'tokenCallback' => null,
+                'shouldAutoRefreshAccessToken' => false,
             ]];
             yield ['Should not refresh when there is a callback' => [
-                'tokenType'                     => $type,
-                'tokenCallback'                 => function () {
+                'tokenType' => $type,
+                'tokenCallback' => function () {
                     return true;
                 },
-                'shouldAutoRefreshAccessToken'  => false,
+                'shouldAutoRefreshAccessToken' => false,
             ]];
         }
     }

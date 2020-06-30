@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http;
 
+use Closure;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
@@ -44,13 +45,10 @@ class Authenticator
     private $ttl;
 
     /**
-     * @var \Closure|HandlesTokenRefreshes
+     * @var Closure|HandlesTokenRefreshes
      */
     private $tokenRefreshedCallback;
 
-    /**
-     * @param Auth $auth
-     */
     public function __construct(Client $client, Auth $auth = null)
     {
         $this->client = $client;
@@ -79,9 +77,6 @@ class Authenticator
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function accessToken(): ?string
     {
         return $this->accessToken;
@@ -153,7 +148,7 @@ class Authenticator
     }
 
     /**
-     * @param \Closure|HandlesTokenRefreshes $tokenRefreshedCallback
+     * @param Closure|HandlesTokenRefreshes $callback
      */
     public function callbackWhenTokenRefreshed($callback)
     {
@@ -162,11 +157,13 @@ class Authenticator
 
     public function shouldAutoRefreshAccessToken(): bool
     {
-        return in_array($this->auth->getType(), [
+        $authTypesRequiringRefreshTokens = [
             ClientCredentials::TYPE,
             RefreshCredentials::TYPE,
             CodeCredentials::TYPE,
-        ]) && $this->tokenRefreshedCallback !== null;
+        ];
+
+        return in_array($this->auth->getType(), $authTypesRequiringRefreshTokens) && $this->tokenRefreshedCallback !== null;
     }
 
     public function fetchAccessAndRefreshToken(): self
@@ -184,7 +181,7 @@ class Authenticator
         // can be persisted and any other necessary actions can be performed within the app using the SDK
         if ($this->tokenRefreshedCallback instanceof HandlesTokenRefreshes) {
             $this->tokenRefreshedCallback->whenTokenRefreshed($this);
-        } elseif($this->tokenRefreshedCallback instanceof \Closure) {
+        } elseif ($this->tokenRefreshedCallback instanceof Closure) {
             call_user_func($this->tokenRefreshedCallback, $this);
         }
 
