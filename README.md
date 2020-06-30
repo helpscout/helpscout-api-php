@@ -15,6 +15,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
  * [Installation](#installation)
  * [Usage](#usage)
    * [Examples](#examples)
+   * [Authentication](#authentication)
    * [Customers](#customers)
      * [Email](#email)
      * [Address](#address)
@@ -54,7 +55,7 @@ You should always use Composer's autoloader in your application to autoload clas
 require_once 'vendor/autoload.php';
 ```
 
-### Creating the client
+### Authentication
 
 Use the factory to create a client. Once created, you can set the various credentials to make requests.
 
@@ -123,18 +124,30 @@ $client->setAccessToken('asdfasdf');
 ```
 The access token will always be used if available, regardless of whether you have other credentials set or not.
 
-### Refreshing Expired Tokens
+### Automatically Refreshing Expired Tokens
 
-While making API calls, if your token comes back expired you can refresh the token by:
+When a request fails due to an authentication error, the SDK can automatically try to obtain a new refresh token and then retry the given request automatically.  To enable this, you can provide a callback when creating the ApiClient which can be used to persist the token for other processes to use depending on your needs:
 
+```php
+$client = ApiClientFactory::createClient([], function (Authenticator $authenticator) {
+    // This $authenticator contains the refreshed token
+    echo 'New token: '.$authenticator->accessToken().PHP_EOL;
+});
 ```
-$client->getAuthenticator()->fetchAccessAndRefreshToken();
-```
 
-To persist the updated token you can use the authenticator that is returned:
+The callback can also be any class instance that implements `HelpScout\Api\Http\Auth\HandlesTokenRefreshes`:
 
-```
-$client->getAuthenticator()->fetchAccessAndRefreshToken()->getTokens(); // array
+```php
+use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
+use HelpScout\Api\Http\Authenticator;
+
+$callback = new class implements HandlesTokenRefreshes {
+    public function whenTokenRefreshed(Authenticator $authenticator)
+    {
+        // @todo Persist the token
+    }
+};
+$client = ApiClientFactory::createClient([], $callback);
 ```
 
 ### Authorization Code Flow
