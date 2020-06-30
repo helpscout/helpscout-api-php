@@ -27,9 +27,12 @@ abstract class Endpoint
     /**
      * @return mixed
      */
-    protected function loadResource(string $entityClass, string $url)
-    {
-        $resource = $this->restClient->getResource($entityClass, $url);
+    protected function loadResource(
+        string $entityClass,
+        string $url,
+        array $headers = []
+    ) {
+        $resource = $this->restClient->getResource($entityClass, $url, $headers);
 
         return $resource->getEntity();
     }
