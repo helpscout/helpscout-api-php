@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\ApiClient;
+use HelpScout\Api\Exception\AuthenticationException;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
@@ -17,6 +18,7 @@ use HelpScout\Api\Http\Auth\RefreshCredentials;
 use HelpScout\Api\Http\Authenticator;
 use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Http\RestClientBuilder;
+use HelpScout\Api\Reports\Chat;
 use HelpScout\Api\Reports\Docs\Overall;
 use HelpScout\Api\Reports\ParameterBag;
 use HelpScout\Api\Tests\ReflectionTestTrait;
@@ -75,6 +77,52 @@ class RestClientTest extends TestCase
 
         $restClient = new RestClient($this->methodsClient, $this->authenticator);
         $result = $restClient->getReport($report);
+        $this->assertSame($responseData, $result);
+    }
+
+    public function testSendingRequestDoesntRefreshToken()
+    {
+        $exception = \Mockery::mock(AuthenticationException::class);
+        $this->expectExceptionObject($exception);
+
+        $this->methodsClient->shouldReceive('send')
+            ->andThrow($exception);
+
+        $this->authenticator->shouldReceive([
+            'getAuthHeader' => [],
+            'shouldAutoRefreshAccessToken' => false,
+        ]);
+        $this->authenticator->shouldReceive('fetchAccessAndRefreshToken')
+            ->never();
+
+        $restClient = new RestClient($this->methodsClient, $this->authenticator);
+        $restClient->getReport(new Chat(new ParameterBag([])));
+    }
+
+    public function testSendingRequestRefreshesToken()
+    {
+        $exception = \Mockery::mock(AuthenticationException::class);
+        $this->methodsClient->shouldReceive('send')
+            ->andThrow($exception)
+            ->once();
+
+        $this->authenticator->shouldReceive([
+            'getAuthHeader' => [],
+            'shouldAutoRefreshAccessToken' => true,
+        ]);
+        $this->authenticator->shouldReceive('fetchAccessAndRefreshToken')
+            ->once();
+
+        $responseData = [
+            'current' => 'aaabbb',
+            'previous' => 'cccddd',
+        ];
+        $response = new Response(200, [], json_encode($responseData));
+        $this->methodsClient->shouldReceive('send')
+            ->andReturn($response);
+
+        $restClient = new RestClient($this->methodsClient, $this->authenticator);
+        $result = $restClient->getReport(new Chat(new ParameterBag([])));
         $this->assertSame($responseData, $result);
     }
 
