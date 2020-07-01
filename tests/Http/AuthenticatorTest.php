@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Http;
 
-use Closure;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
@@ -53,7 +52,7 @@ class AuthenticatorTest extends TestCase
 
     public function testTokensAreRefreshedWithoutCallbacks()
     {
-        $authType = \Mockery::mock(Auth::class, [
+        $authType = Mockery::mock(Auth::class, [
             'getPayload' => [],
         ]);
 
@@ -81,7 +80,7 @@ class AuthenticatorTest extends TestCase
 
     public function testTokensAreRefreshedWithClosureCallbacks()
     {
-        $authType = \Mockery::mock(Auth::class, [
+        $authType = Mockery::mock(Auth::class, [
             'getPayload' => [],
         ]);
 
@@ -115,7 +114,7 @@ class AuthenticatorTest extends TestCase
 
     public function testTokensAreRefreshedWithObjectCallbacks()
     {
-        $authType = \Mockery::mock(Auth::class, [
+        $authType = Mockery::mock(Auth::class, [
             'getPayload' => [],
         ]);
 
@@ -176,7 +175,7 @@ class AuthenticatorTest extends TestCase
          */
         extract($args);
 
-        $authType = \Mockery::mock(Auth::class);
+        $authType = Mockery::mock(Auth::class);
         $authType->shouldReceive('getType')->andReturn($tokenType);
 
         $authenticator = new Authenticator($this->client, $authType);
