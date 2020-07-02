@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\Entity\Extractable;
+use HelpScout\Api\Exception\AuthenticationException;
 use HelpScout\Api\Http\Hal\HalDeserializer;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Http\Hal\HalResources;
@@ -170,6 +171,20 @@ class RestClient
             'http_errors' => false,
         ];
 
-        return $this->client->send($request, $options);
+        try {
+            $response = $this->client->send($request, $options);
+        } catch (AuthenticationException $e) {
+            // If the request fails due to an authentication error, retry again after refreshing the token.
+            // This allows for token expirations to avoid impacting
+            $authenticator = $this->getAuthenticator();
+            if ($authenticator->shouldAutoRefreshAccessToken()) {
+                $authenticator->fetchAccessAndRefreshToken();
+                $response = $this->client->send($request, $options);
+            } else {
+                throw $e;
+            }
+        }
+
+        return $response;
     }
 }

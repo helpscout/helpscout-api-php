@@ -13,6 +13,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
+use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
@@ -32,11 +33,16 @@ class RestClientBuilder
         $this->config = $config;
     }
 
-    public function build(): RestClient
+    /**
+     * @param \Closure|HandlesTokenRefreshes $tokenRefreshedCallback
+     */
+    public function build($tokenRefreshedCallback = null): RestClient
     {
+        $authenticator = $this->getAuthenticator($tokenRefreshedCallback);
+
         return new RestClient(
             $this->getGuzzleClient(),
-            $this->getAuthenticator()
+            $authenticator
         );
     }
 
@@ -47,14 +53,20 @@ class RestClientBuilder
         return new Client($options);
     }
 
-    protected function getAuthenticator(): Authenticator
+    protected function getAuthenticator($tokenRefreshedCallback = null): Authenticator
     {
         $authConfig = $this->config['auth'] ?? [];
 
-        return new Authenticator(
+        $authenticator = new Authenticator(
             new Client(),
             $this->getAuthClass($authConfig)
         );
+
+        if ($tokenRefreshedCallback !== null) {
+            $authenticator->callbackWhenTokenRefreshed($tokenRefreshedCallback);
+        }
+
+        return $authenticator;
     }
 
     protected function getAuthClass(array $authConfig = []): Auth

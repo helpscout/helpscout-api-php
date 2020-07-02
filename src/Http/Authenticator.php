@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http;
 
+use Closure;
 use GuzzleHttp\Client;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
+use HelpScout\Api\Http\Auth\CodeCredentials;
+use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
 use HelpScout\Api\Http\Auth\LegacyCredentials;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
@@ -43,8 +46,10 @@ class Authenticator
     private $ttl;
 
     /**
-     * @param Auth $auth
+     * @var Closure|HandlesTokenRefreshes
      */
+    private $tokenRefreshedCallback;
+
     public function __construct(Client $client, Auth $auth = null)
     {
         $this->client = $client;
@@ -61,6 +66,11 @@ class Authenticator
         ];
     }
 
+    public function tokenExpiresIn(): ?int
+    {
+        return $this->ttl;
+    }
+
     public function setAccessToken(string $accessToken): Authenticator
     {
         $this->accessToken = $accessToken;
@@ -68,9 +78,6 @@ class Authenticator
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function accessToken(): ?string
     {
         return $this->accessToken;
@@ -157,6 +164,25 @@ class Authenticator
         }
     }
 
+    /**
+     * @param Closure|HandlesTokenRefreshes $callback
+     */
+    public function callbackWhenTokenRefreshed($callback)
+    {
+        $this->tokenRefreshedCallback = $callback;
+    }
+
+    public function shouldAutoRefreshAccessToken(): bool
+    {
+        $authTypesRequiringRefreshTokens = [
+            ClientCredentials::TYPE,
+            RefreshCredentials::TYPE,
+            CodeCredentials::TYPE,
+        ];
+
+        return in_array($this->auth->getType(), $authTypesRequiringRefreshTokens) && $this->tokenRefreshedCallback !== null;
+    }
+
     public function fetchAccessAndRefreshToken(): self
     {
         $tokens = $this->requestAuthTokens(
@@ -167,6 +193,14 @@ class Authenticator
         $this->accessToken = $tokens['access_token'];
         $this->ttl = $tokens['expires_in'];
         $this->refreshToken = $tokens['refresh_token'] ?? null;
+
+        // If a new refresh token was obtained, execute any callback that was registered so the new token
+        // can be persisted and any other necessary actions can be performed within the app using the SDK
+        if ($this->tokenRefreshedCallback instanceof HandlesTokenRefreshes) {
+            $this->tokenRefreshedCallback->whenTokenRefreshed($this);
+        } elseif ($this->tokenRefreshedCallback instanceof Closure) {
+            call_user_func($this->tokenRefreshedCallback, $this);
+        }
 
         return $this;
     }
