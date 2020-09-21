@@ -193,10 +193,13 @@ class RestClientTest extends TestCase
             'POST',
             'https://api.helpscout.net/v2/uuid-4/chat'
         );
-
-        $serverException = new ServerException('BAD_REQUEST', $request);
-
         $badResponse = new Response(400, [], 'bad response');
+
+        $serverException = new ServerException(
+            'BAD_REQUEST',
+            $request,
+            $badResponse
+        );
 
         $connectionException = new ConnectException(
             'SERVER_WENT_AWAY',
