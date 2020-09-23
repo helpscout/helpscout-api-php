@@ -6,7 +6,7 @@ namespace HelpScout\Api\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
@@ -122,7 +122,7 @@ class RestClientBuilder
             $retries,
             Request $request,
             Response $response = null,
-            RequestException $exception = null
+            GuzzleException $exception = null
         ) {
             // Don't retry unless this is a Connection issue
             if (!$exception instanceof ConnectException) {
