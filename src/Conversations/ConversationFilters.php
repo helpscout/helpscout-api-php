@@ -197,12 +197,14 @@ class ConversationFilters
         Assert::oneOf($sortField, [
             'createdAt',
             'customerEmail',
+            'customerName',
             'mailboxid',
             'modifiedAt',
             'number',
             'score',
             'status',
             'subject',
+            'waitingSince',
         ]);
 
         $filters = clone $this;
