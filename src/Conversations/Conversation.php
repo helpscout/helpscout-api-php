@@ -216,7 +216,7 @@ class Conversation implements Extractable, Hydratable
             $this->setAssignee($assignee);
         }
 
-        if (isset($data['createdBy'])) {
+        if (isset($data['createdBy']) && isset($data['createdBy']['id']) && $data['createdBy']['id'] > 0) {
             $this->hydrateCreatedBy($data['createdBy']);
         }
 
