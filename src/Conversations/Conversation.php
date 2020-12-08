@@ -23,8 +23,8 @@ use HelpScout\Api\Users\User;
 
 class Conversation implements Extractable, Hydratable
 {
-    use HydratesData,
-        ExtractsData,
+    use ExtractsData,
+        HydratesData,
         HasPartiesToBeNotified,
         IncludesThreadDetails,
         HasCustomer;
