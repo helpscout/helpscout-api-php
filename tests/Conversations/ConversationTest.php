@@ -155,7 +155,9 @@ class ConversationTest extends TestCase
         $this->assertFalse($conversation->wasCreatedByUser());
 
         $conversation->hydrate([
-            'createdBy' => null,
+            'createdBy' => [
+                'id' => 0,
+            ],
         ]);
 
         $this->assertFalse($conversation->wasCreatedByCustomer());
