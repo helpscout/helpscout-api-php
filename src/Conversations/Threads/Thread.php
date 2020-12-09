@@ -18,8 +18,8 @@ use HelpScout\Api\Support\HydratesData;
 class Thread implements Extractable, Hydratable
 {
     use ExtractsData,
-        HydratesData,
         HasPartiesToBeNotified,
+        HydratesData,
         IncludesThreadDetails;
 
     /**
