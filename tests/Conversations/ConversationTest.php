@@ -146,7 +146,6 @@ class ConversationTest extends TestCase
         $this->assertSame('33077', $customField->getValue());
     }
 
-
     public function testHydrateWhenCustomerExistsButIsNull()
     {
         $conversation = new Conversation();
