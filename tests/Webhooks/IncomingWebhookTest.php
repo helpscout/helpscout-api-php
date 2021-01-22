@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class IncomingWebhookTest extends TestCase
 {
-    protected function createRequest(array $headers = [], string $body)
+    protected function createRequest(array $headers, string $body)
     {
         return new Request('POST', 'www.blah.blah', $headers, $body);
     }
