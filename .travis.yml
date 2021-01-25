@@ -17,6 +17,6 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - composer test:travis
-    - ls -latr build/logs
-    - ls -latr .
+  - ls -latr build/logs
+  - ls -latr .
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build  -t clover --exit-code $TRAVIS_TEST_RESULT; fi
