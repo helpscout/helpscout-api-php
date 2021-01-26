@@ -23,11 +23,11 @@ use HelpScout\Api\Users\User;
 
 class Conversation implements Extractable, Hydratable
 {
-    use HydratesData,
-        ExtractsData,
+    use ExtractsData,
+        HasCustomer,
         HasPartiesToBeNotified,
-        IncludesThreadDetails,
-        HasCustomer;
+        HydratesData,
+        IncludesThreadDetails;
 
     public const TYPE_CHAT = 'chat';
     public const TYPE_EMAIL = 'email';

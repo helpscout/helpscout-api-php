@@ -17,9 +17,9 @@ use HelpScout\Api\Support\HydratesData;
 
 class Thread implements Extractable, Hydratable
 {
-    use HydratesData,
-        ExtractsData,
+    use ExtractsData,
         HasPartiesToBeNotified,
+        HydratesData,
         IncludesThreadDetails;
 
     /**

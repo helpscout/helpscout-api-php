@@ -12,8 +12,8 @@ use HelpScout\Api\Support\HydratesData;
 
 class CustomerWaitingSince implements Extractable, Hydratable
 {
-    use HydratesData,
-        ExtractsData;
+    use ExtractsData,
+        HydratesData;
 
     /**
      * @var DateTime

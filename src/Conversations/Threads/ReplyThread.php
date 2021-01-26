@@ -10,11 +10,11 @@ use HelpScout\Api\Conversations\Threads\Support\HasUser;
 
 class ReplyThread extends Thread
 {
-    public const TYPE = 'reply';
+    use HasCustomer,
+        HasPartiesToBeNotified,
+        HasUser;
 
-    use HasUser,
-        HasCustomer,
-        HasPartiesToBeNotified;
+    public const TYPE = 'reply';
 
     public static function resourceUrl(int $conversationId): string
     {
