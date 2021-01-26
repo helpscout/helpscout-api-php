@@ -9,10 +9,10 @@ use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
 
 class CustomerThread extends Thread
 {
-    public const TYPE = 'customer';
-
     use HasCustomer,
         HasPartiesToBeNotified;
+
+    public const TYPE = 'customer';
 
     public static function resourceUrl(int $conversationId): string
     {

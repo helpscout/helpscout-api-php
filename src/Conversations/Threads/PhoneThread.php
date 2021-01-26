@@ -8,9 +8,9 @@ use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
 
 class PhoneThread extends Thread
 {
-    public const TYPE = 'phone';
-
     use HasCustomer;
+
+    public const TYPE = 'phone';
 
     public static function resourceUrl(int $conversationId): string
     {
