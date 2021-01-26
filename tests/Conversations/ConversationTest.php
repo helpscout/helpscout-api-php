@@ -146,6 +146,23 @@ class ConversationTest extends TestCase
         $this->assertSame('33077', $customField->getValue());
     }
 
+    public function testHydrateWhenCustomerExistsButIsNull()
+    {
+        $conversation = new Conversation();
+
+        $this->assertFalse($conversation->wasCreatedByCustomer());
+        $this->assertFalse($conversation->wasCreatedByUser());
+
+        $conversation->hydrate([
+            'createdBy' => [
+                'id' => 0,
+            ],
+        ]);
+
+        $this->assertFalse($conversation->wasCreatedByCustomer());
+        $this->assertFalse($conversation->wasCreatedByUser());
+    }
+
     public function testExtractsCreatedByUser()
     {
         $conversation = new Conversation();

@@ -8,9 +8,9 @@ use HelpScout\Api\Conversations\Threads\Support\HasUser;
 
 class NoteThread extends Thread
 {
-    public const TYPE = 'note';
-
     use HasUser;
+
+    public const TYPE = 'note';
 
     public static function resourceUrl(int $conversationId): string
     {
