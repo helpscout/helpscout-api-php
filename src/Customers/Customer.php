@@ -638,9 +638,6 @@ class Customer implements Extractable, Hydratable
         return $this;
     }
 
-    /**
-     * @param array $customProperty
-     */
     public function addCustomProperty(array $customProperty): Customer
     {
         if (is_array($customProperty)) {
