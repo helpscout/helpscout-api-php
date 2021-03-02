@@ -8,11 +8,11 @@ use DateTime;
 use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Customers\Entry\Address;
 use HelpScout\Api\Customers\Entry\ChatHandle;
+use HelpScout\Api\Customers\Entry\CustomProperty;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
 use HelpScout\Api\Customers\Entry\SocialProfile;
 use HelpScout\Api\Customers\Entry\Website;
-use HelpScout\Api\Customers\Entry\CustomProperty;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Entity\Hydratable;
@@ -626,5 +626,34 @@ class Customer implements Extractable, Hydratable
     public function getCustomProperties(): Collection
     {
         return $this->customProperties;
+    }
+
+    /**
+     * @param CustomProperty[]|Collection $customProperties
+     */
+    public function setCustomProperties(Collection $customProperties): Customer
+    {
+        $this->customProperties = $customProperties;
+
+        return $this;
+    }
+
+    /**
+     * @param array $customProperty
+     */
+    public function addCustomProperty(array $customProperty): Customer
+    {
+        if (is_array($customProperty)) {
+            $newCustomProperty = new CustomProperty();
+            $newCustomProperty->hydrate([
+                'value' => $customProperty['text'],
+                'type' => $customProperty['type'],
+            ]);
+            $customProperty = $newCustomProperty;
+        }
+
+        $this->getWebsites()->append($customProperty);
+
+        return $this;
     }
 }
