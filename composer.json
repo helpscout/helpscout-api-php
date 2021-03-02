@@ -1,5 +1,5 @@
 {
-    "name": "andryska/helpscout-api",
+    "name": "helpscout/api",
     "type": "library",
     "description": "Help Scout API v2 Client",
     "homepage": "https://github.com/helpscout/helpscout-api-php",
