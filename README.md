@@ -454,7 +454,7 @@ $request = (new ConversationRequest)
 $conversation = $client->conversations()->get($conversationId, $request);
 
 $mailbox = $conversation->getMailbox();
-$primaryCustomer = $conversation->getPrimaryCustomer();
+$primaryCustomer = $conversation->getCustomer();
 ```
 
 Get conversations.
