@@ -29,6 +29,11 @@ class Property implements Extractable, Hydratable
      */
     private $value;
 
+    /**
+     * @var array|null
+     */
+    private $source;
+
     public function hydrate(array $data, array $embedded = [])
     {
         $this->setType($data['type'] ?? null);
@@ -112,6 +117,9 @@ class Property implements Extractable, Hydratable
         return $this;
     }
 
+    /**
+     * @return array|null $source
+     */
     public function getSource()
     {
         return $this->source;
