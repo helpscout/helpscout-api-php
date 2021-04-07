@@ -381,7 +381,7 @@ Delete a customer website.
 $client->customerEntry()->deleteWebsite($customerId, $websiteId);
 ```
 
-### Property
+### Properties
 
 Get a customer's properties and their values
 
