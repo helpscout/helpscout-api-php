@@ -8,7 +8,7 @@ use DateTime;
 use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Customers\Entry\Address;
 use HelpScout\Api\Customers\Entry\ChatHandle;
-use HelpScout\Api\Customers\Entry\CustomProperty;
+use HelpScout\Api\Customers\Entry\Property;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
 use HelpScout\Api\Customers\Entry\SocialProfile;
@@ -118,9 +118,9 @@ class Customer implements Extractable, Hydratable
     private $websites;
 
     /**
-     * @var CustomProperty[]|Collection
+     * @var Property[]|Collection
      */
-    private $customProperties;
+    private $properties;
 
     public function __construct()
     {
@@ -129,7 +129,7 @@ class Customer implements Extractable, Hydratable
         $this->phones = new Collection();
         $this->socialProfiles = new Collection();
         $this->websites = new Collection();
-        $this->customProperties = new Collection();
+        $this->properties = new Collection();
     }
 
     public function hydrate(array $data, array $embedded = [])
@@ -201,9 +201,9 @@ class Customer implements Extractable, Hydratable
         }
 
         if (isset($embedded['properties']) && is_array($embedded['properties'])) {
-            $properties = $this->hydrateMany(CustomProperty::class, $embedded['properties']);
+            $properties = $this->hydrateMany(Property::class, $embedded['properties']);
 
-            $this->setCustomProperties($properties);
+            $this->setProperties($properties);
         }
     }
 
@@ -621,35 +621,19 @@ class Customer implements Extractable, Hydratable
     }
 
     /**
-     * @return CustomProperty[]|Collection
+     * @return Property[]|Collection
      */
-    public function getCustomProperties(): Collection
+    public function getProperties(): Collection
     {
-        return $this->customProperties;
+        return $this->properties;
     }
 
     /**
-     * @param CustomProperty[]|Collection $customProperties
+     * @param Property[]|Collection $properties
      */
-    public function setCustomProperties(Collection $customProperties): Customer
+    public function setProperties(Collection $properties): Customer
     {
-        $this->customProperties = $customProperties;
-
-        return $this;
-    }
-
-    public function addCustomProperty(array $customProperty): Customer
-    {
-        if (is_array($customProperty)) {
-            $newCustomProperty = new CustomProperty();
-            $newCustomProperty->hydrate([
-                'value' => $customProperty['text'],
-                'type' => $customProperty['type'],
-            ]);
-            $customProperty = $newCustomProperty;
-        }
-
-        $this->getWebsites()->append($customProperty);
+        $this->properties = $properties;
 
         return $this;
     }
