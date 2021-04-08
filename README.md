@@ -23,7 +23,8 @@ This is the official Help Scout PHP client. This client contains methods for eas
      * [Phone Number](#phone-number)
      * [Social Profile](#social-profile)
      * [Chat Handles](#chat-handles)
-     * [Website](#websites)
+     * [Website](#website)
+     * [Properties](#properties)
    * [Mailboxes](#mailboxes)
    * [Conversations](#conversations)
      * [Threads](#threads)
@@ -378,6 +379,21 @@ Delete a customer website.
 
 ```php
 $client->customerEntry()->deleteWebsite($customerId, $websiteId);
+```
+
+### Properties
+
+Get a customer's properties and their values
+
+```php
+use HelpScout\Api\Customers\Entry\Website;
+
+$customer = $client->customers()->get(418048101);
+// ...
+
+foreach ($customer->getProperties() as $property) {
+    echo $property->getName().': '.$property->getValue().PHP_EOL;
+}
 ```
 
 ## Mailboxes

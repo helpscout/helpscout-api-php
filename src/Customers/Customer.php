@@ -10,6 +10,7 @@ use HelpScout\Api\Customers\Entry\Address;
 use HelpScout\Api\Customers\Entry\ChatHandle;
 use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
+use HelpScout\Api\Customers\Entry\Property;
 use HelpScout\Api\Customers\Entry\SocialProfile;
 use HelpScout\Api\Customers\Entry\Website;
 use HelpScout\Api\Entity\Collection;
@@ -116,6 +117,11 @@ class Customer implements Extractable, Hydratable
      */
     private $websites;
 
+    /**
+     * @var Property[]|Collection
+     */
+    private $properties;
+
     public function __construct()
     {
         $this->chats = new Collection();
@@ -123,6 +129,7 @@ class Customer implements Extractable, Hydratable
         $this->phones = new Collection();
         $this->socialProfiles = new Collection();
         $this->websites = new Collection();
+        $this->properties = new Collection();
     }
 
     public function hydrate(array $data, array $embedded = [])
@@ -191,6 +198,12 @@ class Customer implements Extractable, Hydratable
             $websites = $this->hydrateMany(Website::class, $embedded['websites']);
 
             $this->setWebsites($websites);
+        }
+
+        if (isset($embedded['properties']) && is_array($embedded['properties'])) {
+            $properties = $this->hydrateMany(Property::class, $embedded['properties']);
+
+            $this->setProperties($properties);
         }
     }
 
@@ -603,6 +616,24 @@ class Customer implements Extractable, Hydratable
         }
 
         $this->getWebsites()->append($website);
+
+        return $this;
+    }
+
+    /**
+     * @return Property[]|Collection
+     */
+    public function getProperties(): Collection
+    {
+        return $this->properties;
+    }
+
+    /**
+     * @param Property[]|Collection $properties
+     */
+    public function setProperties(Collection $properties): Customer
+    {
+        $this->properties = $properties;
 
         return $this;
     }
