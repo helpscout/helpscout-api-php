@@ -10,6 +10,7 @@ use HelpScout\Api\Entity\Hydratable;
 use HelpScout\Api\Support\HasCustomer;
 use HelpScout\Api\Support\HydratesData;
 use HelpScout\Api\Tags\Tag;
+use HelpScout\Api\Users\User;
 
 class Chat implements Hydratable
 {
@@ -30,6 +31,11 @@ class Chat implements Hydratable
      * @var int|null
      */
     private $mailboxId;
+
+    /**
+     * @var User|null
+     */
+    private $assignee;
 
     /**
      * @var \DateTime|null
@@ -77,6 +83,12 @@ class Chat implements Hydratable
         $this->endedAt = $this->transformDateTime($data['endedAt'] ?? null);
         $this->preview = $data['preview'] ?? null;
 
+        if (isset($data['assignee'])) {
+            /** @var User $assignee */
+            $assignee = $this->hydrateOne(User::class, $data['assignee']);
+            $this->assignee = $assignee;
+        }
+
         if (isset($data['customer'])) {
             $this->hydrateCustomer($data['customer']);
         }
@@ -107,6 +119,11 @@ class Chat implements Hydratable
     public function getMailboxId(): ?int
     {
         return $this->mailboxId;
+    }
+
+    public function getAssignee(): ?User
+    {
+        return $this->assignee;
     }
 
     public function getCreatedAt(): ?\DateTime
@@ -153,75 +170,3 @@ class Chat implements Hydratable
         return $this->events;
     }
 }
-
-// array(10) {
-//     ["id"]=>
-//     string(36) "88e779b6-9adf-47e6-8e7d-270d92c4051e"
-//     ["beaconId"]=>
-//     string(36) "595791d1-3639-48fd-8657-981fde617341"
-//     ["mailboxId"]=>
-//     int(125385)
-//     ["createdAt"]=>
-//     string(27) "2021-04-12T06:41:07.576875Z"
-//     ["customer"]=>
-//     array(5) {
-//       ["id"]=>
-//       int(269568751)
-//       ["type"]=>
-//       string(8) "customer"
-//       ["first"]=>
-//       string(5) "Tomas"
-//       ["last"]=>
-//       string(6) "GeeGee"
-//       ["email"]=>
-//       string(17) "tom@helpscout.com"
-//     }
-//     ["preview"]=>
-//     string(7) "Testing"
-//     ["customFields"]=>
-//     array(0) {
-//     }
-//     ["tags"]=>
-//     array(0) {
-//     }
-//     ["timeline"]=>
-//     array(3) {
-//       [0]=>
-//       array(4) {
-//         ["type"]=>
-//         string(11) "page-viewed"
-//         ["timestamp"]=>
-//         string(27) "2021-04-12T06:40:58.823000Z"
-//         ["url"]=>
-//         string(55) "https://fiddle.jshell.net/_display/?editor_console=true"
-//         ["title"]=>
-//         string(13) "Untitled Page"
-//       }
-//       [1]=>
-//       array(5) {
-//         ["type"]=>
-//         string(13) "beacon-opened"
-//         ["timestamp"]=>
-//         string(27) "2021-04-12T06:40:59.329000Z"
-//         ["url"]=>
-//         string(55) "https://fiddle.jshell.net/_display/?editor_console=true"
-//         ["title"]=>
-//         string(13) "Untitled Page"
-//         ["name"]=>
-//         string(18) "*Elyse Rating Test"
-//       }
-//       [2]=>
-//       array(4) {
-//         ["type"]=>
-//         string(12) "chat-started"
-//         ["timestamp"]=>
-//         string(27) "2021-04-12T06:41:07.390000Z"
-//         ["url"]=>
-//         string(55) "https://fiddle.jshell.net/_display/?editor_console=true"
-//         ["title"]=>
-//         string(13) "Untitled Page"
-//       }
-//     }
-//     ["endedAt"]=>
-//     string(27) "2021-04-12T06:47:02.365217Z"
-//   }

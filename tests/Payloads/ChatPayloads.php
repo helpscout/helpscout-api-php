@@ -73,6 +73,48 @@ class ChatPayloads
     {
         return [
             'id' => $id,
+            'beaconId' => (string) Uuid::uuid4(),
+            'mailboxId' => 12,
+            'createdAt' => '2021-04-12T08:44:34.736330Z',
+            'assignee' => [
+                'id' => 1,
+                'type' => 'user',
+                'first' => 'Tom',
+                'last' => 'Graham',
+                'email' => 'tom@helpscout.com',
+            ],
+            'customer' => [
+                'id' => 2,
+                'type' => 'customer',
+                'first' => 'Denny',
+                'last' => 'Swindle',
+                'email' => 'denny@helpscout.com',
+            ],
+            'preview' => 'Preview text',
+            'tags' => [
+                [
+                    'id' => null,
+                    'slug' => 'test',
+                    'color' => 'none',
+                ],
+            ],
+            'timeline' => [
+                [
+                    'type' => 'chat-started',
+                    'timestamp' => '2021-04-12T08:44:34.542000Z',
+                    'url' => 'https://fiddle.jshell.net',
+                    'title' => 'Untitled Page',
+                ],
+            ],
+            '_embedded' => [
+                'events' => [
+                    self::event((string) Uuid::uuid4()),
+                    self::event((string) Uuid::uuid4()),
+                    self::event((string) Uuid::uuid4()),
+                    self::event((string) Uuid::uuid4()),
+                    self::event((string) Uuid::uuid4()),
+                ],
+            ],
             '_links' => [
                 'self' => [
                     'href' => "https://api.helpscout.net/chat/v1/$id",
@@ -85,9 +127,22 @@ class ChatPayloads
     {
         return [
             'id' => $id,
+            'type' => 'message',
+            'action' => 'message-added',
+            'author' => [
+                'id' => 1,
+                'type' => 'user',
+                'first' => 'Tom',
+                'last' => 'Graham',
+                'email' => 'tom@helpscout.com',
+            ],
+            'createdAt' => '2021-04-12T08:44:48.718742Z',
+            'params' => [
+                'test' => 'value',
+            ],
             '_links' => [
                 'author' => [
-                    'href' => '',
+                    'href' => 'https://api.helpscout.net/v2/users/1',
                 ],
             ],
         ];
