@@ -780,6 +780,18 @@ $client->attachments()->delete($conversationId, $attachmentId);
 
 ## Chats
 
+Get a chat
+
+```php
+$chat = $client->chats()->get($chatId);
+```
+
+List the chat events
+
+```php
+$events = $client->chats()->events($chatId);
+```
+
 ## Tags
 
 List the tags
