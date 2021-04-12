@@ -6,14 +6,6 @@ namespace HelpScout\Api\Chats;
 
 use HelpScout\Api\Endpoint;
 
-// use HelpScout\Api\Entity\Collection;
-// use HelpScout\Api\Entity\PagedCollection;
-// use HelpScout\Api\Entity\Patch;
-// use HelpScout\Api\Exception\ValidationErrorException;
-// use HelpScout\Api\Http\Hal\HalPagedResources;
-// use HelpScout\Api\Http\Hal\HalResource;
-// use HelpScout\Api\Tags\TagsCollection;
-
 class ChatsEndpoint extends Endpoint
 {
     public const CHAT_URI = '/chat/v1/%s';
