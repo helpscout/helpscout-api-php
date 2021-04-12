@@ -7,7 +7,7 @@ namespace HelpScout\Api\Conversations;
 use DateTimeInterface;
 use HelpScout\Api\Assert\Assert;
 use HelpScout\Api\Conversations\Threads\IncludesThreadDetails;
-use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
+use HelpScout\Api\Support\HasCustomer;
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
 use HelpScout\Api\Conversations\Threads\Thread;
 use HelpScout\Api\Conversations\Threads\ThreadFactory;

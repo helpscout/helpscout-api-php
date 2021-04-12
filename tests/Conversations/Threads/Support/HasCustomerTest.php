@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Tests\Conversations\Threads\Support;
 
-use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
+use HelpScout\Api\Support\HasCustomer;
 use HelpScout\Api\Customers\Customer;
 use PHPStan\Testing\TestCase;
 

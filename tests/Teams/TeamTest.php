@@ -6,7 +6,6 @@ namespace HelpScout\Api\Tests\Teams;
 
 use DateTime;
 use HelpScout\Api\Teams\Team;
-use HelpScout\Api\Users\User;
 use PHPUnit\Framework\TestCase;
 
 class TeamTest extends TestCase
@@ -39,7 +38,7 @@ class TeamTest extends TestCase
 
     public function testHydrateWithoutCreatedAt()
     {
-        $team = new User();
+        $team = new Team();
         $team->hydrate([
             'id' => 12,
         ]);
@@ -49,7 +48,7 @@ class TeamTest extends TestCase
 
     public function testHydrateWithoutUpdatedAt()
     {
-        $team = new User();
+        $team = new Team();
         $team->hydrate([
             'id' => 12,
         ]);

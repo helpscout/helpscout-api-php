@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HelpScout\Api\Conversations\Threads\Support;
+namespace HelpScout\Api\Support;
 
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Customers\Entry\Email;
@@ -30,12 +30,12 @@ trait HasCustomer
     {
         $customer = new Customer();
 
-        // For a Conversation the API returns a single email address along
-        // with a Customer.
+        // A single email is returned with the customer resource
         if (isset($data['email'])) {
             $email = new Email();
             $email->setValue($data['email']);
             $customer->addEmail($email);
+
             unset($data['email']);
         }
 
