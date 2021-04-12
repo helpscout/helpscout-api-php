@@ -12,7 +12,7 @@ class TimelineEvent implements Hydratable
     use HydratesData;
 
     /**
-     * @var string|nuill
+     * @var string|null
      */
     private $type;
 

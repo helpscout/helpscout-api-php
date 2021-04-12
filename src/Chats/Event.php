@@ -13,7 +13,7 @@ class Event implements Hydratable
     use HydratesData;
 
     /**
-     * @var string|nuill
+     * @var string|null
      */
     private $id;
 
@@ -57,7 +57,9 @@ class Event implements Hydratable
         $this->params = $data['params'] ?? [];
 
         if (isset($data['author'])) {
-            $this->author = $this->hydrateOne(User::class, $data['author']);
+            /** @var User $author */
+            $author = $this->hydrateOne(User::class, $data['author']);
+            $this->author = $author;
         }
     }
 

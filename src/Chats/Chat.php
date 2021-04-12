@@ -47,7 +47,7 @@ class Chat implements Hydratable
     private $preview;
 
     /**
-     * @var string[]|Collection
+     * @var Tag[]|Collection
      */
     private $tags;
 

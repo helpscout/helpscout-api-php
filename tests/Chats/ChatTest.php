@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HelpScout\Api\Tests\Teams;
+namespace HelpScout\Api\Tests\Chats;
 
 use HelpScout\Api\Chats\Chat;
 use PHPUnit\Framework\TestCase;
