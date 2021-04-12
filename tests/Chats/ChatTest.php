@@ -15,7 +15,6 @@ class ChatTest extends TestCase
         $chat = new Chat();
         $chat->hydrate([
         ]);
-
     }
 
     public function testHydrateWithoutCreatedAt()

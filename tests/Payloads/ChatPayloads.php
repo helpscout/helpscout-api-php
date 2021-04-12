@@ -22,7 +22,7 @@ class ChatPayloads
         $totalPages = ceil($totalElements / $pageSize);
 
         $ids = [];
-        for ($i = 0; $i < $pageElements; $i++) {
+        for ($i = 0; $i < $pageElements; ++$i) {
             $ids[] = (string) Uuid::uuid4();
         }
 

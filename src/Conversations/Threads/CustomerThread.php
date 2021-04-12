@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Conversations\Threads;
 
-use HelpScout\Api\Support\HasCustomer;
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
+use HelpScout\Api\Support\HasCustomer;
 
 class CustomerThread extends Thread
 {

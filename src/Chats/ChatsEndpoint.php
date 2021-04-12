@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Chats;
 
 use HelpScout\Api\Endpoint;
+
 // use HelpScout\Api\Entity\Collection;
 // use HelpScout\Api\Entity\PagedCollection;
 // use HelpScout\Api\Entity\Patch;

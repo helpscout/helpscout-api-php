@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Chats;
 
-use HelpScout\Api\Support\HasCustomer;
 use HelpScout\Api\Customers\Customer;
 use HelpScout\Api\Entity\Collection;
 use HelpScout\Api\Entity\Hydratable;
+use HelpScout\Api\Support\HasCustomer;
 use HelpScout\Api\Support\HydratesData;
 use HelpScout\Api\Tags\Tag;
 
