@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HelpScout\Api;
 
+use HelpScout\Api\Chats\ChatsEndpoint;
 use HelpScout\Api\Conversations\ConversationsEndpoint;
 use HelpScout\Api\Conversations\Threads\Attachments\AttachmentsEndpoint;
 use HelpScout\Api\Conversations\Threads\ThreadsEndpoint;
@@ -37,6 +38,7 @@ class ApiClient
         'hs.conversations' => ConversationsEndpoint::class,
         'hs.attachments' => AttachmentsEndpoint::class,
         'hs.teams' => TeamsEndpoint::class,
+        'hs.chats' => ChatsEndpoint::class,
     ];
 
     /**
@@ -194,6 +196,11 @@ class ApiClient
     public function conversations(): ConversationsEndpoint
     {
         return $this->fetchFromContainer('hs.conversations');
+    }
+
+    public function chats(): ChatsEndpoint
+    {
+        return $this->fetchFromContainer('hs.chats');
     }
 
     public function teams(): TeamsEndpoint

@@ -32,6 +32,8 @@ class Webhook implements Hydratable, Extractable
         'customer.created',
         'customer.updated',
         'satisfaction.ratings',
+        'beacon.chat.created',
+        'beacon.chat.customer.replied',
     ];
 
     /**

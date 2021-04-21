@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Conversations\Threads;
 
-use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
 use HelpScout\Api\Conversations\Threads\Support\HasUser;
+use HelpScout\Api\Support\HasCustomer;
 
 class ReplyThread extends Thread
 {

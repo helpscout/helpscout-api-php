@@ -22,7 +22,8 @@
         "phpunit/phpunit": "^8.4",
         "phpstan/phpstan": "^0.10.1",
         "friendsofphp/php-cs-fixer": "^2.3",
-        "mockery/mockery": "^1.1"
+        "mockery/mockery": "^1.1",
+        "ramsey/uuid": "^4.1"
     },
     "autoload": {
         "psr-4": { "HelpScout\\Api\\": "src/" }

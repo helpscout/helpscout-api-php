@@ -29,6 +29,7 @@ This is the official Help Scout PHP client. This client contains methods for eas
    * [Conversations](#conversations)
      * [Threads](#threads)
        * [Attachments](#attachments)
+   * [Chats](#chats)
    * [Tags](#tags)
    * [Teams](#teams)
    * [Users](#users)
@@ -67,7 +68,7 @@ use HelpScout\Api\ApiClientFactory;
 $client = ApiClientFactory::createClient();
 
 // Set Client credentials if using that grant type.  Using this approach will lazily fetch an access token on-demand
-// when needed.  
+// when needed.
 $client->useClientCredentials($appId, $appSecret);
 
 // Set Access token directly if you have it
@@ -527,12 +528,12 @@ use HelpScout\Api\Conversations\ConversationFilters;
 $request = (new ConversationRequest)
     ->withMailbox()
     ->withThreads();
-    
+
 $filters = (new ConversationFilters())
     ->inMailbox(1)
     ->inFolder(13)
     ->byCustomField(123, 'blue');
-    
+
 $conversations = $client->conversations()->list($filters, $request);
 ```
 
@@ -777,6 +778,20 @@ Delete an attachment:
 $client->attachments()->delete($conversationId, $attachmentId);
 ```
 
+## Chats
+
+Get a chat
+
+```php
+$chat = $client->chats()->get($chatId);
+```
+
+List the chat events
+
+```php
+$events = $client->chats()->events($chatId);
+```
+
 ## Tags
 
 List the tags
@@ -950,7 +965,7 @@ $client->workflows()->updateStatus($id, 'active');
 
 Any exception thrown by the client directly will implement `HelpScout\Api\Exception` and HTTP errors will result in `Http\Client\Exception\RequestException` being thrown.
 
-If an OAuth2 token is not provided or invalid then a `HelpScout\Api\Exception\AuthenticationException` is thrown. 
+If an OAuth2 token is not provided or invalid then a `HelpScout\Api\Exception\AuthenticationException` is thrown.
 
 ## Validation
 

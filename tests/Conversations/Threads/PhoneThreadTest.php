@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Conversations\Threads;
 
 use HelpScout\Api\Conversations\Threads\PhoneThread;
-use HelpScout\Api\Conversations\Threads\Support\HasCustomer;
 use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Support\HasCustomer;
 use PHPUnit\Framework\TestCase;
 
 class PhoneThreadTest extends TestCase
