@@ -17,11 +17,13 @@ class IncomingWebhook
     public const SIGNATURE_HEADERS = [
         'HTTP_X_HELPSCOUT_SIGNATURE',
         'X_HELPSCOUT_SIGNATURE',
+        'x-helpscout-signature',
     ];
 
     public const EVENT_HEADERS = [
         'HTTP_X_HELPSCOUT_EVENT',
         'X_HELPSCOUT_EVENT',
+        'x-helpscout-event',
     ];
 
     public const TEST_EVENT = 'helpscout.test';
