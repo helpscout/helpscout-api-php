@@ -35,7 +35,7 @@ class Property implements Extractable, Hydratable
     private $source;
 
     /**
-     * Operation for update
+     * Operation for update.
      *
      * @var string (replace/remove)
      */
@@ -59,7 +59,7 @@ class Property implements Extractable, Hydratable
         return [
             'op' => $this->getOperation(),
             'value' => $this->getValue(),
-            'path' => '/' . $this->getSlug(),
+            'path' => '/'.$this->getSlug(),
         ];
     }
 
