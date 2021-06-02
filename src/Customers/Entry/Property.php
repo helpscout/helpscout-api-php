@@ -34,6 +34,13 @@ class Property implements Extractable, Hydratable
      */
     private $source;
 
+    /**
+     * Operation for update
+     *
+     * @var string (replace/remove)
+     */
+    private $operation;
+
     public function hydrate(array $data, array $embedded = [])
     {
         $this->setType($data['type'] ?? null);
@@ -41,6 +48,7 @@ class Property implements Extractable, Hydratable
         $this->setName($data['name'] ?? null);
         $this->setValue($data['value'] ?? null);
         $this->setSource($data['source'] ?? null);
+        $this->setOperation($data['operation'] ?? 'replace');
     }
 
     /**
@@ -49,11 +57,9 @@ class Property implements Extractable, Hydratable
     public function extract(): array
     {
         return [
-            'type' => $this->getType(),
-            'slug' => $this->getSlug(),
-            'name' => $this->getName(),
+            'op' => $this->getOperation(),
             'value' => $this->getValue(),
-            'source' => $this->getSource(),
+            'path' => '/' . $this->getSlug(),
         ];
     }
 
@@ -131,6 +137,24 @@ class Property implements Extractable, Hydratable
     public function setSource($source): Property
     {
         $this->source = $source;
+
+        return $this;
+    }
+
+    /**
+     * @return string $operation
+     */
+    public function getOperation()
+    {
+        return $this->operation;
+    }
+
+    /**
+     * @param array $source
+     */
+    public function setOperation($operation): Property
+    {
+        $this->operation = $operation;
 
         return $this;
     }

@@ -34,6 +34,17 @@ class CustomersEndpoint extends Endpoint
         );
     }
 
+    /**
+     * @throws ValidationErrorException
+     */
+    public function updateProperties($customerId, $properties): void
+    {
+        $this->restClient->updateResource(
+            $properties,
+            sprintf('/v2/customers/%d/properties', $customerId)
+        );
+    }
+
     public function get(int $id, CustomerRequest $customerRequest = null): Customer
     {
         $customerResource = $this->restClient->getResource(

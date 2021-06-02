@@ -397,6 +397,30 @@ foreach ($customer->getProperties() as $property) {
 }
 ```
 
+Update/remove customer properties
+
+```php
+
+$customer = $client->customers()->get(418048101);
+// ...
+
+$properties = new Collection();
+
+// Update a property
+/** @var Hydratable $entity */
+$entity = new Property();
+$entity->hydrate(['slug'=>'propslug', 'value'=>'somevalue']);
+$properties->append($entity);
+
+// Remove a property
+/** @var Hydratable $entity */
+$entity = new Property();
+$entity->hydrate(['slug'=>'propslug', 'operation'=>'remove']);
+$properties->append($entity);
+
+$client->customers()->updateProperties($customer->getId(), $properties);
+```
+
 ## Mailboxes
 
 Get a mailbox.
