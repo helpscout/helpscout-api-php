@@ -41,10 +41,17 @@ class PropertyTest extends TestCase
             'source' => [
                 'name' => 'api',
             ],
+            'operation' => 'remove',
         ];
         $property = new Property();
         $property->hydrate($data);
 
-        $this->assertSame($data, $property->extract());
+        $expected = [
+            'op' => $property->getOperation(),
+            'value' => $property->getValue(),
+            'path' => '/'.$property->getSlug(),
+        ];
+
+        $this->assertSame($expected, $property->extract());
     }
 }
