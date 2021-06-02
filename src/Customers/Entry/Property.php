@@ -150,7 +150,7 @@ class Property implements Extractable, Hydratable
     }
 
     /**
-     * @param array $source
+     * @param string $operation
      */
     public function setOperation($operation): Property
     {
