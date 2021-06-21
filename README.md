@@ -50,6 +50,8 @@ The recommended way to install the client is by using [Composer](https://getcomp
 composer require helpscout/api "^3.0"
 ```
 
+For Laravel projects, check out [`helpscout/api-laravel`](https://github.com/helpscout/helpscout-api-php-laravel)
+
 ## Usage
 
 You should always use Composer's autoloader in your application to autoload classes. All examples below assume you've already included this in your code:
