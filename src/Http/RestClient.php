@@ -158,7 +158,7 @@ class RestClient
 
     private function encodeEntity(Extractable $entity): string
     {
-        return json_encode($entity->extract());
+        return json_encode($entity->extract(), JSON_THROW_ON_ERROR);
     }
 
     /**
