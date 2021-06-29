@@ -156,6 +156,9 @@ class RestClient
         return HalDeserializer::deserializeResources($entityClass, $rel, $halDocument);
     }
 
+    /**
+     * @throws \JsonException
+     */
     private function encodeEntity(Extractable $entity): string
     {
         return json_encode($entity->extract(), JSON_THROW_ON_ERROR);
