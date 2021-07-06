@@ -36,7 +36,7 @@ class ThreadsEndpoint extends Endpoint
     
     public function updateHidden(int $conversationId, int $threadId, string $newHiddenStatus): void
     {
-        $patch = Patch::replace('hidden', $newHiddenStatus);
+        $patch = Patch::replace('hidden', boolval($newHiddenStatus));
         $this->restClient->patchResource(
             $patch,
             sprintf('/v2/conversations/%d/threads/%d', $conversationId, $threadId)
