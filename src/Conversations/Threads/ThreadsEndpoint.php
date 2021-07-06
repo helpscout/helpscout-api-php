@@ -33,6 +33,15 @@ class ThreadsEndpoint extends Endpoint
             sprintf('/v2/conversations/%d/threads/%d', $conversationId, $threadId)
         );
     }
+    
+    public function updateHidden(int $conversationId, int $threadId, string $newHiddenStatus): void
+    {
+        $patch = Patch::replace('hidden', $newHiddenStatus);
+        $this->restClient->patchResource(
+            $patch,
+            sprintf('/v2/conversations/%d/threads/%d', $conversationId, $threadId)
+        );
+    }
 
     public function getSource(int $conversationId, int $threadId): Source
     {
