@@ -88,7 +88,7 @@ class RestClientTest extends TestCase
             ->andThrow($exception);
 
         $this->authenticator->shouldReceive([
-            'getAuthHeader' => [],
+            'getAuthHeader' => ['the-header' => 'the-value'],
             'shouldAutoRefreshAccessToken' => false,
         ]);
         $this->authenticator->shouldReceive('fetchAccessAndRefreshToken')
@@ -106,7 +106,7 @@ class RestClientTest extends TestCase
             ->once();
 
         $this->authenticator->shouldReceive([
-            'getAuthHeader' => [],
+            'getAuthHeader' => ['the-header' => 'the-value'],
             'shouldAutoRefreshAccessToken' => true,
         ]);
         $this->authenticator->shouldReceive('fetchAccessAndRefreshToken')
@@ -118,6 +118,11 @@ class RestClientTest extends TestCase
         ];
         $response = new Response(200, [], json_encode($responseData));
         $this->methodsClient->shouldReceive('send')
+            ->with(\Mockery::on(function (Request $request) {
+                // Ensure retry request includes new auth headers.
+                $this->assertSame(['the-value'], $request->getHeader('the-header'));
+                return true;
+            }), \Mockery::any())
             ->andReturn($response);
 
         $restClient = new RestClient($this->methodsClient, $this->authenticator);

@@ -182,7 +182,7 @@ class RestClient
             $authenticator = $this->getAuthenticator();
             if ($authenticator->shouldAutoRefreshAccessToken()) {
                 $authenticator->fetchAccessAndRefreshToken();
-                // replace the auth headers in the Request object
+                // Replace the auth headers in the Request object.
                 foreach ($this->getAuthHeader() as $header => $value) {
                     $request = $request->withHeader($header, $value);
                 }
