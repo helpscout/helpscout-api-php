@@ -87,6 +87,30 @@ class ThreadIntegrationTest extends ApiClientIntegrationTestCase
         ]);
     }
 
+    public function testCanHideThread()
+    {
+        $this->stubResponse($this->getResponse(201));
+        $this->client->threads()->hide(1, 1432);
+
+        $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1/threads/1432', 'PATCH', [
+            'op' => 'replace',
+            'path' => '/hidden',
+            'value' => true,
+        ]);
+    }
+
+    public function testCanUnhideThread()
+    {
+        $this->stubResponse($this->getResponse(201));
+        $this->client->threads()->unhide(1, 1432);
+
+        $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1/threads/1432', 'PATCH', [
+            'op' => 'replace',
+            'path' => '/hidden',
+            'value' => false,
+        ]);
+    }
+
     public function testCanUpdateThreadText()
     {
         $this->stubResponse($this->getResponse(201));

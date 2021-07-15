@@ -14,7 +14,7 @@ class ThreadsEndpoint extends Endpoint
 {
     public function list(int $conversationId): PagedCollection
     {
-        return $this->loadThreads(sprintf('/v2/conversations/%d/threads', $conversationId));
+        return $this->loadThreads(self::threadsUrl($conversationId));
     }
 
     public function create(int $conversationId, Thread $thread): ?int
@@ -25,12 +25,27 @@ class ThreadsEndpoint extends Endpoint
         );
     }
 
+    public function hide(int $conversationId, int $threadId): void
+    {
+        $this->restClient->patchResource(
+            Patch::replace('hidden', true),
+            self::threadUrl($conversationId, $threadId)
+        );
+    }
+
+    public function unhide(int $conversationId, int $threadId): void
+    {
+        $this->restClient->patchResource(
+            Patch::replace('hidden', false),
+            self::threadUrl($conversationId, $threadId)
+        );
+    }
+
     public function updateText(int $conversationId, int $threadId, string $newText): void
     {
-        $patch = Patch::replace('text', $newText);
         $this->restClient->patchResource(
-            $patch,
-            sprintf('/v2/conversations/%d/threads/%d', $conversationId, $threadId)
+            Patch::replace('text', $newText),
+            self::threadUrl($conversationId, $threadId)
         );
     }
 
@@ -38,11 +53,26 @@ class ThreadsEndpoint extends Endpoint
     {
         return $this->loadResource(
             Source::class,
-            sprintf('/v2/conversations/%d/threads/%d/original-source', $conversationId, $threadId),
+            self::threadSourceUrl($conversationId, $threadId),
             [
                 'Accept' => 'application/json',
             ]
         );
+    }
+
+    private static function threadSourceUrl(int $conversationId, int $threadId): string
+    {
+        return sprintf('/v2/conversations/%d/threads/%d/original-source', $conversationId, $threadId);
+    }
+
+    private static function threadUrl(int $conversationId, int $threadId): string
+    {
+        return sprintf('/v2/conversations/%d/threads/%d', $conversationId, $threadId);
+    }
+
+    private static function threadsUrl(int $conversationId): string
+    {
+        return sprintf('/v2/conversations/%d/threads', $conversationId);
     }
 
     /**
