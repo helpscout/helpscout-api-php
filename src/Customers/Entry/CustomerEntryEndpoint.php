@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Customers\Entry;
 
 use HelpScout\Api\Endpoint;
+use HelpScout\Api\Entity\Collection;
 
 class CustomerEntryEndpoint extends Endpoint
 {
@@ -19,6 +20,7 @@ class CustomerEntryEndpoint extends Endpoint
     public const CUSTOMER_SOCIAL = '/v2/customers/%d/social-profiles/%d';
     public const CREATE_CUSTOMER_WEBSITE = '/v2/customers/%d/websites';
     public const CUSTOMER_WEBSITE = '/v2/customers/%d/websites/%d';
+    public const CUSTOMER_PROPERTIES= '/v2/customers/%d/properties';
 
     public function createAddress(int $customerId, Address $address): ?int
     {
@@ -154,6 +156,14 @@ class CustomerEntryEndpoint extends Endpoint
     {
         $this->restClient->deleteResource(
             sprintf(self::CUSTOMER_WEBSITE, $customerId, $websiteId)
+        );
+    }
+
+    public function updateProperties(int $customerId, Collection $propertyPatches): void
+    {
+        $this->restClient->patchResource(
+            $propertyPatches,
+            sprintf(self::CUSTOMER_PROPERTIES, $customerId)
         );
     }
 }
