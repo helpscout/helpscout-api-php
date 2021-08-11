@@ -399,6 +399,20 @@ foreach ($customer->getProperties() as $property) {
 }
 ```
 
+Update a customer's properties.
+```php
+use HelpScout\Api\Entity\Collection;
+use HelpScout\Api\Entity\Patch;
+
+$operations = new Collection(
+    [
+        new Patch('remove', 'property-1'),
+        new Patch('replace', 'property-2', 'value'),
+    ];
+);
+$client->customerEntry()->updateProperties($customerId, $operations);
+
+```
 ## Mailboxes
 
 Get a mailbox.
