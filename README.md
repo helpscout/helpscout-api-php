@@ -386,11 +386,9 @@ $client->customerEntry()->deleteWebsite($customerId, $websiteId);
 
 ### Properties
 
-Get a customer's properties and their values
+Get a customer's properties and their values.
 
 ```php
-use HelpScout\Api\Customers\Entry\Website;
-
 $customer = $client->customers()->get(418048101);
 // ...
 
