@@ -10,6 +10,8 @@ use HelpScout\Api\Customers\Entry\Email;
 use HelpScout\Api\Customers\Entry\Phone;
 use HelpScout\Api\Customers\Entry\SocialProfile;
 use HelpScout\Api\Customers\Entry\Website;
+use HelpScout\Api\Entity\Collection;
+use HelpScout\Api\Entity\Patch;
 use HelpScout\Api\Tests\ApiClientIntegrationTestCase;
 
 /**
@@ -359,6 +361,23 @@ class CustomerEntryClientIntegrationTest extends ApiClientIntegrationTestCase
         $this->verifySingleRequest(
             'https://api.helpscout.net/v2/customers/12/websites/42',
             'DELETE'
+        );
+    }
+
+    public function testUpdateCustomerProperties()
+    {
+        $this->stubResponse($this->getResponse(204));
+
+        $operations = new Collection(
+            [
+                new Patch('remove', 'value1'),
+            ]
+        );
+        $this->client->customerEntry()->updateProperties(12, $operations);
+
+        $this->verifySingleRequest(
+            'https://api.helpscout.net/v2/customers/12/properties',
+            'PATCH'
         );
     }
 }
