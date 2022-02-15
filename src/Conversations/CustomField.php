@@ -25,6 +25,11 @@ class CustomField implements Extractable, Hydratable
      */
     private $value;
 
+    /**
+     * @var string|null
+     */
+    private $text;
+
     public function hydrate(array $data, array $embedded = [])
     {
         if (isset($data['id'])) {
@@ -33,6 +38,7 @@ class CustomField implements Extractable, Hydratable
 
         $this->setName($data['name'] ?? null);
         $this->setValue($data['value'] ?? null);
+        $this->setText($data['text'] ?? null);
     }
 
     /**
@@ -44,6 +50,7 @@ class CustomField implements Extractable, Hydratable
             'id' => $this->getId(),
             'name' => $this->getName(),
             'value' => $this->getValue(),
+            'text' => $this->getText(),
         ];
 
         if ($this->getValue() instanceof \DateTimeInterface) {
@@ -93,6 +100,20 @@ class CustomField implements Extractable, Hydratable
     public function setValue($value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getText(): ?string {
+        return $this->text;
+    }
+
+    /**
+     * @param string|null $text
+     */
+    public function setText($text): self
+    {
+        $this->text = $text;
 
         return $this;
     }
