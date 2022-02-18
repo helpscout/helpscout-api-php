@@ -18,6 +18,7 @@ class CustomFieldsCollectionTest extends TestCase
         $customField->setId(936);
         $customField->setName('Account Type');
         $customField->setValue('Administrator');
+        $customField->setText('Administrator');
 
         $customFieldsCollection->setCustomFields([
             $customField,
@@ -29,6 +30,7 @@ class CustomFieldsCollectionTest extends TestCase
                     'id' => 936,
                     'name' => 'Account Type',
                     'value' => 'Administrator',
+                    'text' => 'Administrator',
                 ],
             ],
         ], $customFieldsCollection->extract());

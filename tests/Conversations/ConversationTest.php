@@ -238,6 +238,7 @@ class ConversationTest extends TestCase
         $this->assertInstanceOf(CustomField::class, $customField->setId(936));
         $this->assertInstanceOf(CustomField::class, $customField->setName('Account Type'));
         $customField->setValue('Administrator');
+        $customField->setText('Administrator');
         $conversation->setCustomFields(new Collection([
             $customField,
         ]));
@@ -349,6 +350,7 @@ class ConversationTest extends TestCase
                 'id' => 936,
                 'name' => 'Account Type',
                 'value' => 'Administrator',
+                'text' => 'Administrator',
             ]],
             $extractedConversation['fields']
         );
