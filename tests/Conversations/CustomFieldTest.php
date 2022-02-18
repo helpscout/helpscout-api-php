@@ -16,11 +16,13 @@ class CustomFieldTest extends TestCase
             'id' => 6688,
             'name' => 'Account Type',
             'value' => 'Premium',
+            'text' => 'Premium',
         ]);
 
         $this->assertSame(6688, $customField->getId());
         $this->assertSame('Account Type', $customField->getName());
         $this->assertSame('Premium', $customField->getValue());
+        $this->assertSame('Premium', $customField->getText());
     }
 
     public function testExtract()
@@ -29,11 +31,13 @@ class CustomFieldTest extends TestCase
         $this->assertInstanceOf(CustomField::class, $customField->setId(6688));
         $this->assertInstanceOf(CustomField::class, $customField->setName('Account Type'));
         $this->assertInstanceOf(CustomField::class, $customField->setValue('Premium'));
+        $this->assertInstanceOf(CustomField::class, $customField->setText('Premium'));
 
         $this->assertSame([
             'id' => 6688,
             'name' => 'Account Type',
             'value' => 'Premium',
+            'text' => 'Premium',
         ], $customField->extract());
     }
 
@@ -48,6 +52,7 @@ class CustomFieldTest extends TestCase
             'id' => 6688,
             'name' => 'Account Type',
             'value' => '2017-01-02',
+            'text' => null,
         ], $customField->extract());
     }
 
@@ -59,6 +64,7 @@ class CustomFieldTest extends TestCase
             'id' => null,
             'name' => null,
             'value' => null,
+            'text' => null,
         ], $customField->extract());
     }
 }
