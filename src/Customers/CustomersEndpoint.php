@@ -68,6 +68,13 @@ class CustomersEndpoint extends Endpoint
         );
     }
 
+    public function delete(int $customerId): void
+    {
+        $this->restClient->deleteResource(
+            sprintf('/v2/customers/%d', $customerId)
+        );
+    }
+
     /**
      * @return Customer[]|PagedCollection
      */
