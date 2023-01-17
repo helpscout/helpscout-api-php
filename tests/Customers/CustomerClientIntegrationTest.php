@@ -307,4 +307,15 @@ class CustomerClientIntegrationTest extends ApiClientIntegrationTestCase
             ['GET', 'https://api.helpscout.net/v2/customers?page=2'],
         ]);
     }
+
+    public function testDeleteCustomer()
+    {
+        $this->stubResponse($this->getResponse(201));
+        $this->client->customers()->delete(1);
+
+        $this->verifySingleRequest(
+            'https://api.helpscout.net/v2/customers/1',
+            'DELETE'
+        );
+    }
 }
