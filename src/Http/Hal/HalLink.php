@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Http\Hal;
 
 use HelpScout\Api\Exception\RuntimeException;
-use QL\UriTemplate\UriTemplate;
+use Rize\UriTemplate;
 
 class HalLink
 {
@@ -77,6 +77,6 @@ class HalLink
             throw new RuntimeException(sprintf('The link "%s" is not templated', $this->getRel()));
         }
 
-        return (new UriTemplate($this->getHref()))->expand($params);
+        return (new UriTemplate)->expand($this->getHref(), $params);
     }
 }
