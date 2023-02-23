@@ -14,9 +14,9 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "ql/uri-template": "^1.1",
         "webmozart/assert": "^1.2",
-        "guzzlehttp/guzzle": "^6.3|^7.0.1"
+        "guzzlehttp/guzzle": "^6.3|^7.0.1",
+        "rize/uri-template": "0.3.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4",
