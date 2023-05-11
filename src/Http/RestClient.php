@@ -14,6 +14,7 @@ use HelpScout\Api\Http\Hal\HalDeserializer;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Http\Hal\HalResources;
 use HelpScout\Api\Reports\Report;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class RestClient
@@ -167,7 +168,7 @@ class RestClient
     /**
      * @return mixed|ResponseInterface
      */
-    private function send(Request $request)
+    private function send(RequestInterface $request)
     {
         $options = [
             'base_uri' => self::BASE_URI,

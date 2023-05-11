@@ -13,12 +13,12 @@ class PagedCollection extends Collection
     /**
      * The link name for the templated page URI.
      */
-    const REL_PAGE = 'page';
+    public const REL_PAGE = 'page';
 
     /**
      * The variable name for the page number in the templated URI.
      */
-    const PAGE_VARIABLE = 'page';
+    public const PAGE_VARIABLE = 'page';
 
     /**
      * @var HalPageMetadata

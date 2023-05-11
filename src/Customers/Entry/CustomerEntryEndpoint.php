@@ -20,7 +20,7 @@ class CustomerEntryEndpoint extends Endpoint
     public const CUSTOMER_SOCIAL = '/v2/customers/%d/social-profiles/%d';
     public const CREATE_CUSTOMER_WEBSITE = '/v2/customers/%d/websites';
     public const CUSTOMER_WEBSITE = '/v2/customers/%d/websites/%d';
-    public const CUSTOMER_PROPERTIES= '/v2/customers/%d/properties';
+    public const CUSTOMER_PROPERTIES = '/v2/customers/%d/properties';
 
     public function createAddress(int $customerId, Address $address): ?int
     {

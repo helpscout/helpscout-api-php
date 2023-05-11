@@ -6,7 +6,7 @@ namespace HelpScout\Api\Tests\Conversations\Threads\Support;
 
 use HelpScout\Api\Conversations\Threads\Support\HasUser;
 use HelpScout\Api\Users\User;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class HasUserTest extends TestCase
 {

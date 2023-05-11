@@ -1,5 +1,5 @@
 parameters:
-    ignoreErrors:
-        # Ignore type errors for passing a Mock
-        - '#.*MockObject given.*#'
-        - '#.*MockInterface given.*#'
+    level: 4
+    paths:
+        - src
+        - tests

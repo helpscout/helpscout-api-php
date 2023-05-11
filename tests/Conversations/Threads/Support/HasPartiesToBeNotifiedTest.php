@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Conversations\Threads\Support;
 
 use HelpScout\Api\Conversations\Threads\Support\HasPartiesToBeNotified;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class HasPartiesToBeNotifiedTest extends TestCase
 {

@@ -9,8 +9,8 @@ use HelpScout\Api\Exception\JsonException;
 
 class HalDeserializer
 {
-    const LINKS = '_links';
-    const EMBEDDED = '_embedded';
+    public const LINKS = '_links';
+    public const EMBEDDED = '_embedded';
 
     public static function deserializeDocument(string $json): HalDocument
     {

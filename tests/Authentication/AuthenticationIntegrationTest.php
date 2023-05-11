@@ -119,9 +119,8 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
             'Authorization' => 'Bearer fdsafdas',
         ];
 
-        $authenticator = new Authenticator(new Client(), $auth);
+        $authenticator = new Authenticator($this->guzzle, $auth);
 
-        $authenticator->setClient($this->guzzle);
         $result = $authenticator->getAuthHeader();
         $this->assertSame($expectedResult, $result);
     }
@@ -162,10 +161,8 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
             'Authorization' => 'Bearer fdsafdas',
         ];
 
-        $authenticator = new Authenticator(new Client(), $auth);
+        $authenticator = new Authenticator($this->guzzle, $auth);
 
-        /* @var Client $client */
-        $authenticator->setClient($this->guzzle);
         $result = $authenticator->getAuthHeader();
         $this->assertSame($expectedResult, $result);
 

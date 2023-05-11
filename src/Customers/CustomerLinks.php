@@ -6,10 +6,10 @@ namespace HelpScout\Api\Customers;
 
 class CustomerLinks
 {
-    const ADDRESS = 'address';
-    const CHATS = 'chats';
-    const EMAILS = 'emails';
-    const PHONES = 'phones';
-    const SOCIAL_PROFILES = 'social-profiles';
-    const WEBSITES = 'websites';
+    public const ADDRESS = 'address';
+    public const CHATS = 'chats';
+    public const EMAILS = 'emails';
+    public const PHONES = 'phones';
+    public const SOCIAL_PROFILES = 'social-profiles';
+    public const WEBSITES = 'websites';
 }

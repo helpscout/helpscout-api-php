@@ -9,10 +9,10 @@ class Status
     /**
      * We're using the verbiage "ANY" instead of "ALL" because a conversation can only have a single status, not multiple.
      */
-    const ANY = 'all';
-    const ACTIVE = 'active';
-    const CLOSED = 'closed';
-    const OPEN = 'open';
-    const PENDING = 'pending';
-    const SPAM = 'spam';
+    public const ANY = 'all';
+    public const ACTIVE = 'active';
+    public const CLOSED = 'closed';
+    public const OPEN = 'open';
+    public const PENDING = 'pending';
+    public const SPAM = 'spam';
 }

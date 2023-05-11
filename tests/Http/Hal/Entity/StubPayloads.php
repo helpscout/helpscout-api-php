@@ -91,11 +91,6 @@ class StubPayloads
             ],
         ];
 
-        if (empty($entities)) {
-            // The _embedded key is not set when empty
-            unset($data['_embedded']);
-        }
-
         return json_encode($data);
     }
 
