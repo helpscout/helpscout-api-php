@@ -5,45 +5,45 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Http\Handlers;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\Customers\Customer;
+use HelpScout\Api\Exception\ClientException;
 use HelpScout\Api\Http\Authenticator;
 use HelpScout\Api\Http\RestClient;
 use HelpScout\Api\Tests\ApiClientIntegrationTestCase;
 
 class ClientHandlerTest extends ApiClientIntegrationTestCase
 {
-    public function testRequestExceptionThrownWhenBadRequest()
+    public function testClientExceptionThrownWhenBadRequest()
     {
-        $this->expectException(RequestException::class);
+        $this->expectException(ClientException::class);
 
         $this->stubResponse($this->getResponse(400, json_encode([])));
 
         $this->client->customers()->get(1);
     }
 
-    public function testRequestExceptionThrownWhenAccessDenied()
+    public function testClientExceptionThrownWhenAccessDenied()
     {
-        $this->expectException(RequestException::class);
+        $this->expectException(ClientException::class);
 
         $this->stubResponse($this->getResponse(403, json_encode([])));
 
         $this->client->customers()->get(1);
     }
 
-    public function testRequestExceptionThrownWhenNotFound()
+    public function testClientExceptionThrownWhenNotFound()
     {
-        $this->expectException(RequestException::class);
+        $this->expectException(ClientException::class);
 
         $this->stubResponse($this->getResponse(404, json_encode([])));
 
         $this->client->customers()->get(1);
     }
 
-    public function testRequestExceptionNotThrownWhenNotAuthorized()
+    public function testClientExceptionNotThrownWhenNotAuthorized()
     {
         $this->mockHandler = new MockHandler();
         $handler = HandlerStack::create($this->mockHandler);

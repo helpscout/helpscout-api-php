@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Exception;
 
-use GuzzleHttp\Exception\RequestException;
-
-class AuthenticationException extends RequestException implements Exception
+class AuthenticationException extends ClientException implements Exception
 {
 }
