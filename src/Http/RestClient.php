@@ -10,10 +10,15 @@ use GuzzleHttp\Psr7\Request;
 use HelpScout\Api\ApiClient;
 use HelpScout\Api\Entity\Extractable;
 use HelpScout\Api\Exception\AuthenticationException;
+use HelpScout\Api\Exception\ClientException;
+use HelpScout\Api\Exception\RateLimitExceededException;
+use HelpScout\Api\Exception\ValidationErrorException;
 use HelpScout\Api\Http\Hal\HalDeserializer;
 use HelpScout\Api\Http\Hal\HalResource;
 use HelpScout\Api\Http\Hal\HalResources;
 use HelpScout\Api\Reports\Report;
+use Http\Discovery\Psr18Client;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -24,7 +29,7 @@ class RestClient
     public const CLIENT_USER_AGENT = 'Help Scout PHP API Client/%s (PHP %s)';
 
     /**
-     * @var Client
+     * @var Psr18Client
      */
     private $client;
 
@@ -33,9 +38,9 @@ class RestClient
      */
     private $authenticator;
 
-    public function __construct(Client $client, Authenticator $authenticator)
+    public function __construct(ClientInterface $client, Authenticator $authenticator)
     {
-        $this->client = $client;
+        $this->client = $client instanceof Psr18Client ? $client : new Psr18Client($client);
         $this->authenticator = $authenticator;
     }
 
@@ -62,7 +67,7 @@ class RestClient
 
     public function createResource(Extractable $entity, string $uri): ?int
     {
-        $request = new Request(
+        $request = $this->createRequest(
             'POST',
             $uri,
             $this->getDefaultHeaders(),
@@ -78,7 +83,7 @@ class RestClient
 
     public function updateResource(Extractable $entity, string $uri): void
     {
-        $request = new Request(
+        $request = $this->createRequest(
             'PUT',
             $uri,
             $this->getDefaultHeaders(),
@@ -89,7 +94,7 @@ class RestClient
 
     public function patchResource(Extractable $entity, string $uri): void
     {
-        $request = new Request(
+        $request = $this->createRequest(
             'PATCH',
             $uri,
             $this->getDefaultHeaders(),
@@ -100,7 +105,7 @@ class RestClient
 
     public function deleteResource(string $uri): void
     {
-        $request = new Request(
+        $request = $this->createRequest(
             'DELETE',
             $uri,
             $this->getDefaultHeaders()
@@ -116,7 +121,7 @@ class RestClient
         string $uri,
         array $headers = []
     ): HalResource {
-        $request = new Request(
+        $request = $this->createRequest(
             'GET',
             $uri,
             array_merge($this->getDefaultHeaders(), $headers)
@@ -130,7 +135,7 @@ class RestClient
     public function getReport(Report $report): array
     {
         $uri = $report->getUriPath();
-        $request = new Request(
+        $request = $this->createRequest(
             'GET',
             $uri,
             $this->getDefaultHeaders()
@@ -146,7 +151,7 @@ class RestClient
      */
     public function getResources($entityClass, string $rel, string $uri): HalResources
     {
-        $request = new Request(
+        $request = $this->createRequest(
             'GET',
             $uri,
             $this->getDefaultHeaders()
@@ -166,33 +171,72 @@ class RestClient
     }
 
     /**
-     * @return mixed|ResponseInterface
+     * @return ResponseInterface
      */
-    private function send(RequestInterface $request)
+    private function send(RequestInterface $request, bool $shouldAutoRefreshAccessToken = true)
     {
-        $options = [
-            'base_uri' => self::BASE_URI,
-            'http_errors' => false,
-        ];
-
         try {
-            $response = $this->client->send($request, $options);
+            $response = $this->client->sendRequest($request);
+
+            if ($response->getStatusCode() === 401) {
+                throw new AuthenticationException('Invalid Credentials', $request, $response);
+            }
+            if ($response->getStatusCode() === 429) {
+                throw new RateLimitExceededException('Rate limit exceeded', $request, $response);
+            }
+            if ($response->getStatusCode() === 400 && self::isVndErrorResponse($response)) {
+                $halDocument = HalDeserializer::deserializeDocument((string) $response->getBody());
+                $error = HalDeserializer::deserializeError($halDocument);
+
+                throw new ValidationErrorException('Validation error', $error, $request, $response);
+            }
+            if ($response->getStatusCode() >= 400) {
+                throw ClientException::create($request, $response);
+            }
         } catch (AuthenticationException $e) {
             // If the request fails due to an authentication error, retry again after refreshing the token.
             // This allows for token expirations to avoid impacting
             $authenticator = $this->getAuthenticator();
-            if ($authenticator->shouldAutoRefreshAccessToken()) {
+            if ($shouldAutoRefreshAccessToken && $authenticator->shouldAutoRefreshAccessToken()) {
                 $authenticator->fetchAccessAndRefreshToken();
                 // Replace the auth headers in the Request object.
                 foreach ($this->getAuthHeader() as $header => $value) {
                     $request = $request->withHeader($header, $value);
                 }
-                $response = $this->client->send($request, $options);
+                $response = $this->send($request, false);
             } else {
                 throw $e;
             }
         }
 
         return $response;
+    }
+
+    private function createRequest(string $method, string $uri, array $headers = [], string $body = ''): RequestInterface
+    {
+        if (!preg_match('{^https?://}', $uri)) {
+            $uri = self::BASE_URI . '/' . ltrim($uri, '/');
+        }
+
+        $request = $this->client->createRequest($method, $uri);
+
+        foreach ($headers as $header => $value) {
+            $request = $request->withHeader($header, $value);
+        }
+
+        if ('' !== $body) {
+            $request = $request->withBody($this->client->createStream($body));
+        }
+
+        return $request;
+    }
+
+    private static function isVndErrorResponse(ResponseInterface $response): bool
+    {
+        if (!$response->hasHeader('Content-Type')) {
+            return false;
+        }
+
+        return $response->getHeader('Content-Type')[0] === 'application/vnd.error+json';
     }
 }

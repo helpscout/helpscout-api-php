@@ -9,6 +9,9 @@ use HelpScout\Api\Http\Hal\HalDeserializer;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @deprecated
+ */
 class ValidationHandler
 {
     public function __invoke(callable $handler)

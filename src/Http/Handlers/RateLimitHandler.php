@@ -8,6 +8,9 @@ use HelpScout\Api\Exception\RateLimitExceededException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @deprecated
+ */
 class RateLimitHandler
 {
     public function __invoke(callable $handler)

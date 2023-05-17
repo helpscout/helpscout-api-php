@@ -8,6 +8,9 @@ use HelpScout\Api\Exception\AuthenticationException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @deprecated
+ */
 class AuthenticationHandler
 {
     public function __invoke(callable $handler)

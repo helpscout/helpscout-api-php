@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HelpScout\Api\Tests\Http;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Utils;
 use HelpScout\Api\Http\Auth\Auth;
 use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\CodeCredentials;
@@ -60,13 +61,13 @@ class AuthenticatorTest extends TestCase
         $expiresIn = rand(100, 200);
         $refreshToken = uniqid();
         $response = Mockery::mock(ResponseInterface::class, [
-            'getBody' => json_encode([
+            'getBody' => Utils::streamFor(json_encode([
                 'access_token' => $accessToken,
                 'expires_in' => $expiresIn,
                 'refresh_token' => $refreshToken,
-            ]),
+            ])),
         ]);
-        $this->client->shouldReceive('request')
+        $this->client->shouldReceive('sendRequest')
             ->andReturn($response);
 
         $authenticator = new Authenticator($this->client, $authType);
@@ -88,13 +89,13 @@ class AuthenticatorTest extends TestCase
         $expiresIn = rand(100, 200);
         $refreshToken = uniqid();
         $response = Mockery::mock(ResponseInterface::class, [
-            'getBody' => json_encode([
+            'getBody' => Utils::streamFor(json_encode([
                 'access_token' => $accessToken,
                 'expires_in' => $expiresIn,
                 'refresh_token' => $refreshToken,
-            ]),
+            ])),
         ]);
-        $this->client->shouldReceive('request')
+        $this->client->shouldReceive('sendRequest')
             ->andReturn($response);
 
         $callbackExecuted = false;
@@ -122,13 +123,13 @@ class AuthenticatorTest extends TestCase
         $expiresIn = rand(100, 200);
         $refreshToken = uniqid();
         $response = Mockery::mock(ResponseInterface::class, [
-            'getBody' => json_encode([
+            'getBody' => Utils::streamFor(json_encode([
                 'access_token' => $accessToken,
                 'expires_in' => $expiresIn,
                 'refresh_token' => $refreshToken,
-            ]),
+            ])),
         ]);
-        $this->client->shouldReceive('request')
+        $this->client->shouldReceive('sendRequest')
             ->andReturn($response);
 
         $callback = new class() implements HandlesTokenRefreshes {

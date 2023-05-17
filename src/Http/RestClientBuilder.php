@@ -16,11 +16,15 @@ use HelpScout\Api\Http\Auth\ClientCredentials;
 use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
-use HelpScout\Api\Http\Handlers\AuthenticationHandler;
-use HelpScout\Api\Http\Handlers\ClientErrorHandler;
-use HelpScout\Api\Http\Handlers\RateLimitHandler;
-use HelpScout\Api\Http\Handlers\ValidationHandler;
+use Http\Discovery\Psr18Client;
+use Psr\Http\Client\ClientInterface;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Psr18Client as SymfonyClient;
+use Symfony\Component\HttpClient\RetryableHttpClient;
 
+/**
+ * @internal
+ */
 class RestClientBuilder
 {
     /**
@@ -28,9 +32,15 @@ class RestClientBuilder
      */
     private $config;
 
-    public function __construct(array $config = [])
+    /**
+     * @var ClientInterface|null
+     */
+    private $client;
+
+    public function __construct(array $config = [], ClientInterface $client = null)
     {
         $this->config = $config;
+        $this->client = $client;
     }
 
     /**
@@ -38,30 +48,44 @@ class RestClientBuilder
      */
     public function build($tokenRefreshedCallback = null): RestClient
     {
-        $authenticator = $this->getAuthenticator($tokenRefreshedCallback);
+        $client = $this->client ?? $this->getGuzzleClient() ?? $this->getSymfonyClient();
+        $authenticator = $this->getAuthenticator($tokenRefreshedCallback, $client);
 
         return new RestClient(
-            $this->getGuzzleClient(),
+            $client,
             $authenticator
         );
     }
 
-    /**
-     * @internal
-     */
-    protected function getGuzzleClient(): Client
+    protected function getGuzzleClient(): ?Client
     {
+        if (!class_exists(Client::class)) {
+            return null;
+        }
+
         $options = $this->getOptions();
 
         return new Client($options);
     }
 
-    protected function getAuthenticator($tokenRefreshedCallback = null): Authenticator
+    protected function getSymfonyClient(): ?SymfonyClient
+    {
+        if (!class_exists(RetryableHttpClient::class)) {
+            return null;
+        }
+
+        return new SymfonyClient(new RetryableHttpClient(HttpClient::create()));
+    }
+
+    /**
+     * @param \Closure|HandlesTokenRefreshes $tokenRefreshedCallback
+     */
+    protected function getAuthenticator($tokenRefreshedCallback = null, ClientInterface $client = null): Authenticator
     {
         $authConfig = $this->config['auth'] ?? [];
 
         $authenticator = new Authenticator(
-            new Client(),
+            $client ?? new Client(),
             $this->getAuthClass($authConfig)
         );
 
@@ -105,10 +129,6 @@ class RestClientBuilder
     {
         $handler = HandlerStack::create();
 
-        $handler->push(new AuthenticationHandler());
-        $handler->push(new ClientErrorHandler());
-        $handler->push(new RateLimitHandler());
-        $handler->push(new ValidationHandler());
         $handler->push(Middleware::retry($this->getRetryDecider()));
 
         return $handler;

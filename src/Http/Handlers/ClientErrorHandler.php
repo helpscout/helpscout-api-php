@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace HelpScout\Api\Http\Handlers;
 
-use GuzzleHttp\Exception\RequestException;
+use HelpScout\Api\Exception\ClientException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * @deprecated
+ */
 class ClientErrorHandler
 {
     public function __invoke(callable $handler)
@@ -16,7 +19,7 @@ class ClientErrorHandler
             return $handler($request, $options)->then(
                 function (ResponseInterface $response) use ($request) {
                     if ($response->getStatusCode() >= 400 && $response->getStatusCode() !== 401) {
-                        $e = RequestException::create($request, $response);
+                        $e = ClientException::create($request, $response);
 
                         throw $e;
                     }

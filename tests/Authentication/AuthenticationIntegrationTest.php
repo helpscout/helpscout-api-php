@@ -18,18 +18,16 @@ use Mockery;
  */
 class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
 {
-    protected $guzzle;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        /* @var Client $client */
-        $this->guzzle = Mockery::mock(Client::class);
-    }
+    /**
+     * @var string
+     */
+    protected $accessToken = null;
 
     public function testAuthenticatesRequests()
     {
+        $this->accessToken = 'abc123';
+        $this->setUp();
+
         $this->stubResponse($this->getResponse(200, CustomerPayloads::getCustomer(1)));
 
         $this->client->customers()->get(1);
@@ -97,13 +95,6 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
             'client_secret' => $appSecret,
         ];
 
-        $expectedOptions = [
-            'headers' => [
-                'Content-Type' => 'application/json;charset=UTF-8',
-            ],
-            'json' => $expectedPayload,
-        ];
-
         $tokenResponse = [
             'access_token' => 'fdsafdas',
             'refresh_token' => 'asdfasdf',
@@ -111,18 +102,22 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
         ];
         $expectedResponse = $this->getResponse(200, json_encode($tokenResponse));
 
-        $this->guzzle->shouldReceive('request')
-            ->with('POST', Authenticator::TOKEN_URL, $expectedOptions)
-            ->andReturn($expectedResponse);
+        $this->stubResponse($expectedResponse);
 
         $expectedResult = [
             'Authorization' => 'Bearer fdsafdas',
         ];
 
-        $authenticator = new Authenticator($this->guzzle, $auth);
+        $this->authenticator->setAuth($auth);
 
-        $result = $authenticator->getAuthHeader();
+        $result = $this->authenticator->getAuthHeader();
         $this->assertSame($expectedResult, $result);
+
+        $requests = $this->history;
+        $this->assertSame('POST', $requests[0]['request']->getMethod());
+        $this->assertSame(Authenticator::TOKEN_URL, (string) $requests[0]['request']->getUri());
+        $this->assertSame(['application/json;charset=UTF-8'], $requests[0]['request']->getHeader('Content-Type'));
+        $this->assertSame($expectedPayload, json_decode((string) $requests[0]['request']->getBody(), true));
     }
 
     public function testAuthenticatorFetchesTokensWithRefreshCredentials()
@@ -138,13 +133,6 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
             'client_secret' => $appSecret,
         ];
 
-        $expectedOptions = [
-            'headers' => [
-                'Content-Type' => 'application/json;charset=UTF-8',
-            ],
-            'json' => $expectedPayload,
-        ];
-
         $tokenResponse = [
             'access_token' => 'fdsafdas',
             'refresh_token' => 'asdfasdf',
@@ -152,18 +140,15 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
         ];
         $expectedResponse = $this->getResponse(200, json_encode($tokenResponse));
 
-        $this->guzzle->shouldReceive('request')
-            ->once()
-            ->with('POST', Authenticator::TOKEN_URL, $expectedOptions)
-            ->andReturn($expectedResponse);
+        $this->stubResponse($expectedResponse);
 
         $expectedResult = [
             'Authorization' => 'Bearer fdsafdas',
         ];
 
-        $authenticator = new Authenticator($this->guzzle, $auth);
+        $this->authenticator->setAuth($auth);
 
-        $result = $authenticator->getAuthHeader();
+        $result = $this->authenticator->getAuthHeader();
         $this->assertSame($expectedResult, $result);
 
         $expectedTokens = [
@@ -172,7 +157,13 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
             'access_token' => 'fdsafdas',
             'expires_in' => 7200,
         ];
-        $this->assertSame($expectedTokens, $authenticator->getTokens());
+        $this->assertSame($expectedTokens, $this->authenticator->getTokens());
+
+        $requests = $this->history;
+        $this->assertSame('POST', $requests[0]['request']->getMethod());
+        $this->assertSame(Authenticator::TOKEN_URL, (string) $requests[0]['request']->getUri());
+        $this->assertSame(['application/json;charset=UTF-8'], $requests[0]['request']->getHeader('Content-Type'));
+        $this->assertSame($expectedPayload, json_decode((string) $requests[0]['request']->getBody(), true));
     }
 
     public function testFetchTokensWithNullCredentialsThrowsException()
@@ -180,7 +171,6 @@ class AuthenticationIntegrationTest extends ApiClientIntegrationTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot fetch tokens without app credentials');
 
-        $authenticator = new Authenticator($this->guzzle);
-        $authenticator->getAuthHeader();
+        $this->authenticator->getAuthHeader();
     }
 }

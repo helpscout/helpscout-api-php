@@ -12,6 +12,8 @@ use HelpScout\Api\Http\Auth\CodeCredentials;
 use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
 use HelpScout\Api\Http\Auth\NullCredentials;
 use HelpScout\Api\Http\Auth\RefreshCredentials;
+use Http\Discovery\Psr18Client;
+use Psr\Http\Client\ClientInterface;
 
 class Authenticator
 {
@@ -20,7 +22,7 @@ class Authenticator
     public const CONTENT_TYPE = 'application/json;charset=UTF-8';
 
     /**
-     * @var Client
+     * @var Psr18Client
      */
     private $client;
 
@@ -49,9 +51,9 @@ class Authenticator
      */
     private $tokenRefreshedCallback;
 
-    public function __construct(Client $client, Auth $auth = null)
+    public function __construct(ClientInterface $client, Auth $auth = null)
     {
-        $this->client = $client;
+        $this->client = $client instanceof Psr18Client ? $client : new Psr18Client($client);
         $this->auth = $auth ?? new NullCredentials();
     }
 
@@ -97,9 +99,12 @@ class Authenticator
         return $this->refreshToken;
     }
 
+    /**
+     * @deprecated
+     */
     public function setClient(Client $client): Authenticator
     {
-        $this->client = $client;
+        $this->client = new Psr18Client($client);
 
         return $this;
     }
@@ -190,19 +195,11 @@ class Authenticator
 
     private function requestAuthTokens(array $payload, string $url): array
     {
-        $headers = [
-            'Content-Type' => self::CONTENT_TYPE,
-        ];
-        $options = [
-            'headers' => $headers,
-            'json' => $payload,
-        ];
+        $request = $this->client->createRequest('POST', $url)
+            ->withHeader('Content-Type', self::CONTENT_TYPE)
+            ->withBody($this->client->createStream(json_encode($payload, \JSON_THROW_ON_ERROR)));
 
-        $response = $this->client->request(
-            'POST',
-            $url,
-            $options
-        );
+        $response = $this->client->sendRequest($request);
 
         return json_decode((string) $response->getBody(), true);
     }

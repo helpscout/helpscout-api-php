@@ -44,7 +44,7 @@ $client->threads()->updateText(18, $threadId, 'I need help please');
 // Get the source of a thread
 try {
     $source = $client->threads()->getSource(1189656771, 3394140565);
-} catch (\GuzzleHttp\Exception\ClientException $e) {
+} catch (\HelpScout\Api\Exception\ClientException $e) {
     if ($e->getResponse()->getStatusCode() === 404) {
         // thread's source not available
     }

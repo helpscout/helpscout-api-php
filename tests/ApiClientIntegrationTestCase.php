@@ -41,6 +41,11 @@ abstract class ApiClientIntegrationTestCase extends TestCase
      */
     protected $client;
 
+    /**
+     * @var string
+     */
+    protected $accessToken = 'abc123';
+
     public function setUp(): void
     {
         $this->history = [];
@@ -57,7 +62,9 @@ abstract class ApiClientIntegrationTestCase extends TestCase
         $client = new Client(['handler' => $handler, 'http_errors' => false]);
 
         $this->authenticator = new Authenticator($client);
-        $this->authenticator->setAccessToken('abc123');
+        if (null !== $this->accessToken) {
+            $this->authenticator->setAccessToken($this->accessToken);
+        }
 
         $this->client = new ApiClient(
             new RestClient($client, $this->authenticator)

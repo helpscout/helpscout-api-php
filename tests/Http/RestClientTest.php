@@ -68,7 +68,7 @@ class RestClientTest extends TestCase
 
         $response = new Response(200, [], json_encode($responseData));
 
-        $this->methodsClient->shouldReceive('send')
+        $this->methodsClient->shouldReceive('sendRequest')
             ->andReturn($response);
         $this->authenticator->shouldReceive('getAuthHeader')->andReturn([
             'Authorization' => 'Bearer 123abc',
@@ -84,7 +84,7 @@ class RestClientTest extends TestCase
         $exception = \Mockery::mock(AuthenticationException::class);
         $this->expectExceptionObject($exception);
 
-        $this->methodsClient->shouldReceive('send')
+        $this->methodsClient->shouldReceive('sendRequest')
             ->andThrow($exception);
 
         $this->authenticator->shouldReceive([
@@ -100,9 +100,8 @@ class RestClientTest extends TestCase
 
     public function testSendingRequestRefreshesToken()
     {
-        $exception = \Mockery::mock(AuthenticationException::class);
-        $this->methodsClient->shouldReceive('send')
-            ->andThrow($exception)
+        $this->methodsClient->shouldReceive('sendRequest')
+            ->andReturn(new Response(401))
             ->once();
 
         $this->authenticator->shouldReceive([
@@ -117,13 +116,13 @@ class RestClientTest extends TestCase
             'previous' => 'cccddd',
         ];
         $response = new Response(200, [], json_encode($responseData));
-        $this->methodsClient->shouldReceive('send')
-            ->with(\Mockery::on(function (Request $request) {
+        $this->methodsClient->shouldReceive('sendRequest')
+            ->withArgs(function (Request $request) {
                 // Ensure retry request includes new auth headers.
                 $this->assertSame(['the-value'], $request->getHeader('the-header'));
 
                 return true;
-            }), \Mockery::any())
+            })
             ->andReturn($response);
 
         $restClient = new RestClient($this->methodsClient, $this->authenticator);

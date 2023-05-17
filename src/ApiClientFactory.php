@@ -7,6 +7,7 @@ namespace HelpScout\Api;
 use Closure;
 use HelpScout\Api\Http\Auth\HandlesTokenRefreshes;
 use HelpScout\Api\Http\RestClientBuilder;
+use Psr\Http\Client\ClientInterface;
 
 class ApiClientFactory
 {
@@ -15,9 +16,10 @@ class ApiClientFactory
      */
     public static function createClient(
         array $config = [],
-        $tokenRefreshedCallback = null
+        $tokenRefreshedCallback = null,
+        ClientInterface $client = null
     ): ApiClient {
-        $restClientBuilder = new RestClientBuilder($config);
+        $restClientBuilder = new RestClientBuilder($config, $client);
 
         return new ApiClient($restClientBuilder->build($tokenRefreshedCallback));
     }
