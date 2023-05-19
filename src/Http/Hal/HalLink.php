@@ -12,27 +12,27 @@ class HalLink
     /**
      * The first page.
      */
-    const REL_FIRST = 'first';
+    public const REL_FIRST = 'first';
 
     /**
      * The last page.
      */
-    const REL_LAST = 'last';
+    public const REL_LAST = 'last';
 
     /**
      * The next page.
      */
-    const REL_NEXT = 'next';
+    public const REL_NEXT = 'next';
 
     /**
      * The previous page.
      */
-    const REL_PREVIOUS = 'previous';
+    public const REL_PREVIOUS = 'previous';
 
     /**
      * The self relation.
      */
-    const REL_SELF = 'self';
+    public const REL_SELF = 'self';
 
     /**
      * @var string
@@ -77,6 +77,6 @@ class HalLink
             throw new RuntimeException(sprintf('The link "%s" is not templated', $this->getRel()));
         }
 
-        return (new UriTemplate)->expand($this->getHref(), $params);
+        return (new UriTemplate())->expand($this->getHref(), $params);
     }
 }

@@ -46,6 +46,9 @@ class RestClientBuilder
         );
     }
 
+    /**
+     * @internal
+     */
     protected function getGuzzleClient(): Client
     {
         $options = $this->getOptions();

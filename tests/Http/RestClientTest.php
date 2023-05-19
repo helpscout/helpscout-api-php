@@ -121,6 +121,7 @@ class RestClientTest extends TestCase
             ->with(\Mockery::on(function (Request $request) {
                 // Ensure retry request includes new auth headers.
                 $this->assertSame(['the-value'], $request->getHeader('the-header'));
+
                 return true;
             }), \Mockery::any())
             ->andReturn($response);

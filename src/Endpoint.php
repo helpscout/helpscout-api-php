@@ -44,10 +44,10 @@ abstract class Endpoint
     ): PagedCollection {
         /** @var HalPagedResources $pagedResources */
         $pagedResources = $this->restClient->getResources(
-                $entityClass,
-                $rel,
-                $uri
-            );
+            $entityClass,
+            $rel,
+            $uri
+        );
 
         $mapClosure = function (HalResource $resource) {
             return $resource->getEntity();
