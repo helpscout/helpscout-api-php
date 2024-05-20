@@ -148,46 +148,57 @@ class ConversationPayloads
         if ($embedThread) {
             $conversation['_embedded']['threads'] = [
                 [
-                    '_embedded' => [
-                        'threads' => [
-                            [
-                                'id' => 1,
-                                'type' => 'lineitem',
-                                'status' => 'closed',
-                                'action' => [
-                                    'type' => 'default',
-                                    'text' => 'John marked as Closed',
-                                    'assiciatedEntities' => [],
-                                ],
-                                'source' => [
-                                    'type' => 'web',
-                                    'via' => 'user',
-                                ],
-                                'createdBy' => [
-                                    'id' => 1,
-                                    'type' => 'user',
-                                    'first' => 'John',
-                                    'last' => 'Doe',
-                                    'email' => 'john.doe@example.com',
-                                    'to' => [],
-                                    'cc' => [],
-                                    'bcc' => [],
-                                    'createdAt' => '2017-04-21T14:39:56Z',
-                                ],
-                                '_embedded' => [
-                                    'attachments' => [],
-                                ],
-                                '_links' => [
-                                    'createdByUser' => [
-                                        'href' => 'https://api.helpscout.net/v2/users/1',
-                                    ]
-                                ]
-                            ],
-                        ],
+                    'id' => 1,
+                    'type' => 'customer',
+                    'status' => 'active',
+                    'state' => 'published',
+                    'action' => [
+                        'type' => 'default',
+                        'associatedEntities' => [],
                     ],
+                    'body' => 'This is a test',
+                    'source' => [
+                        'type' => 'email',
+                        'via' => 'user',
+                    ],
+                    'customer' => [
+                        'id' => 472611182,
+                        'first' => 'John',
+                        'last' => 'Doe',
+                        'photoUrl' => 'https://d33v4339jhl8k0.cloudfront.net/customer-avatar/05.png',
+                        'email' => 'john.doe@example.com',
+                    ],
+                    'createdBy' => [
+                        'id' => 1,
+                        'type' => 'user',
+                        'first' => 'John',
+                        'last' => 'Doe',
+                        'email' => 'john.doe@example.com',
+                        'to' => [],
+                        'cc' => [],
+                        'bcc' => [],
+                        'createdAt' => '2017-04-21T14:39:56Z',
+                    ],
+                    'assignedTo' => [
+                        'id' => 12,
+                        'first' => 'Help',
+                        'last' => 'Scout',
+                        'email' => 'none@nowhere.com',
+                    ],
+                    'savedReplyId' => 0,
+                    '_embedded' => [
+                        'attachments' => [],
+                    ],
+                    '_links' => [
+                        'createdByUser' => [
+                            'href' => 'https://api.helpscout.net/v2/users/1',
+                        ]
+                    ]
                 ],
             ];
         }
+
+//        var_dump($conversation);
 
         return $conversation;
     }
