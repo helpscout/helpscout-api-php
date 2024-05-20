@@ -230,6 +230,24 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         ]);
     }
 
+    public function testGetConversationWithEmbedThreads()
+    {
+        $this->stubResponse($this->getResponse(200, ConversationPayloads::getConversations(1, 10)));
+
+        $filters = (new ConversationFilters())
+            ->withEmbed('threads');
+
+        $conversations = $this->client->conversations()->list($filters);
+
+        $this->assertCount(10, $conversations);
+        $this->assertInstanceOf(Conversation::class, $conversations[0]);
+        $this->assertInstanceOf(CustomerThread::class, $conversations[0]['_embedded']['threads'][0]);
+
+        $this->verifyMultipleRequests([
+            ['GET', 'https://api.helpscout.net/v2/conversations/1'],
+        ]);
+    }
+
     public function testListConversations()
     {
         $this->stubResponse(

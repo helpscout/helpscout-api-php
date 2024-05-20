@@ -11,15 +11,15 @@ class ConversationPayloads
         return json_encode(static::conversation($id));
     }
 
-    public static function getConversations(int $pageNumber, int $totalElements): string
+    public static function getConversations(int $pageNumber, int $totalElements, bool $embedThread = false): string
     {
         $pageSize = 10;
         $pageElements = min($totalElements, $pageSize);
         $totalPages = ceil($totalElements / $pageSize);
 
         // Create embedded resources
-        $conversations = array_map(function ($id) {
-            return static::conversation($id);
+        $conversations = array_map(function ($id) use ($embedThread) {
+            return static::conversation($id, $embedThread);
         }, range(1, $pageElements));
 
         $data = [
@@ -60,9 +60,9 @@ class ConversationPayloads
         return json_encode($data);
     }
 
-    private static function conversation(int $id): array
+    private static function conversation(int $id, bool $embedThread = false): array
     {
-        return [
+        $conversation = [
             'id' => $id,
             'number' => 15473,
             'threads' => 2,
@@ -144,6 +144,52 @@ class ConversationPayloads
                 ],
             ],
         ];
+
+        if ($embedThread) {
+            $conversation['_embedded']['threads'] = [
+                [
+                    '_embedded' => [
+                        'threads' => [
+                            [
+                                'id' => 1,
+                                'type' => 'lineitem',
+                                'status' => 'closed',
+                                'action' => [
+                                    'type' => 'default',
+                                    'text' => 'John marked as Closed',
+                                    'assiciatedEntities' => [],
+                                ],
+                                'source' => [
+                                    'type' => 'web',
+                                    'via' => 'user',
+                                ],
+                                'createdBy' => [
+                                    'id' => 1,
+                                    'type' => 'user',
+                                    'first' => 'John',
+                                    'last' => 'Doe',
+                                    'email' => 'john.doe@example.com',
+                                    'to' => [],
+                                    'cc' => [],
+                                    'bcc' => [],
+                                    'createdAt' => '2017-04-21T14:39:56Z',
+                                ],
+                                '_embedded' => [
+                                    'attachments' => [],
+                                ],
+                                '_links' => [
+                                    'createdByUser' => [
+                                        'href' => 'https://api.helpscout.net/v2/users/1',
+                                    ]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        return $conversation;
     }
 
     public static function getThreads(int $conversationId): string

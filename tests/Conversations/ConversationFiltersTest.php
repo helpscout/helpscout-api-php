@@ -32,7 +32,8 @@ class ConversationFiltersTest extends TestCase
             ->sortField('createdAt')
             ->sortOrder('asc')
             ->withQuery('query')
-            ->byCustomField(123, 'blue');
+            ->byCustomField(123, 'blue')
+            ->withEmbed('threads');
 
         $this->assertSame([
             'mailbox' => 1,
@@ -44,6 +45,7 @@ class ConversationFiltersTest extends TestCase
             'sortField' => 'createdAt',
             'sortOrder' => 'asc',
             'query' => 'query',
+            'embed' => 'threads',
             'tag' => 'testing',
             'customFieldsByIds' => '123:blue',
         ], $filters->getParams());
