@@ -18,9 +18,7 @@ class ConversationPayloads
         $totalPages = ceil($totalElements / $pageSize);
 
         // Create embedded resources
-        $conversations = array_map(function ($id) use ($embedThread) {
-            return static::conversation($id, $embedThread);
-        }, range(1, $pageElements));
+        $conversations = array_map(fn($id) => static::conversation($id, $embedThread), range(1, $pageElements));
 
         $data = [
             '_embedded' => [
@@ -197,8 +195,6 @@ class ConversationPayloads
                 ],
             ];
         }
-
-//        var_dump($conversation);
 
         return $conversation;
     }
