@@ -66,6 +66,11 @@ class ConversationFilters
      */
     private $query;
 
+    /**
+     * @var string
+     */
+    public $embed;
+
     public function getParams(): array
     {
         $params = [
@@ -78,6 +83,7 @@ class ConversationFilters
             'sortField' => $this->sortField,
             'sortOrder' => $this->sortOrder,
             'query' => $this->query,
+            'embed' => $this->embed,
         ];
 
         if (\is_array($this->tag)) {
@@ -240,4 +246,15 @@ class ConversationFilters
         return $filters;
     }
 
+    public function withEmbed(string $embed): ConversationFilters
+    {
+        Assert::oneOf($embed, [
+            'threads',
+        ]);
+
+        $filters = clone $this;
+        $filters->embed = $embed;
+
+        return $filters;
+    }
 }
