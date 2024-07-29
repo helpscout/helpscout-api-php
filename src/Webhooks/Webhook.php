@@ -19,9 +19,12 @@ class Webhook implements Hydratable, Extractable
     ];
 
     public const VALID_EVENTS = [
+        'beacon.chat.created',
+        'beacon.chat.customer.replied',
         'convo.agent.reply.created',
         'convo.assigned',
         'convo.created',
+        'convo.custom-fields',
         'convo.customer.reply.created',
         'convo.deleted',
         'convo.merged',
@@ -30,10 +33,13 @@ class Webhook implements Hydratable, Extractable
         'convo.status',
         'convo.tags',
         'customer.created',
+        'customer.deleted',
         'customer.updated',
+        'message.survey.response.received',
         'satisfaction.ratings',
-        'beacon.chat.created',
-        'beacon.chat.customer.replied',
+        'tag.created',
+        'tag.deleted',
+        'tag.updated',
     ];
 
     /**
@@ -52,6 +58,16 @@ class Webhook implements Hydratable, Extractable
     private $url;
 
     /**
+     * @var string
+     */
+    private $label;
+
+    /**
+     * @var bool
+     */
+    private $notification;
+
+    /**
      * @var array
      */
     private $events = [];
@@ -67,6 +83,8 @@ class Webhook implements Hydratable, Extractable
         $this->setState($data['state'] ?? null);
         $this->setEvents($data['events'] ?? null);
         $this->setUrl($data['url'] ?? null);
+        $this->setLabel($data['label'] ?? null);
+        $this->setNotification($data['notification'] ?? null);
         $this->setSecret($data['secret'] ?? null);
     }
 
@@ -77,6 +95,8 @@ class Webhook implements Hydratable, Extractable
             'url' => $this->getUrl(),
             'state' => $this->getState(),
             'events' => $this->getEvents(),
+            'label' => $this->getLabel(),
+            'notification' => $this->getNotification(),
             'secret' => $this->getSecret(),
         ];
     }
@@ -144,6 +164,42 @@ class Webhook implements Hydratable, Extractable
     public function setUrl(?string $url): Webhook
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setLabel(?string $label): Webhook
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotification(): ?bool
+    {
+        return $this->notification;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setNotification(?bool $notification): Webhook
+    {
+        $this->notification = $notification;
 
         return $this;
     }
