@@ -177,7 +177,7 @@ class Webhook implements Hydratable, Extractable
     }
 
     /**
-     * @param string $url
+     * @param string $label
      */
     public function setLabel(?string $label): Webhook
     {
@@ -187,7 +187,7 @@ class Webhook implements Hydratable, Extractable
     }
 
     /**
-     * @return string
+     * @return bool
      */
     public function getNotification(): ?bool
     {
@@ -195,7 +195,7 @@ class Webhook implements Hydratable, Extractable
     }
 
     /**
-     * @param string $url
+     * @param string $notification
      */
     public function setNotification(?bool $notification): Webhook
     {
