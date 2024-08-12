@@ -59,9 +59,10 @@ class RestClientBuilder
     protected function getAuthenticator($tokenRefreshedCallback = null): Authenticator
     {
         $authConfig = $this->config['auth'] ?? [];
+        $guzzleConfig = $this->config['guzzle'] ?? [];
 
         $authenticator = new Authenticator(
-            new Client(),
+            new Client($guzzleConfig),
             $this->getAuthClass($authConfig)
         );
 
@@ -95,10 +96,11 @@ class RestClientBuilder
 
     protected function getOptions(): array
     {
-        return [
+        $guzzleConfig = $this->config['guzzle'] ?? [];
+        return array_merge($guzzleConfig, [
             'handler' => $this->getHandlerStack(),
             'http_errors' => false,
-        ];
+        ]);
     }
 
     protected function getHandlerStack(): HandlerStack
