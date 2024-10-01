@@ -16,6 +16,8 @@ class WebhookTest extends TestCase
             'url' => 'http://bad-url.com',
             'state' => 'disabled',
             'events' => ['convo.assigned', 'convo.moved'],
+            'label' => 'One Webhook',
+            'notification' => true,
             'secret' => 'mZ9XbGHodX',
         ];
 
@@ -26,6 +28,8 @@ class WebhookTest extends TestCase
         $this->assertSame('disabled', $webhook->getState());
         $this->assertSame('http://bad-url.com', $webhook->getUrl());
         $this->assertSame(['convo.assigned', 'convo.moved'], $webhook->getEvents());
+        $this->assertSame('One Webhook', $webhook->getLabel());
+        $this->assertTrue($webhook->getNotification());
         $this->assertSame('mZ9XbGHodX', $webhook->getSecret());
 
         $this->assertSame($data, $webhook->extract());
