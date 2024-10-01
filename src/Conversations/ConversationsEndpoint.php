@@ -177,7 +177,7 @@ class ConversationsEndpoint extends Endpoint
 
     public function publishDraft(int $conversationId): void
     {
-        $patch = Patch::replace('draft', true);
+        $patch = Patch::replace('draft', false);
         $this->patchConversation($conversationId, $patch);
     }
 
