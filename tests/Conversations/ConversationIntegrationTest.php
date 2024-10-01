@@ -381,7 +381,7 @@ class ConversationIntegrationTest extends ApiClientIntegrationTestCase
         $this->verifyRequestWithData('https://api.helpscout.net/v2/conversations/1', 'PATCH', [
             'op' => 'replace',
             'path' => '/draft',
-            'value' => true,
+            'value' => false,
         ]);
     }
 
