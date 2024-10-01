@@ -27,6 +27,8 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
             'url' => 'http://bad-url.com',
             'state' => 'disabled',
             'events' => ['convo.assigned', 'convo.moved'],
+            'label' => 'One Webhook',
+            'notification' => true,
             'secret' => 'mZ9XbGHodX',
         ];
         $webhook = new Webhook();
@@ -43,6 +45,8 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
                 'url' => 'http://bad-url.com',
                 'state' => 'disabled',
                 'events' => ['convo.assigned', 'convo.moved'],
+                'label' => 'One Webhook',
+                'notification' => true,
                 'secret' => 'mZ9XbGHodX',
             ]
         );
@@ -57,6 +61,8 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
             'url' => 'http://bad-url.com',
             'state' => 'disabled',
             'events' => ['convo.assigned', 'convo.moved'],
+            'label' => 'One Webhook',
+            'notification' => true,
             'secret' => 'mZ9XbGHodX',
         ];
 
@@ -77,6 +83,8 @@ class WebhookClientIntegrationTest extends ApiClientIntegrationTestCase
                 'url' => $newUrl,
                 'state' => 'disabled',
                 'events' => ['convo.assigned', 'convo.moved'],
+                'label' => 'One Webhook',
+                'notification' => true,
                 'secret' => 'mZ9XbGHodX',
             ]
         );
