@@ -15,7 +15,7 @@ use HelpScout\Api\Tags\TagsCollection;
 
 class ConversationsEndpoint extends Endpoint
 {
-    public function get(int $id, ConversationRequest $conversationRequest = null): Conversation
+    public function get(int $id, ?ConversationRequest $conversationRequest = null): Conversation
     {
         $conversationResource = $this->restClient->getResource(Conversation::class, sprintf('/v2/conversations/%d', $id));
 
@@ -96,8 +96,8 @@ class ConversationsEndpoint extends Endpoint
      * @return Conversation[]|PagedCollection
      */
     public function list(
-        ConversationFilters $conversationFilters = null,
-        ConversationRequest $conversationRequest = null
+        ?ConversationFilters $conversationFilters = null,
+        ?ConversationRequest $conversationRequest = null
     ): PagedCollection {
         $uri = '/v2/conversations';
         if ($conversationFilters) {

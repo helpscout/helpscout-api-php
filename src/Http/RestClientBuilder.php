@@ -126,8 +126,8 @@ class RestClientBuilder
         return function (
             $retries,
             Request $request,
-            Response $response = null,
-            GuzzleException $exception = null
+            ?Response $response = null,
+            ?GuzzleException $exception = null
         ) {
             // Don't retry unless this is a Connection issue
             if (!$exception instanceof ConnectException) {

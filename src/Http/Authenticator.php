@@ -49,7 +49,7 @@ class Authenticator
      */
     private $tokenRefreshedCallback;
 
-    public function __construct(Client $client, Auth $auth = null)
+    public function __construct(Client $client, ?Auth $auth = null)
     {
         $this->client = $client;
         $this->auth = $auth ?? new NullCredentials();

@@ -26,7 +26,7 @@ class VndError
      */
     private $errors = [];
 
-    public function __construct(string $message, string $logRef = null, string $path = null)
+    public function __construct(string $message, ?string $logRef = null, ?string $path = null)
     {
         $this->message = $message;
         $this->logRef = $logRef;

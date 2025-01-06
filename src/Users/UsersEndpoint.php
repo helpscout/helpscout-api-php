@@ -34,7 +34,7 @@ class UsersEndpoint extends Endpoint
      * @return User[]|PagedCollection
      */
     public function list(
-        UserFilters $userFilters = null
+        ?UserFilters $userFilters = null
     ): PagedCollection {
         $uri = self::LIST_USERS_URI;
         if ($userFilters) {

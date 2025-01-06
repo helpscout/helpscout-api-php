@@ -261,7 +261,7 @@ class Customer implements Extractable, Hydratable
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt = null): Customer
+    public function setCreatedAt(?DateTime $createdAt = null): Customer
     {
         $this->createdAt = $createdAt;
 
@@ -273,7 +273,7 @@ class Customer implements Extractable, Hydratable
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTime $updatedAt = null): Customer
+    public function setUpdatedAt(?DateTime $updatedAt = null): Customer
     {
         $this->updatedAt = $updatedAt;
 
@@ -434,7 +434,7 @@ class Customer implements Extractable, Hydratable
      * @param ChatHandle|string $chat
      * @param string            $type
      */
-    public function addChatHandle($chat, string $type = null): Customer
+    public function addChatHandle($chat, ?string $type = null): Customer
     {
         if (is_string($chat)) {
             $newChatHandle = new ChatHandle();
@@ -482,7 +482,7 @@ class Customer implements Extractable, Hydratable
      * @param Email|string $email
      * @param string       $type
      */
-    public function addEmail($email, string $type = null): Customer
+    public function addEmail($email, ?string $type = null): Customer
     {
         if (is_string($email)) {
             $newEmail = new Email();
@@ -530,7 +530,7 @@ class Customer implements Extractable, Hydratable
      * @param Phone|string $phone
      * @param string       $type
      */
-    public function addPhone($phone, string $type = null): Customer
+    public function addPhone($phone, ?string $type = null): Customer
     {
         if (is_string($phone)) {
             $newPhone = new Phone();
@@ -568,7 +568,7 @@ class Customer implements Extractable, Hydratable
      * @param SocialProfile|string $profile
      * @param string               $type
      */
-    public function addSocialProfile($profile, string $type = null): Customer
+    public function addSocialProfile($profile, ?string $type = null): Customer
     {
         if (is_string($profile)) {
             $newProfile = new SocialProfile();

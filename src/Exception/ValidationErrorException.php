@@ -24,7 +24,7 @@ class ValidationErrorException extends RequestException implements Exception
         VndError $error,
         RequestInterface $request,
         ResponseInterface $response,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         // Append some details on what steps to take to see the underlying validation problems are.
         $message = $message.' - use getError() to see the underlying validation issues';
