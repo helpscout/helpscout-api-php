@@ -99,7 +99,7 @@ class Mailbox implements Hydratable
     /**
      * @return Mailbox
      */
-    public function setCreatedAt(DateTime $createdAt = null): self
+    public function setCreatedAt(?DateTime $createdAt = null): self
     {
         $this->createdAt = $createdAt;
 
@@ -117,7 +117,7 @@ class Mailbox implements Hydratable
     /**
      * @return Mailbox
      */
-    public function setUpdatedAt(DateTime $updatedAt = null): self
+    public function setUpdatedAt(?DateTime $updatedAt = null): self
     {
         $this->updatedAt = $updatedAt;
 

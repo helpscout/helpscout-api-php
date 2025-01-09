@@ -55,7 +55,7 @@ class CustomerWaitingSince implements Extractable, Hydratable
         return $fields;
     }
 
-    public function setTime(DateTime $time = null): self
+    public function setTime(?DateTime $time = null): self
     {
         $this->time = $time;
 

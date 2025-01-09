@@ -159,7 +159,7 @@ class Team implements Hydratable
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTime $createdAt = null): Team
+    public function setCreatedAt(?DateTime $createdAt = null): Team
     {
         $this->createdAt = $createdAt;
 
@@ -171,7 +171,7 @@ class Team implements Hydratable
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTime $updatedAt = null): Team
+    public function setUpdatedAt(?DateTime $updatedAt = null): Team
     {
         $this->updatedAt = $updatedAt;
 

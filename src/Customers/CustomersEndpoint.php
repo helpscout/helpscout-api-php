@@ -34,7 +34,7 @@ class CustomersEndpoint extends Endpoint
         );
     }
 
-    public function get(int $id, CustomerRequest $customerRequest = null): Customer
+    public function get(int $id, ?CustomerRequest $customerRequest = null): Customer
     {
         $customerResource = $this->restClient->getResource(
             Customer::class,
@@ -51,8 +51,8 @@ class CustomersEndpoint extends Endpoint
      * @return Customer[]|PagedCollection
      */
     public function list(
-        CustomerFilters $customerFilters = null,
-        CustomerRequest $customerRequest = null
+        ?CustomerFilters $customerFilters = null,
+        ?CustomerRequest $customerRequest = null
     ): PagedCollection {
         $uri = '/v2/customers';
         if ($customerFilters) {

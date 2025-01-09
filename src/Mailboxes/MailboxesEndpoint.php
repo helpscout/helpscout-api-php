@@ -15,7 +15,7 @@ class MailboxesEndpoint extends Endpoint
     public const LIST_MAILBOXES_URI = '/v2/mailboxes';
     public const RESOURCE_KEY = 'mailboxes';
 
-    public function get(int $id, MailboxRequest $mailboxRequest = null): Mailbox
+    public function get(int $id, ?MailboxRequest $mailboxRequest = null): Mailbox
     {
         $mailboxResource = $this->restClient->getResource(
             Mailbox::class,
@@ -30,7 +30,7 @@ class MailboxesEndpoint extends Endpoint
     /**
      * @return Mailbox[]|PagedCollection
      */
-    public function list(MailboxRequest $mailboxRequest = null): PagedCollection
+    public function list(?MailboxRequest $mailboxRequest = null): PagedCollection
     {
         return $this->loadMailboxes(
             self::LIST_MAILBOXES_URI,
