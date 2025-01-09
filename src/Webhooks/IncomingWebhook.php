@@ -78,7 +78,7 @@ class IncomingWebhook
         $signature = $this->generateSignature();
         $header = $this->findHeader(self::SIGNATURE_HEADERS);
 
-        if ($signature !== $header) {
+        if (hash_equals($signature, $header) === false) {
             throw new InvalidSignatureException($signature, $header);
         }
     }
