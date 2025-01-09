@@ -432,7 +432,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param ChatHandle|string $chat
-     * @param string            $type
      */
     public function addChatHandle($chat, ?string $type = null): Customer
     {
@@ -480,7 +479,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Email|string $email
-     * @param string       $type
      */
     public function addEmail($email, ?string $type = null): Customer
     {
@@ -528,7 +526,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param Phone|string $phone
-     * @param string       $type
      */
     public function addPhone($phone, ?string $type = null): Customer
     {
@@ -566,7 +563,6 @@ class Customer implements Extractable, Hydratable
 
     /**
      * @param SocialProfile|string $profile
-     * @param string               $type
      */
     public function addSocialProfile($profile, ?string $type = null): Customer
     {
