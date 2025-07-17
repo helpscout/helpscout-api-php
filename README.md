@@ -96,7 +96,7 @@ When a request fails due to an authentication error, the SDK can automatically t
 ```php
 $client = ApiClientFactory::createClient([], function (Authenticator $authenticator) {
     // This $authenticator contains the refreshed token
-    echo 'New token: '.$authenticator->accessToken().PHP_EOL;
+    echo 'New token: '.$authenticator->refreshToken().PHP_EOL;
 });
 ```
 
