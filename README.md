@@ -1023,6 +1023,10 @@ $users->getPageNumber();
 // The total number of pages
 $users->getTotalPageCount();
 
+// Whether a next/previous page is available
+$users->hasNextPage();
+$users->hasPreviousPage();
+
 // Load the next page
 $nextUsers = $users->getNextPage();
 
@@ -1041,6 +1045,24 @@ $otherUsers = $users->getPage(12);
 // Paged results are accessible as normal arrays, so you can simply iterate over them
 foreach ($otherUsers as $user) {
     echo $user->getFirstName();
+}
+```
+
+To walk every page, drive the loop with `hasNextPage()` rather than comparing the page number against `getTotalPageCount()`. The total is a snapshot from the response that produced it, while `hasNextPage()` reflects whether the API returned a `next` link for the current page — so the loop stays correct even if the underlying result set changes between requests.
+
+```php
+$page = $client->users()->list();
+
+while (true) {
+    foreach ($page as $user) {
+        echo $user->getFirstName();
+    }
+
+    if (!$page->hasNextPage()) {
+        break;
+    }
+
+    $page = $page->getNextPage();
 }
 ```
 
