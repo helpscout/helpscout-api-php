@@ -72,10 +72,68 @@ class PagedCollectionTest extends TestCase
         $this->assertSame('https://api.helpscout.com/v2/customers?page=3', $this->getLoadedUri());
     }
 
+    public function testHasNextPageReflectsLinkPresence()
+    {
+        $this->assertTrue($this->collection->hasNextPage());
+
+        $lastPage = new PagedCollection(
+            range(1, 5),
+            new HalPageMetadata(4, 10, 35, 4),
+            new HalLinks([
+                new HalLink('page', 'https://api.helpscout.com/v2/customers{?page}', true),
+                new HalLink('first', 'https://api.helpscout.com/v2/customers?page=1', false),
+                new HalLink('last', 'https://api.helpscout.com/v2/customers?page=4', false),
+                new HalLink('previous', 'https://api.helpscout.com/v2/customers?page=3', false),
+            ]),
+            $this->pageLoader
+        );
+
+        $this->assertFalse($lastPage->hasNextPage());
+    }
+
+    public function testHasNextPageIsFalseWhenLinkAbsentDespiteUnexhaustedPageCount()
+    {
+        // Page 2 of a reported 4, but the API omitted the `next` link because the result set
+        // shrank underneath the pagination — the bug scenario from SDS-11533. hasNextPage()
+        // must report the truth (no next) rather than trusting the stale total-page count.
+        $collection = new PagedCollection(
+            range(1, 10),
+            new HalPageMetadata(2, 10, 35, 4),
+            new HalLinks([
+                new HalLink('page', 'https://api.helpscout.com/v2/customers{?page}', true),
+                new HalLink('first', 'https://api.helpscout.com/v2/customers?page=1', false),
+                new HalLink('previous', 'https://api.helpscout.com/v2/customers?page=1', false),
+            ]),
+            $this->pageLoader
+        );
+
+        $this->assertLessThan($collection->getTotalPageCount(), $collection->getPageNumber());
+        $this->assertFalse($collection->hasNextPage());
+    }
+
     public function testPreviousPage()
     {
         $this->assertSame($this->loadedCollection, $this->collection->getPreviousPage());
         $this->assertSame('https://api.helpscout.com/v2/customers?page=1', $this->getLoadedUri());
+    }
+
+    public function testHasPreviousPageReflectsLinkPresence()
+    {
+        $this->assertTrue($this->collection->hasPreviousPage());
+
+        $firstPage = new PagedCollection(
+            range(1, 10),
+            new HalPageMetadata(1, 10, 35, 4),
+            new HalLinks([
+                new HalLink('page', 'https://api.helpscout.com/v2/customers{?page}', true),
+                new HalLink('first', 'https://api.helpscout.com/v2/customers?page=1', false),
+                new HalLink('last', 'https://api.helpscout.com/v2/customers?page=4', false),
+                new HalLink('next', 'https://api.helpscout.com/v2/customers?page=2', false),
+            ]),
+            $this->pageLoader
+        );
+
+        $this->assertFalse($firstPage->hasPreviousPage());
     }
 
     public function testFirstPage()

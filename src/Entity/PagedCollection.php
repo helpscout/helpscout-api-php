@@ -74,9 +74,29 @@ class PagedCollection extends Collection
         return $this->loadPage($this->links->expand(self::REL_PAGE, [self::PAGE_VARIABLE => $number]));
     }
 
+    /**
+     * Whether this page advertises a next page.
+     *
+     * Prefer this over comparing getPageNumber() against getTotalPageCount() when looping:
+     * the link is recomputed by the API for every response and reflects the result set as it
+     * exists right now, whereas a total-page count captured from an earlier page goes stale if
+     * the underlying set shrinks between requests (e.g. items leaving a status/folder filter
+     * while you paginate). Driving the loop off this check avoids getNextPage() throwing
+     * "The link 'next' was not found" once the result set no longer reaches the expected page.
+     */
+    public function hasNextPage(): bool
+    {
+        return $this->links->has(HalLink::REL_NEXT);
+    }
+
     public function getNextPage(): self
     {
         return $this->loadPage($this->links->getHref(HalLink::REL_NEXT));
+    }
+
+    public function hasPreviousPage(): bool
+    {
+        return $this->links->has(HalLink::REL_PREVIOUS);
     }
 
     public function getPreviousPage(): self
