@@ -74,9 +74,19 @@ class PagedCollection extends Collection
         return $this->loadPage($this->links->expand(self::REL_PAGE, [self::PAGE_VARIABLE => $number]));
     }
 
+    public function hasNextPage(): bool
+    {
+        return $this->links->has(HalLink::REL_NEXT);
+    }
+
     public function getNextPage(): self
     {
         return $this->loadPage($this->links->getHref(HalLink::REL_NEXT));
+    }
+
+    public function hasPreviousPage(): bool
+    {
+        return $this->links->has(HalLink::REL_PREVIOUS);
     }
 
     public function getPreviousPage(): self
