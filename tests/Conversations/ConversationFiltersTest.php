@@ -99,7 +99,7 @@ class ConversationFiltersTest extends TestCase
         ], $filters->getParams());
     }
 
-    public function sortFieldProvider(): array
+    public static function sortFieldProvider(): array
     {
         return [
             ['createdAt'],
@@ -133,7 +133,7 @@ class ConversationFiltersTest extends TestCase
         ], $filters->getParams());
     }
 
-    public function sortOrderProvider(): array
+    public static function sortOrderProvider(): array
     {
         return [
             ['asc', 'asc'],

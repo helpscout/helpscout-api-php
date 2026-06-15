@@ -19,7 +19,6 @@ trait ReflectionTestTrait
 
         $reflection = new \ReflectionClass($class);
         $reflectedMethod = $reflection->getMethod($method);
-        $reflectedMethod->setAccessible(true);
 
         return $reflectedMethod->invokeArgs($object, $parameters);
     }
@@ -35,7 +34,6 @@ trait ReflectionTestTrait
     {
         $reflection = new \ReflectionClass($object);
         $property = $reflection->getProperty($attributeName);
-        $property->setAccessible(true);
 
         return $property->getValue($object);
     }
@@ -51,7 +49,6 @@ trait ReflectionTestTrait
         $class = $this->getClassName($object);
 
         $reflection = new \ReflectionProperty($class, $attributeName);
-        $reflection->setAccessible(true);
         $reflection->setValue($object, $value);
     }
 

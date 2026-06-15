@@ -12,9 +12,9 @@ class Assert extends BaseAssert
     /**
      * {@inheritdoc}
      *
-     * @return InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    protected static function reportInvalidArgument($message)
+    protected static function reportInvalidArgument(string $message): never
     {
         throw new InvalidArgumentException($message);
     }

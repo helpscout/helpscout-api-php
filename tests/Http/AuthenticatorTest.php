@@ -188,7 +188,7 @@ class AuthenticatorTest extends TestCase
         );
     }
 
-    public function autoRefreshAccessTokenProvider(): \Generator
+    public static function autoRefreshAccessTokenProvider(): \Generator
     {
         $typesThatCanRefreshTokens = [
             ClientCredentials::TYPE,

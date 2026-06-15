@@ -23,7 +23,7 @@ class CustomerRequestTest extends TestCase
         $this->assertTrue($request->hasLink($rel));
     }
 
-    public function linkProvider()
+    public static function linkProvider()
     {
         return [
             [CustomerLinks::ADDRESS],

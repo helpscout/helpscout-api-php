@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ReportTest extends TestCase
 {
-    public function reportTypeProvider(): array
+    public static function reportTypeProvider(): array
     {
         return [
             [Reports\Company\Overall::class],

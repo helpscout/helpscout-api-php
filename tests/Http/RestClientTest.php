@@ -193,7 +193,7 @@ class RestClientTest extends TestCase
         $this->assertFalse($shouldRetry);
     }
 
-    public function noRetryParamProvider(): \Generator
+    public static function noRetryParamProvider(): \Generator
     {
         $request = new Request(
             'POST',
@@ -272,7 +272,7 @@ class RestClientTest extends TestCase
         $this->assertTrue($shouldRetry);
     }
 
-    public function retryParamProvider(): \Generator
+    public static function retryParamProvider(): \Generator
     {
         $request = new Request(
             'POST',
