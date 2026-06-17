@@ -63,6 +63,11 @@ class Thread implements Extractable, Hydratable
     private $assignedTo;
 
     /**
+     * @var array|null
+     */
+    private $associatedEntities;
+
+    /**
      * @var int|null
      */
     private $savedReplyId;
@@ -116,6 +121,7 @@ class Thread implements Extractable, Hydratable
         if (isset($data['action'])) {
             $this->actionType = $data['action']['type'] ?? null;
             $this->actionText = $data['action']['text'] ?? null;
+            $this->associatedEntities = $data['action']['associatedEntities'] ?? null;
         }
 
         if (isset($data['source']) && is_array($data['source'])) {
@@ -192,6 +198,14 @@ class Thread implements Extractable, Hydratable
             ];
         }
 
+        if ($this->wasMerged()) {
+            $data['action'] = [
+                'type' => $this->getActionType(),
+                'text' => $this->getActionText(),
+                'associatedEntities' => $this->getAssociatedEntities(),
+            ];
+        }
+
         if ($this->wasCreatedByCustomer()) {
             $data['createdBy'] = [
                 'id' => $this->getCreatedByCustomer()->getId(),
@@ -265,6 +279,11 @@ class Thread implements Extractable, Hydratable
         return \is_string($this->actionText);
     }
 
+    public function wasMerged(): bool
+    {
+        return $this->actionType === 'merged';
+    }
+
     public function getActionType(): ?string
     {
         return $this->actionType;
@@ -295,6 +314,11 @@ class Thread implements Extractable, Hydratable
     public function getAssignedTo(): ?array
     {
         return $this->assignedTo;
+    }
+
+    public function getAssociatedEntities(): ?array
+    {
+        return $this->associatedEntities;
     }
 
     public function getTo(): ?array

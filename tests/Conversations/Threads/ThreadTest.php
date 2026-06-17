@@ -93,6 +93,28 @@ class ThreadTest extends TestCase
         $this->assertTrue($thread->isImported());
     }
 
+    public function testHydrateAssociatedEntities()
+    {
+        $thread = new Thread();
+        $thread->hydrate([
+            'id' => 12,
+            'type' => 'lineitem',
+            'action' => [
+                'type' => 'merged',
+                'text' => 'You merged threads from another conversation',
+                'associatedEntities' => $associatedEntities = [
+                    'originalConversation' => '12345',
+                ],
+            ]
+        ]);
+
+        $this->assertSame(12, $thread->getId());
+        $this->assertSame('lineitem', $thread->getType());
+        $this->assertSame('merged', $thread->getActionType());
+        $this->assertSame('You merged threads from another conversation', $thread->getActionText());
+        $this->assertSame($associatedEntities, $thread->getAssociatedEntities());
+    }
+
     public function testHydrateTextFromBody()
     {
         $thread = new Thread();
